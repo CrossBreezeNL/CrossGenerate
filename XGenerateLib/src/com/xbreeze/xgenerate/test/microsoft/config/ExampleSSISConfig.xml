@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig xmlns="XGenConfig">
+  
+  <Model>    
+    <ModelAttributeInjections>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="etldatatype" targetValue="str"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="etldatatype" targetValue="wstr"/>
+    </ModelAttributeInjections>
+  </Model>
+  <Template rootSectionName="System">
+    <FileFormat type="Microsoft_SSIS" currentAccessor="_" childAccessor="$" templateType="xml" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" commentNodeXPath="@*[lower-case(local-name())='description']" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <Output type="output_per_element" />
+    <TemplatePlaceholderInjections>
+      <!--  attribute injection can either be related to other attribute in the same element that already contains a placeholder or unrelated  -->
+      <!--  targetValue should contain the accessor scope is determined by the containing section -->
+      <!--  scope defines at what level placeholder will be resolved, can be either current or child so on a section that is on attribute level
+      datatype with curent scope will result in attribute_datatype -->
+      <TemplatePlaceholderInjection templateXPath="//inputColumn/@cachedDataType" modelNode="etldatatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//outputColumn/@dataType"  modelNode="etldatatype" scope="current" />
+    </TemplatePlaceholderInjections>
+  </Template>
+  <Binding>
+    <SectionModelBinding section="System" modelXPath = "/modeldefinition/system" placeholderName="system">
+      <SectionModelBinding section="stgPackage" modelXPath="mappableObjects/entity" placeholderName="entity">
+        <Placeholders>
+          <!-- For the placeholder the modelXPath is relative to its section model XPath. -->
+          <Placeholder name="system" modelXPath="../.." />                 
+        </Placeholders>
+        <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="attribute">
+          <Placeholders>
+            <Placeholder name="system" modelXPath="../../../.." />
+            <Placeholder name="entity" modelXPath="../.." />                 
+          </Placeholders>    
+        </SectionModelBinding>        
+       </SectionModelBinding>
+    </SectionModelBinding>    
+  </Binding>
+</XGenConfig>

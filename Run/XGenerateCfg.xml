@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XGenAppConfig xmlns="XGenAppConfig">
+  <App>
+    <ConfigFolder>..\XGenerateLib\src\com\xbreeze\xgenerate\test\microsoft\config</ConfigFolder>
+    <ModelFolder>..\XGenerateLib\src\com\xbreeze\xgenerate\test\common\model</ModelFolder>
+    <OutputFolder>C:\CrossGenerate\Output</OutputFolder>
+    <TemplateFolder>..\XGenerateLib\src\com\xbreeze\xgenerate\test\microsoft\template\staging</TemplateFolder>
+  </App>
+  <License>
+    <ContractId>str1234</ContractId>
+    <DeveloperMode>true</DeveloperMode>
+    <LicenseKey>str1234</LicenseKey>
+    <Tag>str1234</Tag>
+    <Url>..\XGenerateLib\target\classes\</Url>
+    <Version>str123</Version>
+  </License>
+</XGenAppConfig>

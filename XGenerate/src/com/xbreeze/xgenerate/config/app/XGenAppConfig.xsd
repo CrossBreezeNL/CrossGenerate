@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema elementFormDefault="qualified" version="1.0" targetNamespace="XGenAppConfig" xmlns:xgenc="https://crossgenerate.com/config/v2" xmlns:tns="XGenAppConfig" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="XGenAppConfig" type="tns:xGenAppConfig"/>
+
+  <xs:complexType name="xGenAppConfig">
+    <xs:sequence>
+      <xs:element name="App" type="tns:appConfig" minOccurs="0"/>
+      <xs:element name="License" type="tns:licenseConfig" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="appConfig">
+    <xs:sequence>
+      <xs:element name="ConfigFolder" type="xs:string" minOccurs="0"/>
+      <xs:element name="ModelFolder" type="xs:string"/>
+      <xs:element name="OutputFolder" type="xs:string"/>
+      <xs:element name="TemplateFolder" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="licenseConfig">
+    <xs:sequence>
+      <xs:element name="ContractId" type="xs:string"/>
+      <xs:element name="DeveloperMode" type="xs:boolean" minOccurs="0"/>
+      <xs:element name="LicenseKey" type="xs:string"/>
+      <xs:element name="Tag" type="xs:string" minOccurs="0"/>
+      <xs:element name="Url" type="xs:string"/>
+      <xs:element name="Version" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

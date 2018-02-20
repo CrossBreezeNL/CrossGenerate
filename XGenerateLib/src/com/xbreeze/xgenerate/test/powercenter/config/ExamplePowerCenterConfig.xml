@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig xmlns="XGenConfig">
+  <Model>    
+    <ModelAttributeInjections>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="etldatatype" targetValue="string"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="etldatatype" targetValue="nstring"/>
+    </ModelAttributeInjections>
+  </Model>
+  <Template rootSectionName="System">
+    <FileFormat type="Informatica_PowerCenter" commentNodeXPath="@DESCRIPTION" currentAccessor="_" childAccessor="$" templateType="xml" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <Output type="single_output" />
+    <Sections>
+      <!--
+        A section name can be specified multiple times. This way the binded model elements will be bound for all sections with the same name.
+        In this example the 'Attribute' section is specified multiple times in the template, it here it is again specified from the config.
+        For explanation on the XPath syntax see:
+          - https://www.w3schools.com/xml/xpath_syntax.asp
+       -->
+      <Section templateXPath="//MAPPING/CONNECTOR[@FROMFIELD='attribute_name']" name="Attribute"/>
+    </Sections>
+    <TemplatePlaceholderInjections>
+      <!--
+        The scope in the placeholder injection defines at what level placeholder will be resolved.
+        This can be either current or child (current is current element attributes and child is current element child elements).
+        In the first example we inject a placeholder in the DATATYPE attribute on the SOURCEFIELD element.
+        The full placeholder will be <section-placeholderName><scope-accessor><modelNode>.
+        In the first example it will be attribute_datatype.
+       -->
+      <TemplatePlaceholderInjection templateXPath="//SOURCEFIELD/@DATATYPE" modelNode="datatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//TRANSFORMFIELD/@DATATYPE"  modelNode="etldatatype" scope="current" />
+    </TemplatePlaceholderInjections>
+  </Template>
+  <Binding>
+    <!-- Configure the bindings on which models elements are bound to a specific section. -->
+    <SectionModelBinding section="System" modelXPath = "/modeldefinition/system" placeholderName="system">
+      <!--
+        Section bindings can be specified recursively.
+        For example entities exists within a system to it makes sense the binding is also defined inside the System section binding.
+        The modelXPath here is relative to its parent binding.
+       -->
+      <SectionModelBinding section="Entity" modelXPath="mappableObjects/entity" placeholderName="entity">
+        <Placeholders>
+          <!-- For the placeholder the modelXPath is relative to its section model XPath. -->
+          <Placeholder name="system" modelXPath="../.." />                 
+        </Placeholders>
+        <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="attribute">
+          <Placeholders>
+            <Placeholder name="system" modelXPath="../../../.." />
+            <Placeholder name="entity" modelXPath="../.." />                 
+          </Placeholders>    
+				</SectionModelBinding>        
+			</SectionModelBinding>
+    </SectionModelBinding>    
+  </Binding>
+</XGenConfig>
