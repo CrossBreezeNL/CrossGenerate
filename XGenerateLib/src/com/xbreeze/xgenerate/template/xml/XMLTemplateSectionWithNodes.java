@@ -3,7 +3,7 @@ package com.xbreeze.xgenerate.template.xml;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.xbreeze.xgenerate.template.PreprocessorException;
+import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 
 /***
  * Class for storing the nodes that match with a templatesection annotations' elementXPath in a certain XML template document.
@@ -26,7 +26,7 @@ public class XMLTemplateSectionWithNodes {
 	 * Constructor, initializes the object and performs xpath on specified document.
 	 * @param name the name of the section
 	 * @param elementXPath the xpath to perform
-	 * @throws PreprocessorException 
+	 * @throws TemplatePreprocessorException 
 	 * @document the document to perform the xpath against.
 	 */
 	public XMLTemplateSectionWithNodes(String name, NodeList nodes) {

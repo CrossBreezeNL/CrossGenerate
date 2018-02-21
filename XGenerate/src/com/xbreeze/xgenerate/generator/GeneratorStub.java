@@ -3,8 +3,6 @@ package com.xbreeze.xgenerate.generator;
 import java.net.URI;
 import java.util.logging.Logger;
 
-import com.xbreeze.xgenerate.UnhandledException;
-
 /**
  * Skeleton Generator class, used for building the project, runtime the Generator class is loaded through the licensedClassLoader, 
  * this class only functions as a placeholder
@@ -36,12 +34,13 @@ public class GeneratorStub {
 	/**
 	 * Set the model using a file location.
 	 * @param modelFileUri The model file location.
+	 * @throws GeneratorException 
 	 */
-	public void setModelFromFile(URI modelFileUri) {
+	public void setModelFromFile(URI modelFileUri) throws GeneratorException {
 		logger.warning("Invoking placeholder Generator");
 	}
 		
-	public void generateFromFilesAndWriteOutput(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException, UnhandledException {
+	public void generateFromFilesAndWriteOutput(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException {
 		logger.warning("Invoking placeholder Generator");
 	}
 	

@@ -2,7 +2,7 @@ package com.xbreeze.xgenerate.template;
 
 import com.xbreeze.xgenerate.CrossGenerateException;
 
-public class PreprocessorException extends CrossGenerateException {
+public class TemplatePreprocessorException extends CrossGenerateException {
 	/**
 	 * The serial version UID for this class.
 	 */
@@ -12,7 +12,7 @@ public class PreprocessorException extends CrossGenerateException {
 	 * Constructor.
 	 * @param message The exception message.
 	 */
-	public PreprocessorException(String message) {
+	public TemplatePreprocessorException(String message) {
 		super(message);
 	}
 	
@@ -20,7 +20,7 @@ public class PreprocessorException extends CrossGenerateException {
 	 * Constructor.
 	 * @param throwable The throwable.
 	 */
-	public PreprocessorException(Throwable throwable) {
+	public TemplatePreprocessorException(Throwable throwable) {
 		super(throwable);
 	}
 }

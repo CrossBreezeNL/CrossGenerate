@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.xbreeze.xgenerate.UnhandledException;
-import com.xbreeze.xgenerate.template.PreprocessorException;
+import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
 import com.xbreeze.xgenerate.template.annotation.AnnotationException;
 import com.xbreeze.xgenerate.template.annotation.TemplateAnnotation;
@@ -23,9 +23,9 @@ public class AnnotationScanner {
 	 * Static method for scanning for annotations
 	 * @param templateContent the template part that is searched for annotations
 	 * @return returns the list of annotations found in the text.
-	 * @throws PreprocessorException 
+	 * @throws TemplatePreprocessorException 
 	 */
-	public static ArrayList<TemplateAnnotation> collectAnnotations(String templateContent, String annotationTextPrefix, String annotationPrefix, String annotationArgsPrefix, String annotationArgsSuffix, String annotationTextSuffix) throws PreprocessorException {
+	public static ArrayList<TemplateAnnotation> collectAnnotations(String templateContent, String annotationTextPrefix, String annotationPrefix, String annotationArgsPrefix, String annotationArgsSuffix, String annotationTextSuffix) throws TemplatePreprocessorException {
 		ArrayList<TemplateAnnotation> annotations = new ArrayList<>();
 		/**
 		 * (?m)         -> Multi-line match (indicates it can match on sub-parts of the input).
@@ -92,7 +92,7 @@ public class AnnotationScanner {
 					e.printStackTrace();
 				}
 			} catch (AnnotationException e) {
-				throw new PreprocessorException(e);
+				throw new TemplatePreprocessorException(e);
 			}
 		}
 		

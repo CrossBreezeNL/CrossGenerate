@@ -31,7 +31,7 @@ public abstract class TemplatePreprocessor {
 	 * Procedure which each specific implementation of the TemplateSectionizer needs to implement to get to the generic SectionizedTemplate.
 	 * In this procedure the raw template needs to be split in sections with their respective content.
 	 */
-	protected abstract SectionedTemplate sectionizeTemplate(RawTemplate rawTemplate, String rootSectionName)  throws PreprocessorException, UnhandledException;
+	protected abstract SectionedTemplate sectionizeTemplate(RawTemplate rawTemplate, String rootSectionName)  throws TemplatePreprocessorException, UnhandledException;
 	
 	/**
 	 * Perform the pre-processing to get to the pre-processed template.
@@ -39,7 +39,7 @@ public abstract class TemplatePreprocessor {
 	 * @throws UnhandledException 
 	 * @throws UnknownAnnotationException 
 	 */
-	public PreprocessedTemplate preProcess(RawTemplate rawTemplate) throws PreprocessorException, UnhandledException {
+	public PreprocessedTemplate preProcess(RawTemplate rawTemplate) throws TemplatePreprocessorException, UnhandledException {
 		TemplateConfig templateConfig = _config.getTemplateConfig();
 		
 		// Perform the specific sectionizing for the current template.
@@ -49,7 +49,7 @@ public abstract class TemplatePreprocessor {
 		
 		// Check whether there is only 1 root section model binding. If not, throw an exception.
 		if (rootSectionModelBindings.length != 1) {
-			throw new PreprocessorException("There must and can only be 1 section model binding for the root section.");
+			throw new TemplatePreprocessorException("There must and can only be 1 section model binding for the root section.");
 		}
 		
 		// Assign the section model binding for the root section to a local variable.

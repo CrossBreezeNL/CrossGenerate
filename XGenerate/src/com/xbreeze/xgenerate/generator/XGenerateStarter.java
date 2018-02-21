@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import com.xbreeze.license.LicenseException;
 import com.xbreeze.license.LicensedClassLoader;
-import com.xbreeze.xgenerate.UnhandledException;
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.config.app.XGenAppConfig;
 
@@ -121,7 +120,7 @@ public class XGenerateStarter {
 				}
 				
 				logger.info("Generation complete");
-			} catch (GeneratorException | UnhandledException | LicenseException | ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+			} catch (GeneratorException | LicenseException | ClassNotFoundException | IllegalAccessException | InstantiationException e) {
 				logger.severe("Error occured while generating");
 				logger.severe(e.getLocalizedMessage());
 				System.err.println("Error occured while generating, see log for more information");

@@ -1,7 +1,7 @@
 package com.xbreeze.xgenerate.generator;
 
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -22,15 +22,15 @@ import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.TemplateConfig;
 import com.xbreeze.xgenerate.model.Model;
+import com.xbreeze.xgenerate.model.ModelPreprocessor;
+import com.xbreeze.xgenerate.model.ModelPreprocessorException;
 import com.xbreeze.xgenerate.template.PreprocessedTemplate;
-import com.xbreeze.xgenerate.template.PreprocessorException;
 import com.xbreeze.xgenerate.template.RawTemplate;
 import com.xbreeze.xgenerate.template.TemplateException;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
+import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.annotation.UnknownAnnotationException;
-import com.xbreeze.xgenerate.generator.GeneratorStub;
-
-import net.sf.saxon.TransformerFactoryImpl;
+import com.xbreeze.xgenerate.template.xml.XMLUtils;
 
 public class Generator extends GeneratorStub {
 	// The logger for this class.
@@ -41,6 +41,9 @@ public class Generator extends GeneratorStub {
 	 */
 	private Model _model;
 
+	/**
+	 * Indicator for debug model.
+	 */
 	private boolean _debugMode = false;
 	
 	/**
@@ -51,12 +54,12 @@ public class Generator extends GeneratorStub {
 		logger.info("Initializing generator");
 	}
 	
-	
 	/**
 	 * Set the model using a file location.
 	 * @param modelFileUri The model file location.
+	 * @throws GeneratorException 
 	 */
-	public void setModelFromFile(URI modelFileUri) {
+	public void setModelFromFile(URI modelFileUri) throws GeneratorException {
 		this._model = Model.fromFile(modelFileUri);
 	}
 	
@@ -78,7 +81,6 @@ public class Generator extends GeneratorStub {
 		this._debugMode = _debugMode;
 	}
 
-
 	/**
 	 * Generate the output using the raw-template and the config file locations.
 	 * @param templateFileUri The template-file location.
@@ -90,7 +92,7 @@ public class Generator extends GeneratorStub {
 	 * @throws UnhandledException 
 	 * @throws UnknownAnnotationException 
 	 */
-	public GenerationResults generateFromFiles(URI templateFileUri, URI configFileUri) throws GeneratorException, UnhandledException {
+	public GenerationResults generateFromFiles(URI templateFileUri, URI configFileUri) throws GeneratorException {
 		// Create a RawTemplate object from the template file.
 		RawTemplate rawTemplate;
 		try {
@@ -107,12 +109,27 @@ public class Generator extends GeneratorStub {
 			throw new GeneratorException(e);
 		}
 		
+		// Pre-process the model (if model attribute injections are defined.
+		if (xGenConfig.getModelConfig() != null) {
+			try {
+				ModelPreprocessor.preprocessModel(_model, xGenConfig.getModelConfig());
+			} catch (ModelPreprocessorException e) {
+				throw new GeneratorException(e);
+			}
+		}
+		
 		// Generate using the template and config.
-		return generate(rawTemplate, xGenConfig);
+		try {
+			return generate(rawTemplate, xGenConfig);
+		}
+		// Wrap the UnhandledException in a GeneratorException.
+		catch(UnhandledException e) {
+			throw new GeneratorException(e);
+		}
 	}
 	
 	@Override
-	public void generateFromFilesAndWriteOutput(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException, UnhandledException {
+	public void generateFromFilesAndWriteOutput(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException {
 		GenerationResults generationResults = generateFromFiles(templateFileUri, configFileUri);
 		
 		// For each generation result, write the results.
@@ -120,6 +137,23 @@ public class Generator extends GeneratorStub {
 			
 			// If debug mode is on, also write the pre-processed template to the output.
 			if (this._debugMode) {
+				// Construct the path to the pre-processed model.
+				File preprocessedModelLocation = Paths.get(outputFileUri).resolve(String.format("preprocessed_%s", generationResult.getModelFileName())).toFile();
+				logger.info(String.format("Writing preprocessed model to '%s'", preprocessedModelLocation));
+				try {
+					Transformer xmlTransformer = XMLUtils.getXmlTransformer().newTransformer();
+					xmlTransformer.transform(_model.getAsDOMSource(), new StreamResult(preprocessedModelLocation));
+				}
+				// Error while getting the XML Transformer.
+				catch (TransformerConfigurationException e) {
+					throw new GeneratorException(e);
+				}
+				// Error while transforming the model into a XML.
+				catch (TransformerException e) {
+					throw new GeneratorException(e);
+				}
+				
+				// Construct the path to the pre-processed template.
 				String preprocessedFileLocation = Paths.get(outputFileUri).resolve(String.format("preprocessed_%s", generationResult.getTemplateFileName())).toString();
 				logger.info(String.format("Writing preprocessed template to '%s'", preprocessedFileLocation));
 				writeToFile(preprocessedFileLocation, generationResult.getPreprocessedTemplate());
@@ -182,26 +216,14 @@ public class Generator extends GeneratorStub {
 			logger.info("Begin template pre-processing");
 			PreprocessedTemplate preprocessedTemplate = templatePreprocessor.preProcess(rawTemplate);
 			logger.info("End template pre-processing");
+
 			
-			String preprocessedTemplateString = preprocessedTemplate.toString();
-			// TODO: Disable the following when generation is stable.
-			/**
-			System.out.println("Pre-processed template:");
-			System.out.println("--------------------------------------------------");
-			System.out.println(preprocessedTemplateString);
-			System.out.println("--------------------------------------------------");
-			*/
 			
 			// Now the pre-processing is done, we can start the XSLT transformation using the model and the pre-processed template (XSLT).
 			logger.info("Begin XSLT transformation");
-			StreamSource modelStreamSource;
-			try {
-				modelStreamSource = _model.getAsStreamSource();
-			} catch (FileNotFoundException e) {
-				throw new GeneratorException(String.format("The model file was not found (%s)", _model.getModelFileUri().toString()));
-			}
 			
 			// Create a string reader on the pre-processed template.
+			String preprocessedTemplateString = preprocessedTemplate.toString();
 			StringReader xslStringReader = new StringReader(preprocessedTemplateString);
 			StreamSource xslSource = new StreamSource(xslStringReader);
 			
@@ -212,9 +234,8 @@ public class Generator extends GeneratorStub {
 			// Create the transformer objects to transform the XSLT with the Model into the output.
 			String xslResult;
 			try {
-				TransformerFactory xsltFactory = TransformerFactoryImpl.newInstance();
-				Transformer xslTransformer = xsltFactory.newTransformer(xslSource);
-				xslTransformer.transform(modelStreamSource, outputResult);
+				Transformer xslTransformer = XMLUtils.getXmlTransformer().newTransformer(xslSource);
+				xslTransformer.transform(_model.getAsDOMSource(), outputResult);
 				xslResult = xslResultWriter.toString();
 			} catch (TransformerException e) {
 				throw new GeneratorException(e);
@@ -223,22 +244,14 @@ public class Generator extends GeneratorStub {
 			// Add the resulting output to the GenerationResults.
 			// TODO Split the output in multiple files based on the Output type.
 			// TODO Apply the placeholders of the root section on the file name.
-			generationResults.addGenerationResult(new GenerationResult(rawTemplate.getRawTemplateFileName(), preprocessedTemplateString, xslResult, rawTemplate.getRawTemplateFileName()));
+			generationResults.addGenerationResult(new GenerationResult(_model.getModelFileName(), rawTemplate.getRawTemplateFileName(), preprocessedTemplateString, xslResult, rawTemplate.getRawTemplateFileName()));
 			logger.info("End XSLT transformation");
-			
-			// TODO: Disable the following when generation is stable.
-			/**
-			System.out.println("Result:");
-			System.out.println("--------------------------------------------------");
-			System.out.println(xslResult);
-			System.out.println("--------------------------------------------------");
-			*/
 			
 			logger.info("End generator");
 			
 			// Return the generation results.
 			return generationResults;
-		} catch (PreprocessorException e) {
+		} catch (TemplatePreprocessorException e) {
 			throw new GeneratorException(e);
 		}
 	}

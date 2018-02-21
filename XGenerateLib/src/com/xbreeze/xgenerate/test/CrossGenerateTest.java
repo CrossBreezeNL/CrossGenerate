@@ -4,7 +4,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
-import com.xbreeze.xgenerate.UnhandledException;
 import com.xbreeze.xgenerate.generator.Generator;
 import com.xbreeze.xgenerate.generator.GeneratorException;
 
@@ -12,13 +11,13 @@ public class CrossGenerateTest {
 	public static void main(String[] args) {
 		
 		// Execute the Microsoft SQL test.
-		doMicrosoftSQLTest();
+		//doMicrosoftSQLTest();
 		
 		// Execute the Microsoft SSIS test.
 		//doMicrosoftSSISTest();
 		
 		// Execute the PowerCenter test.
-		//doPowerCenterTest();
+		doPowerCenterTest();
 		
 		// Execute the IBM DataStage test.
 		//doDataStageTest();
@@ -47,8 +46,6 @@ public class CrossGenerateTest {
 			e.printStackTrace();
 		} catch (GeneratorException e) {
 			e.printStackTrace();
-		} catch (UnhandledException e) {
-			e.printStackTrace();
 		}
 	}
 	
@@ -73,8 +70,6 @@ public class CrossGenerateTest {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		} catch (GeneratorException e) {
-			e.printStackTrace();
-		} catch (UnhandledException e) {
 			e.printStackTrace();
 		}
 	}
@@ -101,8 +96,6 @@ public class CrossGenerateTest {
 			e.printStackTrace();
 		} catch (GeneratorException e) {
 			e.printStackTrace();
-		} catch (UnhandledException e) {
-			e.printStackTrace();
 		}
 	}
 	
@@ -127,8 +120,6 @@ public class CrossGenerateTest {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		} catch (GeneratorException e) {
-			e.printStackTrace();
-		} catch (UnhandledException e) {
 			e.printStackTrace();
 		}
 	}

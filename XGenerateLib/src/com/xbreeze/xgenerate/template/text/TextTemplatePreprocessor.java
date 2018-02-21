@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import com.xbreeze.xgenerate.UnhandledException;
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.FileFormatConfig;
-import com.xbreeze.xgenerate.template.PreprocessorException;
+import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.RawTemplate;
 import com.xbreeze.xgenerate.template.SectionedTemplate;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
@@ -36,11 +36,11 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	/**
 	 * Sectionize the text template and return the SectionedTemplate.
 	 * @throws UnknownAnnotationException 
-	 * @throws PreprocessorException 
+	 * @throws TemplatePreprocessorException 
 	 * @throws UnknownAnnotationParamException 
 	 */
 	@Override
-	protected SectionedTemplate sectionizeTemplate(RawTemplate rawTemplate, String rootSectionName) throws PreprocessorException, UnhandledException {
+	protected SectionedTemplate sectionizeTemplate(RawTemplate rawTemplate, String rootSectionName) throws TemplatePreprocessorException, UnhandledException {
 		// Store the raw template content into a local variable.
 		String rawTemplateContent = rawTemplate.getRawTemplateContent();
 		// Store the file format config into a local variable.
@@ -74,7 +74,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				
 				// If the result is -1, then the begin wasn't found.
 				if (sectionBeginCharIndex == -1)
-					throw new PreprocessorException(String.format("The begin part of the section can't be found (%s)", sectionAnnotation.getName()));
+					throw new TemplatePreprocessorException(String.format("The begin part of the section can't be found (%s)", sectionAnnotation.getName()));
 
 				// If the section includes the begin, than add the length of the begin.
 				if (!sectionAnnotation.isIncludeBegin())
@@ -87,7 +87,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 			}
 			// Otherwise, we can't get the begin location.
 			else {
-				throw new PreprocessorException(String.format("No begin of section defined (%s)", sectionAnnotation.getName()));
+				throw new TemplatePreprocessorException(String.format("No begin of section defined (%s)", sectionAnnotation.getName()));
 			}
 			
 			// Store the begin index in a new template bounds annotation object.
@@ -128,9 +128,9 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	 * Process the named template section.
 	 * @param namedTemplateSection
 	 * @param rawTemplateContent
-	 * @throws PreprocessorException 
+	 * @throws TemplatePreprocessorException 
 	 */
-	private int processNamedTemplateSection(TemplateSectionBoundsAnnotation parentSectionBounds, NamedTemplateSection parentTemplateSection, String rawTemplateContent, ListIterator<TemplateAnnotation> taIterator, int parentPreviousSectionEndIndex, boolean isRootSection) throws PreprocessorException {
+	private int processNamedTemplateSection(TemplateSectionBoundsAnnotation parentSectionBounds, NamedTemplateSection parentTemplateSection, String rawTemplateContent, ListIterator<TemplateAnnotation> taIterator, int parentPreviousSectionEndIndex, boolean isRootSection) throws TemplatePreprocessorException {
 		logger.info(String.format("processNamedTemplateSection called for section '%s', parentPreviousSectionEndIndex=%d", parentTemplateSection.getSectionName(), parentPreviousSectionEndIndex));
 		// Loop through the template annotations.
 		int previousSectionEndIndex = parentPreviousSectionEndIndex; 
@@ -211,7 +211,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 			
 			// If there is some other annotation found we didn't handle, let's throw an exception.
 			else {
-				throw new PreprocessorException(String.format("Unhandled annotation found: %s", templateAnnotation.getAnnotationName()));
+				throw new TemplatePreprocessorException(String.format("Unhandled annotation found: %s", templateAnnotation.getAnnotationName()));
 			}
 			
 			// Set the ending index of the current section for the next cycle.
@@ -251,7 +251,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		// If the current section is not the root section the end of the section should've been found by now.
 		// So we throw and exception.
 		if (!isRootSection && previousSectionEndIndex < rawTemplateContentEndIndex) {
-			throw new PreprocessorException(String.format("The end of section '%s' can't be found!", parentTemplateSection.getSectionName()));
+			throw new TemplatePreprocessorException(String.format("The end of section '%s' can't be found!", parentTemplateSection.getSectionName()));
 		}
 		
 		// If we reached this point, we reached the end of the template, so we return the end index of the template.
@@ -266,9 +266,9 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	 * @param rawTemplateContent The raw template content.
 	 * @param sectionEndSearchBeginIndex The index to start searching for the end from.
 	 * @return The position of the end if found, otherwise -1.
-	 * @throws PreprocessorException
+	 * @throws TemplatePreprocessorException
 	 */
-	private int findSectionEndIndex(TemplateSectionBoundsAnnotation sectionAnnotationBounds, String rawTemplateContent, int sectionEndSearchBeginIndex, int sectionEndSearchEndIndex) throws PreprocessorException {
+	private int findSectionEndIndex(TemplateSectionBoundsAnnotation sectionAnnotationBounds, String rawTemplateContent, int sectionEndSearchBeginIndex, int sectionEndSearchEndIndex) throws TemplatePreprocessorException {
 		// The variable to return at the end, if the end is not found this function will return -1.
 		int sectionEndCharIndex = -1;
 		
@@ -310,7 +310,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		}
 		// Otherwise, we can't get the end location.
 		else {
-			throw new PreprocessorException(String.format("No end of section defined (%s)", sectionAnnotationBounds.getName()));
+			throw new TemplatePreprocessorException(String.format("No end of section defined (%s)", sectionAnnotationBounds.getName()));
 		}
 		
 		// If the found index is out of range, return -1.

@@ -7,15 +7,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -32,7 +29,8 @@ import org.xml.sax.SAXException;
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.FileFormatConfig;
 import com.xbreeze.xgenerate.config.template.TemplatePlaceholderInjection;
-import com.xbreeze.xgenerate.template.PreprocessorException;
+import com.xbreeze.xgenerate.generator.GeneratorException;
+import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.RawTemplate;
 import com.xbreeze.xgenerate.template.SectionedTemplate;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
@@ -42,8 +40,6 @@ import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
 import com.xbreeze.xgenerate.template.scanner.AnnotationScanner;
 import com.xbreeze.xgenerate.template.section.NamedTemplateSection;
 import com.xbreeze.xgenerate.template.section.RawTemplateSection;
-
-import net.sf.saxon.xpath.XPathFactoryImpl;
 
 public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	
@@ -57,10 +53,10 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 
 	/**
 	 * Sectionize the XML template and return the SectionedTemplate.
-	 * @throws PreprocessorException 
+	 * @throws TemplatePreprocessorException 
 	 */
 	@Override
-	protected SectionedTemplate sectionizeTemplate(RawTemplate rawTemplate, String rootSectionName) throws PreprocessorException {
+	protected SectionedTemplate sectionizeTemplate(RawTemplate rawTemplate, String rootSectionName) throws TemplatePreprocessorException {
 		FileFormatConfig fileFormatConfig = _config.getTemplateConfig().getFileFormatConfig();
 		logger.info(String.format("Performing xml sectionizing for '%s'.", rawTemplate.getRawTemplateFileName()));
 		
@@ -72,21 +68,9 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		// Initialize the DocumentBuilder.
 		DocumentBuilder db;
 		try {
-			// Create a DocumentBuilderFactory.
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			// Setting features on the DocumentBuilderFactory.
-			// See: https://stackoverflow.com/questions/155101/make-documentbuilder-parse-ignore-dtd-references
-			dbf.setValidating(false);
-			dbf.setNamespaceAware(true);
-			dbf.setFeature("http://xml.org/sax/features/namespaces", true);
-			dbf.setFeature("http://xml.org/sax/features/validation", false);
-			// Disable loading of dtd's.
-			dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-			dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-			// Create the DocumentBuilder.
-			db = dbf.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			throw new PreprocessorException(String.format("Error while initializing DocumentBuilder: %s", e.getMessage()));
+			db = XMLUtils.getDocumentBuilder();
+		} catch (GeneratorException e) {
+			throw new TemplatePreprocessorException(e);
 		}
 		
 		// Parse the text of the raw template into a Document.
@@ -98,10 +82,10 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			templateDocument = db.parse(rawTemplateInputSource);
 		} catch (IOException e) {
 			// When an IOException occurred the StringSource couldn't be read. This shouldn't happen.
-			throw new PreprocessorException(String.format("Couldn't read the raw template content: %s", e.getMessage()));
+			throw new TemplatePreprocessorException(String.format("Couldn't read the raw template content: %s", e.getMessage()));
 		} catch (SAXException e) {
 			// When a SAXException occurred, the template couldn't be parsed into a Document.
-			throw new PreprocessorException(String.format("Couldn't parse the raw template document: %s", e.getMessage()));
+			throw new TemplatePreprocessorException(String.format("Couldn't parse the raw template document: %s", e.getMessage()));
 		}
 		
 		// Build a list of sections that are specified in the template config, populate each section with the nodes matching the template section's XPath
@@ -111,11 +95,11 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 				//Perform XPath and store result in nodes.
 				try {
 					// Evaluate the XPath of the annotation from the config on the current node.
-					NodeList sectionNodes = (NodeList)getXPath().evaluate(tsa.getTemplateXPath(), templateDocument, XPathConstants.NODESET);
+					NodeList sectionNodes = (NodeList)XMLUtils.getXPath().evaluate(tsa.getTemplateXPath(), templateDocument, XPathConstants.NODESET);
 					// When the nodes are found, create the XMLTemplateSectionWithNodes object.
 					sectionsWithNodes.add(new XMLTemplateSectionWithNodes(tsa.getName(), sectionNodes));
 				} catch (XPathExpressionException e) {
-					throw new PreprocessorException(String.format("Error while searching for section nodes for section %s: %s", tsa.getName(),  e.getMessage()));
+					throw new TemplatePreprocessorException(String.format("Error while searching for section nodes for section %s: %s", tsa.getName(),  e.getMessage()));
 				}
 			}
 		}
@@ -127,7 +111,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 				//Perform XPath and store result in nodes.
 				try {
 					// Evaluate the XPath of the annotation from the config on the current node.
-					NodeList placeholderInjectionNodes = (NodeList)getXPath().evaluate(tpi.getTemplateXPath(), templateDocument, XPathConstants.NODESET);
+					NodeList placeholderInjectionNodes = (NodeList)XMLUtils.getXPath().evaluate(tpi.getTemplateXPath(), templateDocument, XPathConstants.NODESET);
 					for (int i=0; i<placeholderInjectionNodes.getLength(); i++) {
 						Node currentNode = placeholderInjectionNodes.item(i);
 						// If the node is not yet in the hashmap, add it.
@@ -137,7 +121,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 						nodeTemplatePlaceholderInjections.get(currentNode).add(tpi);
 					}
 				} catch (XPathExpressionException e) {
-					throw new PreprocessorException(String.format("Error while searching for template placeholder injection nodes for %s: %s", tpi.getTemplateXPath(),  e.getMessage()));
+					throw new TemplatePreprocessorException(String.format("Error while searching for template placeholder injection nodes for %s: %s", tpi.getTemplateXPath(),  e.getMessage()));
 				}
 			}
 		}
@@ -214,9 +198,9 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	 * @param placeholderName
 	 * @param templateNode
 	 * @param nodeTemplatePlaceholderInjections
-	 * @throws PreprocessorException
+	 * @throws TemplatePreprocessorException
 	 */
-	private void performPlaceholderInjections(String placeholderName, Node templateNode, HashMap<Node, ArrayList<TemplatePlaceholderInjection>> nodeTemplatePlaceholderInjections) throws PreprocessorException {
+	private void performPlaceholderInjections(String placeholderName, Node templateNode, HashMap<Node, ArrayList<TemplatePlaceholderInjection>> nodeTemplatePlaceholderInjections) throws TemplatePreprocessorException {
 		// If there are placeholder injections defined for the current node, execute them.
 		if (nodeTemplatePlaceholderInjections.containsKey(templateNode)) {
 			for (TemplatePlaceholderInjection tpi : nodeTemplatePlaceholderInjections.get(templateNode)) {
@@ -242,9 +226,9 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	 * @param placeholderName The placeholder name.
 	 * @param tpi The template placeholder injection object.
 	 * @return The new string value for the node.
-	 * @throws PreprocessorException
+	 * @throws TemplatePreprocessorException
 	 */
-	private String getPlaceholderInjectionValue(String placeholderName, TemplatePlaceholderInjection tpi) throws PreprocessorException {
+	private String getPlaceholderInjectionValue(String placeholderName, TemplatePlaceholderInjection tpi) throws TemplatePreprocessorException {
 		String accessor;
 		switch (tpi.getScope()) {
 			case current:
@@ -254,7 +238,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 				accessor = _config.getTemplateConfig().getFileFormatConfig().getChildAccessor();
 				break;
 			default:
-				throw new PreprocessorException(String.format("Unrecognized scope defined in TemplatePlaceholderInjection '%s'", tpi.getScope().toString()));
+				throw new TemplatePreprocessorException(String.format("Unrecognized scope defined in TemplatePlaceholderInjection '%s'", tpi.getScope().toString()));
 		}
 		return String.format("%s%s%s", placeholderName, accessor, tpi.getModelNode());
 	}
@@ -266,9 +250,9 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	 * @param fileFormatConfig
 	 * @param sectionsFromConfigWithNodes
 	 * @param nodeTemplatePlaceholderInjections
-	 * @throws PreprocessorException
+	 * @throws TemplatePreprocessorException
 	 */
-	private void processTemplateNode(Node templateNode, NamedTemplateSection parentSection, FileFormatConfig fileFormatConfig, ArrayList<XMLTemplateSectionWithNodes> sectionsFromConfigWithNodes, HashMap<Node, ArrayList<TemplatePlaceholderInjection>> nodeTemplatePlaceholderInjections) throws PreprocessorException {
+	private void processTemplateNode(Node templateNode, NamedTemplateSection parentSection, FileFormatConfig fileFormatConfig, ArrayList<XMLTemplateSectionWithNodes> sectionsFromConfigWithNodes, HashMap<Node, ArrayList<TemplatePlaceholderInjection>> nodeTemplatePlaceholderInjections) throws TemplatePreprocessorException {
 		// Scan attributes and text content for section annotation
 		// If not found, add node as raw section to parent and process child nodes
 		
@@ -282,7 +266,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			if (tsw.containsNode(templateNode)) {
 				logger.info(String.format("Section match from config found for template node '%s' and section %s", templateNode.getNodeName(), tsw.getName()));				
 				if (sectionFromConfigFound) {
-					throw new PreprocessorException(String.format("Multiple section annotations found from config on node '%s', only 1 allowed", templateNode.getNodeName()));
+					throw new TemplatePreprocessorException(String.format("Multiple section annotations found from config on node '%s', only 1 allowed", templateNode.getNodeName()));
 				}
 				currentSection = new NamedTemplateSection(tsw.getName(), 0);
 				parentSection.addTemplateSection(currentSection);
@@ -297,9 +281,9 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			Node annotationNode;
 			try {
 				// Evaluate the XPath of the CommentNode from the config on the current node.
-				annotationNode = (Node) getXPath().evaluate(fileFormatConfig.getCommentNodeXPath(), templateNode, XPathConstants.NODE);
+				annotationNode = (Node)XMLUtils.getXPath().evaluate(fileFormatConfig.getCommentNodeXPath(), templateNode, XPathConstants.NODE);
 			} catch (XPathExpressionException e) {
-				throw new PreprocessorException(String.format("Error while searching for annotations on node '%s': %s", templateNode.getNodeName(), e.getMessage()));
+				throw new TemplatePreprocessorException(String.format("Error while searching for annotations on node '%s': %s", templateNode.getNodeName(), e.getMessage()));
 			}
 
 			// Store the value of the comment node in a string.
@@ -343,11 +327,11 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 						else if (annotation instanceof TemplateSectionAnnotation) {
 							//If a section was already found from the config, throw an error since it is not allowed to add sections for the same node from config and template as well
 							if (sectionFromConfigFound)
-								throw new PreprocessorException(String.format("Found section from config as well as fron template for the same node: '%s'. This is not allowed.", templateNode.getNodeName()));
+								throw new TemplatePreprocessorException(String.format("Found section from config as well as fron template for the same node: '%s'. This is not allowed.", templateNode.getNodeName()));
 							
 							// If a section annotation was already found, throw an exception since there can only be 1.
 							if (foundSectionAnnotation)
-								throw new PreprocessorException(String.format("Multiple section annotations found on node '%s', only 1 allowed", templateNode.getNodeName()));
+								throw new TemplatePreprocessorException(String.format("Multiple section annotations found on node '%s', only 1 allowed", templateNode.getNodeName()));
 							
 							// Store the template section annotation in a local variable.
 							TemplateSectionAnnotation tsa = (TemplateSectionAnnotation) annotation;
@@ -362,7 +346,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 						
 						// If another annotation was found, we throw an exception since its not supported (yet).
 						else {
-							throw new PreprocessorException(String.format("Unsupported annotation specified: '%s' in node '%s'", annotation.getAnnotationName(), templateNode.getNodeName()));
+							throw new TemplatePreprocessorException(String.format("Unsupported annotation specified: '%s' in node '%s'", annotation.getAnnotationName(), templateNode.getNodeName()));
 						}
 						
 						lastAnnotationTextEndIndex = annotation.getAnnotationEndIndex();
@@ -447,15 +431,6 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		}
 	}
 	
-	/**
-	 * Get a XPath evaluator.
-	 * @return
-	 */
-	private static XPath getXPath() {
-		// Create a XPath evaluator (use new XPathFactoryImpl() to make sure the Saxon XPath is used).
-		return new XPathFactoryImpl().newXPath();
-	}
-	
 	/***
 	 * Gets the textual representation of an XML node, consisting of its attribute values and text or CDATA content.
 	 * @param xmlNode the XML node that is input
@@ -480,9 +455,9 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	 * @param nodeName The name of the node
 	 * @param nodeContent Textual representation of XML node
 	 * @return An ArrayList with the node's body and tail
-	 * @throws PreprocessorException 
+	 * @throws TemplatePreprocessorException 
 	 */
-	private SplittedXMLNode splitNodeBodyAndTail(String nodeName, String nodeContent) throws PreprocessorException {
+	private SplittedXMLNode splitNodeBodyAndTail(String nodeName, String nodeContent) throws TemplatePreprocessorException {
 		String nodeEnd = "</" + nodeName +">";
 		// If the node has children it is a complex type xml element.
 		if (nodeContent.endsWith(nodeEnd)) {
