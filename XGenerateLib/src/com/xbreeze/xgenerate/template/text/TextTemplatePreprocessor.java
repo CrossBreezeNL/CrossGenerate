@@ -300,8 +300,6 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		// If end was not specified, and the annotation was specified in the template the nrOfLines=1 by default.
 		else if (templateSectionAnnotation.isDefinedInTemplate()) {
 			// The end of the section is the first newline we encounter after the begin of the section. We include the newline in the section.
-//			Pattern pattern = Pattern.compile("\\r?\\n");
-//			Matcher 
 			sectionEndCharIndex = rawTemplateContent.indexOf('\n', sectionEndSearchBeginIndex);
 			
 			if (sectionEndCharIndex == -1)
