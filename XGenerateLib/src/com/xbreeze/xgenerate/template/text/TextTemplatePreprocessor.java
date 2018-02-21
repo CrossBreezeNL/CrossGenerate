@@ -149,7 +149,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				if (!isRootSection) {
 					// Before we add the raw template, we first check whether the end of the section is in this part of raw template.
 					// If so we set the end index of this section, add the template up till that part as raw template, set the iterator one back and return the end index (so the parent will pickup the remaining annotations).
-					logger.info(String.format("Searching for section end index for '%s' from index %d", parentTemplateSection.getSectionName(), expectedSectionBeginIndex));
+					logger.info(String.format("Searching for section end index for '%s' between index %d and %d", parentTemplateSection.getSectionName(), expectedSectionBeginIndex, templateAnnotation.getAnnotationBeginIndex()));
 					parentSectionEndIndex = findSectionEndIndex(parentSectionBounds, rawTemplateContent, expectedSectionBeginIndex, templateAnnotation.getAnnotationBeginIndex());
 				}
 				// Check whether the end index is found (-1 means not found),
@@ -289,7 +289,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		}
 		// placeholderOnLastLine
 		if (templateSectionAnnotation.getPlaceholderOnLastLine() != null && templateSectionAnnotation.getPlaceholderOnLastLine().length() > 0) {
-		    Pattern pattern = Pattern.compile(String.format("%s.*\r?\n?", Pattern.quote(templateSectionAnnotation.getPlaceholderOnLastLine())));
+		    Pattern pattern = Pattern.compile(String.format("%s.*\\r?\\n?", Pattern.quote(templateSectionAnnotation.getPlaceholderOnLastLine())));
 		    Matcher matcher = pattern.matcher(rawTemplateContent);
 			if (matcher.find(sectionEndSearchBeginIndex) && matcher.end() <= sectionEndSearchEndIndex) {
 				return matcher.end();
@@ -300,7 +300,15 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		// If end was not specified, and the annotation was specified in the template the nrOfLines=1 by default.
 		else if (templateSectionAnnotation.isDefinedInTemplate()) {
 			// The end of the section is the first newline we encounter after the begin of the section. We include the newline in the section.
-			sectionEndCharIndex = rawTemplateContent.indexOf(System.lineSeparator(), sectionEndSearchBeginIndex) + System.lineSeparator().length();
+//			Pattern pattern = Pattern.compile("\\r?\\n");
+//			Matcher 
+			sectionEndCharIndex = rawTemplateContent.indexOf('\n', sectionEndSearchBeginIndex);
+			
+			if (sectionEndCharIndex == -1)
+				return -1;
+			
+			// Add the length of the newline to the char index.
+			sectionEndCharIndex += System.lineSeparator().length();
 		}
 		// Otherwise, we can't get the end location.
 		else {

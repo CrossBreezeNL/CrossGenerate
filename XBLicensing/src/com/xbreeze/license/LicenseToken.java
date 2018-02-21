@@ -2,18 +2,20 @@ package com.xbreeze.license;
 
 import java.util.Random;
 
-/***
+/**
  * Token used to authenticate during license validation
  * @author Willem
- *
  */
 public class LicenseToken {
+	// The set of characters which can be used in a token.
+	private static final String AVAILABLE_TOKEN_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%^&*_()";
+	
 	private String contractKey;
 	private String token;
 	private Random rnd;
 	
-	/***
-	 * Licensetoken constructor, creates a token based on the given contracy key
+	/**
+	 * LicenseToken constructor, creates a token based on the given contract key
 	 * @param contractKey the contract key used as secret for the token.
 	 * @param rnd randomizer
 	 */
@@ -23,16 +25,15 @@ public class LicenseToken {
 		this.token = generateToken();		
 	}
 	
-	/***
-	 * Genrates a token consisting of 10 random characters
+	/**
+	 * Generates a token consisting of 10 random characters
 	 * @return a generated token
 	 */
 	private String generateToken() {
-	        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%^&*_()";
-	        return generateString(rnd, characters, 10);
-    }
+		return generateString(rnd, AVAILABLE_TOKEN_CHARACTERS, 10);
+	}
 	    
-	/***
+	/**
 	 * Generates a string from a input of permitted charaters, lenght and random offset
 	 * @param rng random used to pick a character
 	 * @param characters set of permitted characters
@@ -48,7 +49,7 @@ public class LicenseToken {
         return new String(text);
     }
 	
-	/***
+	/**
 	 * Helper method to convert output of a messagedigest to a hex string
 	 * @param arrayBytes array containing a messagedigest
 	 * @return the messagedigest converted to a hex string.
@@ -76,15 +77,15 @@ public class LicenseToken {
         return d.digest();
 	}    
 	   
-	   
-	/***
-	 * gets the signature corresponding to this token
+	/**
+	 * Get the signature corresponding to this token
 	 * @return a valid signature.
 	 */
 	public String getSignature() {
         try {
             return convertByteArrayToHexString(encrypt(token.concat(contractKey)));
         } catch (Exception ex) {
+        	// TODO HW: Why return empty string?
             return "";
         }
     }

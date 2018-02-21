@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XGenConfig xmlns="XGenConfig">
+<XGenConfig>
   <Model/>
   <Template rootSectionName="System">
     <FileFormat type="Microsoft_SQL" currentAccessor="_" childAccessor="$" templateType="text" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
@@ -7,12 +7,12 @@
   </Template>
   <Binding>
     <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system">
-	    <SectionModelBinding section="CreateTable" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity">
+	    <SectionModelBinding section="CreateTable" modelXPath="mappableObjects/entity" placeholderName="entity">
 	      <Placeholders>
 	        <!-- For the placeholder the modelXPath is relative to its section model xpath. -->
 	        <Placeholder name="system" modelXPath="../.." />
 	      </Placeholders>
-	      <SectionModelBinding section="TableColumn" modelXPath="./attributes/attribute" placeholderName="attribute" />
+	      <SectionModelBinding section="TableColumn" modelXPath="attributes/attribute" placeholderName="attribute" />
 	    </SectionModelBinding>
     </SectionModelBinding>
   </Binding>

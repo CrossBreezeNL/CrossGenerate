@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xs:schema elementFormDefault="qualified" version="1.0" targetNamespace="XGenConfig" xmlns:xgen="https://crossgenerate.com/config/v2" xmlns:tns="XGenConfig" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:element name="XGenConfig" type="tns:xGenConfig"/>
+  <xs:element name="XGenConfig" type="xGenConfig"/>
 
   <xs:complexType name="xGenConfig">
     <xs:sequence>
-      <xs:element name="Model" type="tns:modelConfig" minOccurs="0"/>
-      <xs:element name="Template" type="tns:templateConfig" minOccurs="0"/>
-      <xs:element name="Binding" type="tns:bindingConfig" minOccurs="0"/>
+      <xs:element name="Model" type="modelConfig" minOccurs="0"/>
+      <xs:element name="Template" type="templateConfig" minOccurs="0"/>
+      <xs:element name="Binding" type="bindingConfig" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -16,7 +16,7 @@
       <xs:element name="ModelAttributeInjections" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="ModelAttributeInjection" type="tns:modelAttributeInjection" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="ModelAttributeInjection" type="modelAttributeInjection" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -32,19 +32,19 @@
 
   <xs:complexType name="templateConfig">
     <xs:sequence>
-      <xs:element name="FileFormat" type="tns:fileFormatConfig" minOccurs="0"/>
-      <xs:element name="Output" type="tns:outputConfig"/>
+      <xs:element name="FileFormat" type="fileFormatConfig" minOccurs="0"/>
+      <xs:element name="Output" type="outputConfig"/>
       <xs:element name="Sections" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="Section" type="tns:templateSectionAnnotation" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Section" type="templateSectionAnnotation" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
       <xs:element name="TemplatePlaceholderInjections" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="TemplatePlaceholderInjection" type="tns:templatePlaceholderInjection" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="TemplatePlaceholderInjection" type="templatePlaceholderInjection" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -63,19 +63,19 @@
     <xs:attribute name="multiLineCommentPrefix" type="xs:string"/>
     <xs:attribute name="multiLineCommentSuffix" type="xs:string"/>
     <xs:attribute name="singleLineCommentPrefix" type="xs:string"/>
-    <xs:attribute name="templateType" type="tns:templateType"/>
-    <xs:attribute name="type" type="tns:fileFormatType"/>
+    <xs:attribute name="templateType" type="templateType"/>
+    <xs:attribute name="type" type="fileFormatType"/>
     <xs:attribute name="version" type="xs:string"/>
   </xs:complexType>
 
   <xs:complexType name="outputConfig">
     <xs:sequence/>
-    <xs:attribute name="type" type="tns:outputType" use="required"/>
+    <xs:attribute name="type" type="outputType" use="required"/>
   </xs:complexType>
 
   <xs:complexType name="templateSectionAnnotation">
     <xs:complexContent>
-      <xs:extension base="tns:templateAnnotation">
+      <xs:extension base="templateAnnotation">
         <xs:sequence/>
         <xs:attribute name="begin" type="xs:string"/>
         <xs:attribute name="end" type="xs:string"/>
@@ -86,11 +86,11 @@
         <xs:attribute name="placeholderOnFirstLine" type="xs:string"/>
         <xs:attribute name="placeholderOnLastLine" type="xs:string"/>
         <xs:attribute name="prefix" type="xs:string"/>
-        <xs:attribute name="prefixAction" type="tns:repetitionAction"/>
-        <xs:attribute name="prefixStyle" type="tns:repetitionStyle"/>
+        <xs:attribute name="prefixAction" type="repetitionAction"/>
+        <xs:attribute name="prefixStyle" type="repetitionStyle"/>
         <xs:attribute name="suffix" type="xs:string"/>
-        <xs:attribute name="suffixAction" type="tns:repetitionAction"/>
-        <xs:attribute name="suffixStyle" type="tns:repetitionStyle"/>
+        <xs:attribute name="suffixAction" type="repetitionAction"/>
+        <xs:attribute name="suffixStyle" type="repetitionStyle"/>
         <xs:attribute name="templateXPath" type="xs:string"/>
       </xs:extension>
     </xs:complexContent>
@@ -103,13 +103,13 @@
   <xs:complexType name="templatePlaceholderInjection">
     <xs:sequence/>
     <xs:attribute name="modelNode" type="xs:string"/>
-    <xs:attribute name="scope" type="tns:templatePlaceholderScope"/>
+    <xs:attribute name="scope" type="templatePlaceholderScope"/>
     <xs:attribute name="templateXPath" type="xs:string"/>
   </xs:complexType>
 
   <xs:complexType name="bindingConfig">
     <xs:complexContent>
-      <xs:extension base="tns:bindingContainer">
+      <xs:extension base="bindingContainer">
         <xs:sequence/>
         <xs:attribute name="implicitPlaceholderPrefix" type="xs:string"/>
         <xs:attribute name="implicitPlaceholderSuffix" type="xs:string"/>
@@ -123,11 +123,11 @@
       <xs:element name="Placeholders" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="Placeholder" type="tns:placeholderConfig" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Placeholder" type="placeholderConfig" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element name="SectionModelBinding" type="tns:sectionModelBindingConfig" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="SectionModelBinding" type="sectionModelBindingConfig" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -139,7 +139,7 @@
 
   <xs:complexType name="sectionModelBindingConfig">
     <xs:complexContent>
-      <xs:extension base="tns:bindingContainer">
+      <xs:extension base="bindingContainer">
         <xs:sequence/>
         <xs:attribute name="modelXPath" type="xs:string" use="required"/>
         <xs:attribute name="placeholderName" type="xs:string"/>

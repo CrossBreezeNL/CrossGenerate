@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.xbreeze.license.LicenseError;
+import com.xbreeze.license.LicenseException;
 import com.xbreeze.license.LicensedClassLoader;
 import com.xbreeze.xgenerate.UnhandledException;
 import com.xbreeze.xgenerate.config.ConfigException;
@@ -108,9 +108,9 @@ public class XGenerateStarter {
 					//Load Generator from licenseClassLoader
 					LicensedClassLoader lcl = new LicensedClassLoader(GeneratorStub.class.getClassLoader(), appConfig.getLicenseConfig(), debugMode);
 					
-					//Load generator class from licensed classloader
-					Class c = lcl.loadClass("com.xbreeze.xgenerate.generator.Generator");                                      
-                    //instantiate new object
+					// Load generator class from licensed ClassLoader
+					Class<?> c = lcl.loadClass("com.xbreeze.xgenerate.generator.Generator");                                      
+                    // Instantiate new object
 					GeneratorStub generator = (GeneratorStub)c.newInstance();
 					
 					generator.setDebugMode(debugMode);
@@ -121,7 +121,7 @@ public class XGenerateStarter {
 				}
 				
 				logger.info("Generation complete");
-			} catch (GeneratorException | UnhandledException | LicenseError | ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+			} catch (GeneratorException | UnhandledException | LicenseException | ClassNotFoundException | IllegalAccessException | InstantiationException e) {
 				logger.severe("Error occured while generating");
 				logger.severe(e.getLocalizedMessage());
 				System.err.println("Error occured while generating, see log for more information");

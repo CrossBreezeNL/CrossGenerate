@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xs:schema elementFormDefault="qualified" version="1.0" targetNamespace="XGenAppConfig" xmlns:xgenc="https://crossgenerate.com/config/v2" xmlns:tns="XGenAppConfig" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:element name="XGenAppConfig" type="tns:xGenAppConfig"/>
+  <xs:element name="XGenAppConfig" type="xGenAppConfig"/>
 
   <xs:complexType name="xGenAppConfig">
     <xs:sequence>
-      <xs:element name="App" type="tns:appConfig" minOccurs="0"/>
-      <xs:element name="License" type="tns:licenseConfig" minOccurs="0"/>
+      <xs:element name="App" type="appConfig" minOccurs="0"/>
+      <xs:element name="License" type="licenseConfig" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 

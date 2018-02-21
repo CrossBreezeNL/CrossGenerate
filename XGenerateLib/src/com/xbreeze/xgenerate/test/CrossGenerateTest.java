@@ -41,6 +41,7 @@ public class CrossGenerateTest {
 			URI configFileUri = CrossGenerateTest.class.getResource(configFileName).toURI();
 			URI outputFileUri = Paths.get("C:\\CrossGenerate\\Output").toUri();
 			
+			generator.setDebugMode(true);
 			generator.generateFromFilesAndWriteOutput(templateFileUri, configFileUri, outputFileUri);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -66,7 +67,8 @@ public class CrossGenerateTest {
 			URI templateFileUri = CrossGenerateTest.class.getResource(templateFileName).toURI();
 			URI configFileUri = CrossGenerateTest.class.getResource(configFileName).toURI();
 			URI outputFileUri = Paths.get("C:\\CrossGenerate\\Output").toUri();
-			
+
+			generator.setDebugMode(true);
 			generator.generateFromFilesAndWriteOutput(templateFileUri, configFileUri, outputFileUri);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -92,7 +94,8 @@ public class CrossGenerateTest {
 			URI templateFileUri = CrossGenerateTest.class.getResource(templateFileName).toURI();
 			URI configFileUri = CrossGenerateTest.class.getResource(configFileName).toURI();
 			URI outputFileUri = Paths.get("C:\\CrossGenerate\\Output").toUri();
-			
+
+			generator.setDebugMode(true);
 			generator.generateFromFilesAndWriteOutput(templateFileUri, configFileUri, outputFileUri);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -118,7 +121,8 @@ public class CrossGenerateTest {
 			URI templateFileUri = CrossGenerateTest.class.getResource(templateFileName).toURI();
 			URI configFileUri = CrossGenerateTest.class.getResource(configFileName).toURI();
 			URI outputFileUri = Paths.get("C:\\CrossGenerate\\Output").toUri();
-			
+
+			generator.setDebugMode(true);
 			generator.generateFromFilesAndWriteOutput(templateFileUri, configFileUri, outputFileUri);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();

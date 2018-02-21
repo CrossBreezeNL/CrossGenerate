@@ -4,7 +4,7 @@ package com.xbreeze.license;
  * @author Willem
  *
  */
-public class LicenseError extends Exception{
+public class LicenseException extends Exception {
 	
 	 /**
 	 * serial version id
@@ -15,7 +15,7 @@ public class LicenseError extends Exception{
 	 * Constructor
 	 * @param message the message of the error
 	 */
-	public LicenseError(String message) {
+	public LicenseException(String message) {
          super();
          System.out.println(message);            
 	 } 
