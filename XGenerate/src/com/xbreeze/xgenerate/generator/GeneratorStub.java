@@ -38,13 +38,11 @@ public class GeneratorStub {
 	 * @param modelFileUri The model file location.
 	 */
 	public void setModelFromFile(URI modelFileUri) {
-		
+		logger.warning("Invoking placeholder Generator");
 	}
 		
 	public void generateFromFilesAndWriteOutput(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException, UnhandledException {
 		logger.warning("Invoking placeholder Generator");
 	}
-	
-	
 	
 }

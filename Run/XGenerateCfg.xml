@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<XGenAppConfig xmlns="XGenAppConfig">
+<XGenAppConfig>
   <App>
     <ConfigFolder>..\XGenerateLib\src\com\xbreeze\xgenerate\test\microsoft\config</ConfigFolder>
     <ModelFolder>..\XGenerateLib\src\com\xbreeze\xgenerate\test\common\model</ModelFolder>

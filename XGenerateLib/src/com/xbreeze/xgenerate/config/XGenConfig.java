@@ -1,8 +1,8 @@
 package com.xbreeze.xgenerate.config;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
-import java.net.URL;
 import java.util.logging.Logger;
 
 import javax.xml.XMLConstants;
@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
@@ -114,12 +115,14 @@ public class XGenConfig {
 		
 		// Create a resource on the schema file.
 		// Schema file generated using following tutorial: https://examples.javacodegeeks.com/core-java/xml/bind/jaxb-schema-validation-example/
-		String xGenConfigXsdFileName = "XGenConfig.xsd";
-		URL xGenConfigXsdResource = XGenConfig.class.getResource(xGenConfigXsdFileName);
+		String xGenConfigXsdFileName = String.format("%s.xsd", XGenConfig.class.getSimpleName());
+		InputStream xGenConfigSchemaAsStream = XGenConfig.class.getResourceAsStream(xGenConfigXsdFileName);
 		// If the schema file can't be found, throw an exception.
-		if (xGenConfigXsdResource == null) {
+		if (xGenConfigSchemaAsStream == null) {
 			throw new ConfigException(String.format("Can't find the schema file '%s'", xGenConfigXsdFileName));
 		}
+		// Create the StreamSource for the schema.
+		StreamSource xGenConfigXsdResource = new StreamSource(xGenConfigSchemaAsStream);
 		
 		// Try to load the schema.
 		Schema configSchema;

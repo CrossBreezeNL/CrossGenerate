@@ -24,4 +24,16 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.apache.commons</groupId>
+  		<artifactId>commons-lang3</artifactId>
+  		<version>3.6</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>net.sf.saxon</groupId>
+  		<artifactId>Saxon-HE</artifactId>
+  		<version>9.8.0-8</version>
+  	</dependency>
+  </dependencies>
 </project>
