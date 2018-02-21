@@ -85,12 +85,13 @@ public class AnnotationScanner {
 				TemplateAnnotation templateAnnotation;
 				try {
 					templateAnnotation = TemplateAnnotation.fromName(annotationName, annotationParams, matcher.start(), matcher.end());
-					// Add the template annotation to the list.
-					annotations.add(templateAnnotation);
-				} catch (UnhandledException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+				// When the UnhandledException occurs, wrap it into a TemplatePreprocessorException.
+				catch (UnhandledException e) {
+					throw new TemplatePreprocessorException(e);
+				}
+				// Add the template annotation to the list.
+				annotations.add(templateAnnotation);
 			} catch (AnnotationException e) {
 				throw new TemplatePreprocessorException(e);
 			}
