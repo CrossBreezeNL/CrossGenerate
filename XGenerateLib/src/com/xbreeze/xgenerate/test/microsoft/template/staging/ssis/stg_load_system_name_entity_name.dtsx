@@ -294,10 +294,10 @@
                     <inputColumn
                       refId="Package\Load entity_name\Write to system_name entity_name.Inputs[OLE DB Destination Input].Columns[attribute_name]"
                       cachedCodepage="1252"
-                      cachedDataType="str"
+                      cachedDataType="str"                      
                       cachedLength="10"
                       cachedName="attribute_name"
-                      externalMetadataColumnId="Package\Load entity_name\Write to system_name entity_name.Inputs[OLE DB Destination Input].ExternalColumns[Attribute_name]"
+                      externalMetadataColumnId="Package\Load entity_name\Write to system_name entity_name.Inputs[OLE DB Destination Input].ExternalColumns[attribute_name]"
                       lineageId="Package\Load entity_name\Read entity_name.Outputs[OLE DB Source Output].Columns[attribute_name]" />
                     <inputColumn
                       refId="Package\Load entity_name\Write to system_name entity_name.Inputs[OLE DB Destination Input].Columns[StageDateTime]"
@@ -309,12 +309,12 @@
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\Load entity_name\Write to system_name entity_name.Inputs[OLE DB Destination Input].ExternalColumns[Attribute_name]"
+                      refId="Package\Load entity_name\Write to system_name entity_name.Inputs[OLE DB Destination Input].ExternalColumns[attribute_name]"
                       codePage="1252"
                       dataType="str"
                       description="@XGenSection(name=&quot;Attribute&quot;)"
                       length="10"
-                      name="Attribute_name" />
+                      name="attribute_name" />
                     <externalMetadataColumn
                       refId="Package\Load entity_name\Write to system_name entity_name.Inputs[OLE DB Destination Input].ExternalColumns[StageDateTime]"
                       dataType="wstr"

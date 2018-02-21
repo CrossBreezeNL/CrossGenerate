@@ -3,12 +3,17 @@
   <Model>    
     <ModelAttributeInjections>
       <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="etldatatype" targetValue="str"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="codePage" targetValue="1252"/>
       <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="etldatatype" targetValue="wstr"/>
     </ModelAttributeInjections>
   </Model>
   <Template rootSectionName="System">
     <FileFormat type="Microsoft_SSIS" currentAccessor="_" childAccessor="$" templateType="xml" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" commentNodeXPath="@*[lower-case(local-name())='description']" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <Output type="output_per_element" />
+    <Sections>
+      <Section name="Attribute" templateXPath="//input[@name='OLE DB Destination Input']/inputColumns/inputColumn[@cachedName='attribute_name']"/>
+      <!--  <Section name="Attribute" templateXPath="//input[@name='OLE DB Destination Input']/externalMetadataColumns/externalMetadataColumn[@name='attribute_name']"/>-->      
+    </Sections>
     <TemplatePlaceholderInjections>
       <!--  attribute injection can either be related to other attribute in the same element that already contains a placeholder or unrelated  -->
       <!--  targetValue should contain the accessor scope is determined by the containing section -->
@@ -16,6 +21,9 @@
       datatype with curent scope will result in attribute_datatype -->
       <TemplatePlaceholderInjection templateXPath="//inputColumn/@cachedDataType" modelNode="etldatatype" scope="current" />
       <TemplatePlaceholderInjection templateXPath="//outputColumn/@dataType"  modelNode="etldatatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//outputColumn/@codePage"  modelNode="codePage" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//outputColumn/@cachedCodePage"  modelNode="codePage" scope="current" />
+      
     </TemplatePlaceholderInjections>
   </Template>
   <Binding>

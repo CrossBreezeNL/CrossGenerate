@@ -436,7 +436,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	 * @return the textual content of templateNode.
 	 */
 	private String getNodeString(Node xmlNode) {		
-		StringWriter sw = new StringWriter();
+		StringWriter sw = new StringWriter();		
 		try {
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer t = transformerFactory.newTransformer();
@@ -526,7 +526,8 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
             //Copy character data if any
             if (child.getNodeType() == Node.CDATA_SECTION_NODE) {
                  CharacterData dn = (CharacterData)(child);
-                 Node tn = fromNode.getOwnerDocument().createCDATASection(dn.getData());
+                 //Node tn = fromNode.getOwnerDocument().createCDATASection(dn.getData());
+                 Node tn = fromNode.getOwnerDocument().createTextNode("<![CDATA[".concat(child.getTextContent()).concat("]]>"));
                  nodeClone.appendChild(tn);
             }
         }
