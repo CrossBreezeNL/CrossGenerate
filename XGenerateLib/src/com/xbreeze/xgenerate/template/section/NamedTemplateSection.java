@@ -2,6 +2,7 @@ package com.xbreeze.xgenerate.template.section;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.binding.PlaceholderConfig;
@@ -11,6 +12,8 @@ import com.xbreeze.xgenerate.template.PreprocessedTemplate;
 public class NamedTemplateSection extends TemplateSection {
 	// The logger for this class.
 	private static final Logger logger = Logger.getLogger(NamedTemplateSection.class.getName());
+	
+	public static final String PLACEHOLDER_PLACEHOLDER_NAME = "{{PLACEHOLDER_NAME}}";
 	
 	/**
 	 * The name of the section.
@@ -132,6 +135,19 @@ public class NamedTemplateSection extends TemplateSection {
 				String placeholderProcessedTemplateContent = rawTemplateSection.getContent();
 				// Get the child accessor from the config.
 				String childAccessor = config.getTemplateConfig().getFileFormatConfig().getCurrentAccessor();
+				
+				// Process the placeholder-name placeholder.
+				// This placeholder is injected during TemplatePlaceholderInjection in XML templates.
+				// TODO Maybe handle this a bit smarter during injection of the placeholder somehow?
+				// ^ This is bit of chicken - egg problem where you can have multiple placeholder names?
+				// ^ Bit if placeholder names would differ the template would probably not work right?
+				// ^ Cause the sections are repeated, but placeholder can't be different for same section.
+				// ^ Maybe with this information we can check the unique placeholder names upfront and store
+				// ^ Them in this object to be used in the XMLPreprocessor.
+				if (placeholderProcessedTemplateContent.indexOf(PLACEHOLDER_PLACEHOLDER_NAME) != -1) {
+					logger.info("Placeholder name placeholder found, replacing with right name");
+					placeholderProcessedTemplateContent = placeholderProcessedTemplateContent.replaceAll(Pattern.quote(PLACEHOLDER_PLACEHOLDER_NAME), parentBindingConfig.getPlaceholderName());
+				}
 				
 				// Process the placeholder of this section.
 				//logger.info("Processing local placeholder...");

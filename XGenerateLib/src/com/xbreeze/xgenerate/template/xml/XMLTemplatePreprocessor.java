@@ -371,9 +371,8 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		}
 		
 		// Perform the placeholder injections (very important this is done after the section detection!).
-		// TODO Ugly hack: Currently the currentSection.getSectionName().toLowerCase() is passed in, but actually the placeholderName of the section binding should be passed in.
-		// For this the bindings needs to be mapped while searching for sections and stored in the NamedTemplateSection.
-		performPlaceholderInjections(currentSection.getSectionName().toLowerCase(), templateNode, nodeTemplatePlaceholderInjections);
+		// TODO Currently a placeholder is written into the injected value, so in the XSLT appender we can replace it with the actual placeholder in that section.
+		performPlaceholderInjections(NamedTemplateSection.PLACEHOLDER_PLACEHOLDER_NAME, templateNode, nodeTemplatePlaceholderInjections);
 		
 		// Count the number of child nodes.
 		int childCount = templateNode.getChildNodes().getLength();
