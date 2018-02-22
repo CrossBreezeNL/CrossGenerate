@@ -15,6 +15,11 @@ public class RawTemplate {
 	 * The file name of the raw template.
 	 */
 	private String _rawTemplateFileName;
+
+	/**
+	 * The file location of the raw template.
+	 */
+	private String rawTemplateFileLocation;
 	
 	/**
 	 * The raw template.
@@ -25,8 +30,9 @@ public class RawTemplate {
 	 * Constructor.
 	 * @param rawTemplateContent The raw template.
 	 */
-	public RawTemplate(String rawTemplateFileName, String rawTemplateContent) {
+	public RawTemplate(String rawTemplateFileName, String rawTemplateFileLocation, String rawTemplateContent) {
 		this._rawTemplateFileName = rawTemplateFileName;
+		this.rawTemplateFileLocation = rawTemplateFileLocation;
 		this._rawTemplateContent = rawTemplateContent;
 	}
 	
@@ -38,10 +44,10 @@ public class RawTemplate {
 	}
 	
 	/**
-	 * @param rawTemplateFileName the rawTemplateFileName to set
+	 * @return the rawTemplateFileLocation
 	 */
-	public void setRawTemplateFileName(String rawTemplateFileName) {
-		this._rawTemplateFileName = rawTemplateFileName;
+	public String getRawTemplateFileLocation() {
+		return rawTemplateFileLocation;
 	}
 
 	/**
@@ -49,13 +55,6 @@ public class RawTemplate {
 	 */
 	public String getRawTemplateContent() {
 		return _rawTemplateContent;
-	}
-
-	/**
-	 * @param rawTemplate the rawTemplate to set
-	 */
-	public void setRawTemplateContent(String rawTemplate) {
-		this._rawTemplateContent = rawTemplate;
 	}
 	
 	public static RawTemplate fromFile(URI rawTemplateFileUri) throws TemplateException {
@@ -75,6 +74,6 @@ public class RawTemplate {
 		}
 		
 		// Return the RawTemplate object.
-		return new RawTemplate(rawTemplateFileName, rawTemplateContent);
+		return new RawTemplate(rawTemplateFileName, rawTemplateFilePath.toString(), rawTemplateContent);
 	}
 }

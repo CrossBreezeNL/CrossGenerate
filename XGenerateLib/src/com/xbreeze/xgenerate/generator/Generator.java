@@ -21,6 +21,7 @@ import com.xbreeze.xgenerate.UnhandledException;
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.TemplateConfig;
+import com.xbreeze.xgenerate.generator.GenerationResult.GenerationStatus;
 import com.xbreeze.xgenerate.model.Model;
 import com.xbreeze.xgenerate.model.ModelPreprocessor;
 import com.xbreeze.xgenerate.model.ModelPreprocessorException;
@@ -92,7 +93,7 @@ public class Generator extends GeneratorStub {
 	 * @throws UnhandledException 
 	 * @throws UnknownAnnotationException 
 	 */
-	public GenerationResults generateFromFiles(URI templateFileUri, URI configFileUri) throws GeneratorException {
+	private GenerationResults generateFromFiles(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException {
 		// Create a RawTemplate object from the template file.
 		RawTemplate rawTemplate;
 		try {
@@ -119,18 +120,12 @@ public class Generator extends GeneratorStub {
 		}
 		
 		// Generate using the template and config.
-		try {
-			return generate(rawTemplate, xGenConfig);
-		}
-		// Wrap the UnhandledException in a GeneratorException.
-		catch(UnhandledException e) {
-			throw new GeneratorException(e);
-		}
+		return generate(rawTemplate, xGenConfig, outputFileUri);
 	}
 	
 	@Override
 	public void generateFromFilesAndWriteOutput(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException {
-		GenerationResults generationResults = generateFromFiles(templateFileUri, configFileUri);
+		GenerationResults generationResults = generateFromFiles(templateFileUri, configFileUri, outputFileUri);
 		
 		// For each generation result, write the results.
 		for (GenerationResult generationResult : generationResults.getGenerationResults()) {
@@ -153,18 +148,27 @@ public class Generator extends GeneratorStub {
 					throw new GeneratorException(e);
 				}
 				
-				// Construct the path to the pre-processed template.
-				String preprocessedFileLocation = Paths.get(outputFileUri).resolve(String.format("preprocessed_%s", generationResult.getTemplateFileName())).toString();
-				logger.info(String.format("Writing preprocessed template to '%s'", preprocessedFileLocation));
-				writeToFile(preprocessedFileLocation, generationResult.getPreprocessedTemplate());
+				// If there is a pre-processed template, write it to the output folder.
+				if (generationResult.getPreprocessedTemplate() != null) {
+					// Construct the path to the pre-processed template.
+					String preprocessedFileLocation = Paths.get(outputFileUri).resolve(String.format("preprocessed_%s", generationResult.getTemplateFileName())).toString();
+					logger.info(String.format("Writing preprocessed template to '%s'", preprocessedFileLocation));
+					writeToFile(preprocessedFileLocation, generationResult.getPreprocessedTemplate());
+				}
 			}
 			
-			// Write the output to a file.
-			String outputFileLocation = Paths.get(outputFileUri).resolve(generationResult.getOutputFileLocation()).toString();
-			logger.info(String.format("Writing result to '%s'", outputFileLocation));
-			// Write the output file content to a file.
-			writeToFile(outputFileLocation, generationResult.getOutputFileContent());
-
+			// If there is output available, write it to the output folder.
+//			if (generationResult.getOutputFileContent() != null) {
+//				// Write the output to a file.
+//				String outputFileLocation = Paths.get(outputFileUri).resolve(generationResult.getOutputFileLocation()).toString();
+//				logger.info(String.format("Writing result to '%s'", outputFileLocation));
+//				// Write the output file content to a file.
+//				writeToFile(outputFileLocation, generationResult.getOutputFileContent());
+//			}
+			
+			// If the generation failed, throw the exception.
+			if (generationResult.getStatus().equals(GenerationStatus.ERROR))
+				throw generationResult.getException();
 		}
 	}
 	
@@ -201,58 +205,67 @@ public class Generator extends GeneratorStub {
 	 * @throws UnhandledException 
 	 * @throws UnknownAnnotationException 
 	 */
-	public GenerationResults generate(RawTemplate rawTemplate, XGenConfig xGenConfig) throws GeneratorException, UnhandledException {
-		try {
+	public GenerationResults generate(RawTemplate rawTemplate, XGenConfig xGenConfig, URI outputFileUri) {
+		// Initialize GenerationResults object.
+		GenerationResults generationResults = new GenerationResults();
+		
+		// TODO Split the output in multiple files based on the Output type.
+		{
 			logger.info("Begin generator");
 			
-			// Initialize GenerationResults object.
-			GenerationResults generationResults = new GenerationResults();
+			// Create the GenerationResult object.
+			GenerationResult generationResult = new GenerationResult(_model.getModelFileName(), rawTemplate.getRawTemplateFileName());
+			// Add the resulting output to the GenerationResults.
+			generationResults.addGenerationResult(generationResult);
 			
-			// Get the template configuration.
-			TemplateConfig templateConfig = xGenConfig.getTemplateConfig();
-			// Get the template preprocessor for the template type we are dealing with.
-			TemplatePreprocessor templatePreprocessor = templateConfig.getFileFormatConfig().getTemplateType().getTemplatePreprocessor(xGenConfig);
-			// Pre-process the raw template into a pre-processed template.
-			logger.info("Begin template pre-processing");
-			PreprocessedTemplate preprocessedTemplate = templatePreprocessor.preProcess(rawTemplate);
-			logger.info("End template pre-processing");
-
-			
-			
-			// Now the pre-processing is done, we can start the XSLT transformation using the model and the pre-processed template (XSLT).
-			logger.info("Begin XSLT transformation");
-			
-			// Create a string reader on the pre-processed template.
-			String preprocessedTemplateString = preprocessedTemplate.toString();
-			StringReader xslStringReader = new StringReader(preprocessedTemplateString);
-			StreamSource xslSource = new StreamSource(xslStringReader);
-			
-			// Create a stream writer, to write the resulting output.
-			StringWriter xslResultWriter = new StringWriter();
-			StreamResult outputResult = new StreamResult(xslResultWriter);
-			
-			// Create the transformer objects to transform the XSLT with the Model into the output.
-			String xslResult;
 			try {
-				Transformer xslTransformer = XMLUtils.getXmlTransformer().newTransformer(xslSource);
-				xslTransformer.transform(_model.getAsDOMSource(), outputResult);
-				xslResult = xslResultWriter.toString();
-			} catch (TransformerException e) {
-				throw new GeneratorException(e);
+				// Get the template configuration.
+				TemplateConfig templateConfig = xGenConfig.getTemplateConfig();
+
+				// Pre-process the template.
+				String preprocessedTemplateString;
+				{
+					// Get the template preprocessor for the template type we are dealing with.
+					TemplatePreprocessor templatePreprocessor = templateConfig.getFileFormatConfig().getTemplateType().getTemplatePreprocessor(xGenConfig);
+					// Pre-process the raw template into a pre-processed template.
+					logger.info("Begin template pre-processing");
+						PreprocessedTemplate preprocessedTemplate = templatePreprocessor.preProcess(rawTemplate, outputFileUri);
+						preprocessedTemplateString = preprocessedTemplate.toString();
+						generationResult.setPreprocessedTemplate(preprocessedTemplateString);
+					logger.info("End template pre-processing");
+				}
+				
+				// Now the pre-processing is done, we can start the XSLT transformation using the model and the pre-processed template (XSLT).
+				{
+					logger.info("Begin XSLT transformation");
+					
+					// Create a string reader on the pre-processed template.
+					StringReader xslStringReader = new StringReader(preprocessedTemplateString);
+					StreamSource xslSource = new StreamSource(xslStringReader);
+					
+					// Create a stream writer, to write the resulting output.
+					StringWriter xslResultWriter = new StringWriter();
+					StreamResult outputResult = new StreamResult(xslResultWriter);
+					
+					// Create the transformer objects to transform the XSLT with the Model into the output.
+					Transformer xslTransformer = XMLUtils.getXmlTransformer().newTransformer(xslSource);
+					xslTransformer.transform(_model.getAsDOMSource(), outputResult);
+					// Store the results in the GenerationResult.
+					generationResult.setOutputFileContent(xslResultWriter.toString());
+					
+					logger.info("End XSLT transformation");
+				}
 			}
 			
-			// Add the resulting output to the GenerationResults.
-			// TODO Split the output in multiple files based on the Output type.
-			// TODO Apply the placeholders of the root section on the file name.
-			generationResults.addGenerationResult(new GenerationResult(_model.getModelFileName(), rawTemplate.getRawTemplateFileName(), preprocessedTemplateString, xslResult, rawTemplate.getRawTemplateFileName()));
-			logger.info("End XSLT transformation");
+			// If an exception occurs, wrap it in a GeneratorException and set it on the GenerationResult.
+			catch (TemplatePreprocessorException | TransformerException | UnhandledException e) {
+				generationResult.setException(new GeneratorException(e));
+			}
 			
 			logger.info("End generator");
-			
-			// Return the generation results.
-			return generationResults;
-		} catch (TemplatePreprocessorException e) {
-			throw new GeneratorException(e);
 		}
+			
+		// Return the generation results.
+		return generationResults;
 	}
 }

@@ -5,7 +5,7 @@
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="DESKTOP-EC40127"
   DTS:CreatorName="DESKTOP-EC40127\Willem"
-  DTS:Description="@XGenSection(name=&quot;stgPackage&quot;)"
+  DTS:Description=""
   DTS:DTSID="{A942B386-8F30-4B4C-8093-330C09731715}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="13.0.4001.0"

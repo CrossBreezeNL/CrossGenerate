@@ -17,7 +17,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.w3c.dom.Attr;
-import org.w3c.dom.CharacterData;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
@@ -30,10 +29,10 @@ import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.FileFormatConfig;
 import com.xbreeze.xgenerate.config.template.TemplatePlaceholderInjection;
 import com.xbreeze.xgenerate.generator.GeneratorException;
-import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.RawTemplate;
 import com.xbreeze.xgenerate.template.SectionedTemplate;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
+import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.annotation.TemplateAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateCommentAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
@@ -525,7 +524,6 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
             }
             //Copy character data if any
             if (child.getNodeType() == Node.CDATA_SECTION_NODE) {
-                 CharacterData dn = (CharacterData)(child);
                  //Node tn = fromNode.getOwnerDocument().createCDATASection(dn.getData());
                  Node tn = fromNode.getOwnerDocument().createTextNode("<![CDATA[".concat(child.getTextContent()).concat("]]>"));
                  nodeClone.appendChild(tn);
