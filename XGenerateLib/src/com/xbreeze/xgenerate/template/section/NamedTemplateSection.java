@@ -143,7 +143,43 @@ public class NamedTemplateSection extends TemplateSection {
 				// ^ Them in this object to be used in the XMLPreprocessor.
 				if (placeholderProcessedTemplateContent.indexOf(PLACEHOLDER_PLACEHOLDER_NAME) != -1) {
 					logger.info("Placeholder name placeholder found, replacing with right name");
-					placeholderProcessedTemplateContent = placeholderProcessedTemplateContent.replaceAll(Pattern.quote(PLACEHOLDER_PLACEHOLDER_NAME), parentBindingConfig.getPlaceholderName());
+					/**
+					 * TODO: This is a simple way to inject a if for placeholder injections. Should be designed properly later.
+					 * In the template we find something like 'someAttribute="{{PLACEHOLDER_NAME}}_someModelNode"'
+					 * These placeholders are there because of injection.
+					 * We would like to add a <xsl:if> around this attribute so it is only where when there is a value.
+					 */
+					/**
+					 * The regex to find a placeholder injected attribute:
+					 * group 1:
+					 *   [ \\t\\r\\n]* - Whitespace (space, tab or new-line)
+					 *   
+					 * group 2:
+					 *   [a-zA-Z_-]+   - The attribute name
+					 *   [ \\t]*       - Whitespace (space or tab)
+					 *   =             - Assignment operator
+					 *   [ \\t]*       - Whitespace (space or tab)
+					 *   \"            - Opening quote
+					 *  
+					 * group 3:
+					 *   %s            - The placeholder for placeholder name.
+					 * 
+					 * group 4:
+					 *   %s            - Current accessor
+					 *   
+					 * group 5:
+					 *   [a-zA-Z]+     - The attribute name to select
+					 *   
+					 * group 6:
+					 *   \"            - The closing quote
+					 */
+					String placeholderRegex =  String.format(
+							"([ \\t\\r\\n]*)([a-zA-Z_-]+[ \\t]*=[ \\t]*\")(%s)(%s)([a-zA-Z]+)(\")",
+							Pattern.quote(PLACEHOLDER_PLACEHOLDER_NAME),
+							Pattern.quote(config.getTemplateConfig().getFileFormatConfig().getCurrentAccessor())
+					);
+					placeholderProcessedTemplateContent = placeholderProcessedTemplateContent.replaceAll(placeholderRegex, String.format("<xsl:if test=\"./@$5\">$1$2%s$4$5$6</xsl:if>", parentBindingConfig.getPlaceholderName()));
+					//placeholderProcessedTemplateContent = placeholderProcessedTemplateContent.replaceAll(Pattern.quote(PLACEHOLDER_PLACEHOLDER_NAME), parentBindingConfig.getPlaceholderName());
 				}
 				
 				// Process the placeholder of this section.
