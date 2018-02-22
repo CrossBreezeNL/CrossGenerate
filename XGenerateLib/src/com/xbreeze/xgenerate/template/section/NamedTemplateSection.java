@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import com.xbreeze.xgenerate.config.XGenConfig;
-import com.xbreeze.xgenerate.config.binding.PlaceholderConfig;
 import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
 import com.xbreeze.xgenerate.template.PreprocessedTemplate;
 
@@ -133,8 +132,6 @@ public class NamedTemplateSection extends TemplateSection {
 				
 				// Store the template content in a local variable.
 				String placeholderProcessedTemplateContent = rawTemplateSection.getContent();
-				// Get the child accessor from the config.
-				String childAccessor = config.getTemplateConfig().getFileFormatConfig().getCurrentAccessor();
 				
 				// Process the placeholder-name placeholder.
 				// This placeholder is injected during TemplatePlaceholderInjection in XML templates.
@@ -150,26 +147,7 @@ public class NamedTemplateSection extends TemplateSection {
 				}
 				
 				// Process the placeholder of this section.
-				//logger.info("Processing local placeholder...");
-				placeholderProcessedTemplateContent = processPlaceholder(
-						parentBindingConfig.getPlaceholderName(),
-						// The path of the placeholder of the current section is always the local element (so '.').
-						".",
-						placeholderProcessedTemplateContent,
-						childAccessor
-				);
-				
-				// Loop through the placeholders defined in this section binding and process them.
-				if (parentBindingConfig.getPlaceholderConfigs() != null) {
-					for (PlaceholderConfig placeholder : parentBindingConfig.getPlaceholderConfigs()) {
-						placeholderProcessedTemplateContent = processPlaceholder(
-								placeholder.getName(),
-								placeholder.getModelXPath(),
-								placeholderProcessedTemplateContent,
-								childAccessor
-						);
-					}
-				}
+				placeholderProcessedTemplateContent = PreprocessedTemplate.processPlaceholders(placeholderProcessedTemplateContent, parentBindingConfig, config.getTemplateConfig().getFileFormatConfig());
 				
 				// Append the raw template section into the pre-processed template.
 				preprocessedTemplate.append("<!-- Raw begin -->");
@@ -190,45 +168,5 @@ public class NamedTemplateSection extends TemplateSection {
 		
 	}
 	
-	/**
-	 * Function to process a placeholder.
-	 * @param placeholderName The placeholder name.
-	 * @param modelXPath The model XPath
-	 * @param templatePartToProcess The template part to process
-	 * @param currentAccessor The current accessor as defined in the config.
-	 * @return The processed template, where placeholders are replaced with XSLT expressions.
-	 */
-	private String processPlaceholder(String placeholderName, String modelXPath, String templatePartToProcess, String currentAccessor) {
-		/**
-		 * The regex to find a placeholder:
-		 * %s            - The placeholder name
-		 * %s            - The current accessor
-		 * ([a-zA-Z]+)   - The attribute name to select
-		 */
-		String placeholderRegex = String.format(
-				"%s%s([a-zA-Z]+)",
-				placeholderName,
-				currentAccessor
-		);
-		
-		/**
-		 * The replacement value for the placeholder (the XSLT to select a value):
-		 * <xsl:value-of select=\"<replacement-regex>\" />
-		 * 
-		 * replacement-regex:
-		 * %s   - The model XPath expression for the placeholder.
-		 * /    - A slash to select something from the element at the level of %s.
-		 * @    - The XML attribute accessor.
-		 * $1   - The value of group 1 (the attribute name to select from the find regex)
-		 */
-		// Group 1: The attribute name.
-		String placeholderReplacement = String.format(
-				"<xsl:value-of select=\"%s/@$1\" />"
-				,modelXPath
-		);
 
-		// Perform the replacement for the placeholder.
-		//logger.info(String.format("Processing placeholder '%s': '%s' -> %s", placeholderName, placeholderRegex, placeholderReplacement));
-		return templatePartToProcess.replaceAll(placeholderRegex, placeholderReplacement);
-	}
 }

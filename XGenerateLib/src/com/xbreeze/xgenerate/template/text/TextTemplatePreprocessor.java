@@ -305,8 +305,8 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 			if (sectionEndCharIndex == -1)
 				return -1;
 			
-			// Add the length of the newline to the char index.
-			sectionEndCharIndex += System.lineSeparator().length();
+			// Add the 1 to the length to compensate for the \n character.
+			sectionEndCharIndex += 1;
 		}
 		// Otherwise, we can't get the end location.
 		else {

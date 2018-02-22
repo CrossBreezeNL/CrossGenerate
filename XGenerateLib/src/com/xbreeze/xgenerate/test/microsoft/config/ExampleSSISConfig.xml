@@ -18,7 +18,7 @@
       <ModelAttributeInjection modelXPath="//attribute[@datatype='uniqueidentifier']" targetAttribute="etldatatype" targetValue="guid"/>
     </ModelAttributeInjections>
   </Model>
-  <Template rootSectionName="System">
+  <Template rootSectionName="StgPackage">
     <FileFormat type="Microsoft_SSIS" currentAccessor="_" childAccessor="$" templateType="xml" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" commentNodeXPath="@*[lower-case(local-name())='description']" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <Output type="output_per_element" />
     <Sections>
@@ -43,19 +43,17 @@
     </TemplatePlaceholderInjections>
   </Template>
   <Binding>
-    <SectionModelBinding section="System" modelXPath = "/modeldefinition/system" placeholderName="system">
-      <SectionModelBinding section="stgPackage" modelXPath="mappableObjects/entity" placeholderName="entity">
-        <Placeholders>
-          <!-- For the placeholder the modelXPath is relative to its section model XPath. -->
-          <Placeholder name="system" modelXPath="../.." />                 
-        </Placeholders>
-        <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="attribute">
-          <Placeholders>
-            <Placeholder name="system" modelXPath="../../../.." />
-            <Placeholder name="entity" modelXPath="../.." />                 
-          </Placeholders>    
-        </SectionModelBinding>        
-       </SectionModelBinding>
-    </SectionModelBinding>    
+	<SectionModelBinding section="StgPackage" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity">
+	  <Placeholders>
+	    <!-- For the placeholder the modelXPath is relative to its section model XPath. -->
+	    <Placeholder name="system" modelXPath="../.." />                 
+	  </Placeholders>
+	  <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="attribute">
+	    <Placeholders>
+	      <Placeholder name="system" modelXPath="../../../.." />
+	      <Placeholder name="entity" modelXPath="../.." />                 
+	    </Placeholders>    
+	  </SectionModelBinding>        
+	 </SectionModelBinding>
   </Binding>
 </XGenConfig>

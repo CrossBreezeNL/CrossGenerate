@@ -2,22 +2,39 @@ package com.xbreeze.xgenerate.generator;
 
 public class GenerationResult {
 	
+	public enum GenerationStatus {
+		OK,
+		ERROR
+	}
+	
 	private String _templateFileName;
 	
-	private String modelFileName;
+	private String _modelFileName;
 	
 	private String _preprocessedTemplate;
 	
 	private String _outputFileContent;
 	
-	private String _outputFileLocation;
+//	private String _outputFileLocation;
 	
-	public GenerationResult(String modelFileName, String templateFileName, String preprocessedTemplate, String outputFileContent, String outputFileLocation) {
-		this.setModelFileName(modelFileName);
+	/**
+	 * The generation result status.
+	 */
+	private GenerationStatus _status = GenerationStatus.OK;
+	
+	/**
+	 * The exception object for when the GenerationStatus is ERROR.
+	 */
+	private GeneratorException _exception;
+	
+	/**
+	 * Constructor.
+	 * @param modelFileName
+	 * @param templateFileName
+	 */
+	public GenerationResult(String modelFileName, String templateFileName) {
+		this._modelFileName = modelFileName;
 		this._templateFileName = templateFileName;
-		this._preprocessedTemplate = preprocessedTemplate;
-		this._outputFileContent = outputFileContent;
-		this._outputFileLocation = outputFileLocation;
 	}
 
 	/**
@@ -34,19 +51,19 @@ public class GenerationResult {
 		this._outputFileContent = outputFileContent;
 	}
 
-	/**
-	 * @return the outputFileLocation
-	 */
-	public String getOutputFileLocation() {
-		return _outputFileLocation;
-	}
-
-	/**
-	 * @param outputFileLocation the outputFileLocation to set
-	 */
-	public void setOutputFileLocation(String outputFileLocation) {
-		this._outputFileLocation = outputFileLocation;
-	}
+//	/**
+//	 * @return the outputFileLocation
+//	 */
+//	public String getOutputFileLocation() {
+//		return _outputFileLocation;
+//	}
+//
+//	/**
+//	 * @param outputFileLocation the outputFileLocation to set
+//	 */
+//	public void setOutputFileLocation(String outputFileLocation) {
+//		this._outputFileLocation = outputFileLocation;
+//	}
 
 	/**
 	 * @return the preprocessedTemplate
@@ -80,13 +97,42 @@ public class GenerationResult {
 	 * @return the modelFileName
 	 */
 	public String getModelFileName() {
-		return modelFileName;
+		return _modelFileName;
 	}
 
 	/**
 	 * @param modelFileName the modelFileName to set
 	 */
 	public void setModelFileName(String modelFileName) {
-		this.modelFileName = modelFileName;
+		this._modelFileName = modelFileName;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public GenerationStatus getStatus() {
+		return _status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(GenerationStatus status) {
+		this._status = status;
+	}
+
+	/**
+	 * @return the exception
+	 */
+	public GeneratorException getException() {
+		return _exception;
+	}
+
+	/**
+	 * @param exception the exception to set
+	 */
+	public void setException(GeneratorException exception) {
+		this.setStatus(GenerationStatus.ERROR);
+		this._exception = exception;
 	}
 }
