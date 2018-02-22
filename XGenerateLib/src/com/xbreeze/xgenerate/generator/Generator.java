@@ -94,6 +94,14 @@ public class Generator extends GeneratorStub {
 	 * @throws UnknownAnnotationException 
 	 */
 	private GenerationResults generateFromFiles(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException {
+		// Unmarshal the config file into a XGenConfig object.
+		XGenConfig xGenConfig;
+		try {
+			xGenConfig = XGenConfig.fromFile(configFileUri);
+		} catch (ConfigException e) {
+			throw new GeneratorException(e);
+		}
+		
 		// Create a RawTemplate object from the template file.
 		RawTemplate rawTemplate;
 		try {
@@ -102,13 +110,6 @@ public class Generator extends GeneratorStub {
 			throw new GeneratorException(e);
 		}
 		
-		// Unmarshal the config file into a XGenConfig object.
-		XGenConfig xGenConfig;
-		try {
-			xGenConfig = XGenConfig.fromFile(configFileUri);
-		} catch (ConfigException e) {
-			throw new GeneratorException(e);
-		}
 		
 		// Pre-process the model (if model attribute injections are defined.
 		if (xGenConfig.getModelConfig() != null) {

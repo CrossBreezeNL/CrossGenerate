@@ -79,4 +79,8 @@ public abstract class TemplatePreprocessor {
 	public void setConfig(XGenConfig config) {
 		this._config = config;
 	}
+	
+	public static String doubleEntityEncode(String input) {
+		return input.replaceAll("&([a-zA-Z0-9]+;)", "&amp;$1");
+	}
 }

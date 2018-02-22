@@ -62,11 +62,11 @@ public class AnnotationScanner {
 		Pattern compiledPattern = Pattern.compile(
 				String.format(
 						"(?m)^[ \\t]*%s[ \\t]*%s([a-zA-Z]+)[ \\t]*%s(.*)%s[ \\t]*%s[ \\t]*$\\r?\\n?",
-						Pattern.quote(annotationTextPrefix),
-						Pattern.quote(annotationPrefix),
-						Pattern.quote(annotationArgsPrefix),
-						Pattern.quote(annotationArgsSuffix),
-						Pattern.quote(annotationTextSuffix)
+						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationTextPrefix)),
+						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationPrefix)),
+						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationArgsPrefix)),
+						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationArgsSuffix)),
+						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationTextSuffix))
 				)
 		);
 		// Create the matcher.
