@@ -11,22 +11,25 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.URL;
+import java.net.URI;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.Random;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.net.HttpURLConnection;
-import javax.net.ssl.HttpsURLConnection;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import com.xbreeze.util.StringHelper;
 
@@ -45,7 +48,6 @@ public class LicensedClassLoader extends ClassLoader {
 
 	private LicenseConfig _config;
 	private ClassLoader _parent;
-	private HttpURLConnection connection;
 	private Random rnd;
 	private String typeOfUse;
 
@@ -75,7 +77,7 @@ public class LicensedClassLoader extends ClassLoader {
 			throw new LicenseException("Licensing key not specified");
 		}
 
-		if (StringHelper.isEmptyOrWhitespace(_config.getUrl())) {
+		if (StringHelper.isEmptyOrWhitespace(_config.getUrl().toString())) {
 			throw new LicenseException("Licensing url not specified");
 		}
 
@@ -85,11 +87,6 @@ public class LicensedClassLoader extends ClassLoader {
 
 		if (StringHelper.isEmptyOrWhitespace(_config.getContractId())) {
 			throw new LicenseException("Contract key not specified");
-		}
-
-		// Ensure url ends with a slash
-		if (!_config.getUrl().endsWith("\\")) {
-			_config.setUrl(_config.getUrl().concat("\\"));
 		}
 
 		// When running in developer mode output informational and skip license check.
@@ -209,24 +206,16 @@ public class LicensedClassLoader extends ClassLoader {
 			// String message = "{\"method\":\"validate\",\"licensekey\":\"" +licenseKey +
 			// "\",\"token\":\""+ token +"\",\"signature\":\""+ sign + "\"}";
 			
-			// Create the connection.
-			createConnection(message.length());
-			String responseMessage = null;
-			
+			CloseableHttpResponse licenseResponse;
 			try {
-				connection.connect();
-				// Create a writer.
-				OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
-				// Write the message.
-				writer.write(message);
-				writer.close();
-				// Get the status code.
-				statusCode = connection.getResponseCode();
-				responseMessage = connection.getResponseMessage();
-			} catch (IOException e) {
+				licenseResponse = performRequest(_config.getUrl(), message);
+			} catch (LicenseException e) {
 				logger.severe(String.format("Error occured during license check: %s", e.getMessage()));
+				return false;
 			}
-
+			statusCode = licenseResponse.getStatusLine().getStatusCode();
+			String responseMessage = licenseResponse.getStatusLine().getReasonPhrase();
+			
 			// Switch on the response code.
 			switch (statusCode) {
 			case 200:
@@ -253,12 +242,10 @@ public class LicensedClassLoader extends ClassLoader {
 
 	private byte[] getClassOrResourceData(String resourceLocation) {
 		// If we are in developer mode, we try to find the class on the local machine.
-		// TODO If we use a proper URI object you can check whether the url is local or
-		// remote.
 		if (this._config.getDeveloperMode()) {
 			// The resource location will be using a forward slash (/) for remote loading.
 			// When the files are loaded locally we have the flip the slashes and make it relative to the config url.
-			Path localClassPath = Paths.get(this._config.getUrl(), resourceLocation.replace("/", "\\"));
+			Path localClassPath = Paths.get(this._config.getUrl()).resolve(resourceLocation.replace("/", "\\"));
 			logger.info(String.format("Loading local class or resource %s", localClassPath));
 			try {
 				return Files.readAllBytes(localClassPath);
@@ -275,9 +262,8 @@ public class LicensedClassLoader extends ClassLoader {
 			logger.info(String.format("Loading remote class or resource %s", resourceLocation));
 			try {
 				return getClassOrResourceFromNetwork(resourceLocation);
-			} catch (IOException e) {
-				logger.severe(
-						String.format("Couldn't load using remote path: %s: %s", resourceLocation, e.getMessage()));
+			} catch (LicenseException e) {
+				logger.severe(String.format("Couldn't load using remote path: %s: %s", resourceLocation, e.getMessage()));
 				// Return null, so its clear the class or resource couldn't be found.
 				return null;
 			}
@@ -290,60 +276,55 @@ public class LicensedClassLoader extends ClassLoader {
 	 * @param classfile
 	 *            The file to load
 	 * @return the loaded class
-	 * @throws IOException
-	 *             when class cannot be loaded
+	 * @throws LicenseException 
 	 */
-	private byte[] getClassOrResourceFromNetwork(String classfile) throws IOException {
-		try {
-			// Store the number of retries.
-			int retry = 0;
-			// Initialize the status code to 204 (No Content)
-			// TODO HW: Why 204?
-			// TODO Make getting binary data from remote generic. Same code now in multiple functions to get remote binary.
-			int statusCode = 204;
-			// Try to get the class at maximum 3 times.
-			while (statusCode == 204 && retry < 3) {
-				LicenseToken t = new LicenseToken(this._config.getContractId(), this.rnd);
-				String token = t.getToken();
-				String sign = t.getSignature();
-				String message = "{\"method\":\"getclass\",\"classfile\":\"" + classfile + "\",\"token\":\"" + token
-						+ "\",\"signature\":\"" + sign + "\",\"version\":\"" + this._config.getVersion()
-						+ "\",\"licensekey\":\"" + this._config.getLicenseKey() + "\"}";
-				createConnection(message.length());
-				connection.connect();
-				OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
-				writer.write(message);
-				writer.close();
-
-				statusCode = connection.getResponseCode();
-				if (statusCode == 204) {
-					retry++;
-					logger.warning("Invalid token/signature, retry " + String.valueOf(retry));
-				}
+	private byte[] getClassOrResourceFromNetwork(String classfile) throws LicenseException {
+		// Store the number of retries.
+		int retry = 0;
+		// Initialize the status code to 204 (No Content)
+		// TODO HW: Why 204?
+		// TODO Make getting binary data from remote generic. Same code now in multiple functions to get remote binary.
+		int statusCode = 204;
+		// Try to get the class at maximum 3 times.
+		while (statusCode == 204 && retry < 3) {
+			LicenseToken t = new LicenseToken(this._config.getContractId(), this.rnd);
+			String token = t.getToken();
+			String sign = t.getSignature();
+			String message = "{\"method\":\"getclass\",\"classfile\":\"" + classfile + "\",\"token\":\"" + token
+					+ "\",\"signature\":\"" + sign + "\",\"version\":\"" + this._config.getVersion()
+					+ "\",\"licensekey\":\"" + this._config.getLicenseKey() + "\"}";
+			
+			CloseableHttpResponse classOrResourceResponse = performRequest(_config.getUrl(), message);
+			
+			// Get the status code.
+			statusCode = classOrResourceResponse.getStatusLine().getStatusCode();
+			if (statusCode == 204) {
+				retry++;
+				logger.warning("Invalid token/signature, retry " + String.valueOf(retry));
 			}
-			if (statusCode == 200) {
+			else if (statusCode == 200) {
 				// Response contains classfile
+				HttpEntity httpEntity = classOrResourceResponse.getEntity();
+				
 				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 				int nRead;
 				byte[] data = new byte[65536];
-				while ((nRead = connection.getInputStream().read(data, 0, data.length)) != -1) {
-					buffer.write(data, 0, nRead);
+				try {
+					InputStream inputStream = httpEntity.getContent();
+					while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+						buffer.write(data, 0, nRead);
+					}
+					buffer.flush();
+				} catch (IOException e) {
+					throw new LicenseException(String.format("Error while fetching remote class file: %s", e.getMessage()));
 				}
-				buffer.flush();
 
+				// Return the bytes of the class or resource.
 				return buffer.toByteArray();
-				// byte[] output = new byte[connection.getInputStream().available()];
-				// connection.getInputStream().read(output);
-
-				// return output;
-			} else {
-				throw new IOException();
 			}
-		} catch (MalformedURLException ex) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-			return null;
 		}
-
+		
+		throw new LicenseException("Error while fetching remote class file");
 	}
 
 	/***
@@ -351,28 +332,25 @@ public class LicensedClassLoader extends ClassLoader {
 	 * 
 	 * @param length
 	 *            content length of message sent, set as header
+	 * @throws LicenseException 
 	 */
-	private void createConnection(int length) {
+	private CloseableHttpResponse performRequest(URI uri, String message) throws LicenseException {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpPost request = new HttpPost(uri);
+		StringEntity params;
 		try {
-			HttpURLConnection con = null;
-			URL url = new URL(this._config.getUrl());
-			if (this._config.getUrl().toLowerCase().startsWith("https")) {
-				con = (HttpsURLConnection) url.openConnection();
-			} else {
-				con = (HttpURLConnection) url.openConnection();
-			}
-
-			con.setRequestProperty("Accept", "application/json");
-			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-			con.setRequestProperty("Content-Length", String.valueOf(length));
-			con.setRequestMethod("POST");
-			con.setDoInput(true);
-			con.setDoOutput(true);
-			this.connection = con;
-		} catch (MalformedURLException ex) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-		} catch (IOException ex) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+			params = new StringEntity(message);
+			request.setEntity(params);
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Handle exception properly.
+			logger.severe(e1.getMessage());
+		}
+		request.addHeader("Content-Type", "application/json; charset=UTF-8");
+		
+		try {
+			return httpClient.execute(request);
+		} catch (IOException e) {
+			throw new LicenseException(String.format("Error while performing Http request: %s", e.getMessage()));
 		}
 	}
 

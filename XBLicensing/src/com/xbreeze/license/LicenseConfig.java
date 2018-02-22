@@ -1,5 +1,7 @@
 package com.xbreeze.license;
 
+import java.net.URI;
+
 import javax.xml.bind.annotation.XmlElement;
 
 /***
@@ -33,14 +35,14 @@ public class LicenseConfig {
 	/***
 	 * The url used to validate license info
 	 */
-	private String _url;
+	private URI _url;
 	
 	/***
 	 * The version of software that is loaded
 	 */
-	
 	private String _version;
 
+	// Getters
 	@XmlElement(name="LicenseKey", required=true)
 	public String getLicenseKey() {
 		return _licenseKey;
@@ -56,7 +58,7 @@ public class LicenseConfig {
 	}
 
 	@XmlElement(name="Url", required=true)
-	public String getUrl() {
+	public URI getUrl() {
 		return _url;
 	}
 
@@ -69,25 +71,24 @@ public class LicenseConfig {
 	public Boolean getDeveloperMode() {
 		return _inDeveloperMode;
 	}
-	public void setLicenseKey(String _licenseKey) {
-		this._licenseKey = _licenseKey;
-	}
-	public void setDeveloperMode(Boolean _inDeveloperMode) {
-		this._inDeveloperMode = _inDeveloperMode;
-	}
-	public void setContractId(String _contractId) {
-		this._contractId = _contractId;
-	}
-	public void setTag(String _tag) {
-		this._tag = _tag;
-	}
-	public void setUrl(String _url) {
-		this._url = _url;
-	}
-	public void setVersion(String _version) {
-		this._version = _version;
-	}
 	
-	
-
+	// Setters
+	public void setLicenseKey(String licenseKey) {
+		this._licenseKey = licenseKey;
+	}
+	public void setDeveloperMode(Boolean inDeveloperMode) {
+		this._inDeveloperMode = inDeveloperMode;
+	}
+	public void setContractId(String contractId) {
+		this._contractId = contractId;
+	}
+	public void setTag(String tag) {
+		this._tag = tag;
+	}
+	public void setUrl(URI url) {
+		this._url = url;
+	}
+	public void setVersion(String version) {
+		this._version = version;
+	}
 }
