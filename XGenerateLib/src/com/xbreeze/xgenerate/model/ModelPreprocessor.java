@@ -2,6 +2,7 @@ package com.xbreeze.xgenerate.model;
 
 import java.util.logging.Logger;
 
+import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -49,8 +50,16 @@ public class ModelPreprocessor {
 						logger.info(String.format("Injecting model attribute '%s' to element '%s'", mai.getTargetAttribute(), currentNode.getNodeName()));
 						// Create the new Attribute node.
 						Attr newAttribute = model.getModelDocument().createAttribute(mai.getTargetAttribute());
-						// Set the attribute value.
-						newAttribute.setNodeValue(mai.getTargetValue());
+
+						// Set the attribute value, either from XPath or constant value
+						if (mai.getTargetXPath()!= null) {
+							XPath xp = XMLUtils.getXPath();
+							String value = (String)xp.evaluate(mai.getTargetXPath(), currentNode, XPathConstants.STRING);
+							newAttribute.setNodeValue(value);
+						}
+						if (mai.getTargetValue()!= null) {
+							newAttribute.setNodeValue(mai.getTargetValue());
+						}
 						// Add the new attribute to the current node.
 						currentNode.getAttributes().setNamedItem(newAttribute);
 					}

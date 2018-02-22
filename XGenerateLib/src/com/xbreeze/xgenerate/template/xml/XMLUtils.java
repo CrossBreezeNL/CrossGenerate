@@ -11,6 +11,7 @@ import com.xbreeze.xgenerate.generator.GeneratorException;
 import net.sf.saxon.TransformerFactoryImpl;
 import net.sf.saxon.xpath.XPathFactoryImpl;
 
+//TODO move this to a more generic package
 public class XMLUtils {
 
 	public static DocumentBuilder getDocumentBuilder() throws GeneratorException {

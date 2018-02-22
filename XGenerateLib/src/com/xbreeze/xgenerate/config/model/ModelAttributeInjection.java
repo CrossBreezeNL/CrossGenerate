@@ -9,6 +9,8 @@ public class ModelAttributeInjection {
 	private String targetAttribute;
 	
 	private String targetValue;
+	
+	private String targetXPath;
 
 	/**
 	 * @return the modelXPath
@@ -43,7 +45,7 @@ public class ModelAttributeInjection {
 	/**
 	 * @return the targetValue
 	 */
-	@XmlAttribute(required=true)
+	@XmlAttribute(required=false)
 	public String getTargetValue() {
 		return targetValue;
 	}
@@ -54,4 +56,15 @@ public class ModelAttributeInjection {
 	public void setTargetValue(String targetValue) {
 		this.targetValue = targetValue;
 	}
+
+	@XmlAttribute(required=false)
+	public String getTargetXPath() {
+		return targetXPath;
+	}
+
+	public void setTargetXPath(String targetXPath) {
+		this.targetXPath = targetXPath;
+	}
+	
+	
 }
