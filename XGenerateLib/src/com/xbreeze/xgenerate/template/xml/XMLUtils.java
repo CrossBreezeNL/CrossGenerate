@@ -17,6 +17,8 @@ public class XMLUtils {
 	public static DocumentBuilder getDocumentBuilder() throws GeneratorException {
 		// Create a DocumentBuilderFactory.
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		// Disable expanding of XML entity references.
+		dbf.setExpandEntityReferences(false);
 		// Setting features on the DocumentBuilderFactory.
 		// See: https://stackoverflow.com/questions/155101/make-documentbuilder-parse-ignore-dtd-references
 		dbf.setValidating(false);
@@ -46,5 +48,14 @@ public class XMLUtils {
 	public static XPath getXPath() {
 		// Create a XPath evaluator (use new XPathFactoryImpl() to make sure the Saxon XPath is used).
 		return new XPathFactoryImpl().newXPath();
+	}
+	
+	/**
+	 * Escape XML characters.
+	 * @param input The text to escape.
+	 * @return The escaped input.
+	 */
+	public static String excapeXMLChars(String input) {
+		return input.replaceAll("&([a-z]+;)", "&amp;$1").replaceAll("\\<", "&lt;").replaceAll("\\>", "&gt;");
 	}
 }
