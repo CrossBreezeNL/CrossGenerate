@@ -274,7 +274,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		}
 		
 		// If the comment node XPath is specified in the config, we can search for annotation in these nodes.
-		// WO: Means this has to be specified in config
+		// TODO WO: Means this has to be specified in config
 		if (fileFormatConfig.getCommentNodeXPath() != null) {
 			//logger.info("The comment node XPath is specified, so we will search for annotations there.");
 			Node annotationNode;
