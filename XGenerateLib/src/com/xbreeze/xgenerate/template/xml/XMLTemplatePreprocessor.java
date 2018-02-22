@@ -135,12 +135,12 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		// Add the XML declaration to the template.
 		String xmlVersion = (templateDocument.getXmlVersion() != null) ? templateDocument.getXmlVersion() : "1.0";
 		String xmlEncoding = (templateDocument.getXmlEncoding() != null) ? templateDocument.getXmlEncoding() : "UTF-8";
-		String xmlDeclaration = excapeXMLChars(String.format("<?xml version=\"%s\" encoding=\"%s\"?>%s", xmlVersion, xmlEncoding, System.lineSeparator()));
+		String xmlDeclaration = XMLUtils.excapeXMLChars(String.format("<?xml version=\"%s\" encoding=\"%s\"?>%s", xmlVersion, xmlEncoding, System.lineSeparator()));
 		sectionizedXMLTemplate.addTemplateSection(new RawTemplateSection(xmlDeclaration, 0, xmlDeclaration.length()));
 		
 		// Add the doctype to the template.
 		if (templateDocument.getDoctype() != null) {
-			String docTypePart = excapeXMLChars(getDocTypeString(templateDocument.getDoctype()));
+			String docTypePart = XMLUtils.excapeXMLChars(getDocTypeString(templateDocument.getDoctype()));
 			sectionizedXMLTemplate.addTemplateSection(new RawTemplateSection(docTypePart, 0, docTypePart.length()));
 		}
 		
@@ -185,15 +185,6 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	    docTypeString.append('>').append(System.lineSeparator());
 	    
 	    return docTypeString.toString();
-	}
-	
-	/**
-	 * Escape XML characters.
-	 * @param input The text to escape.
-	 * @return The escaped input.
-	 */
-	private String excapeXMLChars(String input) {
-		return input.replaceAll("\\<", "&lt;").replaceAll("\\>", "&gt;");
 	}
 	
 	/**
@@ -410,7 +401,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		// If the current element has no children, we add the whole content of the element as a raw template. 
 		if (childCount == 0) {
 			// Add the content of the node as a raw template section.
-			String escapedTemplateNodeContent = excapeXMLChars(getNodeString(templateNode));
+			String escapedTemplateNodeContent = XMLUtils.excapeXMLChars(getNodeString(templateNode));
 			currentSection.addTemplateSection(new RawTemplateSection(escapedTemplateNodeContent, 0, escapedTemplateNodeContent.length()));
 		}
 		
@@ -424,7 +415,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			SplittedXMLNode templateNodeSplit = splitNodeBodyAndTail(templateNode.getNodeName(), templateNodeContent);
 			
 			// Add the content of the head as a raw template section.
-			String escapedTemplateHeadContent = excapeXMLChars(templateNodeSplit.getHead());
+			String escapedTemplateHeadContent = XMLUtils.excapeXMLChars(templateNodeSplit.getHead());
 			currentSection.addTemplateSection(new RawTemplateSection(escapedTemplateHeadContent, 0, escapedTemplateHeadContent.length()));
 			
 			// Loop through the children and handle there content recursively.
@@ -454,7 +445,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			}
 			
 			// Add the content of the tail as a raw template section.
-			String escapedTemplateTailContent = excapeXMLChars(templateNodeSplit.getTail());
+			String escapedTemplateTailContent = XMLUtils.excapeXMLChars(templateNodeSplit.getTail());
 			currentSection.addTemplateSection(new RawTemplateSection(escapedTemplateTailContent, 0, escapedTemplateTailContent.length()));			
 		}
 	}

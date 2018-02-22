@@ -47,4 +47,13 @@ public class XMLUtils {
 		// Create a XPath evaluator (use new XPathFactoryImpl() to make sure the Saxon XPath is used).
 		return new XPathFactoryImpl().newXPath();
 	}
+	
+	/**
+	 * Escape XML characters.
+	 * @param input The text to escape.
+	 * @return The escaped input.
+	 */
+	public static String excapeXMLChars(String input) {
+		return input.replaceAll("\\<", "&lt;").replaceAll("\\>", "&gt;");
+	}
 }

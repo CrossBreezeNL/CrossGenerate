@@ -179,7 +179,10 @@ public class NamedTemplateSection extends TemplateSection {
 							Pattern.quote(config.getTemplateConfig().getFileFormatConfig().getCurrentAccessor())
 					);
 					placeholderProcessedTemplateContent = placeholderProcessedTemplateContent.replaceAll(placeholderRegex, String.format("<xsl:if test=\"./@$5\">$1$2%s$4$5$6</xsl:if>", parentBindingConfig.getPlaceholderName()));
-					//placeholderProcessedTemplateContent = placeholderProcessedTemplateContent.replaceAll(Pattern.quote(PLACEHOLDER_PLACEHOLDER_NAME), parentBindingConfig.getPlaceholderName());
+					
+					// When the placeholder wasn't replaced in the previous replacement, its due to it not being an attribute (probably).
+					// So we replace only the placeholder now.
+					placeholderProcessedTemplateContent = placeholderProcessedTemplateContent.replaceAll(Pattern.quote(PLACEHOLDER_PLACEHOLDER_NAME), parentBindingConfig.getPlaceholderName());
 				}
 				
 				// Process the placeholder of this section.
