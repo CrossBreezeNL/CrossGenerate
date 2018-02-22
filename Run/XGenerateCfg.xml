@@ -7,11 +7,11 @@
     <TemplateFolder>..\XGenerateLib\src\com\xbreeze\xgenerate\test\microsoft\template\staging</TemplateFolder>
   </App>
   <License>
-    <ContractId>str1234</ContractId>
-    <DeveloperMode>true</DeveloperMode>
-    <LicenseKey>str1234</LicenseKey>
-    <Tag>str1234</Tag>
-    <Url>..\XGenerateLib\target\classes\</Url>
+    <ContractId>25446228607107072</ContractId>
+    <DeveloperMode>false</DeveloperMode>
+    <LicenseKey>496ba3ee-180f-11e8-8217-ea6021843373</LicenseKey>
+    <Tag></Tag>
+    <Url>https://generate.x-breeze.com/xgen/ </Url>
     <Version>str123</Version>
   </License>
 </XGenAppConfig>
