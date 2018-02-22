@@ -17,10 +17,10 @@ public class CrossGenerateTest {
 		//doMicrosoftSSISTest();
 		
 		// Execute the PowerCenter test.
-		doPowerCenterTest();
+		//doPowerCenterTest();
 		
 		// Execute the IBM DataStage test.
-		//doDataStageTest();
+		doDataStageTest();
 		
 	}
 	
@@ -78,7 +78,7 @@ public class CrossGenerateTest {
 	private static void doPowerCenterTest() {
 		Generator generator = new Generator();
 		
-		String modelFileName = "common/model/ExampleModel.xml";
+		String modelFileName = "common/model/ExampleModelOracle.xml";
 		String templateFileName = "powercenter/template/staging/stg_load_system_name_entity_name.XML";
 		String configFileName = "powercenter/config/ExamplePowerCenterConfig.xml";
 		

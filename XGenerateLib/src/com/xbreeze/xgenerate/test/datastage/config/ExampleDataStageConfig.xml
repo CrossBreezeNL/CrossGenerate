@@ -2,19 +2,32 @@
 <XGenConfig>
   <Model>    
     <ModelAttributeInjections>
-      <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="etldatatype" targetValue="string"/>
-      <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="etldatatype" targetValue="nstring"/>
-    </ModelAttributeInjections>
+       <!-- set etl datatype -->
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='VARCHAR']" targetAttribute="12" targetValue="string"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='NVARCHAR']" targetAttribute="etldatatype" targetValue="-9"/>      
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='INTEGER']" targetAttribute="etldatatype" targetValue="4"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='DATE']" targetAttribute="etldatatype" targetValue="9"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='DECIMAL']" targetAttribute="etldatatype" targetValue="3"/>
+      <!-- set length and scale where needed -->
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='INTEGER']" targetAttribute="length" targetValue="0"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='DATE']" targetAttribute="length" targetValue="0"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='INTEGER']" targetAttribute="scale" targetValue="0"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='DATE']" targetAttribute="scale" targetValue="0"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='VARCHAR']" targetAttribute="scale" targetValue="0"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='NVARCHAR']" targetAttribute="scale" targetValue="0"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='decimal']" targetAttribute="length" targetXPath="./@precision"/>      
+     </ModelAttributeInjections>
   </Model>
   <Template rootSectionName="System">
     <FileFormat type="IBM_DataStage" commentNodeXPath="Property[@Name=&quot;Description&quot;]" currentAccessor="_" childAccessor="$" templateType="xml" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <Output type="output_per_element" />
     <Sections>
-      <Section name="Entity" elementXPath="DSExport/Job" />
+      <Section name="Entity" templateXPath="DSExport/Job" />
     </Sections>
     <TemplatePlaceholderInjections>
-      <TemplatePlaceholderInjection templateXPath="//SOURCEFIELD/@DATATYPE" modelNode="datatype" scope="current" />
-      <TemplatePlaceholderInjection templateXPath="//TRANSFORMFIELD/@DATATYPE"  modelNode="etldatatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//SubRecord[Property/text()='attribute_name']/Property[@Name='SqlType']" modelNode="etldatatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//SubRecord[Property/text()='attribute_name']/Property[@Name='Precision']" modelNode="length" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//SubRecord[Property/text()='attribute_name']/Property[@Name='Scale']" modelNode="scale" scope="current" />
     </TemplatePlaceholderInjections>
   </Template>
   <Binding>
