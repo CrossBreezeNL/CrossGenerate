@@ -5,6 +5,17 @@
       <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="etldatatype" targetValue="str"/>
       <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="codePage" targetValue="1252"/>
       <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="etldatatype" targetValue="wstr"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="codePage" targetValue="1252"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='tinyint']" targetAttribute="etldatatype" targetValue="i2"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='smallint']" targetAttribute="etldatatype" targetValue="i2"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='bigint']" targetAttribute="etldatatype" targetValue="i8"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='int']" targetAttribute="etldatatype" targetValue="i4"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='timestamp']" targetAttribute="etldatatype" targetValue="bytes"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="etldatatype" targetValue="dbTimeStamp"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime2']" targetAttribute="etldatatype" targetValue="dbTimeStamp"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='decimal']" targetAttribute="etldatatype" targetValue="numeric"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='bit']" targetAttribute="etldatatype" targetValue="bool"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='uniqueidentifier']" targetAttribute="etldatatype" targetValue="guid"/>
     </ModelAttributeInjections>
   </Model>
   <Template rootSectionName="System">
@@ -19,11 +30,16 @@
       <!--  targetValue should contain the accessor scope is determined by the containing section -->
       <!--  scope defines at what level placeholder will be resolved, can be either current or child so on a section that is on attribute level
       datatype with curent scope will result in attribute_datatype -->
-      <TemplatePlaceholderInjection templateXPath="//inputColumn/@cachedDataType" modelNode="etldatatype" scope="current" />
-      <TemplatePlaceholderInjection templateXPath="//outputColumn/@dataType"  modelNode="etldatatype" scope="current" />
-      <TemplatePlaceholderInjection templateXPath="//outputColumn/@codePage"  modelNode="codePage" scope="current" />
-      <TemplatePlaceholderInjection templateXPath="//outputColumn/@cachedCodePage"  modelNode="codePage" scope="current" />
-      
+      <TemplatePlaceholderInjection templateXPath="//outputColumn[@name='attribute_name']/@dataType"  modelNode="etldatatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//outputColumn[@name='attribute_name']/@length"  modelNode="length" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//outputColumn[@name='attribute_name']/@precision"  modelNode="precision" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//outputColumn[@name='attribute_name']/@scale"  modelNode="scale" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//outputColumn[@name='attribute_name']/@codePage"  modelNode="codePage" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//inputColumn[@name='attribute_name']/@cachedDataType" modelNode="etldatatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//outputColumn[@name='attribute_name']/@cachedLength"  modelNode="length" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//outputColumn[@name='attribute_name']/@cachedPrecision"  modelNode="precision" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//outputColumn[@name='attribute_name']/@cachedScale"  modelNode="scale" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//outputColumn[@name='attribute_name']/@cachedCodePage"  modelNode="codePage" scope="current" />
     </TemplatePlaceholderInjections>
   </Template>
   <Binding>

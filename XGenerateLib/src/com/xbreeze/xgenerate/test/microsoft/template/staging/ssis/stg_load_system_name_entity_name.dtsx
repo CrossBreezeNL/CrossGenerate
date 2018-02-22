@@ -235,7 +235,7 @@
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[system_name].[Entity_name]</property>
+                  name="OpenRowset">[system_name].[entity_name]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."

@@ -2,8 +2,18 @@
 <XGenConfig>
   <Model>    
     <ModelAttributeInjections>
+      <!-- set etl datatype -->
       <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="etldatatype" targetValue="string"/>
       <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="etldatatype" targetValue="nstring"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='int']" targetAttribute="etldatatype" targetValue="integer"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="etldatatype" targetValue="date/time"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='decimal']" targetAttribute="etldatatype" targetValue="decimal"/>
+      <!-- set length, precision and scale where needed -->
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='int']" targetAttribute="length" targetValue="10"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='int']" targetAttribute="precision" targetValue="10"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="length" targetValue="29"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="precision" targetValue="29"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="scale" targetValue="9"/>
     </ModelAttributeInjections>
   </Model>
   <Template rootSectionName="System">
