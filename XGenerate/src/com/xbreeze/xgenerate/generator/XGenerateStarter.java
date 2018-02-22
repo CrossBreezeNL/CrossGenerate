@@ -84,9 +84,8 @@ public class XGenerateStarter {
 				
 				// Setup the logger.
 				// TODO Properly handle logging of info message to log when debug is on.
-				//logger.setLevel(Level.WARNING);
 				if (debugMode) {
-					System.out.println("Debug mode enabled");
+					logger.warning("Debug mode enabled");
 					logger.setLevel(Level.INFO);
 				}
 
@@ -122,7 +121,7 @@ public class XGenerateStarter {
 				logger.info("Generation complete");
 			} catch (GeneratorException | LicenseException | ClassNotFoundException | IllegalAccessException | InstantiationException e) {
 				logger.severe("Error occured while generating");
-				logger.severe(e.getLocalizedMessage());
+				logger.severe(e.getMessage());
 				System.err.println("Error occured while generating, see log for more information");
 			}
 		}

@@ -195,47 +195,60 @@ public class LicensedClassLoader extends ClassLoader {
 	 * @return true when license is valid, false otherwise
 	 */
 	private boolean validateLicense() {
-		try {
-			int retry = 0;
-			int statusCode = 204;
-			while (statusCode == 204 && retry < 3) {
-				LicenseToken t = new LicenseToken(this._config.getContractId(), this.rnd);
-				String token = t.getToken();
-				String sign = t.getSignature();
-				String systemID = getSystemID();
-				String message = "{\"method\":\"validate\",\"licensekey\":\"" + _config.getLicenseKey()
-						+ "\",\"token\":\"" + token + "\",\"signature\":\"" + sign + "\",\"tag\":\""
-						+ this._config.getTag() + "\",\"systemid\":\"" + systemID + "\",\"typeofuse\":\"" + typeOfUse
-						+ "\"}";
-				// String message = "{\"method\":\"validate\",\"licensekey\":\"" +licenseKey +
-				// "\",\"token\":\""+ token +"\",\"signature\":\""+ sign + "\"}";
-				createConnection(message.length());
+		int retry = 0;
+		int statusCode = 204;
+		// Try to get the license info 3 times at max.
+		while (statusCode == 204 && retry < 3) {
+			LicenseToken t = new LicenseToken(this._config.getContractId(), this.rnd);
+			String token = t.getToken();
+			String sign = t.getSignature();
+			String systemID = getSystemID();
+			String message = "{\"method\":\"validate\",\"licensekey\":\"" + _config.getLicenseKey() + "\",\"token\":\""
+					+ token + "\",\"signature\":\"" + sign + "\",\"tag\":\"" + this._config.getTag()
+					+ "\",\"systemid\":\"" + systemID + "\",\"typeofuse\":\"" + typeOfUse + "\"}";
+			// String message = "{\"method\":\"validate\",\"licensekey\":\"" +licenseKey +
+			// "\",\"token\":\""+ token +"\",\"signature\":\""+ sign + "\"}";
+			
+			// Create the connection.
+			createConnection(message.length());
+			String responseMessage = null;
+			
+			try {
 				connection.connect();
+				// Create a writer.
 				OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
+				// Write the message.
 				writer.write(message);
 				writer.close();
-
+				// Get the status code.
 				statusCode = connection.getResponseCode();
-				if (statusCode == 204) {
-					retry++;
-					System.out.println("Invalid token/signature, retry " + String.valueOf(retry));
-				}
-				if (statusCode == 205) {
-					System.out.println("License key is not valid.");
-					return false;
-				}
+				responseMessage = connection.getResponseMessage();
+			} catch (IOException e) {
+				logger.severe(String.format("Error occured during license check: %s", e.getMessage()));
 			}
-			if (statusCode == 200) {
-				System.out.println("License check OK");
-				return true;
-			}
-			return false;
 
-		} catch (IOException ex) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-			return false;
+			// Switch on the response code.
+			switch (statusCode) {
+			case 200:
+				logger.info("License check OK");
+				return true;
+				
+			case 204:
+				retry++;
+				logger.severe("Invalid token/signature, retry " + String.valueOf(retry));					
+				break;
+				
+			case 205:
+				logger.severe("License key is not valid.");
+				return false;
+				
+			default:
+				logger.severe(String.format("License check failed: %d - %s", statusCode, responseMessage));
+				return false;
+			}
 		}
 
+		return false;
 	}
 
 	private byte[] getClassOrResourceData(String resourceLocation) {
@@ -286,6 +299,7 @@ public class LicensedClassLoader extends ClassLoader {
 			int retry = 0;
 			// Initialize the status code to 204 (No Content)
 			// TODO HW: Why 204?
+			// TODO Make getting binary data from remote generic. Same code now in multiple functions to get remote binary.
 			int statusCode = 204;
 			// Try to get the class at maximum 3 times.
 			while (statusCode == 204 && retry < 3) {
@@ -295,7 +309,6 @@ public class LicensedClassLoader extends ClassLoader {
 				String message = "{\"method\":\"getclass\",\"classfile\":\"" + classfile + "\",\"token\":\"" + token
 						+ "\",\"signature\":\"" + sign + "\",\"version\":\"" + this._config.getVersion()
 						+ "\",\"licensekey\":\"" + this._config.getLicenseKey() + "\"}";
-				// System.out.println(message);
 				createConnection(message.length());
 				connection.connect();
 				OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
@@ -305,7 +318,7 @@ public class LicensedClassLoader extends ClassLoader {
 				statusCode = connection.getResponseCode();
 				if (statusCode == 204) {
 					retry++;
-					System.out.println("Invalid token/signature, retry " + String.valueOf(retry));
+					logger.warning("Invalid token/signature, retry " + String.valueOf(retry));
 				}
 			}
 			if (statusCode == 200) {

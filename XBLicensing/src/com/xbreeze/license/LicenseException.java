@@ -16,8 +16,7 @@ public class LicenseException extends Exception {
 	 * @param message the message of the error
 	 */
 	public LicenseException(String message) {
-         super();
-         System.out.println(message);            
+         super(message);
 	 } 
 	
 }
