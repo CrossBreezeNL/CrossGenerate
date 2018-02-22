@@ -17,8 +17,6 @@ public class XMLUtils {
 	public static DocumentBuilder getDocumentBuilder() throws GeneratorException {
 		// Create a DocumentBuilderFactory.
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		// Disable expanding of XML entity references.
-		dbf.setExpandEntityReferences(false);
 		// Setting features on the DocumentBuilderFactory.
 		// See: https://stackoverflow.com/questions/155101/make-documentbuilder-parse-ignore-dtd-references
 		dbf.setValidating(false);
@@ -56,6 +54,6 @@ public class XMLUtils {
 	 * @return The escaped input.
 	 */
 	public static String excapeXMLChars(String input) {
-		return input.replaceAll("&([a-z]+;)", "&amp;$1").replaceAll("\\<", "&lt;").replaceAll("\\>", "&gt;");
+		return input.replaceAll("\\<", "&lt;").replaceAll("\\>", "&gt;");
 	}
 }

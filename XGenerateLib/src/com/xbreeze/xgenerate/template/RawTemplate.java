@@ -69,6 +69,8 @@ public class RawTemplate {
 		// Try to read the template file into a string.
 		try {
 			rawTemplateContent = new String(Files.readAllBytes(rawTemplateFilePath));
+			// Double entity-encode XML entity encoded stuff.
+			rawTemplateContent = rawTemplateContent.replaceAll("&([a-zA-Z0-9]+;)", "&amp;$1");
 		} catch (IOException e) {
 			throw new TemplateException(String.format("Couldn't read the template file (%s)", rawTemplateFilePath));
 		}
