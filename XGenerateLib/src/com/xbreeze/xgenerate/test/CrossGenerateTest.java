@@ -11,10 +11,10 @@ public class CrossGenerateTest {
 	public static void main(String[] args) {
 		
 		// Execute the Microsoft SQL test.
-		//doMicrosoftSQLTest();
+		doMicrosoftSQLTest();
 		
 		// Execute the Microsoft SSIS test.
-		doMicrosoftSSISTest();
+		//doMicrosoftSSISTest();
 		
 		// Execute the PowerCenter test.
 		//doPowerCenterTest();
@@ -29,7 +29,7 @@ public class CrossGenerateTest {
 		Generator generator = new Generator();
 		
 		String modelFileName = "common/model/ExampleModel.xml";
-		String templateFileName = "microsoft/template/staging/sql/Table_Staging.sql";
+		String templateFileName = "microsoft/template/staging/sql/Staging_Tables_system_name.sql";
 		String configFileName = "microsoft/config/ExampleSQLConfig.xml";
 		
 		try {

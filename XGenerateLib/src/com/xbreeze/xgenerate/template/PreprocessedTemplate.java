@@ -66,7 +66,7 @@ public class PreprocessedTemplate {
 		// Strip white space from all elements (from the model).
 		appendLine("<xsl:strip-space elements=\"*\"/>\n");
 		
-		appendLine("<!-- Math the template on the root node and call the specific template. -->");
+		appendLine("<!-- Match the template on the root node and call the specific template. -->");
 		appendLine("<xsl:template match=\"/\"><xsl:call-template name=\"%s\" /></xsl:template>\n", templateId);
 		
 		// Add the template part, here we don't include match, since this is handled by the first xsl:for-each.
@@ -78,7 +78,7 @@ public class PreprocessedTemplate {
 		// If this is the root section, add the output document info.
 		// If the output type is output_per_element, add the result-document directive.
 		// TODO Use full template location (without config part)
-		String fileNamePlaceholder = processPlaceholders(Paths.get(outputFileUri).resolve(templateId).toUri().toString(), rootSectionModelBindingConfig, templateConfig.getFileFormatConfig(), PlaceholderType.XSL_INLINE);
+		String fileNamePlaceholder = processPlaceholders(Paths.get(outputFileUri).resolve(templateId).toUri().toString(), rootSectionModelBindingConfig, templateConfig.getFileFormatConfig(), PlaceholderType.XSL_INLINE, _outputType.equals(OutputType.output_per_element));
 		// Add the for-each part on the model node to match the template on.
 		String rootForEach = String.format("<xsl:for-each select=\"%s\">", rootSectionModelBindingConfig.getModelXPath());
 		
@@ -97,10 +97,10 @@ public class PreprocessedTemplate {
 	}
 	
 	public static String processPlaceholders(String templatePart, SectionModelBindingConfig parentBindingConfig, FileFormatConfig fileFormatConfig) {
-		return processPlaceholders(templatePart, parentBindingConfig, fileFormatConfig, PlaceholderType.XSL_VALUE_OF);
+		return processPlaceholders(templatePart, parentBindingConfig, fileFormatConfig, PlaceholderType.XSL_VALUE_OF, true);
 	}
 	
-	public static String processPlaceholders(String templatePart, SectionModelBindingConfig parentBindingConfig, FileFormatConfig fileFormatConfig, PlaceholderType placeholderType) {
+	public static String processPlaceholders(String templatePart, SectionModelBindingConfig parentBindingConfig, FileFormatConfig fileFormatConfig, PlaceholderType placeholderType, boolean isBounded) {
 		// Store the result in a local String.
 		String processedTemplatePart = templatePart;
 		
@@ -110,8 +110,9 @@ public class PreprocessedTemplate {
 		// Process the placeholder of this section.
 		processedTemplatePart = PreprocessedTemplate.processPlaceholder(
 				parentBindingConfig.getPlaceholderName(),
-				// The path of the placeholder of the current section is always the local element (so '.').
-				".",
+				// The path of the placeholder of the current section is always the local element (so '.') if were are within the binded section.
+				// If not bounded, we use the model XPath.
+				(isBounded) ? "." : parentBindingConfig.getModelXPath(),
 				processedTemplatePart,
 				currentAccessor,
 				placeholderType
