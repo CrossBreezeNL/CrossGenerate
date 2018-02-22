@@ -11,9 +11,9 @@
       <!-- set length, precision and scale where needed -->
       <ModelAttributeInjection modelXPath="//attribute[@datatype='int']" targetAttribute="length" targetValue="10"/>
       <ModelAttributeInjection modelXPath="//attribute[@datatype='int']" targetAttribute="precision" targetValue="10"/>
-      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="length" targetValue="29"/>
-      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="precision" targetValue="29"/>
-      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="scale" targetValue="9"/>      
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="length" targetValue="23"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="precision" targetValue="23"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="scale" targetValue="3"/>      
       <!-- set precision for text fields -->
       <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="precision" targetXPath="./@length"/>
       <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="precision" targetXPath="./@length"/> 
@@ -21,7 +21,9 @@
       <ModelAttributeInjection modelXPath="//attribute" targetAttribute="etlprecision" targetXPath="./@length"/>      
       <ModelAttributeInjection modelXPath="//attribute" targetAttribute="etlscale" targetValue="0"/>
       <ModelAttributeInjection modelXPath="//attribute[@datatype='decimal']" targetAttribute="etlprecision" targetXPath="./@precision"/>      
-      <ModelAttributeInjection modelXPath="//attribute[@datatype='decimal']" targetAttribute="etlscale" targetXPath="./@scale"/>      
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='decimal']" targetAttribute="etlscale" targetXPath="./@scale"/>    
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="etlprecision" targetValue="29"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="etlscale" targetValue="9"/>        
     </ModelAttributeInjections>
   </Model>
   <Template rootSectionName="System">

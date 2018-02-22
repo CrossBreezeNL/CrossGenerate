@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE POWERMART SYSTEM "powrmart.dtd">
-<POWERMART CREATION_DATE="02/22/2018 15:54:32" REPOSITORY_VERSION="186.95">
+<POWERMART CREATION_DATE="02/22/2018 17:10:57" REPOSITORY_VERSION="186.95">
 <REPOSITORY NAME="REP_REFEC_DEV_01" VERSION="186" CODEPAGE="UTF-8" DATABASETYPE="Oracle">
 <FOLDER NAME="Sandbox" GROUP="" OWNER="ottenw" SHARED="NOTSHARED" DESCRIPTION="For testing/prototyping purposes" PERMISSIONS="rwx---r--" UUID="af3f5d20-55dd-47cd-aed9-b6523741ed17">
     <SOURCE BUSINESSNAME ="" DATABASETYPE ="Microsoft SQL Server" DBDNAME ="system_name" DESCRIPTION ="@XGenSection(name=&quot;Entity&quot;)" NAME ="entity_name" OBJECTVERSION ="1" OWNERNAME ="" VERSIONNUMBER ="1">
@@ -10,7 +10,7 @@
         <TARGETFIELD BUSINESSNAME ="" DATATYPE ="varchar" DESCRIPTION ="@XGenSection(name=&quot;Attribute&quot;)" FIELDNUMBER ="1" KEYTYPE ="NOT A KEY" NAME ="attribute_name" NULLABLE ="NULL" PICTURETEXT ="" PRECISION ="10" SCALE ="0"/>
         <TARGETFIELD BUSINESSNAME ="" DATATYPE ="datetime" DESCRIPTION ="" FIELDNUMBER ="2" KEYTYPE ="NOT A KEY" NAME ="StageDateTime" NULLABLE ="NULL" PICTURETEXT ="" PRECISION ="23" SCALE ="3"/>
     </TARGET>
-    <MAPPING DESCRIPTION ="@XgenSection(name=&quot;stgMapping&quot;)" ISVALID ="YES" NAME ="stg_load_system_name_entity_name" OBJECTVERSION ="1" VERSIONNUMBER ="1">
+    <MAPPING DESCRIPTION ="@XGenSection(name=&quot;Entity&quot;)" ISVALID ="YES" NAME ="stg_load_system_name_entity_name" OBJECTVERSION ="1" VERSIONNUMBER ="1">
         <TRANSFORMATION DESCRIPTION ="" NAME ="SQ_entity_name" OBJECTVERSION ="1" REUSABLE ="NO" TYPE ="Source Qualifier" VERSIONNUMBER ="1">
             <TRANSFORMFIELD DATATYPE ="string" DEFAULTVALUE ="" DESCRIPTION ="@XGenSection(name=&quot;Attribute&quot;)" NAME ="attribute_name" PICTURETEXT ="" PORTTYPE ="INPUT/OUTPUT" PRECISION ="10" SCALE ="0"/>
             <TABLEATTRIBUTE NAME ="Sql Query" VALUE =""/>
