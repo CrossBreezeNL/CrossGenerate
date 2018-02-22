@@ -1,9 +1,12 @@
 package com.xbreeze.xgenerate.config.binding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+
+import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 
 /**
  * The BindingContainer can contains a list of SectionModelBindingConfig's and PlaceholderConfig's.
@@ -62,6 +65,27 @@ public abstract class BindingContainer {
 	public SectionModelBindingConfig[] getSectionModelBindingConfigs(String sectionName) {
 		if (this._sectionModelBindingConfigs != null)
 			return this._sectionModelBindingConfigs.stream().filter(smb -> smb.getSectionName().equalsIgnoreCase(sectionName)).toArray(SectionModelBindingConfig[]::new);
+		return null;
+	}
+	
+	/**
+	 * Get the unique placeholder name for a section based on the binding(s).
+	 * @param sectionName The section name.
+	 * @return The unique placeholder name
+	 * @throws TemplatePreprocessorException
+	 */
+	public String getUniqueSectionPlaceholderName(String sectionName) throws TemplatePreprocessorException {
+		SectionModelBindingConfig[] sectionModelBindingConfigs = getSectionModelBindingConfigs(sectionName);
+		if (sectionModelBindingConfigs != null && sectionModelBindingConfigs.length > 0) {
+			// Store the first placeholder name.
+			String placeholderName = sectionModelBindingConfigs[0].getPlaceholderName();
+			
+			// If the placeholder name is not unique, throw an exception.
+			if (Arrays.stream(sectionModelBindingConfigs).filter(smb -> !smb.getPlaceholderName().equals(placeholderName)).count() > 0)
+				throw new TemplatePreprocessorException(String.format("Found different placeholder names for bindings on Section '%s'", sectionName));
+			
+			return placeholderName;
+		}
 		return null;
 	}
 }
