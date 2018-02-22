@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.FileFormatConfig;
+import com.xbreeze.xgenerate.config.template.TemplateAttributeInjection;
 import com.xbreeze.xgenerate.config.template.TemplatePlaceholderInjection;
 import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.template.RawTemplate;
@@ -86,6 +87,9 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			// When a SAXException occurred, the template couldn't be parsed into a Document.
 			throw new TemplatePreprocessorException(String.format("Couldn't parse the raw template document: %s", e.getMessage()));
 		}
+		
+		//Perform template attribute injections on XML document
+		performAttributeInjections(templateDocument, _config.getTemplateConfig().getTemplateAttributeInjections());
 		
 		// Build a list of sections that are specified in the template config, populate each section with the nodes matching the template section's XPath
 		ArrayList<XMLTemplateSectionWithNodes> sectionsWithNodes = new ArrayList<>();
@@ -192,6 +196,32 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		return input.replaceAll("\\<", "&lt;").replaceAll("\\>", "&gt;");
 	}
 	
+	/**
+	 * Performs attribute injection on the template document
+	 * @param xmlDoc
+	 * @param templateAttributeInjections
+	 * @throws TemplatePreprocessorException
+	 */
+	private void performAttributeInjections(Document xmlDoc, ArrayList<TemplateAttributeInjection> templateAttributeInjections) throws TemplatePreprocessorException {
+		if (templateAttributeInjections != null) {
+			for (TemplateAttributeInjection tai: templateAttributeInjections){
+				try {
+					NodeList templateNodes = (NodeList)XMLUtils.getXPath().evaluate(tai.get_parentNodeXPath(), xmlDoc, XPathConstants.NODESET);
+					for (int i = 0; i < templateNodes.getLength(); i++) {
+						if (templateNodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
+							Element templateNode = (Element)templateNodes.item(i);
+							//only inject attribute if it does not already exist
+							if (!templateNode.hasAttribute(tai.get_attributeName())) {
+								templateNode.setAttribute(tai.get_attributeName(), tai.get_defaultValue());
+							}
+						}
+					}
+				} catch (XPathExpressionException e) {
+					throw new TemplatePreprocessorException(String.format("Error while processing template attribute injection for xpath %s: %s", tai.get_parentNodeXPath(),  e.getMessage())); 
+				}
+			}
+		}
+	}
 	/**
 	 * Perform placeholder injection for the current node.
 	 * @param placeholderName

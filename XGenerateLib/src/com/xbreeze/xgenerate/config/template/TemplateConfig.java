@@ -40,6 +40,11 @@ public class TemplateConfig {
 	private ArrayList<TemplateSectionAnnotation> _sectionAnnotations;
 	
 	/**
+	 * The list of template attribute injections
+	 */
+	private ArrayList<TemplateAttributeInjection> _templateAttributeInjections;
+	
+	/**
 	 * The list of template placeholder injections.
 	 * @see TemplatePlaceholderInjection
 	 */
@@ -111,7 +116,24 @@ public class TemplateConfig {
 	public void setSectionAnnotations(ArrayList<TemplateSectionAnnotation> sectionAnnotations) {
 		this._sectionAnnotations = sectionAnnotations;
 	}
+	
+	/**
+	 * @return the templateAttributeInjections
+	 */
+	@XmlElement(name="TemplateAttributeInjection")
+	@XmlElementWrapper(name="TemplateAttributeInjections")
+	public ArrayList<TemplateAttributeInjection> getTemplateAttributeInjections() {
+		return _templateAttributeInjections;
+	}
 
+	/**
+	 * set the set if templateAttributeInjections
+	 * @param templateAttributeInjections
+	 */
+	public void setTemplateAttributeInjections(ArrayList<TemplateAttributeInjection> templateAttributeInjections) {
+		this._templateAttributeInjections = templateAttributeInjections;
+	}
+	
 	/**
 	 * @return the templatePlaceholderInjections
 	 */
