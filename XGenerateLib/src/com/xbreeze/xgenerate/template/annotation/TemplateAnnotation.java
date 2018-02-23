@@ -99,16 +99,16 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 				
 				// Find the argument name-value pairs.
 				/**
-				 * [ \t]*       -> Any space or tab characters
-				 * ([a-zA-Z]+)  -> The name of the parameter (region 1)
-				 * [ \t]*       -> Again, any space or tab characters
-				 * =            -> The equals sign
-				 * [ \t]*       -> Again, any space or tab characters
-				 * \"           -> Double quote, start of the param value
-				 * ([^\"])+     -> Any character except double quote (the param value)
-				 * \"           -> Double quote, end of the param value
+				 * [ \t]*        -> Any space or tab characters
+				 * ([a-zA-Z]+)   -> The name of the parameter (region 1)
+				 * [ \t]*        -> Again, any space or tab characters
+				 * =             -> The equals sign
+				 * [ \t]*        -> Again, any space or tab characters
+				 * ("|\Qquot;\E) -> Double quote, start of the param value
+				 * ([^\"])+      -> Any character except double quote (the param value)
+				 * ("|\Qquot;\E) -> Double quote, end of the param value
 				 */
-				Pattern compiledPattern = Pattern.compile("[ \t]*([a-zA-Z]+)[ \t]*=[ \t]*\"([^\"]+)\"");
+				Pattern compiledPattern = Pattern.compile("[ \t]*([a-zA-Z]+)[ \t]*=[ \t]*(\"|\\Q&quot;\\E)([^\"]+)(\"|\\Q&quot;\\E)");
 				Matcher matcher = compiledPattern.matcher(annotationParams);
 				
 				// For every name-value pair we invoke the set method on the template annotation object.
@@ -116,7 +116,7 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 					// Group 1: The name of the annotation.
 					String paramName = matcher.group(1);
 					// Group 2: The arguments for the annotation.
-					String paramValue = matcher.group(2);
+					String paramValue = matcher.group(3);
 					logger.info(String.format("Found annotation param key-value pair (%s='%s')", paramName, paramValue));
 					
 					// Invoke the set method.

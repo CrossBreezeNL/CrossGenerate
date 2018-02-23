@@ -14,13 +14,13 @@ public class CrossGenerateTest {
 		//doMicrosoftSQLTest();
 		
 		// Execute the Microsoft SSIS test.
-		//doMicrosoftSSISTest();
+		doMicrosoftSSISTest();
 		
 		// Execute the PowerCenter test.
 		//doPowerCenterTest();
 		
 		// Execute the IBM DataStage test.
-		doDataStageTest();
+		//doDataStageTest();
 		
 	}
 	
