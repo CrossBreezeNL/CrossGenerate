@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.Random;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.http.HttpEntity;
@@ -70,7 +71,7 @@ public class LicensedClassLoader extends ClassLoader {
 
 		this.rnd = new Random();
 		this.typeOfUse = debugMode ? "Debug" : "Normal";
-
+		
 		// Check the required license attributes
 
 		if (StringHelper.isEmptyOrWhitespace(_config.getLicenseKey())) {
@@ -91,8 +92,10 @@ public class LicensedClassLoader extends ClassLoader {
 
 		// When running in developer mode output informational and skip license check.
 		if (this._config.getDeveloperMode()) {
+			logger.setLevel(Level.INFO);
 			logger.info("Notice: Running in developer mode");
 		} else {
+			logger.setLevel(Level.WARNING);
 			// If the license is invalid, throw an exception.
 			if (!validateLicense()) {
 				throw new LicenseException("License invalid");
@@ -270,7 +273,7 @@ public class LicensedClassLoader extends ClassLoader {
 			try {
 				return getClassOrResourceFromNetwork(resourceLocation);
 			} catch (LicenseException e) {
-				logger.severe(String.format("Couldn't load using remote path: %s: %s", resourceLocation, e.getMessage()));
+				logger.info(String.format("Couldn't load using remote path: %s: %s", resourceLocation, e.getMessage()));
 				// Return null, so its clear the class or resource couldn't be found.
 				return null;
 			}
