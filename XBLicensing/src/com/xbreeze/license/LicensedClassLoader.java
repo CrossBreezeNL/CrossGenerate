@@ -216,6 +216,13 @@ public class LicensedClassLoader extends ClassLoader {
 			statusCode = licenseResponse.getStatusLine().getStatusCode();
 			String responseMessage = licenseResponse.getStatusLine().getReasonPhrase();
 			
+			try {
+				licenseResponse.close();
+			} catch (IOException e) {
+				logger.severe(String.format("Error while closing HTTP connection: %s", e.getMessage()));
+				return false;
+			}
+			
 			// Switch on the response code.
 			switch (statusCode) {
 			case 200:
@@ -300,6 +307,11 @@ public class LicensedClassLoader extends ClassLoader {
 			statusCode = classOrResourceResponse.getStatusLine().getStatusCode();
 			if (statusCode == 204) {
 				retry++;
+				try {
+					classOrResourceResponse.close();
+				} catch (IOException e) {
+					logger.severe(String.format("Error while closing HTTP connection: %s", e.getMessage()));
+				}
 				logger.warning("Invalid token/signature, retry " + String.valueOf(retry));
 			}
 			else if (statusCode == 200) {
@@ -315,6 +327,7 @@ public class LicensedClassLoader extends ClassLoader {
 						buffer.write(data, 0, nRead);
 					}
 					buffer.flush();
+					classOrResourceResponse.close();
 				} catch (IOException e) {
 					throw new LicenseException(String.format("Error while fetching remote class file: %s", e.getMessage()));
 				}
