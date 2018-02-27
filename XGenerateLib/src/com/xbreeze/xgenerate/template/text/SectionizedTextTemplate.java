@@ -1,6 +1,6 @@
 package com.xbreeze.xgenerate.template.text;
 
-import com.xbreeze.xgenerate.template.SectionedTemplate;
+import com.xbreeze.xgenerate.template.section.SectionedTemplate;
 
 public class SectionizedTextTemplate extends SectionedTemplate {
 

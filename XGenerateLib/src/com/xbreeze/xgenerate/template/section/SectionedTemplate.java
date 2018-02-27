@@ -1,6 +1,6 @@
-package com.xbreeze.xgenerate.template;
+package com.xbreeze.xgenerate.template.section;
 
-import com.xbreeze.xgenerate.template.section.NamedTemplateSection;
+import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
 
 /**
  * The sectioned template contains an ordered collection of all sections residing in the template.
@@ -41,6 +41,7 @@ public abstract class SectionedTemplate extends NamedTemplateSection {
 	 * @param rootSectionName The name of the root section.
 	 */
 	public SectionedTemplate(String rootSectionName) {
-		super(rootSectionName, 0);
+		// Create an implicit TemplateSectionAnnotation for the root of the template.
+		super(rootSectionName, 0, new TemplateSectionAnnotation(rootSectionName));
 	}
 }

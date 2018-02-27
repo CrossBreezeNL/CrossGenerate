@@ -31,7 +31,6 @@ import com.xbreeze.xgenerate.config.template.TemplateAttributeInjection;
 import com.xbreeze.xgenerate.config.template.TemplatePlaceholderInjection;
 import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.template.RawTemplate;
-import com.xbreeze.xgenerate.template.SectionedTemplate;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.annotation.TemplateAnnotation;
@@ -40,6 +39,7 @@ import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
 import com.xbreeze.xgenerate.template.scanner.AnnotationScanner;
 import com.xbreeze.xgenerate.template.section.NamedTemplateSection;
 import com.xbreeze.xgenerate.template.section.RawTemplateSection;
+import com.xbreeze.xgenerate.template.section.SectionedTemplate;
 
 public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	
@@ -100,7 +100,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 					// Evaluate the XPath of the annotation from the config on the current node.
 					NodeList sectionNodes = (NodeList)XMLUtils.getXPath().evaluate(tsa.getTemplateXPath(), templateDocument, XPathConstants.NODESET);
 					// When the nodes are found, create the XMLTemplateSectionWithNodes object.
-					sectionsWithNodes.add(new XMLTemplateSectionWithNodes(tsa.getName(), sectionNodes));
+					sectionsWithNodes.add(new XMLTemplateSectionWithNodes(tsa, sectionNodes));
 				} catch (XPathExpressionException e) {
 					throw new TemplatePreprocessorException(String.format("Error while searching for section nodes for section %s: %s", tsa.getName(),  e.getMessage()));
 				}
@@ -288,7 +288,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 				if (sectionFromConfigFound) {
 					throw new TemplatePreprocessorException(String.format("Multiple section annotations found from config on node '%s', only 1 allowed", templateNode.getNodeName()));
 				}
-				currentSection = new NamedTemplateSection(tsw.getName(), 0);
+				currentSection = new NamedTemplateSection(tsw.getName(), 0, tsw.getTemplateSectionAnnotation());
 				parentSection.addTemplateSection(currentSection);
 				sectionFromConfigFound = true;
 			}
@@ -357,7 +357,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 							TemplateSectionAnnotation tsa = (TemplateSectionAnnotation) annotation;
 							logger.info(String.format("Found section annotation '%s' on node '%s'", tsa.getName(), templateNode.getNodeName()));
 							// Add the named template using the section name in the annotation.
-							currentSection = new NamedTemplateSection(tsa.getName(), 0);
+							currentSection = new NamedTemplateSection(tsa.getName(), 0, tsa);
 							parentSection.addTemplateSection(currentSection);
 							
 							// Set the indicator that a section annotation was found.

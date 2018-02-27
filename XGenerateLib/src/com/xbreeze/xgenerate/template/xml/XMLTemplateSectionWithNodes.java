@@ -4,6 +4,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
+import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
 
 /***
  * Class for storing the nodes that match with a templatesection annotations' elementXPath in a certain XML template document.
@@ -15,12 +16,12 @@ public class XMLTemplateSectionWithNodes {
 	/***
 	 * The name of the section
 	 */
-	String name;
+	private TemplateSectionAnnotation _templateSectionAnnotation;
 	
 	/***
 	 * The nodes that match the xpath
 	 */
-	NodeList nodes;
+	private NodeList _nodes;
 	
 	/***
 	 * Constructor, initializes the object and performs xpath on specified document.
@@ -29,9 +30,9 @@ public class XMLTemplateSectionWithNodes {
 	 * @throws TemplatePreprocessorException 
 	 * @document the document to perform the xpath against.
 	 */
-	public XMLTemplateSectionWithNodes(String name, NodeList nodes) {
-		this.name = name;
-		this.nodes = nodes;
+	public XMLTemplateSectionWithNodes(TemplateSectionAnnotation tsa, NodeList nodes) {
+		this._templateSectionAnnotation = tsa;
+		this._nodes = nodes;
 	}
 	
 	/***
@@ -40,11 +41,11 @@ public class XMLTemplateSectionWithNodes {
 	 * @return true if the node is found in the nodelist, false otherwise
 	 */
 	public boolean containsNode(Node node) {
-		if (nodes == null) {
+		if (_nodes == null) {
 			return false;
 		}
-		for (int i=0; i < nodes.getLength();i++) {
-			if (nodes.item(i).equals(node))
+		for (int i=0; i < _nodes.getLength();i++) {
+			if (_nodes.item(i).equals(node))
 				return true;
 		}
 		return false;
@@ -52,9 +53,23 @@ public class XMLTemplateSectionWithNodes {
 	
 	/***
 	 * Returns the name of this section
-	 * @return nam of the section
+	 * @return name of the section
 	 */
 	public String getName() {
-		return this.name;
+		return this._templateSectionAnnotation.getName();
+	}
+
+	/**
+	 * @return the templateSectionAnnotation
+	 */
+	public TemplateSectionAnnotation getTemplateSectionAnnotation() {
+		return _templateSectionAnnotation;
+	}
+
+	/**
+	 * @return the nodes
+	 */
+	public NodeList getNodes() {
+		return _nodes;
 	}
 }

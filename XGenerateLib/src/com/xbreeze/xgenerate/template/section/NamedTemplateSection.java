@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
 import com.xbreeze.xgenerate.template.PreprocessedTemplate;
+import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
 
 public class NamedTemplateSection extends TemplateSection {
 	// The logger for this class.
@@ -20,6 +21,12 @@ public class NamedTemplateSection extends TemplateSection {
 	private String _sectionName;
 	
 	/**
+	 * The template section annotation.
+	 * Used to generate the right XSLT.
+	 */
+	private TemplateSectionAnnotation _templateSectionAnnotation;
+	
+	/**
 	 * The list containing all sections of the template section in the right order.
 	 */
 	private ArrayList<TemplateSection> _templateSections;
@@ -30,9 +37,12 @@ public class NamedTemplateSection extends TemplateSection {
 	 * @param sectionBeginIndex The section begin index.
 	 * @param sectionEndIndex The section end index.
 	 */
-	public NamedTemplateSection(String sectionName, int sectionBeginIndex) {
+	public NamedTemplateSection(String sectionName, int sectionBeginIndex, TemplateSectionAnnotation templateSectionAnnotation) {
 		super(sectionBeginIndex, -1);
+		// Set the sectio name.
 		this._sectionName = sectionName;
+		// Set the template section annotation.
+		this._templateSectionAnnotation = templateSectionAnnotation;
 		// Initialize the _templateSections list.
 		this._templateSections = new ArrayList<TemplateSection>();
 	}
@@ -206,6 +216,11 @@ public class NamedTemplateSection extends TemplateSection {
 		preprocessedTemplate.append("<!-- Section end: %s -->", this._sectionName);
 		
 	}
-	
 
+	/**
+	 * @return the _templateSectionAnnotation
+	 */
+	public TemplateSectionAnnotation getTemplateSectionAnnotation() {
+		return _templateSectionAnnotation;
+	}	
 }

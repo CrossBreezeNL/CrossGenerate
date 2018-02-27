@@ -8,6 +8,7 @@ import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
 import com.xbreeze.xgenerate.config.template.TemplateConfig;
 import com.xbreeze.xgenerate.template.annotation.UnknownAnnotationException;
+import com.xbreeze.xgenerate.template.section.SectionedTemplate;
 
 public abstract class TemplatePreprocessor {
 	// The logger for this class.

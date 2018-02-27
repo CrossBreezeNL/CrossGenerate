@@ -11,7 +11,6 @@ import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.FileFormatConfig;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.RawTemplate;
-import com.xbreeze.xgenerate.template.SectionedTemplate;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
 import com.xbreeze.xgenerate.template.annotation.TemplateAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateCommentAnnotation;
@@ -23,6 +22,7 @@ import com.xbreeze.xgenerate.template.scanner.AnnotationScanner;
 import com.xbreeze.xgenerate.template.section.CommentTemplateSection;
 import com.xbreeze.xgenerate.template.section.NamedTemplateSection;
 import com.xbreeze.xgenerate.template.section.RawTemplateSection;
+import com.xbreeze.xgenerate.template.section.SectionedTemplate;
 
 public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	/**
@@ -108,12 +108,8 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 			// We use the ListIterator here since we can go forward and backward.
 			ListIterator<TemplateAnnotation> taIterator = templateAnnotations.listIterator();
 			
-			// Create an implicit TemplateSectionAnnotation for the root of the template.
-			TemplateSectionAnnotation rootSectionAnnotation = new TemplateSectionAnnotation();
-			// Set the name of the root section.
-			rootSectionAnnotation.setName(_config.getTemplateConfig().getRootSectionName());
 			// Create an implicit template section bounds annotation with the begin index on 0.
-			TemplateSectionBoundsAnnotation rootSectionBoundsAnnotation = new TemplateSectionBoundsAnnotation(rootSectionAnnotation, 0);
+			TemplateSectionBoundsAnnotation rootSectionBoundsAnnotation = new TemplateSectionBoundsAnnotation(sectionizedTextTemplate.getTemplateSectionAnnotation(), 0);
 			
 			// Process the content of the section.
 			// Pass in 0 for parentPreviousSectionEndIndex.
@@ -200,7 +196,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				TemplateSectionBoundsAnnotation templateSectionBoundsAnnotation = (TemplateSectionBoundsAnnotation) templateAnnotation;
 				logger.info(String.format("Start of processing NamedTemplateSection %s", templateSectionBoundsAnnotation.getName()));
 				// Create the named template section.
-				NamedTemplateSection namedTemplateSection = new NamedTemplateSection(templateSectionBoundsAnnotation.getName(), templateSectionBoundsAnnotation.getAnnotationBeginIndex());
+				NamedTemplateSection namedTemplateSection = new NamedTemplateSection(templateSectionBoundsAnnotation.getName(), templateSectionBoundsAnnotation.getAnnotationBeginIndex(), templateSectionBoundsAnnotation.getTemplateSectionAnnotation());
 				// Process the content of the named template (recursively).
 				// This process will return the end index of the section (or throw an exception if not found).
 				processNamedTemplateSection(templateSectionBoundsAnnotation, namedTemplateSection, rawTemplateContent, taIterator, previousSectionEndIndex, false);

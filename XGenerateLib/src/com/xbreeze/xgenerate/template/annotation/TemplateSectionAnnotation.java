@@ -120,6 +120,20 @@ public class TemplateSectionAnnotation extends TemplateAnnotation {
 	private String templateXPath;
 	
 	/**
+	 * Constructor.
+	 */
+	public TemplateSectionAnnotation() { }
+	
+	/**
+	 * Constructor.
+	 * @param name The name of the section.
+	 */
+	public TemplateSectionAnnotation(String name) {
+		super();
+		this.name = name;
+	}
+	
+	/**
 	 * @return the name
 	 */
 	@XmlAttribute(required=true)
