@@ -14,6 +14,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 import com.xbreeze.xgenerate.UnhandledException;
+import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation.RepetitionAction;
+import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation.RepetitionStyle;
 
 /**
  * The abstract TemplateAnnotation class which should be extends by all annotations supported by CrossGenerate.
@@ -201,6 +203,14 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 		else if (boolean.class.equals(paramValueType)) {
 			paramValueObject = Boolean.parseBoolean(paramValue);
 		}
+		// RepetitionStyle
+		else if (RepetitionStyle.class.equals(paramValueType)) {
+			paramValueObject = RepetitionStyle.valueOf(paramValue);
+		}
+		// RepetitionAction
+		else if (RepetitionAction.class.equals(paramValueType)) {
+			paramValueObject = RepetitionAction.valueOf(paramValue);
+		}		
 		// When we have a set method with a parameter type we don't support yet, we throw an exception.
 		else {
 			throw new AnnotationException(String.format("The annotation set method parameter type is not supported (%s -> %s -> %s)", templateAnnotation.getAnnotationName(), setMethod.getName(), paramValueType.toString()));

@@ -7,7 +7,10 @@ import java.util.regex.Pattern;
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
 import com.xbreeze.xgenerate.template.PreprocessedTemplate;
+import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
+import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation.RepetitionAction;
+import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation.RepetitionStyle;
 
 public class NamedTemplateSection extends TemplateSection {
 	// The logger for this class.
@@ -77,7 +80,7 @@ public class NamedTemplateSection extends TemplateSection {
 		return this._templateSections;
 	}
 	
-	public void appendTemplateXslt(PreprocessedTemplate preprocessedTemplate, XGenConfig config, SectionModelBindingConfig parentBindingConfig) {
+	public void appendTemplateXslt(PreprocessedTemplate preprocessedTemplate, XGenConfig config, SectionModelBindingConfig parentBindingConfig) throws TemplatePreprocessorException {
 		
 		// Add a comment in the XSLT marking the section start.
 		preprocessedTemplate.append("<!-- Section begin: %s -->", this._sectionName);
@@ -112,16 +115,32 @@ public class NamedTemplateSection extends TemplateSection {
 						// TODO: Only look into the global config if not the parent, or create a function to recursively walk to the parents and check for section config.
 						//config.getBindingConfig().getSectionModelBindingConfigs(namedTemplateSection.getSectionName())
 				);*/
+
+				// Store the annotation in a local variable.
+				TemplateSectionAnnotation templateSectionAnnotation = namedTemplateSection.getTemplateSectionAnnotation();
 				
 				// Repeat the template for each section binding.
 				if (sectionModelBindingConfigs.length > 0) {
 					// For each section model binding, repeat the content of the section.
 					for (SectionModelBindingConfig sectionModelBindingConfig : sectionModelBindingConfigs) {
+						
 						// Append the start of the for-each.
 						preprocessedTemplate.append("<xsl:for-each select=\"%s\">", sectionModelBindingConfig.getModelXPath());
+						
+						// If there is a prefix defined in the annotation, add the logic here.
+						if (templateSectionAnnotation.getPrefix() != null && templateSectionAnnotation.getPrefix().length() > 0) {
+							preprocessedTemplate.append(getRepetitionXSLT(templateSectionAnnotation.getPrefix(), templateSectionAnnotation.getPrefixStyle(), templateSectionAnnotation.getPrefixAction()));
+						}
+						
 						// Append the Xstl of the named template section.
 						// The content of the template section needs to be resolved before adding the content here. Recursive call needed.
 						namedTemplateSection.appendTemplateXslt(preprocessedTemplate, config, sectionModelBindingConfig);
+						
+						// If there is a suffix defined in the annotation, add the logic here.
+						if (templateSectionAnnotation.getSuffix() != null && templateSectionAnnotation.getSuffix().length() > 0) {
+							preprocessedTemplate.append(getRepetitionXSLT(templateSectionAnnotation.getSuffix(), templateSectionAnnotation.getSuffixStyle(), templateSectionAnnotation.getSuffixAction()));
+						}
+						
 						// Append the end of the for-each.
 						preprocessedTemplate.append("</xsl:for-each>");
 					}
@@ -215,6 +234,45 @@ public class NamedTemplateSection extends TemplateSection {
 		// Add a comment in the XSLT marking the section end.
 		preprocessedTemplate.append("<!-- Section end: %s -->", this._sectionName);
 		
+	}
+	
+	/**
+	 * Get the XSLT for the repetion.
+	 * @param prefixOrSuffix The prefix or suffix.
+	 * @param style The repetition style.
+	 * @param action The repetition action.
+	 * @return The prefix or suffix XSLT.
+	 * @throws TemplatePreprocessorException
+	 */
+	private String getRepetitionXSLT(String prefixOrSuffix, RepetitionStyle style, RepetitionAction action) throws TemplatePreprocessorException {
+		String condition;
+		switch (style) {
+			case allButFirst: 
+				condition = "position() != 1";
+				break;
+			case allButFirstAndLast:
+				condition = "position() != 1 and position() != last()";
+				break;
+			case allButLast:
+				condition = "position() != last()";
+				break;
+			case firstOnly:
+				condition = "position() = 1";
+				break;
+			case lastOnly:
+				condition = "position() = last()";
+				break;
+			default:
+				throw new TemplatePreprocessorException(String.format("Unrecognized repetition style specified: %s", style));
+		}
+		
+		switch (action) {
+			case add:
+				// Return the XSLT for the prefix or suffix.
+				return String.format("<xsl:if test=\"%s\">%s</xsl:if>", condition, prefixOrSuffix);
+			default:
+				throw new TemplatePreprocessorException(String.format("Unrecognized repetition action specified: %s", action));
+		}
 	}
 
 	/**
