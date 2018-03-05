@@ -48,18 +48,18 @@
       <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@cachedCodePage"  modelNode="codePage" scope="current" />
     </TemplatePlaceholderInjections>
   </Template>
-  <Binding>
-	<SectionModelBinding section="StgPackage" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity">
-	  <Placeholders>
-	    <!-- For the placeholder the modelXPath is relative to its section model XPath. -->
-	    <Placeholder name="system" modelXPath="../.." />                 
-	  </Placeholders>
-	  <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="attribute">
-	    <Placeholders>
-	      <Placeholder name="system" modelXPath="../../../.." />
-	      <Placeholder name="entity" modelXPath="../.." />                 
-	    </Placeholders>    
-	  </SectionModelBinding>        
-	 </SectionModelBinding>
-  </Binding>
+ <Binding>
+   <SectionModelBinding section="StgPackage" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity">
+     <Placeholders>
+       <!-- For the placeholder the modelXPath is relative to its section model XPath. -->
+       <Placeholder name="system" modelXPath="../.." />                 
+     </Placeholders>
+     <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="attribute">
+       <Placeholders>
+         <Placeholder name="system" modelXPath="../../../.." />
+         <Placeholder name="entity" modelXPath="../.." />                 
+       </Placeholders>    
+     </SectionModelBinding>        
+   </SectionModelBinding>
+ </Binding>
 </XGenConfig>

@@ -20,7 +20,7 @@ public class TemplatePlaceholderInjection {
 	 * The template placeholder scope.
 	 * @see TemplatePlaceholderScope
 	 */
-	private TemplatePlaceholderScope scope;
+	private TemplatePlaceholderScope scope = TemplatePlaceholderScope.current;
 
 	/**
 	 * @return the templateXPath

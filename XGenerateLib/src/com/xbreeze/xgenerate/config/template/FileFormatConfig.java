@@ -39,12 +39,12 @@ public class FileFormatConfig {
 	 * The type of the template.
 	 * @see TemplateType
 	 */
-	private TemplateType templateType;
+	private TemplateType _templateType;
 	
 	/**
 	 * The current accessor.
 	 */
-	private String _currentAccessor;
+	private String _currentAccessor = "_";
 	
 	/**
 	 * The child accessor.
@@ -67,7 +67,7 @@ public class FileFormatConfig {
 	 * When the template type is text, this property can be used to specify the prefix in the template file which defines the end of a multi-line comment.
 	 * For example in SQL this is *&#47; (/) 
 	 */
-	private String multiLineCommentSuffix;
+	private String _multiLineCommentSuffix;
 	
 	/**
 	 * When the template type is xml, the location of a comment relative to the current element can be specified here.
@@ -88,19 +88,19 @@ public class FileFormatConfig {
 	 * The prefix in the template file which defines the start of an annotation.
 	 * For example in SQL we advise to use '@XGen'. So when specifying a section the annotation would be '@XGenSection'.
 	 */
-	private String _annotationPrefix;
+	private String _annotationPrefix = "@XGen";
 	
 	/**
 	 * The prefix for specifying the annotation arguments.
 	 * For example '@XGenComment(Some comment)' <- The '(' is the prefix.
 	 */
-	private String _annotationArgsPrefix;
+	private String _annotationArgsPrefix = "(";
 	
 	/**
 	 * The prefix for specifying the annotation arguments.
 	 * For example '@XGenComment(Some comment)' <- The ')' is the suffix.
 	 */	
-	private String _annotationArgsSuffix;
+	private String _annotationArgsSuffix = ")";
 
 	/**
 	 * @return the type
@@ -137,14 +137,14 @@ public class FileFormatConfig {
 	 */
 	@XmlAttribute
 	public TemplateType getTemplateType() {
-		return templateType;
+		return _templateType;
 	}
 
 	/**
 	 * @param templateType the templateType to set
 	 */
 	public void setTemplateType(TemplateType templateType) {
-		this.templateType = templateType;
+		this._templateType = templateType;
 	}
 	
 	/**
@@ -212,14 +212,14 @@ public class FileFormatConfig {
 	 */
 	@XmlAttribute
 	public String getMultiLineCommentSuffix() {
-		return multiLineCommentSuffix;
+		return _multiLineCommentSuffix;
 	}
 
 	/**
 	 * @param multiLineCommentSuffix the multiLineCommentSuffix to set
 	 */
 	public void setMultiLineCommentSuffix(String multiLineCommentSuffix) {
-		this.multiLineCommentSuffix = multiLineCommentSuffix;
+		this._multiLineCommentSuffix = multiLineCommentSuffix;
 	}
 	
 	/**

@@ -8,13 +8,11 @@ public class TemplateAttributeInjection {
 	/**
 	 * The XPath for parent node where attribute needs to be injected
 	 */
-	
 	private String _parentNodeXPath;
 
 	/**
 	 * The name of the attribute to inject
 	 */
-
 	private String _attributeName;
 	
 	/**
