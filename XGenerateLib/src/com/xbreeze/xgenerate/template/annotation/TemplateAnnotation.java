@@ -101,29 +101,43 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 				
 				// Find the argument name-value pairs.
 				/**
-				 * [ \t]*        -> Any space or tab characters
-				 * ([a-zA-Z]+)   -> The name of the parameter (region 1)
-				 * [ \t]*        -> Again, any space or tab characters
-				 * =             -> The equals sign
-				 * [ \t]*        -> Again, any space or tab characters
-				 * ("|\Qquot;\E) -> Double quote, start of the param value
-				 * ([^\"])+      -> Any character except double quote (the param value)
-				 * ("|\Qquot;\E) -> Double quote, end of the param value
+				 * [ \t]*           -> Any space or tab characters
+				 * ,?               -> A comma between parameters (optional)
+				 * [ \t]*           -> Any space or tab characters
+				 * ([a-zA-Z]+)      -> The name of the parameter (region 1)
+				 * [ \t]*           -> Again, any space or tab characters
+				 * =                -> The equals sign
+				 * [ \t]*           -> Again, any space or tab characters
+				 * ('|"|\Qquot;\E)? -> Single quote, Double quote, start of the param value (optional)
+				 * ([^\"])+         -> Any character except double quote (the param value)
+				 * ('|"|\Qquot;\E)? -> Single quite, Double quote, end of the param value (optional)
 				 */
-				Pattern compiledPattern = Pattern.compile("[ \t]*([a-zA-Z]+)[ \t]*=[ \t]*(\"|\\Q&quot;\\E)([^\"]+)(\"|\\Q&quot;\\E)");
+				Pattern compiledPattern = Pattern.compile("[ \t]*,?[ \t]*([a-zA-Z]+)[ \t]*=[ \t]*(([a-zA-Z]+)|(\"|\\Q&quot;\\E)([^\"]+)(\"|\\Q&quot;\\E))");
 				Matcher matcher = compiledPattern.matcher(annotationParams);
-				
+
+				// Store the previous end match index to check whether we aren't skipping bits.
+				int previousEndMatchIndex = 0;
 				// For every name-value pair we invoke the set method on the template annotation object.
 				while (matcher.find()) {
+					
+					if (matcher.start() != previousEndMatchIndex)
+						throw new AnnotationException(String.format("Part of annotation params found which is not according to the expected format: %s (%d:%d)", annotationParams.substring(previousEndMatchIndex, matcher.start()), previousEndMatchIndex, matcher.start()));
+					
 					// Group 1: The name of the annotation.
 					String paramName = matcher.group(1);
-					// Group 2: The arguments for the annotation.
-					String paramValue = matcher.group(3);
+					// Group 3/5: The arguments for the annotation.
+					String paramValue = (matcher.group(3) != null) ? matcher.group(3) : matcher.group(5);
 					logger.info(String.format("Found annotation param key-value pair (%s='%s')", paramName, paramValue));
 					
 					// Invoke the set method.
 					invokeSetMethod(templateAnnotation, annotationSetMethods, paramName, paramValue);
+					
+					// Store the current end index in the variable.
+					previousEndMatchIndex = matcher.end();
 				}
+				
+				if (annotationParams.length() > 0 && previousEndMatchIndex == 0)
+					throw new AnnotationException(String.format("Params part of annotation couldn't be parsed: '%s'", annotationParams));
 				
 			}
 			
@@ -200,7 +214,7 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 			}
 		}
 		// Boolean
-		else if (boolean.class.equals(paramValueType)) {
+		else if (boolean.class.equals(paramValueType) || Boolean.class.equals(paramValueType)) {
 			paramValueObject = Boolean.parseBoolean(paramValue);
 		}
 		// RepetitionStyle

@@ -284,7 +284,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				sectionEndCharIndex += templateSectionAnnotation.getEnd().length();
 		}
 		// placeholderOnLastLine
-		if (templateSectionAnnotation.getPlaceholderOnLastLine() != null && templateSectionAnnotation.getPlaceholderOnLastLine().length() > 0) {
+		else if (templateSectionAnnotation.getPlaceholderOnLastLine() != null && templateSectionAnnotation.getPlaceholderOnLastLine().length() > 0) {
 		    Pattern pattern = Pattern.compile(String.format("%s.*\\r?\\n?", Pattern.quote(templateSectionAnnotation.getPlaceholderOnLastLine())));
 		    Matcher matcher = pattern.matcher(rawTemplateContent);
 			if (matcher.find(sectionEndSearchBeginIndex) && matcher.end() <= sectionEndSearchEndIndex) {
