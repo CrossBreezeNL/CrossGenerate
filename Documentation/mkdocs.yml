@@ -1,0 +1,84 @@
+# Project information
+site_name: 'CrossGenerate Wiki'
+
+# Copyright
+copyright: 'Copyright &copy; 2018 - CrossBreeze'
+
+# Configuration
+theme:
+  name: 'material'
+  logo: 'images/x-generate-icon-transparant-128.png'
+  favicon: 'images/x-generate.ico'
+  language: 'en'
+  palette:
+    primary: 'blue grey'
+    accent: 'green'
+  feature:
+    tabs: true
+
+# Pages
+pages:
+- Home:
+    - 'Introduction'    : 'index.md'
+    - 'Overview'        : 'Overview.md'
+    - 'Getting started' : 'GettingStarted.md'
+- Model:
+    - 'Introduction'    : 'Model/index.md'
+- Template:
+    - 'Introduction'    : 'Template/index.md'
+    - 'Text template'   : 'Template/TextTemplate/index.md'
+    - 'XML template'    : 'Template/XMLTemplate/index.md'
+    - 'Annotation':
+            - 'Overview'                : 'Template/Annotation/index.md'
+            - 'Section'                 : 'Template/Annotation/Section.md'
+            - 'Comment'                 : 'Template/Annotation/Comment.md'
+- Config:
+    - 'Configuration'   : 'Config/index.md'
+    - 'Model'           : 'Config/Model.md'
+    - 'Template':
+        - 'Template'                     : 'Config/Template/index.md'
+        - 'FileFormat'                   : 'Config/Template/FileFormat.md'
+        - 'Output'                       : 'Config/Template/Output.md'
+        - 'Section'                      : 'Config/Template/Section.md'
+        - 'TemplateAttributeInjection'   : 'Config/Template/TemplateAttributeInjection.md'
+        - 'TemplatePlaceholderInjection' : 'Config/Template/TemplatePlaceholderInjection.md'
+    - 'Binding'         : 'Config/Binding.md'
+- Examples:
+    - 'Overview'        : 'Examples/index.md'
+    - 'Models':
+        - 'Source model'     : 'Examples/Model/Source_Model.md'
+        - 'DWH model'        : 'Examples/Model/DWH_Model.md'
+    - 'SQL':
+        - 'Simple staging'   : 'Examples/SQL/Simple_staging.md'
+    - 'Microsoft SSIS':
+        - 'Simple staging'   : 'Examples/Microsoft_SSIS/Simple_staging.md'
+    - 'Informatica PowerCenter':
+        - 'Simple staging'   : 'Examples/Informatica_PowerCenter/Simple_staging.md'
+    - 'IBM DataStage':
+        - 'Simple staging'   : 'Examples/IBM_DataStage/Simple_staging.md'
+
+# Extra
+extra:
+  social:
+    - type: 'twitter'
+      link: 'https://twitter.com/CrossBreeze_NL'
+
+# Extensions
+markdown_extensions:
+  - codehilite
+  - toc:
+      permalink: true
+  - footnotes
+  - admonition
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
