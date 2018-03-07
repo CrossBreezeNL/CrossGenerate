@@ -47,7 +47,7 @@ pages:
     - 'Binding'         : 'Config/Binding.md'
 - Examples:
     - 'Overview'        : 'Examples/index.md'
-    - 'Models':
+    - 'Model':
         - 'Source model'     : 'Examples/Model/Source_Model.md'
         - 'DWH model'        : 'Examples/Model/DWH_Model.md'
     - 'SQL':

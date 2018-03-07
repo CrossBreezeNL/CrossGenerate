@@ -4,9 +4,11 @@
 In this example we will be generating staging tables for each entity defined in the [Source model](../Model/Source_model).
 
 ## Template
-We create a template for creating a staging table.
+We create a template for creating a staging table, in the file name we use the 'system_name' placeholder to have the system name in the resulting output file.
 We define the `@XGenSection` annotation to define the 'CreateTable' section to repeat for each table.
 We also define the section named 'TableColumn' to repeat for each column in the table.
+
+### Staging_Tables_system_name.sql
 
 ``` sql
 -- @XGenSection(name="CreateTable" placeholderOnLastLine="GO")
@@ -52,6 +54,8 @@ In the config we:
 
 ## Output
 When running CrossGenerate the output using the given Model, Template and Config will be as follows:
+
+### Staging_Tables_ExampleSource.sql
 ``` sql
 CREATE TABLE [ExampleSource].[Order] (
   [Id]           int        NULL,
