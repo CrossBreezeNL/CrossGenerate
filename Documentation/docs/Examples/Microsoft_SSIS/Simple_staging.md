@@ -172,11 +172,7 @@ Updated the Source & Staging connection to the real Source & Staging databases w
     The annotation, which in the template is in the Description property, is now removed.
 
 #### Data Flow
-
 ![Output Data Flow](img/output_dataflow.png)
-
-!!! bug
-    Here the space between system_name and entity_name is removed. This is a known issue in CrossGenerate.
 
 ##### Source
 
@@ -200,8 +196,8 @@ Updated the Source & Staging connection to the real Source & Staging databases w
 ###### Input and Output Properties
 ![Output Destination Input and Output Properties](img/output_dest_adv_columns.png)
 
-!!! todo
-    Update screenshot when name of dest component is fixed
+#### Execution
+![Output Data Flow Execution](img/output_dataflow_executed.png)
 
 ## Attachments
 The sample solution with the template database scripts & SSIS package can be found in the following zip file:

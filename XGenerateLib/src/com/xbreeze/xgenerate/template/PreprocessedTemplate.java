@@ -183,7 +183,7 @@ public class PreprocessedTemplate {
 				 * @    - The XML attribute accessor.
 				 * $1   - The value of group 1 (the attribute name to select from the find regex)
 				 */
-				placeholderFormat = "<xsl:value-of select=\"%s/@$1\" />";
+				placeholderFormat = "</xsl:text><xsl:value-of select=\"%s/@$1\" /><xsl:text>";
 				break;
 		}
 		
