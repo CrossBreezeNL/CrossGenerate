@@ -1,5 +1,5 @@
 # Project information
-site_name: 'CrossGenerate Wiki'
+site_name: 'CrossGenerate v2.0.0'
 
 # Copyright
 copyright: 'Copyright &copy; 2018 - CrossBreeze'
@@ -7,8 +7,8 @@ copyright: 'Copyright &copy; 2018 - CrossBreeze'
 # Configuration
 theme:
   name: 'material'
-  logo: 'images/x-generate-icon-transparant-128.png'
-  favicon: 'images/x-generate.ico'
+  logo: 'img/xgen-icon.png'
+  favicon: 'img/favicon.ico'
   language: 'en'
   palette:
     primary: 'blue grey'
@@ -32,6 +32,8 @@ pages:
             - 'Overview'                : 'Template/Annotation/index.md'
             - 'Section'                 : 'Template/Annotation/Section.md'
             - 'Comment'                 : 'Template/Annotation/Comment.md'
+- Binding:
+    - 'Introduction'    : 'Binding/index.md'
 - Config:
     - 'Configuration'   : 'Config/index.md'
     - 'Model'           : 'Config/Model.md'

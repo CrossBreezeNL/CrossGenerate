@@ -11,7 +11,7 @@ We have a staging package which needs to be created for every entity in our mode
 
 On the Control Flow we have a Data Flow Task with the name 'Load entity_name'. In the configuration for CrossGenerate we will bind the `entity` elements on the `stgPackage` section so the `entity_name` is resolved correctly.
 
-![control flow.png](images/control_flow.png)
+![control flow.png](img/control_flow.png)
 
 ### Dataflow
 In the DataFlow task of this template we have:
@@ -21,7 +21,7 @@ In the DataFlow task of this template we have:
 
 Here the `system_name` and `entity_name` placeholders will be resolved automatically, since these component are withing the `stgPackage` section.
 
-![dataflow.PNG](images/dataflow.png)
+![dataflow.PNG](img/dataflow.png)
 
 #### Source
 In the OLE DB Source component we go through the different screens and set the CrossGenerate annotations accordingly.
@@ -29,34 +29,34 @@ In the OLE DB Source component we go through the different screens and set the C
 ##### Connection manager
 In the connection manager screen we don't need to set anything specific for CrossGenerate, we make sure the connection is set correctly and the right source table is selected.
 
-![source1.png](images/source_connmgr.png)
+![source1.png](img/source_connmgr.png)
 
 ##### Columns
 In the 'Columns' tab here we also don't need to set anything specific for CrossGenerate. The attribute which needs to be repeated for every attribute in the model needs to be there and selected. We can't specify a section here in this  screen, but we will do this using the  Advanced Editor of the source component.
 
-![source2.png](images/source_columns.png)
+![source2.png](img/source_columns.png)
 
 ##### Input and Output Properties - External Columns
 When opening the Advanced Editor for the source component we can go to the 'Input and Output Properties' tab to find the 'attribute_name' column in the 'External Columns' list.
 The defined output column needs to be repeated for every attribute in our model, so we set the section named 'Attribute' on the [External Columns/attribute_name] element. This way CrossGenerate knows which part in the template to repeat (in this case the [attribute_name] column).
 
-![source3.png](images/source_adv_external_columns.png)
+![source3.png](img/source_adv_external_columns.png)
 
 ##### Input and Output Properties - Output Columns
 We do the same for the 'Output Columns', since this column also needs to be repeat for every attribute defined in the model.
 
-![source4.png](images/source_adv_output_columns.png)
+![source4.png](img/source_adv_output_columns.png)
 
 ##### Input and Output Properties - Error Output Columns
 And again the same of the 'OLDE DB Source Error Output' output columns.
 
-![source5.png](images/source_adv_error_columns.png)
+![source5.png](img/source_adv_error_columns.png)
 
 #### Target
 ##### Connection Manager
 Also for the target connection manager, nothing particular needs to be specified for CrossGenerate.
 
-![target1.png](images/dest_connmgr.png)
+![target1.png](img/dest_connmgr.png)
 
 ##### Mappings
 In the mappings tab we make sure all columns are mapped. Here the mapping of the attribute_name column should be repeated for every attribute specified in the model. As with the source component we cannot specify an annotation in this screen, for this we need to open the 'Advanced Editor'.
@@ -64,13 +64,13 @@ In the mappings tab we make sure all columns are mapped. Here the mapping of the
 !!! todo
     Update screenshots with the correct column name in the target table. 'Attribute_name' should be 'attribute_name' here.
 
-![target2.png](images/dest_mappings.png)
+![target2.png](img/dest_mappings.png)
 
 ##### Input and Output Properties - External Columns
-![target3.png](images/dest_adv_external_columns.png)
+![target3.png](img/dest_adv_external_columns.png)
 
 ##### Input and Output Properties - Input Columns
-![target4.png](images/dest_adv_input_columns.png)
+![target4.png](img/dest_adv_input_columns.png)
 
 ##### Input and Output Properties - Error Output Columns
 

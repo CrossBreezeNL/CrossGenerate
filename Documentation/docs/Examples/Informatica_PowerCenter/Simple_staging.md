@@ -11,38 +11,38 @@ First a source definition is defined. Note the section annotations in the table'
 
 _Source definition (1/2)_
 
-![Source1.PNG](images/Source1-0f2fba68-fe43-4da6-b7b5-e029588adee9.PNG)
+![Source1.PNG](img/Source1-0f2fba68-fe43-4da6-b7b5-e029588adee9.PNG)
 
 _Source definition (2/2)_
 
-![Source2.PNG](images/Source2-589d1a1b-5377-441b-8f33-7adb69593021.PNG)
+![Source2.PNG](img/Source2-589d1a1b-5377-441b-8f33-7adb69593021.PNG)
 
 ### Target definition
 Similar to the source, a target is defined
 
 _Target definition (1/2)_
 
-![target1.PNG](images/target1-04f745d3-6afd-48db-baa9-f265760cafbc.PNG)
+![target1.PNG](img/target1-04f745d3-6afd-48db-baa9-f265760cafbc.PNG)
 _Target definition (2/2)_
 
-![Target2.PNG](images/Target2-43dd0b3a-1f3f-4f7f-b5a5-f6274199f3e8.PNG)
+![Target2.PNG](img/Target2-43dd0b3a-1f3f-4f7f-b5a5-f6274199f3e8.PNG)
 
 ### With source and target defined, a mapping can be constructed:
 _Mapping (1/4)_
 
-![mapping2.PNG](images/mapping2-37e31f63-8978-4d07-b1ba-0531facc75a4.PNG)
+![mapping2.PNG](img/mapping2-37e31f63-8978-4d07-b1ba-0531facc75a4.PNG)
 
 _Mapping (2/4)_
 
-![mapping1.PNG](images/mapping1-710db52f-fd50-4e51-852e-ceece537be02.PNG)
+![mapping1.PNG](img/mapping1-710db52f-fd50-4e51-852e-ceece537be02.PNG)
 
 _Mapping (3/4)_
 
-![mapping_sq.PNG](images/mapping_sq-da64996a-a7cc-4a89-a06c-af0d67033576.PNG)
+![mapping_sq.PNG](img/mapping_sq-da64996a-a7cc-4a89-a06c-af0d67033576.PNG)
 
 _Mapping (4/4)_
 
-![mapping_exp.PNG](images/mapping_exp-f7deab39-a9f9-4d27-a8ed-6a1df36dbc75.PNG)
+![mapping_exp.PNG](img/mapping_exp-f7deab39-a9f9-4d27-a8ed-6a1df36dbc75.PNG)
 
 ### Template exported to XML
 The template exported to XML becomes:

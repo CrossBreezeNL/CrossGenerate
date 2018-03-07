@@ -8,6 +8,7 @@ To get an explanation about the different inputs which need to be passed to Cros
 
 - [Model](./Model)
 - [Template](./Template)
+- [Binding](./Binding)
 - [Config](./Config)
 
 ## Examples
