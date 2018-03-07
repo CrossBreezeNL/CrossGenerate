@@ -11,12 +11,12 @@
           <attribute name="TotalAmount" datatype="decimal" precision="12" scale="2" fulldatatype="decimal(12,2)" ordinal="5" />
         </attributes>  
         <keyAttributes>
-          <keyAttribute attributeId="Id" attributeName="Id" />
+          <keyAttribute attributeName="Id" />
         </keyAttributes>
         <references>
-          <reference name="Order_Customer" parentObjectId="Customer" parentOwner="ExampleSchema" parentReferenceName="Customer" childObjectId="Order" childReferenceName="Order">
+          <reference name="Order_Customer" parentObjectName="Customer" parentOwner="ExampleSchema" parentReferenceName="Customer" childObjectName="Order" childReferenceName="Order">
             <referencedAttributes>
-              <referencedAttribute parentObjectAttributeId="Id" childObjectAttributeId="CustomerId"  />
+              <referencedAttribute parentObjectAttributeName="Id" childObjectAttributeName="CustomerId"  />
             </referencedAttributes>
           </reference>
         </references>
@@ -31,7 +31,7 @@
           <attribute name="Phone" datatype="varchar" length="20" fulldatatype="varchar(20)" ordinal="6" />
         </attributes>  
         <keyAttributes>
-          <keyAttribute attributeId="Id" attributeName="Id" />
+          <keyAttribute attributeName="Id" />
         </keyAttributes>
       </entity>
     </mappableObjects>
