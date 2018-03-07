@@ -37,13 +37,7 @@ pages:
 - Config:
     - 'Configuration'   : 'Config/index.md'
     - 'Model'           : 'Config/Model.md'
-    - 'Template':
-        - 'Template'                     : 'Config/Template/index.md'
-        - 'FileFormat'                   : 'Config/Template/FileFormat.md'
-        - 'Output'                       : 'Config/Template/Output.md'
-        - 'Section'                      : 'Config/Template/Section.md'
-        - 'TemplateAttributeInjection'   : 'Config/Template/TemplateAttributeInjection.md'
-        - 'TemplatePlaceholderInjection' : 'Config/Template/TemplatePlaceholderInjection.md'
+    - 'Template'        : 'Config/Template.md'       
     - 'Binding'         : 'Config/Binding.md'
 - Examples:
     - 'Overview'        : 'Examples/index.md'
