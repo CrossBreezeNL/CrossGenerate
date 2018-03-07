@@ -1,0 +1,10 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="Staging"
+  DTS:DTSID="{84C8FEB0-CB1D-443C-BF4D-DFE07E7C0215}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Data Source=(local)\LocalDev2016;Initial Catalog=Staging;Provider=SQLOLEDB.1;Integrated Security=SSPI;Auto Translate=False;Application Name=SSIS-simplestage-{84C8FEB0-CB1D-443C-BF4D-DFE07E7C0215}.\sql2016.DWH_Template_STG;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

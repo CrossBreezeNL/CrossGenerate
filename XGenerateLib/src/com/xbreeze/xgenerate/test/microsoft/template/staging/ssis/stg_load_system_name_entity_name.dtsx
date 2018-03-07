@@ -1,19 +1,19 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="2/16/2018 10:15:16 PM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="DESKTOP-EC40127"
   DTS:CreatorName="DESKTOP-EC40127\Willem"
-  DTS:Description=""
-  DTS:DTSID="{A942B386-8F30-4B4C-8093-330C09731715}"
+  DTS:Description="@XGenSection(name=&quot;stgPackage&quot;)"
+  DTS:DTSID="{FEE0C51A-D375-41C3-8DFB-BAACEB3D0087}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="13.0.4001.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="Package"
+  DTS:ObjectName="stg_load_system_name_entity_name"
   DTS:PackageType="5"
-  DTS:VersionBuild="2"
-  DTS:VersionGUID="{1A59BEC9-9720-4DC5-BE89-1209BB66C078}">
+  DTS:VersionBuild="10"
+  DTS:VersionGUID="{245421C5-DFD7-4DC3-BAB4-E124415ED498}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -156,7 +156,7 @@
                 <connection
                   refId="Package\Load entity_name\Read entity_name.Connections[OleDbConnection]"
                   connectionManagerID="{F43489D1-61D9-4682-898D-5398C303A955}:external"
-                  connectionManagerRefId="Project.ConnectionManagers[SRC]"
+                  connectionManagerRefId="Project.ConnectionManagers[Source]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -279,7 +279,7 @@
                 <connection
                   refId="Package\Load entity_name\Write to system_name entity_name.Connections[OleDbConnection]"
                   connectionManagerID="{84C8FEB0-CB1D-443C-BF4D-DFE07E7C0215}:external"
-                  connectionManagerRefId="Project.ConnectionManagers[STG]"
+                  connectionManagerRefId="Project.ConnectionManagers[Staging]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -294,7 +294,7 @@
                     <inputColumn
                       refId="Package\Load entity_name\Write to system_name entity_name.Inputs[OLE DB Destination Input].Columns[attribute_name]"
                       cachedCodepage="1252"
-                      cachedDataType="str"                      
+                      cachedDataType="str"
                       cachedLength="10"
                       cachedName="attribute_name"
                       externalMetadataColumnId="Package\Load entity_name\Write to system_name entity_name.Inputs[OLE DB Destination Input].ExternalColumns[attribute_name]"
@@ -380,7 +380,7 @@
         <NodeLayout
           Size="163,42"
           Id="Package\Load entity_name"
-          TopLeft="310.5,93.5" />
+          TopLeft="231.5,189.5" />
       </GraphLayout>
     </LayoutInfo>
   </Package>
@@ -392,25 +392,29 @@
         <NodeLayout
           Size="164,42"
           Id="Package\Load entity_name\Read entity_name"
-          TopLeft="220,125" />
+          TopLeft="196,56" />
         <NodeLayout
           Size="172,42"
           Id="Package\Load entity_name\Add StageDateTime"
-          TopLeft="220,259" />
+          TopLeft="197,189" />
+        <NodeLayout
+          Size="247,42"
+          Id="Package\Load entity_name\Write to system_name entity_name"
+          TopLeft="162,301" />
         <EdgeLayout
           Id="Package\Load entity_name.Paths[OLE DB Source Output]"
-          TopLeft="304,167">
+          TopLeft="280.5,98">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,92"
+              EndConnector="0,91"
               Start="0,0"
-              End="0,84.5">
+              End="0,83.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,84.5" />
+                    End="0,83.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -419,24 +423,20 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="247,42"
-          Id="Package\Load entity_name\Write to system_name entity_name"
-          TopLeft="186,370" />
         <EdgeLayout
           Id="Package\Load entity_name.Paths[Derived Column Output]"
-          TopLeft="307.75,301">
+          TopLeft="284.25,231">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,69"
+              EndConnector="0,70"
               Start="0,0"
-              End="0,61.5">
+              End="0,62.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,61.5" />
+                    End="0,62.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>

@@ -2,6 +2,7 @@
 <XGenConfig>
   <Model>    
     <ModelAttributeInjections>
+      <!-- Translate the SQL data type into the SSIS data type and store it in the 'etldatatype' attribute on the attribute elements in the model. -->
       <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="etldatatype" targetValue="str"/>
       <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="codePage" targetValue="1252"/>
       <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="etldatatype" targetValue="wstr"/>
@@ -19,28 +20,30 @@
     </ModelAttributeInjections>
   </Model>
   <Template rootSectionName="StgPackage">
-    <FileFormat type="Microsoft_SSIS" currentAccessor="_" childAccessor="$" templateType="xml" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" commentNodeXPath="@*[lower-case(local-name())='description']" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <!-- Define the FileFormat, here all attributes with the name 'description' are scanned for annotations. -->
+    <FileFormat templateType="xml" currentAccessor="_" commentNodeXPath="@*[lower-case(local-name())='description']" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <!-- Output a SSIS package per element of the root section, so 1 package per entity. -->
     <Output type="output_per_element" />
     <Sections>
+      <!-- The input columns of the 'OLE DB Destination Input' need to be repeated for every attribute. -->
+      <!-- This element doesn't have a 'Description' attribute, so we need to create this section in this config file. -->
       <Section name="Attribute" templateXPath="//input[@name='OLE DB Destination Input']/inputColumns/inputColumn[@cachedName='attribute_name']"/>
-      <!--  <Section name="Attribute" templateXPath="//input[@name='OLE DB Destination Input']/externalMetadataColumns/externalMetadataColumn[@name='attribute_name']"/>-->      
     </Sections>
     <TemplateAttributeInjections>
+      <!-- Inject an attribute for the scale, precision, cachedScale & cachedPrecision on elements where the name is 'attribute_name'. -->
       <TemplateAttributeInjection parentNodeXPath="//*[@name='attribute_name']" attributeName="scale" defaultValue=""/>
       <TemplateAttributeInjection parentNodeXPath="//*[@name='attribute_name']" attributeName="precision" defaultValue=""/>
       <TemplateAttributeInjection parentNodeXPath="//*[@name='attribute_name']" attributeName="cachedScale" defaultValue=""/>
       <TemplateAttributeInjection parentNodeXPath="//*[@name='attribute_name']" attributeName="cachedPrecision" defaultValue=""/>
     </TemplateAttributeInjections>
     <TemplatePlaceholderInjections>
-      <!--  attribute injection can either be related to other attribute in the same element that already contains a placeholder or unrelated  -->
-      <!--  targetValue should contain the accessor scope is determined by the containing section -->
-      <!--  scope defines at what level placeholder will be resolved, can be either current or child so on a section that is on attribute level
-      datatype with curent scope will result in attribute_datatype -->
+      <!-- Inject a placeholder for the dataType, length, precision, scale, codePage attributes for the columns. -->
       <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@dataType"  modelNode="etldatatype" scope="current" />
       <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@length"  modelNode="length" scope="current" />
       <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@precision"  modelNode="precision" scope="current" />
       <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@scale"  modelNode="scale" scope="current" />
       <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@codePage"  modelNode="codePage" scope="current" />
+      <!-- Inject a placeholder for the cachedDataType, cachedLength, cachedPrecision, cachedScale, cachedCodePage attributes for the columns. -->
       <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@cachedDataType" modelNode="etldatatype" scope="current" />
       <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@cachedLength"  modelNode="length" scope="current" />
       <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@cachedPrecision"  modelNode="precision" scope="current" />
@@ -49,14 +52,18 @@
     </TemplatePlaceholderInjections>
   </Template>
  <Binding>
+   <!-- Create a binding between the 'StgPackage' sections in the template and the 'entity' elements in the model. -->
    <SectionModelBinding section="StgPackage" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity">
      <Placeholders>
-       <!-- For the placeholder the modelXPath is relative to its section model XPath. -->
+       <!-- Create the 'system' placeholder within the 'StgPackage' section. -->
        <Placeholder name="system" modelXPath="../.." />                 
      </Placeholders>
+     <!-- Create a binding between the 'Attribute' sections in the template and the 'attribute' elements in the model. -->
      <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="attribute">
        <Placeholders>
+         <!-- Create the 'system' placeholder within the 'Attribute' section. -->
          <Placeholder name="system" modelXPath="../../../.." />
+         <!-- Create the 'entity' placeholder within the 'Attribute' section. -->
          <Placeholder name="entity" modelXPath="../.." />                 
        </Placeholders>    
      </SectionModelBinding>        
