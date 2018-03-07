@@ -1,11 +1,14 @@
 package com.xbreeze.xgenerate.template;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.BOMInputStream;
 
 public class RawTemplate {
 	// The logger for this class.
@@ -68,8 +71,15 @@ public class RawTemplate {
 		
 		// Try to read the template file into a string.
 		try {
+			// Create a input stream from the template file.
+			FileInputStream fis = new FileInputStream(rawTemplateFilePath.toFile());
+			// Wrap the input stream in a BOMInputStream so it is invariant for the BOM.
+			BOMInputStream bomInputStream = new BOMInputStream(fis);
+			// Create a String using the BOMInputStream and the charset.
+			// The charset can be null, this gives no errors.
+			String rawTemplateString = IOUtils.toString(bomInputStream, bomInputStream.getBOMCharsetName());
 			// Double entity-encode XML entity encoded stuff.
-			rawTemplateContent = TemplatePreprocessor.doubleEntityEncode(new String(Files.readAllBytes(rawTemplateFilePath)));
+			rawTemplateContent = TemplatePreprocessor.doubleEntityEncode(rawTemplateString);
 		} catch (IOException e) {
 			throw new TemplateException(String.format("Couldn't read the template file (%s)", rawTemplateFilePath));
 		}
