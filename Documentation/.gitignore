@@ -1,1 +1,31 @@
-site/
+With aggregatedvalueEntries as 
+(
+	select [Item Ledger Entry No_], case when isnull([Item Charge No_],'''') = '''' then ''EMPTY'' else [Item Charge No_] end + ''-expected'' as ItemChargeCost,sum( [Cost Amount (Expected)]) as CostAmount
+	from [dbo].[Reukema Blocq Maneschijn BV$Value Entry] 
+	group by  [Item Ledger Entry No_], case when isnull([Item Charge No_],'''') = '''' then ''EMPTY'' else [Item Charge No_] end
+	union all 
+	select [Item Ledger Entry No_], case when isnull([Item Charge No_],'''') = '''' then ''EMPTY'' else [Item Charge No_] end + ''-actual'', sum([Cost Amount (Actual)])
+	from [dbo].[Reukema Blocq Maneschijn BV$Value Entry] 
+	group by  [Item Ledger Entry No_], case when isnull([Item Charge No_],'''') = '''' then ''EMPTY'' else [Item Charge No_] end
+	union all 
+	select [Item Ledger Entry No_], case when isnull([Item Charge No_],'''') = '''' then ''EMPTY'' else [Item Charge No_] end+ ''-non-inventbl'', sum([Cost Amount (Non-Invtbl_)])
+	from [dbo].[Reukema Blocq Maneschijn BV$Value Entry] 
+	group by  [Item Ledger Entry No_], case when isnull([Item Charge No_],'''') = '''' then ''EMPTY'' else [Item Charge No_] end
+
+)
+, pivotedValueEntries as
+(
+	select  [Item Ledger Entry No_], ' + @Columns + 
+	' FROM aggregatedvalueEntries
+	PIVOT (SUM(CostAmount)
+		For ItemChargeCost IN (' + @Columns+ ' )) as PVT
+) select i.*, ' + @columns + ' from [Reukema Blocq Maneschijn BV$Item Ledger Entry] i inner join pivotedValueEntries p on i.[Item Ledger Entry No_] = p.[Item Ledger Entry No_]' 
+
+description in open sales/purchase contracts
+lowestrate niet via prijs
+LME euro berekening
+bij fixatie contracten, als remaining <= 0 dan risk value, lme, rta, en eur/usd resultaat leeg laten.
+documentatie bijwerken
+fixation risk value, risico als er niet geleverd word (en tegen hogere LME moet worden gekocht) --> kan weg.
+
+

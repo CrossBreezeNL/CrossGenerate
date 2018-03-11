@@ -75,8 +75,42 @@ In the mappings tab we make sure all columns are mapped. Here the mapping of the
 
 ## Config
 
-!!! todo
-    Describe the ModelAttributeInjection, Section, TemplateAttributeInjection and TemplatePlaceholderInjection and why.
+### Enrich the model with SSIS datatypes using Model Attribute Injection
+The model used as input for this example contains columns that are specified with a database-datatype (varchar, int, datetime etc). SSIS uses it's own set of datatypes. For the model to be used to map to a SSIS template, first the model needs to be enriched with SSIS datatype characteristics. This model enrichment is done using a specific CrossGenerate feature named Model Attribute Injection. This feature enables adding attributes to elements in the model.
+Model Attribute Injection is configured in the first part of the config shown below: Each database datatype used in the model is mapped to its corresponding SSIS datatype. This SSIS datatype is stored in the etldatatype XML attribute of the model's attribute. For attributes of varchar or nvarchar datatypes an additional attribute is injected with the codePage (with a value of 1252). The xml snippet below shows an example of Model Attribute Injection configuration.
+```xml
+<ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="etldatatype" targetValue="str"/>
+<ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="codePage" targetValue="1252"/>
+   
+```
+
+### Prepare the SSIS template package using Template Attribute Injection and Template Placeholder Injection
+Before code can be generated using the SSIS template package and the enriched model, some alterations need to be performed on the SSIS template package:
+
+- Parts in the SSIS template that are mapped to a model attribute (column) need to be extended with XML attributes that might be needed.
+- Some attributes in the SSIS templates that have concrete values need to be populated using a placeholder.
+
+#### Add attributes using Template Attribute Injection
+Similar to Model Attribute Injection, parts of a template can also be extended with properties. For this Template Attribute Injection can be configured in CrossGenerate. In the example configuration below the attributes `scale`, `precision`, `cachedScale` and `cachedPrecision` are added to each node that has an attribute name with value `attribute_name`. These attributes are injected so that, when a attribute/column is applied on the template that has scale or precision specifications, these can be mapped to the template.
+An example of Template Attribute Injection:
+```xml
+<TemplateAttributeInjection parentNodeXPath="//*[@name='attribute_name']" attributeName="scale" defaultValue=""/>
+```
+
+#### Add placeholders to a template using Template Placeholder Injection
+When developing a template SSIS package, a lot of elements can be made abstract using Visual Studio Data Tools. This means that for table or column names, a SSIS package can be developed against an abstract datamodel so the SSIS package is build using placeholder names, which automatically makes it a template. Other elements, for example data types, length, precision,  can not be made abstract; the IDE requires you to specify concrete, existing datatypes and lengths for columns. When applying a model to a template SSIS package, it is required that the data type, length and other characteristics are substituted from the model. This is only possible if the elements that need to be subsituted contain placeholders in the SSIS template package. Template Placeholder Injections enables inserting placeholders in a template in parts that cannot be made abstract from the IDE. An example of a template placeholder injection is shown below:
+```xml
+ <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@dataType"  modelNode="etldatatype" scope="current" />
+``` 
+The example looks for all  elements in the template that have a `name` attribute with value `attribute_name`. For these elements the dataType attribute is populated with a placeholder referencing the `etldatatype` attribute from the model. 
+
+#### Specifying additional sections
+As can be seen in the config below, there is a section defined named `Attribute` that references input columns for an OLE DB Destination Input. This section is defined in the config since the input columns o the OLE DB Destination input cannot be given a section annotation in the IDE.
+```xml
+ <Section name="Attribute" templateXPath="//input[@name='OLE DB Destination Input']/inputColumns/inputColumn[@cachedName='attribute_name']"/>
+```
+
+### Full config example
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
