@@ -45,7 +45,7 @@ _Mapping (4/4)_
 ![mapping_exp.PNG](img/mapping_exp-f7deab39-a9f9-4d27-a8ed-6a1df36dbc75.PNG)
 
 ### Template exported to XML
-The template exported to XML becomes:
+Now the template mapping is created in PowerDesigner. In order to use it with CrossGenerate, the mapping needs to be exported to XML. The export is shown below:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE POWERMART SYSTEM "powrmart.dtd">
@@ -59,7 +59,7 @@ The template exported to XML becomes:
         <TARGETFIELD BUSINESSNAME ="" DATATYPE ="varchar2" DESCRIPTION ="@XGenSection(name=&quot;Attribute&quot;)" FIELDNUMBER ="1" KEYTYPE ="NOT A KEY" NAME ="attribute_name" NULLABLE ="NULL" PICTURETEXT ="" PRECISION ="10" SCALE ="0"/>
         <TARGETFIELD BUSINESSNAME ="" DATATYPE ="timestamp" DESCRIPTION ="" FIELDNUMBER ="2" KEYTYPE ="NOT A KEY" NAME ="StageDateTime" NULLABLE ="NULL" PICTURETEXT ="" PRECISION ="26" SCALE ="6"/>
     </TARGET>
-    <MAPPING DESCRIPTION ="@XgenSection(name=&quot;stgMapping&quot;)" ISVALID ="YES" NAME ="stg_load_system_name_entity_name" OBJECTVERSION ="1" VERSIONNUMBER ="1">
+    <MAPPING DESCRIPTION ="@XgenSection(name=&quot;Entity&quot;)" ISVALID ="YES" NAME ="stg_load_system_name_entity_name" OBJECTVERSION ="1" VERSIONNUMBER ="1">
         <TRANSFORMATION DESCRIPTION ="" NAME ="SQ_entity_name" OBJECTVERSION ="1" REUSABLE ="NO" TYPE ="Source Qualifier" VERSIONNUMBER ="1">
             <TRANSFORMFIELD DATATYPE ="string" DEFAULTVALUE ="" DESCRIPTION ="@XGenSection(name=&quot;Attribute&quot;)" NAME ="attribute_name" PICTURETEXT ="" PORTTYPE ="INPUT/OUTPUT" PRECISION ="10" SCALE ="0"/>
             <TABLEATTRIBUTE NAME ="Sql Query" VALUE =""/>
@@ -98,69 +98,113 @@ The template exported to XML becomes:
 ```
 
 ## Config
+The config contains al the additional information that CrossGenerate needs to combine model and template to working software. The most important functions that are configured are: 
+### Enrich the model with PowerCenter datatypes using Model Attribute Injection
+The model used as input for this example contains columns that are specified with a database-datatype (varchar, int, datetime etc). PowerCenter uses it's own set of datatypes. For the model to be used to map to a PowerCenter template, first the model needs to be enriched with PowerCenter datatype characteristics. This model enrichment is done using a specific CrossGenerate feature named Model Attribute Injection. This feature enables adding attributes to elements in the model.
+Model Attribute Injection is configured in the first part of the config shown below: Each database datatype used in the model is mapped to its corresponding PowerCenter datatype. This PowerCenter datatype is stored in the etldatatype XML attribute of the model's attribute. For some datatypes, such as integer, PowerCenter requires an explicit length where the database datatype does not. This can also be achieved using Model Attribute Injection. The xml snippet below shows an example of Model Attribute Injection configuration. 
+```xml
+<ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="etldatatype" targetValue="string"/>
+<ModelAttributeInjection modelXPath="//attribute[@datatype='int']" targetAttribute="length" targetValue="10"/>
+   
+```
+
+### Prepare the PowerCenter template mapping using Template Placeholder Injection
+Before code can be generated using the PowerCenter template mapping and the enriched model, some alterations need to be performed on the template mapping.
+When developing a template PowerCenter mapping, a lot of elements can be made abstract using PowerCenter Designer. This means that for table or column names, a mapping can be developed against an abstract datamodel so the mapping is build using placeholder names, which automatically makes it a template. Other elements, for example data types, length, precision,  can not be made abstract; the IDE requires you to specify concrete, existing datatypes and lengths for columns. When applying a model to a template PowerCenter mapping, it is required that the data type, length and other characteristics are substituted from the model. This is only possible if the elements that need to be subsituted contain placeholders in the PowerCenter template mapping. Template Placeholder Injection enables inserting placeholders in a template in parts that cannot be made abstract from the IDE. An example of a template placeholder injection is shown below:
+```xml
+<TemplatePlaceholderInjection templateXPath="//SOURCEFIELD[@NAME='attribute_name']/@DATATYPE" modelNode="datatype" scope="current" />
+ <TemplatePlaceholderInjection templateXPath="//TRANSFORMFIELD[@NAME='attribute_name']/@DATATYPE"  modelNode="etldatatype" scope="current" />
+``` 
+The first line in the example puts a placeholder referencing the `datatype` attribute from the model in each `DATATYPE` attribute of `SOURCEFIELD` elements. The second line creates a placeholder for `etldatatype` in each `DATATYPE` attribute of `TRANSFORMIELD` elements. Note that for `SOURCEFIELD`, the database datatype is used but for `TRANSFORMFIELD`, the etldatatype is used that was added using Model Attribute Injection. 
+
+#### Specifying additional sections
+As can be seen in the config below, there is a section defined named `Attribute` that references Connector elements that have the placeholder `attribute_name` as `FROMFIELD` attribute value. This is done through the config since connectors cannot be annotated with a section annotation using PowerCenter Designer.
+```xml
+ <Section templateXPath="//MAPPING/CONNECTOR[@FROMFIELD='attribute_name']" name="Attribute"/>
+```
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <XGenConfig>
-  <Includes>
-    <Include src="../someotherconfig.xml"/>
-    <Include src="../otherconfig.xml"/>
-  </Includes>
-  <App/>    
   <Model>    
-    <AttributeInjections>
-      <AttributeInjection modelXPath="//Attribute[@datatype='varchar']" targetAttribute="etldatatype" targetValue="string"/>
-      <AttributeInjection modelXPath="//Attribute[@datatype='nvarchar']" targetAttribute="etldatatype" targetValue="nstring"/>
-    </AttributeInjections>
+    <ModelAttributeInjections>
+      <!-- set etl datatype -->
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="etldatatype" targetValue="string"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="etldatatype" targetValue="nstring"/>      
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='int']" targetAttribute="etldatatype" targetValue="integer"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="etldatatype" targetValue="date/time"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='decimal']" targetAttribute="etldatatype" targetValue="decimal"/>
+      <!-- set length, precision and scale where needed -->
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='int']" targetAttribute="length" targetValue="10"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='int']" targetAttribute="precision" targetValue="10"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="length" targetValue="23"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="precision" targetValue="23"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="scale" targetValue="3"/>      
+      <!-- set precision for text fields -->
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="precision" targetXPath="./@length"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="precision" targetXPath="./@length"/> 
+      <!--  set etl precision & scale-->
+      <ModelAttributeInjection modelXPath="//attribute" targetAttribute="etlprecision" targetXPath="./@length"/>      
+      <ModelAttributeInjection modelXPath="//attribute" targetAttribute="etlscale" targetValue="0"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='decimal']" targetAttribute="etlprecision" targetXPath="./@precision"/>      
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='decimal']" targetAttribute="etlscale" targetXPath="./@scale"/>    
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="etlprecision" targetValue="29"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="etlscale" targetValue="9"/>        
+    </ModelAttributeInjections>
   </Model>
-  <Template rootSectionName="system"> 
-    <FileFormat type="Informatica_PowerCenter" currentAccessor="_" childAccessor="$" templateType="xml" singleLineCommentPrefix="--" _multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+  <Template rootSectionName="System">
+    <FileFormat type="Informatica_PowerCenter" commentNodeXPath="@DESCRIPTION" currentAccessor="_" childAccessor="$" templateType="xml" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <Output type="single_output" />
     <Sections>
-      <Section elementXpath="CONNECTOR[@FROMFIELD='attribute_name']" name="connector"/> 
+      <!--
+        A section name can be specified multiple times. This way the binded model elements will be bound for all sections with the same name.
+        In this example the 'Attribute' section is specified multiple times in the template, it here it is again specified from the config.
+        For explanation on the XPath syntax see:
+          - https://www.w3schools.com/xml/xpath_syntax.asp
+       -->
+      <Section templateXPath="//MAPPING/CONNECTOR[@FROMFIELD='attribute_name']" name="Attribute"/>
     </Sections>
-    <PlaceholderInjections>
-      <!--  attribute injection can either be related to other attribute in the same element that already contains a placeholder or unrelated  -->
-      <!--  targetValue should contain the accessor, scope is determined by the containing section -->
-      <!--  scope defines at what level placeholder will be resolved, can be either current or child so on a section that is on attribute level
-      datatype with curent scope will result in attribute_datatype -->
-      <PlaceholderInjection templateXPath="//SOURCEFIELD/@DATATYPE" modelNode="datatype" scope="current" />
-      <PlaceholderInjection templateXPath="//TRANSFORMFIELD/@DATATYPE"  modelNode="etldatatype" scope="current" />
-    </PlaceholderInjections>
+    <TemplatePlaceholderInjections>
+      <!--
+        The scope in the placeholder injection defines at what level placeholder will be resolved.
+        This can be either current or child (current is current element attributes and child is current element child elements).
+        In the first example we inject a placeholder in the DATATYPE attribute on the SOURCEFIELD element.
+        The full placeholder will be <section-placeholderName><scope-accessor><modelNode>.
+        In the first example it will be attribute_datatype.
+       -->
+      <TemplatePlaceholderInjection templateXPath="//SOURCEFIELD[@NAME='attribute_name']/@DATATYPE" modelNode="datatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//SOURCEFIELD[@NAME='attribute_name']/@LENGTH" modelNode="length" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//SOURCEFIELD[@NAME='attribute_name']/@PRECISION" modelNode="precision" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//SOURCEFIELD[@NAME='attribute_name']/@SCALE" modelNode="scale" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//TARGETFIELD[@NAME='attribute_name']/@DATATYPE" modelNode="datatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//TARGETFIELD[@NAME='attribute_name']/@LENGTH" modelNode="length" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//TARGETFIELD[@NAME='attribute_name']/@PRECISION" modelNode="precision" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//TARGETFIELD[@NAME='attribute_name']/@SCALE" modelNode="scale" scope="current" />      
+      <TemplatePlaceholderInjection templateXPath="//TRANSFORMFIELD[@NAME='attribute_name']/@DATATYPE"  modelNode="etldatatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//TRANSFORMFIELD[@NAME='attribute_name']/@LENGTH"  modelNode="etllength" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//TRANSFORMFIELD[@NAME='attribute_name']/@PRECISION"  modelNode="etlprecision" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//TRANSFORMFIELD[@NAME='attribute_name']/@SCALE"  modelNode="etlscale" scope="current" />
+    </TemplatePlaceholderInjections>
   </Template>
   <Binding>
-    <SectionModelBinding section="system" modelXPath = "/System" placeholderName="system">
-      <SectionModelBinding section="Entity" modelXPath="System/Entities/Entity[@generate='true']" placeholderName="Entity">
+    <!-- Configure the bindings on which models elements are bound to a specific section. -->
+    <SectionModelBinding section="System" modelXPath = "/modeldefinition/system" placeholderName="system">
+      <!--
+        Section bindings can be specified recursively.
+        For example entities exists within a system to it makes sense the binding is also defined inside the System section binding.
+        The modelXPath here is relative to its parent binding.
+       -->
+      <SectionModelBinding section="Entity" modelXPath="mappableObjects/entity" placeholderName="entity">
         <Placeholders>
-          <!-- For the placeholder the modelXPath is relative to its section model xpath. -->
-          <Placeholder name="System" modelXPath="../.." />                 
+          <!-- For the placeholder the modelXPath is relative to its section model XPath. -->
+          <Placeholder name="system" modelXPath="../.." />                 
         </Placeholders>
-        <SectionModelBinding section="Attribute" modelXPath="System/Entities/Entity[@generate='true']/Attribute" placeholderName="Attribute">
+        <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="attribute">
           <Placeholders>
-            <!-- For the placeholder the modelXPath is relative to its section model xpath. -->
-            <Placeholder name="System" modelXPath="../../../../" />
-            <Placeholder name="Entity" modelXPath="../../" />                 
+            <Placeholder name="system" modelXPath="../../../.." />
+            <Placeholder name="entity" modelXPath="../.." />                 
           </Placeholders>    
-        </SectionModelBinding>        
-       </SectionModelBinding>             
-       <SectionModelBinding section="stgMapping" modelXPath="System/Entities/Entity[@generate='true']" placeholderName="Entity">
-        <Placeholders>
-          <!-- For the placeholder the modelXPath is relative to its section model xpath. -->
-          <Placeholder name="System" modelXPath="../.." />                 
-        </Placeholders>
-        <SectionModelBinding section="Attribute" modelXPath="System/Entities/Entity[@generate='true']/Attribute" placeholderName="Attribute">
-          <Placeholders>
-            <!-- For the placeholder the modelXPath is relative to its section model xpath. -->
-            <Placeholder name="System" modelXPath="../../../../" />
-            <Placeholder name="Entity" modelXPath="../../" />                 
-          </Placeholders>      
-        </SectionModelBinding>
-        <SectionModelBinding section="connector" modelXPath="System/Entities/Entity[@generate='true']/Attribute" placeholderName="Attribute">
-          <Placeholders>
-            <!-- For the placeholder the modelXPath is relative to its section model xpath. -->
-            <Placeholder name="System" modelXPath="../../../../" />
-            <Placeholder name="Entity" modelXPath="../../" />                 
-          </Placeholders>      
-        </SectionModelBinding>
-      </SectionModelBinding>  
+				</SectionModelBinding>        
+			</SectionModelBinding>
     </SectionModelBinding>    
   </Binding>
 </XGenConfig>
