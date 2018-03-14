@@ -187,8 +187,3 @@ Table and columns are substituted in the target stage.
 
 #### Target stage (2/2)
 [![output_target2.png](img/Output_Target2.PNG)](img/Output_Target2.PNG)
-
-## Attachments
-The sample solution with the template database scripts & DataStage package can be found in the following zip file:
-
-- [CrossGenerate_Example_IBM_DataStage_Simple_staging.zip](CrossGenerate_Example_IBM_DataStage_Simple_staging.zip)
