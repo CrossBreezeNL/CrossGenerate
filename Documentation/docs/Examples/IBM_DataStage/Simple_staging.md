@@ -13,7 +13,7 @@ Opening the Source properties notice that Data source and Table name contain pla
 ![source1.PNG](img/source1.PNG)
 
 ### Source Stage(2/2)
-In the Columns tab, there is a column named 'attribute_name' that has another section annotation in the description.
+In the Columns tab, there is a column named 'attribute_name' that has a section annotation in the description.
 ![source2.png](img/source2.png)
 
 ### Transformer Stage
