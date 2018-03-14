@@ -20,6 +20,9 @@ CREATE TABLE [system_name].[entity_name] (
 GO
 ```
 
+### Documentation
+For documentation on templates, please see [Template](../../Template).
+
 ## Config
 In the config we:
 
@@ -51,6 +54,9 @@ In the config we:
   </Binding>
 </XGenConfig>
 ```
+
+### Documentation
+For documentation on the configuration, please see [Config](../../Config).
 
 ## Output
 When running CrossGenerate the output using the given Model, Template and Config will be as follows:
