@@ -72,6 +72,9 @@ In the mappings tab we make sure all columns are mapped. Here the mapping of the
 ###### Input and Output Properties - Input Columns
 ![Template Destination Input and Output Properties - Input Columns](img/dest_adv_input_columns.png)
 
+### Documentation
+For documentation on templates, please see [Template](../../Template).
+
 
 ## Config
 
@@ -232,6 +235,9 @@ This section is defined in the config since the input columns on the OLE DB Dest
  </Binding>
 </XGenConfig>
 ```
+
+### Documentation
+For documentation on the configuration, please see [Config](../../Config).
 
 ## Output
 When running CrossGenerate the output using the given Model, Template and Config will be the following files:
