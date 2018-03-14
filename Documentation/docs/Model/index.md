@@ -14,4 +14,4 @@ A model can be constructed using different tools.
 
 The modeling tool used largely determines how much can be generated using CrossGenerate. A modeling tool that can specify data mappings and business rules provides for a much higher degree of automation than a modeling tool or approach that only specifies target model structure.
 
-CrossGenerate's only requirerement with regards to the modeling tool used is that the model can be provided to CrossGenerate in an XML file.
+CrossGenerate's only requirement with regards to the modeling tool used is that the model can be provided to CrossGenerate in an XML file.
