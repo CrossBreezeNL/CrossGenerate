@@ -43,7 +43,7 @@ pages:
     - 'Overview'        : 'Examples/index.md'
     - 'Model':
         - 'Source model'     : 'Examples/Model/Source_Model.md'
-        - 'DWH model'        : 'Examples/Model/DWH_Model.md'
+#        - 'DWH model'        : 'Examples/Model/DWH_Model.md'
     - 'SQL':
         - 'Simple staging'   : 'Examples/SQL/Simple_staging.md'
     - 'Microsoft SSIS':

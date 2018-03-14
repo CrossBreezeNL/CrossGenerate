@@ -5,10 +5,9 @@ Please consult the examples for your technology here.
 
 ## Model
 
-In the examples we use two example models, namely:
+In the examples we use example models, namely:
 
 - [Source model](./Model/Source_model)
-- [DWH model](./Model/DWH_model)
 
 ## Template
 
