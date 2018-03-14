@@ -26,11 +26,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.ParseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 import com.xbreeze.util.StringHelper;
 
@@ -74,24 +76,32 @@ public class LicensedClassLoader extends ClassLoader {
 		
 		// Check the required license attributes
 
+		// Check whether the license key is specified.
 		if (StringHelper.isEmptyOrWhitespace(_config.getLicenseKey())) {
 			throw new LicenseException("Licensing key not specified");
 		}
 
+		// Check whether the url is specified.
 		if (StringHelper.isEmptyOrWhitespace(_config.getUrl().toString())) {
 			throw new LicenseException("Licensing url not specified");
 		}
+		// Check whether the license url scheme is https (only when not in developer mode).
+		else if (!_config.getDeveloperMode() && !_config.getUrl().getScheme().equals("https")) {
+			throw new LicenseException("Licensing url scheme must be HTTPS");
+		}
 
+		// Check whether the version is specified.
 		if (StringHelper.isEmptyOrWhitespace(config.getVersion())) {
 			throw new LicenseException("Licensing application version not specified");
 		}
 
+		// Check whether the contract id is specified.
 		if (StringHelper.isEmptyOrWhitespace(_config.getContractId())) {
 			throw new LicenseException("Contract key not specified");
 		}
 
 		// When running in developer mode output informational and skip license check.
-		if (this._config.getDeveloperMode()) {
+		if (_config.getDeveloperMode()) {
 			logger.setLevel(Level.INFO);
 			logger.info("Notice: Running in developer mode");
 		} else {
@@ -216,8 +226,22 @@ public class LicensedClassLoader extends ClassLoader {
 				logger.severe(String.format("Error occured during license check: %s", e.getMessage()));
 				return false;
 			}
+			// Set the status code.
 			statusCode = licenseResponse.getStatusLine().getStatusCode();
-			String responseMessage = licenseResponse.getStatusLine().getReasonPhrase();
+			// Set the response message.
+			String responseMessage = null;
+			if (licenseResponse.getEntity() != null) {
+				try {
+					responseMessage = EntityUtils.toString(licenseResponse.getEntity());
+				} catch (ParseException | IOException e) {
+					logger.severe(String.format("Error while getting response body: %s", e.getMessage()));
+					return false;
+				}
+			}
+			// If there was no response body, we will set the message to the status reason phrase.
+			if (responseMessage == null || responseMessage.length() == 0) {
+				responseMessage = licenseResponse.getStatusLine().getReasonPhrase();
+			}
 			
 			try {
 				licenseResponse.close();
