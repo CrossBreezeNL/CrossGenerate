@@ -1,4 +1,4 @@
-# DWH Model
+# DWH model
 
 Below a DWH model example is shown. This model describes not only structure, but also the mapping from source to target.
 
