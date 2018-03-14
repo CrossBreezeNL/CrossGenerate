@@ -20,8 +20,8 @@ theme:
 pages:
 - Home:
     - 'Introduction'    : 'index.md'
-    - 'Overview'        : 'Overview.md'
     - 'Getting started' : 'GettingStarted.md'
+    - 'Overview'        : 'Overview.md'
 - Model:
     - 'Introduction'    : 'Model/index.md'
 - Template:
