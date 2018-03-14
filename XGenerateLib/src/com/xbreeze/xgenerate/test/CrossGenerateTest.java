@@ -14,13 +14,13 @@ public class CrossGenerateTest {
 		//doMicrosoftSQLTest();
 		
 		// Execute the Microsoft SSIS test.
-		doMicrosoftSSISTest();
+		//doMicrosoftSSISTest();
 		
 		// Execute the PowerCenter test.
 		//doPowerCenterTest();
 		
 		// Execute the IBM DataStage test.
-		//doDataStageTest();
+		doDataStageTest();
 		
 	}
 	
@@ -103,7 +103,7 @@ public class CrossGenerateTest {
 	private static void doDataStageTest() {
 		Generator generator = new Generator();
 		
-		String modelFileName = "common/model/ExampleModel.xml";
+		String modelFileName = "common/model/ExampleModelOracle.xml";
 		String templateFileName = "datastage/template/load_system_name_entity_name.xml";
 		String configFileName = "datastage/config/ExampleDataStageConfig.xml";
 		

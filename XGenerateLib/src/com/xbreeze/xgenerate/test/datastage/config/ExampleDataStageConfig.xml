@@ -3,7 +3,7 @@
   <Model>    
     <ModelAttributeInjections>
        <!-- set etl datatype -->
-      <ModelAttributeInjection modelXPath="//attribute[@datatype='VARCHAR']" targetAttribute="12" targetValue="string"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='VARCHAR']" targetAttribute="etldatatype" targetValue="12"/>
       <ModelAttributeInjection modelXPath="//attribute[@datatype='NVARCHAR']" targetAttribute="etldatatype" targetValue="-9"/>      
       <ModelAttributeInjection modelXPath="//attribute[@datatype='INTEGER']" targetAttribute="etldatatype" targetValue="4"/>
       <ModelAttributeInjection modelXPath="//attribute[@datatype='DATE']" targetAttribute="etldatatype" targetValue="9"/>

@@ -212,5 +212,7 @@ As can be seen in the config below, there is a section defined named `Attribute`
 
 ## Output
 
-!!! todo
-    Describe the output.
+When running CrossGenerate with the given model, template and config an XML file is generated that contains source and target definitions and mappings for the Order and Customer table.
+When imported in PowerCenter, the customer mapping is as displayed in the screenshot below:
+
+![mapping_output.PNG](img/mapping_output.PNG)
