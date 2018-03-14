@@ -6,27 +6,25 @@ Refer to the [Source model](../Model/Source_model).
 ## Template
 The template consists of the following DataStage job:
 
-### Job
-
 ![stagepackage.PNG](img/stagepackage-5bc8c52e-6486-4839-8f88-1905b74ae74c.PNG)
 
-#### Source Stage(1/2)
+### Source Stage(1/2)
 Opening the Source properties notice that Data source and Table name contain placeholders.
 ![source1.PNG](img/source1.PNG)
 
-#### Source Stage(2/2)
+### Source Stage(2/2)
 In the Columns tab, there is a column named 'attribute_name' that has another section annotation in the description.
 ![source2.png](img/source2.png)
 
-#### Transformer Stage
+### Transformer Stage
 Just as the columns tab in the source properties, the Transformer stage also contains a section annotation in the description of field attribute_name.
 ![transform.png](img/transform.png)
 
-#### Target Stage(1/2)
+### Target Stage(1/2)
 The target stage contains a placeholder for Table name
 ![target1.png](img/target1.png)
 
-#### Target Stage(2/2)
+### Target Stage(2/2)
 The Columns tab again shows a column attribute_name with a section annotation for a section named "Attribute".
 ![target2.png](img/target2.png)
 
