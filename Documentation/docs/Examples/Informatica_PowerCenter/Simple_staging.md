@@ -264,3 +264,8 @@ When running CrossGenerate with the given model, template and config an XML file
 When imported in PowerCenter, the customer mapping is as displayed in the screenshot below:
 
 [![mapping_output.PNG](img/mapping_output.PNG)](img/mapping_output.PNG)
+
+## Attachments
+The sample solution with the template database scripts & Informatica PowerCenter package can be found in the following zip file:
+
+- [CrossGenerate_Example_Informatica_PowerCenter_Simple_staging.zip](CrossGenerate_Example_Informatica_PowerCenter_Simple_staging.zip)

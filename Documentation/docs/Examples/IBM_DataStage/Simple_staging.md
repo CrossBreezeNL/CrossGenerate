@@ -6,27 +6,35 @@ Refer to the [Source model](../Model/Source_model).
 ## Template
 The template consists of the following DataStage job:
 
-![stagepackage.PNG](img/stagepackage-5bc8c52e-6486-4839-8f88-1905b74ae74c.PNG)
+[![stagepackage.PNG](img/stagepackage.PNG)](img/stagepackage.PNG)
 
-### Source Stage(1/2)
+### Source stage
+
+#### Source stage (1/2)
 Opening the Source properties notice that Data source and Table name contain placeholders.
-![source1.PNG](img/source1.PNG)
+[![source1.PNG](img/source1.PNG)](img/source1.PNG)
 
-### Source Stage(2/2)
+#### Source stage (2/2)
 In the Columns tab, there is a column named 'attribute_name' that has a section annotation in the description.
-![source2.png](img/source2.png)
 
-### Transformer Stage
+[![source2.png](img/source2.png)](img/source2.png)
+
+### Transformer stage
 Just as the columns tab in the source properties, the Transformer stage also contains a section annotation in the description of field attribute_name.
-![transform.png](img/transform.png)
 
-### Target Stage(1/2)
+[![transform.png](img/transform.png)](img/transform.png)
+
+### Target stage
+
+#### Target stage (1/2)
 The target stage contains a placeholder for Table name
-![target1.png](img/target1.png)
 
-### Target Stage(2/2)
+[![target1.png](img/target1.png)](img/target1.png)
+
+#### Target stage (2/2)
 The Columns tab again shows a column attribute_name with a section annotation for a section named "Attribute".
-![target2.png](img/target2.png)
+
+[![target2.png](img/target2.png)](img/target2.png)
 
 ### Documentation
 For documentation on templates, please see [Template](../../Template).
@@ -148,23 +156,39 @@ When running CrossGenerate with the given model, template job and config, the re
 
 ### Job
 Notice that the stage names have been changed where the name contained a placeholder
-![output_job.png](img/Output_Job.PNG)
 
-### Input stage
+[![output_job.png](img/Output_Job.PNG)](img/Output_Job.PNG)
+
+### Source stage
+
+#### Source stage (1/2)
 System and table names have been substituted for Data Source and Table name
-![output_source1.png](img/Output_Source1.PNG)
 
-The columns from the model have been substituted in the stage with the appropriate data type, length, etc. Note that the section annotation is not present in the column's description anymore
-![output_source2.png](img/Output_Source2.PNG)
+[![output_source1.png](img/Output_Source1.PNG)](img/Output_Source1.PNG)
+
+#### Source stage (2/2)
+The columns from the model have been substituted in the stage with the appropriate data type, length, etc.
+
+[![output_source2.png](img/Output_Source2.PNG)](img/Output_Source2.PNG)
+
+!!! note
+    The section annotation is not present in the column's description anymore.
 
 ### Transformer stage
 The transformer stage also has the columns from the model substituted.
-![output_transform.png](img/Output_Transform.PNG)
 
-### Output stage
-Table and columns are substituted in the output stage.
-![output_target1.png](img/Output_Target1.PNG)
+[![output_transform.png](img/Output_Transform.PNG)](img/Output_Transform.PNG)
 
-![output_target2.png](img/Output_Target2.PNG)
+### Target stage
+Table and columns are substituted in the target stage.
 
+#### Target stage (1/2)
+[![output_target1.png](img/Output_Target1.PNG)](img/Output_Target1.PNG)
 
+#### Target stage (2/2)
+[![output_target2.png](img/Output_Target2.PNG)](img/Output_Target2.PNG)
+
+## Attachments
+The sample solution with the template database scripts & DataStage package can be found in the following zip file:
+
+- [CrossGenerate_Example_IBM_DataStage_Simple_staging.zip](CrossGenerate_Example_IBM_DataStage_Simple_staging.zip)

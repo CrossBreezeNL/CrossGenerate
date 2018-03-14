@@ -83,3 +83,8 @@ CREATE TABLE [ExampleSource].[Customer] (
 );
 GO
 ```
+
+## Attachments
+The sample solution with the template database scripts can be found in the following zip file:
+
+- [CrossGenerate_Example_SQL_Simple_staging.zip](CrossGenerate_Example_SQL_Simple_staging.zip)
