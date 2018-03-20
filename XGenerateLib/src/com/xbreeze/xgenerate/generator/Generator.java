@@ -43,11 +43,6 @@ public class Generator extends GeneratorStub {
 	private Model _model;
 
 	/**
-	 * Indicator for debug model.
-	 */
-	private boolean _debugMode = false;
-	
-	/**
 	 * Constructor.
 	 * @param modelFileLocation The model file location.
 	 */	
