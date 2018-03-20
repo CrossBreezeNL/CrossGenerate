@@ -2,7 +2,6 @@ package com.xbreeze.xgenerate.generator;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.TransformerException;
