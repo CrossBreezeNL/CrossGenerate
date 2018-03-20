@@ -31,7 +31,7 @@ public class ModelPreprocessor {
 		logger.info("Starting model preprocessing");
 		
 		// ModelAttributeInjections
-		if (modelConfig.getModelAttributeInjections() != null && modelConfig.getModelAttributeInjections().size() > 0) {
+		if (modelConfig != null && modelConfig.getModelAttributeInjections() != null && modelConfig.getModelAttributeInjections().size() > 0) {
 			logger.info("ModelAttributeInjections defined, so pre-processing the model");
 			
 			for (ModelAttributeInjection mai : modelConfig.getModelAttributeInjections()) {

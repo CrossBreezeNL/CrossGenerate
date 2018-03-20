@@ -21,8 +21,6 @@ import com.xbreeze.xgenerate.generator.GenerationResults;
 import com.xbreeze.xgenerate.generator.Generator;
 import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.model.Model;
-import com.xbreeze.xgenerate.model.ModelPreprocessor;
-import com.xbreeze.xgenerate.model.ModelPreprocessorException;
 import com.xbreeze.xgenerate.template.RawTemplate;
 
 import cucumber.api.java.Before;
@@ -32,7 +30,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class XGenerateTestSteps {
-	private final URI _outputFolderUri = URI.create("file:///C:/CrossGenerate/Output"); 
+	private final URI _outputFolderUri = URI.create("file:///C:/CrossGenerate/Output/");
+	private final URI _featureSupportFilesLocation = URI.create("file:///C:/GIT/Repos/CrossBreeze/CrossGenerate/CrossGenerate/XGenerateTest/src/test/resources/feature-support-files/");
 	
 	XGenConfig _xGenConfig;
 	RawTemplate _rawTemplate;
@@ -54,21 +53,22 @@ public class XGenerateTestSteps {
 		Document modelDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(modelContent)));		
 		this._generator.setModel(new Model(null, modelDocument));
 	}
-	@Given("^I have the following model file:$")
-	public void iHaveTheFollowingModelFile(URI modelFileURI) throws Throwable {
-		this._generator.setModelFromFile(modelFileURI);
+	
+	@Given("^I have the following model file: \"(.*)\"$")
+	public void iHaveTheFollowingModelFile(String modelFileLocation) throws Throwable {
+		this._generator.setModelFromFile(resolveSupportFile(modelFileLocation));
 	}
 
-	@And("^the following template named (.*):$")
+	@And("^the following template named \"(.*)\":$")
 	public void theFollowingTemplateNamed(String templateName, String templateContent) throws Throwable {
 		// Create the raw template.
 		this._rawTemplate = new RawTemplate(templateName, null, templateContent);
 	}
 
-	@And("^the following template file:$")
-	public void theFollowingTemplateFile(URI templateFileURI) throws Throwable {
+	@And("^the following template file: \"(.*)\"$")
+	public void theFollowingTemplateFile(String templateFileLocation) throws Throwable {
 		// Create the raw template.
-		this._templateFileUri = templateFileURI;
+		this._templateFileUri = resolveSupportFile(templateFileLocation);
 	}
 	
 	@And("^the following config:$")
@@ -76,10 +76,10 @@ public class XGenerateTestSteps {
 		this._xGenConfig = XGenConfig.fromString(configContent);
 	}
 
-	@And("^the following config file:$")
-	public void theFollowingConfigFile(URI configFileURI) throws Throwable {
+	@And("^the following config file: \"(.*)\"$")
+	public void theFollowingConfigFile(String configFileLocation) throws Throwable {
 		// Create the raw template.
-		this._configFileUri = configFileURI;
+		this._configFileUri = resolveSupportFile(configFileLocation);
 	}	
 
 	@When("^I run the generator$")
@@ -97,7 +97,7 @@ public class XGenerateTestSteps {
 		}
 	}
 
-	@Then("^I expect (\\d+) generation result\\(s\\)$")
+	@Then("^I expect (\\d+) generation results?$")
 	public void iExpectGenerationResults(int expectedNrOfResults) throws Throwable {
 		int actualNrOfResults = this._generationResults.getGenerationResults().size();
 		// Assume the expected number equals the actual number.
@@ -108,16 +108,16 @@ public class XGenerateTestSteps {
 		);	
 	}
 	
-	@Then("^an output named (.*) with contents equal to file:$") 
-	public void anOutputNamed(String outputName, URI expectedOutputFileUri) throws Throwable {
+	@Then("^an output named \"(.*)\" with contents equal to file: \"(.*)\"$")
+	public void anOutputNamed(String outputName, String expectedOutputFileUri) throws Throwable {
 		//Open the expected output file and read to string
-		FileInputStream fis = new FileInputStream(Paths.get(expectedOutputFileUri).toFile());
+		FileInputStream fis = new FileInputStream(Paths.get(resolveSupportFile(expectedOutputFileUri)).toFile());
 		BOMInputStream bomInputStream = new BOMInputStream(fis);		
 		String expectedResultContent = IOUtils.toString(bomInputStream, bomInputStream.getBOMCharsetName());
 		this.compareActualAndExpectedOutput(outputName, expectedResultContent);
 	}
 	
-	@Then("^an output named (.*) with content:$")
+	@Then("^an output named \"(.*)\" with content:$")
 	public void andAnOutputNamedWithContents(String outputName, String expectedResultContent) throws Throwable {
 		this.compareActualAndExpectedOutput(outputName, expectedResultContent);
 	}
@@ -125,7 +125,7 @@ public class XGenerateTestSteps {
 	private void compareActualAndExpectedOutput(String outputName, String expectedResultContent) throws Throwable {
 		Boolean outputFound = false;
 		for(GenerationResult generationResult:this._generationResults.getGenerationResults()) {
-			if (generationResult.getOutputFileLocation().equalsIgnoreCase(outputName)) {
+			if (generationResult.getOutputFileLocation() != null && _outputFolderUri.resolve(outputName).equals(URI.create(generationResult.getOutputFileLocation()))) {
 				outputFound = true;
 				assertEquals(
 						"The expected and actual result content is different",
@@ -141,5 +141,9 @@ public class XGenerateTestSteps {
 			"The expected result with name " + outputName + " was not found in the actual results",				
 			outputFound
 		);		
+	}
+	
+	private URI resolveSupportFile(String relativeFileLocation) {
+		return this._featureSupportFilesLocation.resolve(relativeFileLocation);
 	}
 }

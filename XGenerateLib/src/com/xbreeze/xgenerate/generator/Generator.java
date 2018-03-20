@@ -218,9 +218,9 @@ public class Generator extends GeneratorStub {
 					TemplatePreprocessor templatePreprocessor = templateConfig.getFileFormatConfig().getTemplateType().getTemplatePreprocessor(xGenConfig);
 					// Pre-process the raw template into a pre-processed template.
 					logger.info("Begin template pre-processing");
-						PreprocessedTemplate preprocessedTemplate = templatePreprocessor.preProcess(rawTemplate, outputFileUri);
-						preprocessedTemplateString = preprocessedTemplate.toString();
-						//generationResult.setPreprocessedTemplate(preprocessedTemplateString);
+					PreprocessedTemplate preprocessedTemplate = templatePreprocessor.preProcess(rawTemplate, outputFileUri);
+					preprocessedTemplateString = preprocessedTemplate.toString();
+					//generationResult.setPreprocessedTemplate(preprocessedTemplateString);
 					logger.info("End template pre-processing");
 				}
 				
@@ -255,6 +255,7 @@ public class Generator extends GeneratorStub {
 			
 			// If an exception occurs, wrap it in a GeneratorException and set it on a new GenerationResult.
 			catch (TemplatePreprocessorException | TransformerException | UnhandledException e) {
+				logger.severe(String.format("Error while generating: %s", e.getMessage()));
 				GenerationResult generationExeptionResult = new GenerationResult(_model.getModelFileName(), rawTemplate.getRawTemplateFileName());				
 				generationExeptionResult.setException(new GeneratorException(e));
 				generationResults.addGenerationResult(generationExeptionResult);

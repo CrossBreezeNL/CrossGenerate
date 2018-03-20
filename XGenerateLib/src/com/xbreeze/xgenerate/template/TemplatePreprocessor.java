@@ -50,7 +50,7 @@ public abstract class TemplatePreprocessor {
 		SectionModelBindingConfig[] rootSectionModelBindings = _config.getBindingConfig().getSectionModelBindingConfigs(rootSectionName);
 		
 		// Check whether there is only 1 root section model binding. If not, throw an exception.
-		if (rootSectionModelBindings.length != 1) {
+		if (rootSectionModelBindings == null || rootSectionModelBindings.length != 1) {
 			throw new TemplatePreprocessorException("There must and can only be 1 section model binding for the root section.");
 		}
 		
