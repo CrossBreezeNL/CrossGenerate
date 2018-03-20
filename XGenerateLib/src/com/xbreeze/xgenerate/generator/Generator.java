@@ -85,7 +85,7 @@ public class Generator extends GeneratorStub {
 	 * @throws UnhandledException 
 	 * @throws UnknownAnnotationException 
 	 */
-	private GenerationResults generateFromFiles(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException {
+	public GenerationResults generateFromFiles(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException {
 		// Unmarshal the config file into a XGenConfig object.
 		XGenConfig xGenConfig;
 		try {
@@ -100,16 +100,6 @@ public class Generator extends GeneratorStub {
 			rawTemplate = RawTemplate.fromFile(templateFileUri);
 		} catch (TemplateException e) {
 			throw new GeneratorException(e);
-		}
-		
-		
-		// Pre-process the model (if model attribute injections are defined.
-		if (xGenConfig.getModelConfig() != null) {
-			try {
-				ModelPreprocessor.preprocessModel(_model, xGenConfig.getModelConfig());
-			} catch (ModelPreprocessorException e) {
-				throw new GeneratorException(e);
-			}
 		}
 		
 		// Generate using the template and config.
@@ -198,7 +188,17 @@ public class Generator extends GeneratorStub {
 	 * @throws UnhandledException 
 	 * @throws UnknownAnnotationException 
 	 */
-	public GenerationResults generate(RawTemplate rawTemplate, XGenConfig xGenConfig, URI outputFileUri) {
+	public GenerationResults generate(RawTemplate rawTemplate, XGenConfig xGenConfig, URI outputFileUri) throws GeneratorException {
+		
+		// Pre-process the model (if model attribute injections are defined.
+		if (xGenConfig.getModelConfig() != null) {
+			try {
+				ModelPreprocessor.preprocessModel(_model, xGenConfig.getModelConfig());
+			} catch (ModelPreprocessorException e) {
+				throw new GeneratorException(e);
+			}
+		}
+
 		// Initialize GenerationResults object.
 		GenerationResults generationResults = new GenerationResults();
 		
