@@ -71,16 +71,6 @@ public class Generator extends GeneratorStub {
 	public void setModel(Model model) {
 		this._model = model;
 	}
-	
-	@Override
-	public boolean getDebugMode() {
-		return _debugMode;
-	}
-
-	@Override
-	public void setDebugMode(boolean _debugMode) {
-		this._debugMode = _debugMode;
-	}
 
 	/**
 	 * Generate the output using the raw-template and the config file locations.
@@ -214,15 +204,11 @@ public class Generator extends GeneratorStub {
 		{
 			logger.info("Begin generator");
 			
-			// Create the GenerationResult object.
-			GenerationResult generationResult = new GenerationResult(_model.getModelFileName(), rawTemplate.getRawTemplateFileName());
-			// Add the resulting output to the GenerationResults.
-			generationResults.addGenerationResult(generationResult);
+			
 			
 			try {
 				// Get the template configuration.
-				TemplateConfig templateConfig = xGenConfig.getTemplateConfig();
-
+				TemplateConfig templateConfig = xGenConfig.getTemplateConfig();				
 				// Pre-process the template.
 				String preprocessedTemplateString;
 				{
@@ -232,7 +218,7 @@ public class Generator extends GeneratorStub {
 					logger.info("Begin template pre-processing");
 						PreprocessedTemplate preprocessedTemplate = templatePreprocessor.preProcess(rawTemplate, outputFileUri);
 						preprocessedTemplateString = preprocessedTemplate.toString();
-						generationResult.setPreprocessedTemplate(preprocessedTemplateString);
+						//generationResult.setPreprocessedTemplate(preprocessedTemplateString);
 					logger.info("End template pre-processing");
 				}
 				
@@ -250,17 +236,26 @@ public class Generator extends GeneratorStub {
 					
 					// Create the transformer objects to transform the XSLT with the Model into the output.
 					Transformer xslTransformer = XMLUtils.getXmlTransformer().newTransformer(xslSource);
-					xslTransformer.transform(_model.getAsDOMSource(), outputResult);
-					// Store the results in the GenerationResult.
-					generationResult.setOutputFileContent(xslResultWriter.toString());
+					
+					// If running in test mode, cast the xslTransformer to net.sf.saxon.jaxp.TransformerImpl and set our custom
+					// output resolver to get the output in GenerationResults instead of files					 
+					if (this._testMode) {
+						GenerationResultsOutputResolver outputResolver = new GenerationResultsOutputResolver(generationResults,_model.getModelFileName(), rawTemplate.getRawTemplateFileName());
+						((net.sf.saxon.jaxp.TransformerImpl)xslTransformer).getUnderlyingController().setOutputURIResolver(outputResolver);
+					}
+					
+					//Invoke transform on the model
+					xslTransformer.transform(_model.getAsDOMSource(), outputResult);								
 					
 					logger.info("End XSLT transformation");
 				}
 			}
 			
-			// If an exception occurs, wrap it in a GeneratorException and set it on the GenerationResult.
+			// If an exception occurs, wrap it in a GeneratorException and set it on a new GenerationResult.
 			catch (TemplatePreprocessorException | TransformerException | UnhandledException e) {
-				generationResult.setException(new GeneratorException(e));
+				GenerationResult generationExeptionResult = new GenerationResult(_model.getModelFileName(), rawTemplate.getRawTemplateFileName());				
+				generationExeptionResult.setException(new GeneratorException(e));
+				generationResults.addGenerationResult(generationExeptionResult);
 			}
 			
 			logger.info("End generator");

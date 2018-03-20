@@ -13,7 +13,9 @@ public class GeneratorStub {
 	// The logger for this class.
 	private static final Logger logger = Logger.getLogger(GeneratorStub.class.getName());
 	
-	private boolean _debugMode = false;
+	protected boolean _debugMode = false;
+	
+	protected boolean _testMode = false;
 
 	/**
 	 * Constructor.
@@ -28,9 +30,19 @@ public class GeneratorStub {
 	}
 
 
-	public void setDebugMode(boolean _debugMode) {
-		this._debugMode = _debugMode;
+	public void setDebugMode(boolean debugMode) {
+		this._debugMode = debugMode;
 	}
+	
+	
+	public boolean getTestMode() {
+		return _testMode;
+	}
+
+	public void setTestMode(boolean testMode) {
+		this._testMode = testMode;
+	}
+
 	/**
 	 * Set the model using a file location.
 	 * @param modelFileUri The model file location.

@@ -35,6 +35,7 @@ public class XGenerateTestSteps {
 	public void beforeScenario() {
 		// Initialize the generator.
 		this._generator = new Generator();
+		this._generator.setTestMode(true);
 	}
 
 	@Given("^I have the following model:$")
