@@ -1,5 +1,6 @@
-#Author: your.email@your.domain.com
-#Keywords Summary :
+#Author: info@x-breeze.com
+#Keywords Summary : CrossGenerate PowerCenter
+
 Feature: PowerCenter
   This feature file contains the features when using PowerCenter in CrossGenerate templates
   

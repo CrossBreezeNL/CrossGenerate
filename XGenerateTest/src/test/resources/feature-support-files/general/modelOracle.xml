@@ -15,7 +15,7 @@
          </keyAttributes>
        </entity>
        <entity id="Customer" internalid="F64B5547-8E05-465A-AD15-AFD8C2732AE4" name="Customer">
-     <attributes>
+		 <attributes>
            <attribute id="Id" internalid="A1016A0D-D621-429B-BF65-24F5A5A60CAA" name="Id" datatype="INTEGER" fulldatatype="INTEGER" required="TRUE" isKey="TRUE" />
            <attribute id="FirstName" internalid="B75751AC-CF60-4D88-B346-A888F9B65422" name="FirstName" datatype="VARCHAR" length="50" fulldatatype="VARCHAR(50)" isKey="FALSE" />
            <attribute id="LastName" internalid="63918C4F-EA12-4FDC-97EE-DB23C42D888C" name="LastName" datatype="VARCHAR" length="100" fulldatatype="VARCHAR(100)" isKey="FALSE" />
