@@ -71,6 +71,13 @@ public class Generator extends GeneratorStub {
 	public void setModel(Model model) {
 		this._model = model;
 	}
+	
+	/**
+	 * Get the model that is set on the generator.
+	 */
+	public Model getModel() {
+		return this._model;
+	}
 
 	/**
 	 * Generate the output using the raw-template and the config file locations.

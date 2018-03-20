@@ -89,7 +89,9 @@ Feature: SQL
 			
 		When I run the generator
 		
-		Then I expect 1 generation result with the following content:
+		Then I expect 1 generation result(s)
+				
+		And an output named file:///C:/CrossGenerate/Output/Staging_Tables_ExampleSource.sql with content:
 			"""
 			CREATE TABLE [ExampleSource].[Order] (
 			  [Id]           int        NULL,

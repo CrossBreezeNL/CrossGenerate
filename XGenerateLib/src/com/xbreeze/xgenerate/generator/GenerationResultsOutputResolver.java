@@ -2,7 +2,6 @@ package com.xbreeze.xgenerate.generator;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.TransformerException;
@@ -42,6 +41,7 @@ public class GenerationResultsOutputResolver implements OutputURIResolver {
 			//TODO add preprocessed output to generationResult
 			GenerationResult newResult = new GenerationResult(_modelFileName, _templateFileName);
 			newResult.setOutputFileContent(((StreamResult)result).getWriter().toString());
+			newResult.setOutputFileLocation(((StreamResult)result).getSystemId());
 			_generationResults.addGenerationResult(newResult);
 			((StreamResult)result).getWriter().close();
 		}

@@ -15,7 +15,7 @@ public class GenerationResult {
 	
 	private String _outputFileContent;
 	
-//	private String _outputFileLocation;
+	private String _outputFileLocation;
 	
 	/**
 	 * The generation result status.
@@ -51,19 +51,19 @@ public class GenerationResult {
 		this._outputFileContent = outputFileContent;
 	}
 
-//	/**
-//	 * @return the outputFileLocation
-//	 */
-//	public String getOutputFileLocation() {
-//		return _outputFileLocation;
-//	}
-//
-//	/**
-//	 * @param outputFileLocation the outputFileLocation to set
-//	 */
-//	public void setOutputFileLocation(String outputFileLocation) {
-//		this._outputFileLocation = outputFileLocation;
-//	}
+	/**
+	 * @return the outputFileLocation
+	 */
+	public String getOutputFileLocation() {
+		return _outputFileLocation;
+	}
+
+	/**
+	 * @param outputFileLocation the outputFileLocation to set
+	 */
+	public void setOutputFileLocation(String outputFileLocation) {
+		this._outputFileLocation = outputFileLocation;
+	}
 
 	/**
 	 * @return the preprocessedTemplate
