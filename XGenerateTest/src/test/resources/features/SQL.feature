@@ -59,6 +59,7 @@ Feature: SQL
 			  [StageDateTime]            datetime2(2)              NOT NULL  
 			);
 			GO
+			
 			"""
 			
 		And the following config:
@@ -99,7 +100,8 @@ Feature: SQL
 			  [TotalAmount]           decimal(12,2)        NULL,
 			  [StageDateTime]            datetime2(2)              NOT NULL  
 			);
-			GOCREATE TABLE [ExampleSource].[Customer] (
+			GO
+			CREATE TABLE [ExampleSource].[Customer] (
 			  [Id]           int        NULL,
 			  [FirstName]           varchar(50)        NULL,
 			  [LastName]           varchar(100)        NULL,
@@ -109,4 +111,5 @@ Feature: SQL
 			  [StageDateTime]            datetime2(2)              NOT NULL  
 			);
 			GO
+			
 			"""
