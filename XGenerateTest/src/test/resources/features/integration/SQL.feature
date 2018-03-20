@@ -1,7 +1,9 @@
 #Author: info@x-breeze.com
 #Keywords Summary : CrossGenerate SQL
 
-Feature: SQL
+@Integration
+
+Feature: Integration_SQL
   This feature file contains the features when using SQL in your template.
 
 
@@ -49,8 +51,8 @@ Feature: SQL
 			  </system>
 			</modeldefinition>
 			"""
-		
-		And the following template named Staging_Tables_system_name.sql:
+			
+		And the following template named "Staging_Tables_system_name.sql":
 			"""
 			-- @XGenSection(name="CreateTable" placeholderOnLastLine="GO")
 			CREATE TABLE [system_name].[entity_name] (
@@ -90,9 +92,8 @@ Feature: SQL
 			
 		When I run the generator
 		
-		Then I expect 1 generation result(s)
-				
-		And an output named file:///C:/CrossGenerate/Output/Staging_Tables_ExampleSource.sql with content:
+		Then I expect 1 generation results
+		And an output named "Staging_Tables_ExampleSource.sql" with content:
 			"""
 			CREATE TABLE [ExampleSource].[Order] (
 			  [Id]           int        NULL,
