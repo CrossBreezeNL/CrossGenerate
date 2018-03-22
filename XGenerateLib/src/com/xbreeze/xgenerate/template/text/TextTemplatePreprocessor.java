@@ -295,8 +295,21 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		}
 		// If end was not specified, and the annotation was specified in the template the nrOfLines=1 by default.
 		else if (templateSectionAnnotation.isDefinedInTemplate()) {
-			// The end of the section is the first newline we encounter after the begin of the section. We include the newline in the section.
-			sectionEndCharIndex = rawTemplateContent.indexOf('\n', sectionEndSearchBeginIndex);
+			// Get the nrOfLines from the annotation.
+			Integer sectionNrOfLines = templateSectionAnnotation.getNrOfLines();
+			// If nrOfLines is undefined, the value is 1.
+			if (sectionNrOfLines == null)
+				sectionNrOfLines = 1;
+			
+			// Loop through the newlines as of the start of the section.
+			for (int currentNrOfLines = 0; currentNrOfLines < sectionNrOfLines; currentNrOfLines++) {
+				// The end of the section is the first newline we encounter after the begin of the section. We include the newline in the section.
+				sectionEndCharIndex = rawTemplateContent.indexOf('\n', (sectionEndCharIndex == -1) ? sectionEndSearchBeginIndex : sectionEndCharIndex + 1);
+				
+				// If the end of line wasn't found, break out of the loop.
+				if (sectionEndCharIndex == -1)
+					break;
+			}
 			
 			if (sectionEndCharIndex == -1)
 				return -1;

@@ -20,4 +20,4 @@ import cucumber.api.testng.AbstractTestNGCucumberTests;
 		plugin = {"pretty", "html:target/cucumber"}
 )
 @Test
-public class RunXGenerateTest extends AbstractTestNGCucumberTests { }
+public class RunXGenerateAllTest extends AbstractTestNGCucumberTests { }

@@ -17,6 +17,7 @@ import org.xml.sax.InputSource;
 
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.generator.GenerationResult;
+import com.xbreeze.xgenerate.generator.GenerationResult.GenerationStatus;
 import com.xbreeze.xgenerate.generator.GenerationResults;
 import com.xbreeze.xgenerate.generator.Generator;
 import com.xbreeze.xgenerate.generator.GeneratorException;
@@ -90,10 +91,16 @@ public class XGenerateTestSteps {
 		}
 		else if (this._templateFileUri != null && this._configFileUri != null) {
 			_generationResults = this._generator.generateFromFiles(this._templateFileUri, this._configFileUri, this._outputFolderUri);
-			
 		}
 		else {
 			throw new GeneratorException ("Template and config should both be specified as either content or file(URI) in the feature.");
+		}
+		
+		// If there was an error during generation, throw the exception.
+		for (GenerationResult generationResult : _generationResults.getGenerationResults()) {
+			if (generationResult.getStatus().equals(GenerationStatus.ERROR)) {
+				throw generationResult.getException();
+			}
 		}
 	}
 

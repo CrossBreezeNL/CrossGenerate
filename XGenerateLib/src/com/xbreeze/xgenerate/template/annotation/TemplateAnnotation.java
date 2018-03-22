@@ -204,7 +204,7 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 			paramValueObject = paramValue;
 		}
 		// Integer
-		else if (int.class.equals(paramValueType)) {
+		else if (int.class.equals(paramValueType) || Integer.class.equals(paramValueType)) {
 			try {
 				// When the target type is an Integer, we need to parse the String into an int.
 				paramValueObject = Integer.parseInt(paramValue);

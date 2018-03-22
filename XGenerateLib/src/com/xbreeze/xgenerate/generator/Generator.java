@@ -201,12 +201,10 @@ public class Generator extends GeneratorStub {
 
 		// Initialize GenerationResults object.
 		GenerationResults generationResults = new GenerationResults();
-		
-		// TODO Split the output in multiple files based on the Output type.
+
+		// Perform the pre-processing and XSLT generation.
 		{
 			logger.info("Begin generator");
-			
-			
 			
 			try {
 				// Get the template configuration.
