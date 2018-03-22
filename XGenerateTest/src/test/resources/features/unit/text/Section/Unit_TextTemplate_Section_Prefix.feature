@@ -31,14 +31,14 @@ Feature: Unit_TextTemplate_Section_Prefix
       """
 
   Scenario Outline: Section with prefix single line
-    And the following template named "Section_Prefix_single_line_<prefixStyle>.sql":
+    And the following template named "Section_Prefix_single_line_<prefixStyle>.txt":
       """
       -- @XGenSection(name="Column" end="column_name" prefix="<prefix>" prefixStyle="<prefixStyle>")
       column_name
       """
     When I run the generator
     Then I expect 1 generation result
-    And an output named "Section_Prefix_single_line_<prefixStyle>.sql" with content:
+    And an output named "Section_Prefix_single_line_<prefixStyle>.txt" with content:
       """
       <expected-result-1><expected-result-2><expected-result-3>
       """
@@ -51,7 +51,7 @@ Feature: Unit_TextTemplate_Section_Prefix
       | allButLast  | /** not last */  | /** not last */FirstColumn | /** not last */SecondColumn  | ThirdColumn                 |
 
   Scenario Outline: Section with prefix multi line
-    And the following template named "Section_Prefix_multi_line_<prefixStyle>.sql":
+    And the following template named "Section_Prefix_multi_line_<prefixStyle>.txt":
       """
       -- @XGenSection(name="Column" prefix="<prefix>" prefixStyle="<prefixStyle>")
       column_name
@@ -59,7 +59,7 @@ Feature: Unit_TextTemplate_Section_Prefix
       """
     When I run the generator
     Then I expect 1 generation result
-    And an output named "Section_Prefix_multi_line_<prefixStyle>.sql" with content:
+    And an output named "Section_Prefix_multi_line_<prefixStyle>.txt" with content:
       """
       <expected-result-1>
       <expected-result-2>

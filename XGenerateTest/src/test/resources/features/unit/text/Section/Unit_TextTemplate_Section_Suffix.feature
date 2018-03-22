@@ -31,14 +31,14 @@ Feature: Unit_TextTemplate_Section_Suffix
       """
 
   Scenario Outline: Section with suffix single line
-    And the following template named "Section_Suffix_single_line_<suffixStyle>.sql":
+    And the following template named "Section_Suffix_single_line_<suffixStyle>.txt":
       """
       -- @XGenSection(name="Column" end="column_name" suffix="<suffix>" suffixStyle="<suffixStyle>")
       column_name
       """
     When I run the generator
     Then I expect 1 generation result
-    And an output named "Section_Suffix_single_line_<suffixStyle>.sql" with content:
+    And an output named "Section_Suffix_single_line_<suffixStyle>.txt" with content:
       """
       <expected-result-1><expected-result-2><expected-result-3>
       """
@@ -53,7 +53,7 @@ Feature: Unit_TextTemplate_Section_Suffix
   @KnownIssue
   Scenario Outline: Section with suffix multi line
     # KnownIssue: The suffix is appeneded to the end of a section, but if there are new lines at the end of a section it probably should but the suffix before the new lines.
-    And the following template named "Section_Suffix_multi_line_<suffixStyle>.sql":
+    And the following template named "Section_Suffix_multi_line_<suffixStyle>.txt":
       """
       -- @XGenSection(name="Column" suffix="<suffix>" suffixStyle="<suffixStyle>")
       column_name
@@ -61,7 +61,7 @@ Feature: Unit_TextTemplate_Section_Suffix
       """
     When I run the generator
     Then I expect 1 generation result
-    And an output named "Section_Suffix_multi_line_<suffixStyle>.sql" with content:
+    And an output named "Section_Suffix_multi_line_<suffixStyle>.txt" with content:
       """
       <expected-result-1>
       <expected-result-2>
