@@ -1,89 +1,25 @@
 @Unit
 Feature: Unit_TextTemplate_Section_Prefix
   In this feature we will describe the section prefix feature in text templates.
-
-  Scenario: Section with prefix on firstOnly
-    Given I have the following model file: "general/model.xml"
-    And the following template named "CreateTables.sql":
-      """
-      -- @XGenSection(name="Entity" placeholderOnLastLine="GO;")
-      CREATE TABLE entity_name AS 
-        -- @XGenSection(name="Attribute" prefix="(" prefixStyle="firstOnly")
-        attribute_name attribute_fulldatatype,
-        recordCreatedOn datetime2(3)
-      );
-      GO;
-      
-      """
-    And the following config:
-      """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <XGenConfig>
-       <Model/>
-       <Template rootSectionName="System">
-         <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
-         <Output type="single_output" />
-       </Template>
-       <Binding>
-         <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
-         <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
-           <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity">
-             <SectionModelBinding section="Attribute" modelXPath="/modeldefinition/system/mappableObjects/entity/attributes/attribute" placeholderName="attribute"/>
-           </SectionModelBinding>
-         </SectionModelBinding>
-       </Binding>
-      </XGenConfig>
-      """
-    When I run the generator
-    Then I expect 1 generation result
-    And an output named "CreateTables.sql" with content:
-      """
-      CREATE TABLE Order AS 
-      (  Id int,
-        OrderDate datetime,
-        OrderNumber varchar(50),
-        CustomerId int,
-        TotalAmount decimal(12,2),
-        Id int,
-        FirstName varchar(50),
-        LastName varchar(100),
-        City varchar(50),
-        Country varchar(3),
-        Phone varchar(20),
-        recordCreatedOn datetime2(3)
-      );
-      GO;
-      CREATE TABLE Customer AS 
-      (  Id int,
-        OrderDate datetime,
-        OrderNumber varchar(50),
-        CustomerId int,
-        TotalAmount decimal(12,2),
-        Id int,
-        FirstName varchar(50),
-        LastName varchar(100),
-        City varchar(50),
-        Country varchar(3),
-        Phone varchar(20),
-        recordCreatedOn datetime2(3)
-      );
-      GO;
-      
-      """
-
-  Scenario: Section wih prefix on lastOnly
-    Given I have the following model file: "general/model.xml"
-    And the following template named "CreateTables.sql":
-      """
-      -- @XGenSection(name="Entity" placeholderOnLastLine="GO;")
-      CREATE TABLE entity_name AS (
-        -- @XGenSection(name="Attribute" prefix="/* last */" prefixStyle="lastOnly")
-        attribute_name attribute_fulldatatype,
-        recordCreatedOn datetime2(3)
-      );
-      GO;
-      
-      """
+  
+  Background:
+    Given I have the following model:
+	    """
+				<?xml version="1.0" encoding="UTF-8"?>
+				<modeldefinition>
+				  <system name="ExampleSource">
+				    <mappableObjects>
+				      <entity name="ExampleTable">
+				        <attributes>
+				          <attribute name="FirstColumn" fulldatatype="int" ordinal="1" />
+				          <attribute name="SecondColumn" fulldatatype="varchar(50)" />
+				          <attribute name="ThirdColumn" fulldatatype="datetime" />
+				        </attributes>
+				      </entity>
+				    </mappableObjects>
+				  </system>
+				</modeldefinition>
+	    """
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -103,46 +39,57 @@ Feature: Unit_TextTemplate_Section_Prefix
         </Binding>
       </XGenConfig>
       """
+
+  Scenario: Section with prefix on firstOnly
+    Given the following template named "Section_Prefix_firstOnly.sql":
+      """
+      -- @XGenSection(name="Entity" placeholderOnLastLine="GO;")
+      CREATE TABLE entity_name AS (
+        -- @XGenSection(name="Attribute" prefix="/** first */" prefixStyle="firstOnly")
+        attribute_name attribute_fulldatatype,
+        recordCreatedOn datetime2(3)
+      );
+      GO;
+      """
     When I run the generator
     Then I expect 1 generation result
-    And an output named "CreateTables.sql" with content:
+    And an output named "Section_Prefix_firstOnly.sql" with content:
       """
-      CREATE TABLE Order AS (
-        Id int,
-        OrderDate datetime,
-        OrderNumber varchar(50),
-        CustomerId int,
-        TotalAmount decimal(12,2),
-        Id int,
-        FirstName varchar(50),
-        LastName varchar(100),
-        City varchar(50),
-        Country varchar(3),
-      /* last */  Phone varchar(20),
+      CREATE TABLE ExampleTable AS (
+      /** first */  FirstColumn int,
+        SecondColumn varchar(50),
+        ThirdColumn datetime,
         recordCreatedOn datetime2(3)
       );
       GO;
-      CREATE TABLE Customer AS (
-        Id int,
-        OrderDate datetime,
-        OrderNumber varchar(50),
-        CustomerId int,
-        TotalAmount decimal(12,2),
-        Id int,
-        FirstName varchar(50),
-        LastName varchar(100),
-        City varchar(50),
-        Country varchar(3),
-      /* last */  Phone varchar(20),
+      """
+
+  Scenario: Section wih prefix on lastOnly
+    Given the following template named "Section_Prefix_lastOnly.sql":
+      """
+      -- @XGenSection(name="Entity" placeholderOnLastLine="GO;")
+      CREATE TABLE entity_name AS (
+        -- @XGenSection(name="Attribute" prefix="/** last */" prefixStyle="lastOnly")
+        attribute_name attribute_fulldatatype,
         recordCreatedOn datetime2(3)
       );
       GO;
-      
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "Section_Prefix_lastOnly.sql" with content:
+      """
+      CREATE TABLE ExampleTable AS (
+        FirstColumn int,
+        SecondColumn varchar(50),
+      /** last */  ThirdColumn datetime,
+        recordCreatedOn datetime2(3)
+      );
+      GO;
       """
 
   Scenario: Section with prefix on allButFirst
-    Given I have the following model file: "general/model.xml"
-    And the following template named "CreateTables.sql":
+    Given the following template named "Section_Prefix_allButFirst.sql":
       """
       -- @XGenSection(name="Entity" placeholderOnLastLine="GO;")
       CREATE TABLE entity_name AS (
@@ -150,65 +97,21 @@ Feature: Unit_TextTemplate_Section_Prefix
         attribute_name attribute_fulldatatype
       );
       GO;
-      
-      """
-    And the following config:
-      """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <XGenConfig>
-        <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
-          <Output type="single_output" />
-        </Template>
-        <Binding>
-          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
-          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
-            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity">
-              <SectionModelBinding section="Attribute" modelXPath="/modeldefinition/system/mappableObjects/entity/attributes/attribute" placeholderName="attribute"/>
-            </SectionModelBinding>
-          </SectionModelBinding>
-        </Binding>
-      </XGenConfig>
       """
     When I run the generator
     Then I expect 1 generation result
-    And an output named "CreateTables.sql" with content:
+    And an output named "Section_Prefix_allButFirst.sql" with content:
       """
-      CREATE TABLE Order AS (
-        Id int
-      ,  OrderDate datetime
-      ,  OrderNumber varchar(50)
-      ,  CustomerId int
-      ,  TotalAmount decimal(12,2)
-      ,  Id int
-      ,  FirstName varchar(50)
-      ,  LastName varchar(100)
-      ,  City varchar(50)
-      ,  Country varchar(3)
-      ,  Phone varchar(20)
+      CREATE TABLE ExampleTable AS (
+        FirstColumn int
+      ,  SecondColumn varchar(50)
+      ,  ThirdColumn datetime
       );
       GO;
-      CREATE TABLE Customer AS (
-        Id int
-      ,  OrderDate datetime
-      ,  OrderNumber varchar(50)
-      ,  CustomerId int
-      ,  TotalAmount decimal(12,2)
-      ,  Id int
-      ,  FirstName varchar(50)
-      ,  LastName varchar(100)
-      ,  City varchar(50)
-      ,  Country varchar(3)
-      ,  Phone varchar(20)
-      );
-      GO;
-      
       """
 
   Scenario: Section with prefix on allButLast
-    Given I have the following model file: "general/model.xml"
-    And the following template named "CreateTables.sql":
+    Given the following template named "Section_Prefix_allButLast.sql":
       """
       -- @XGenSection(name="Entity" placeholderOnLastLine="GO;")
       CREATE TABLE entity_name AS (
@@ -217,60 +120,16 @@ Feature: Unit_TextTemplate_Section_Prefix
         recordCreatedOn datetime2(3)
       );
       GO;
-      
-      """
-    And the following config:
-      """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <XGenConfig>
-        <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
-          <Output type="single_output" />
-        </Template>
-        <Binding>
-          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
-          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
-            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity">
-              <SectionModelBinding section="Attribute" modelXPath="/modeldefinition/system/mappableObjects/entity/attributes/attribute" placeholderName="attribute"/>
-            </SectionModelBinding>
-          </SectionModelBinding>
-        </Binding>
-      </XGenConfig>
       """
     When I run the generator
     Then I expect 1 generation result
-    And an output named "CreateTables.sql" with content:
+    And an output named "Section_Prefix_allButLast.sql" with content:
       """
-      CREATE TABLE Order AS (
-      /* not last */  Id int,
-      /* not last */  OrderDate datetime,
-      /* not last */  OrderNumber varchar(50),
-      /* not last */  CustomerId int,
-      /* not last */  TotalAmount decimal(12,2),
-      /* not last */  Id int,
-      /* not last */  FirstName varchar(50),
-      /* not last */  LastName varchar(100),
-      /* not last */  City varchar(50),
-      /* not last */  Country varchar(3),
-        Phone varchar(20),
+      CREATE TABLE ExampleTable AS (
+      /* not last */  FirstColumn int,
+      /* not last */  SecondColumn varchar(50),
+        ThirdColumn datetime,
         recordCreatedOn datetime2(3)
       );
       GO;
-      CREATE TABLE Customer AS (
-      /* not last */  Id int,
-      /* not last */  OrderDate datetime,
-      /* not last */  OrderNumber varchar(50),
-      /* not last */  CustomerId int,
-      /* not last */  TotalAmount decimal(12,2),
-      /* not last */  Id int,
-      /* not last */  FirstName varchar(50),
-      /* not last */  LastName varchar(100),
-      /* not last */  City varchar(50),
-      /* not last */  Country varchar(3),
-        Phone varchar(20),
-        recordCreatedOn datetime2(3)
-      );
-      GO;
-      
       """
