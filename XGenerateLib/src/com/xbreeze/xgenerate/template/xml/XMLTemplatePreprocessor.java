@@ -321,7 +321,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			if (annotationNodeTextContent != null && annotationNodeTextContent.length() > 0) {
 				logger.info(String.format("The annotation node was found on the current element (%s -> %s -> '%s')", templateNode.getNodeName(), annotationNode.getNodeName(), annotationNodeTextContent));
 				// Find the annotations in the comment node.
-				ArrayList<TemplateAnnotation> collectedAnnotations = AnnotationScanner.collectInlineAnnotations(annotationNodeTextContent, fileFormatConfig.getAnnotationPrefix(), fileFormatConfig.getAnnotationArgsPrefix(), fileFormatConfig.getAnnotationArgsSuffix());
+				ArrayList<TemplateAnnotation> collectedAnnotations = AnnotationScanner.collectInlineAnnotations(annotationNodeTextContent, fileFormatConfig);
 				// If annotations are found on the node, strip its annotations text.
 				if (collectedAnnotations.size() > 0) {
 					logger.info(String.format("Found %d annotations on the current element (%s -> %s)", collectedAnnotations.size(), templateNode.getNodeName(), annotationNode.getNodeName()));

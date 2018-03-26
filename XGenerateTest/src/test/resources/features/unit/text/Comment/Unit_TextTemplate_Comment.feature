@@ -17,7 +17,7 @@ Feature: Unit_TextTemplate_Comment
           <FileFormat
             templateType="text"
             singleLineCommentPrefix="--"
-            multiLineCommentPrefix="/**"
+            multiLineCommentPrefix="/*"
             multiLineCommentSuffix="*/"
             annotationPrefix="@XGen"
             annotationArgsPrefix="("
@@ -44,28 +44,35 @@ Feature: Unit_TextTemplate_Comment
       """
 
     Examples: 
-      | Scenario       | Comment-content                         | Expected-comment-output                 |
-      | AnnotationOnly | -- @XGenComment(Something)              |                                         |
-      # When applying a single line comment in a text template the annotation is either fully an annotation or comment.
-      | CommentBefore  | -- Some comment @XGenComment(Something) | -- Some comment @XGenComment(Something) |
+      | Scenario                 | Comment-content                                               | Expected-comment-output               |
+      | SingleAnnotationOnly     | -- @XGenComment(Something)                                    |                                       |
+      | SingleCommentBefore      | -- Some comment @XGenComment(Something)                       | -- Some comment                       |
+      # In this case the output will have 2 space before the comment. This because how the comment scanning works.
+      | SingleCommentAfter       | -- @XGenComment(Something) Some comment                       | --  Some comment                      |
+      | SingleCommentBeforeAfter | -- Some comment 1. @XGenComment(Something) Some comment 2.    | -- Some comment 1. Some comment 2.    |
+      | MultiAnnotationOnly      | /* @XGenComment(Something) */                                 |                                       |
+      | MultiCommentBefore       | /* Some comment @XGenComment(Something) */                    | /* Some comment */                    |
+      # In this case the output will have 2 space before the comment. This because how the comment scanning works.
+      | MultiCommentAfter        | /* @XGenComment(Something) Some comment */                    | /*  Some comment */                   |
+      | MultiCommentBeforeAfter  | /* Some comment 1. @XGenComment(Something) Some comment 2. */ | /* Some comment 1. Some comment 2. */ |
 
   Scenario Outline: Multi line text comment <Scenario>
     And the following template named "TextTemplate_Comment_MultiLine_<Scenario>.xml":
       """
-      /**
-       <Input-comment-1>
-       <Input-comment-2>
-       <Input-comment-3>
+      /*
+      <Input-comment-1>
+      <Input-comment-2>
+      <Input-comment-3>
        */
       """
     When I run the generator
     Then I expect 1 generation result
     And an output named "TextTemplate_Comment_MultiLine_<Scenario>.xml" with content:
       """
-      /**
-       <Output-comment-1>
-       <Output-comment-2>
-       <Output-comment-3>
+      /*
+      <Output-comment-1>
+      <Output-comment-2>
+      <Output-comment-3>
        */
       """
 

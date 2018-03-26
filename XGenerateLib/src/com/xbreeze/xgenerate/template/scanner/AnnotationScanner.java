@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.xbreeze.xgenerate.UnhandledException;
+import com.xbreeze.xgenerate.config.template.FileFormatConfig;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
 import com.xbreeze.xgenerate.template.annotation.AnnotationException;
@@ -21,104 +22,86 @@ public class AnnotationScanner {
 	protected static final Logger logger = Logger.getLogger(TemplatePreprocessor.class.getName());
 	
 	/**
-	 * Collection annotations which are in-line in a String. Some parts may be a annotation and other not. 
+	 * The following regex part is for identifying annotations with is parameters.
+	 * %s           -> 1nd parameter for String.format, the annotation prefix
+	 * ([a-zA-Z]+)  -> The name of the annotation (region 1)
+	 * [ \t]*       -> Again, any space or tab characters
+	 * %s           -> 2rd parameter for String.format, the annotation args prefix
+	 * (.*[^ \t])   -> The arguments for the annotation, not ending with a space or tab (region 2).
+	 * [ \t]*       -> Again, any space or tab characters
+	 * %s           -> 3th parameter for String.format, the annotation args suffix
+	 */
+	private static String ANNOTATION_REGEX(String annotationPrefix, String annotationArgsPrefix, String annotationArgsSuffix) {
+		return String.format(
+				"%s([a-zA-Z]+)[ \\t]*%s(.*[^ \\t])[ \\t]*%s",
+				Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationPrefix)),
+				Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationArgsPrefix)),
+				Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationArgsSuffix))
+		);
+	}
+	
+	/**
+	 * The following regex part is the overlapping part of the single and multi-line comment pattern.
+	 * If there is nothing but empty characters between line start and the comment start we take it into the match.
+	 * ^?              -> The beginning of a line (optionally)
+	 * [ \t]*          -> Any space or tab characters (optionally)
+	 * %s              -> 1st parameter for String.format, the single-line comment prefix
+	 * [ \t]*          -> Again, any space or tab characters
+	 * (.*%s.+)        -> The content of the comment section, any character but the annotation prefix must occur (2nd parameter for String.format). (region 1)
+	 * [ \t]*          -> Again, any space or tab characters 
+	 * The remainder of the pattern is specified per single or multi-line comment pattern.
+	 */
+	private static String COMMENT_REGEX(String commentPrefix, String annotationPrefix) {
+		return String.format("^?[ \\t]*%s[ \\t]*(.*%s.*)[ \\t]*",
+				Pattern.quote(TemplatePreprocessor.doubleEntityEncode(commentPrefix)),
+				Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationPrefix))
+		);
+	}
+	
+	/**
+	 * Collection annotations which are in-line in a String. Some parts may be a annotation and other not.
 	 * @param templateContent The template part to scan.
-	 * @param annotationPrefix The annotation prefix.
-	 * @param annotationArgsPrefix The annotation args prefix.
-	 * @param annotationArgsSuffix The annotation args suffix.
+	 * @param fileFormatConfig The file format config.
 	 * @return A list of annotations found.
 	 * @throws TemplatePreprocessorException
 	 */
-	public static ArrayList<TemplateAnnotation> collectInlineAnnotations(String templateContent, String annotationPrefix, String annotationArgsPrefix, String annotationArgsSuffix) throws TemplatePreprocessorException {
-		/**
-		 * [ \t]*       -> Any space or tab characters before the annotation.
-		 * %s           -> 1nd parameter for String.format, the annotation prefix
-		 * ([a-zA-Z]+)  -> The name of the annotation (region 1)
-		 * [ \t]*       -> Again, any space or tab characters
-		 * %s           -> 3rd parameter for String.format, the annotation args prefix
-		 * (.*)         -> The arguments for the annotation (region 2).
-		 * %s           -> 4th parameter for String.format, the annotation args suffix
-		 */
-		Pattern compiledPattern = Pattern.compile(
-				String.format(
-						"[ \t]*%s([a-zA-Z]+)[ \t]*%s(.*)%s",
-						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationPrefix)),
-						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationArgsPrefix)),
-						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationArgsSuffix))
-				)
-		);
-		
-		// Collect the annotations and return them based on the pattern.
-		return collectAnnotations(templateContent, compiledPattern);
+	public static ArrayList<TemplateAnnotation> collectInlineAnnotations(String templateContent, FileFormatConfig fileFormatConfig) throws TemplatePreprocessorException {
+		return collectInlineAnnotations(templateContent, fileFormatConfig, 0, templateContent.length());
 	}
 	
 	/**
-	 * Static method for scanning for annotations
-	 * @param templateContent the template part that is searched for annotations
-	 * @return returns the list of annotations found in the text.
-	 * @throws TemplatePreprocessorException 
-	 */
-	public static ArrayList<TemplateAnnotation> collectAnnotations(String templateContent, String annotationTextPrefix, String annotationPrefix, String annotationArgsPrefix, String annotationArgsSuffix, String annotationTextSuffix) throws TemplatePreprocessorException {
-		/**
-		 * (?m)         -> Multi-line match (indicates it can match on sub-parts of the input).
-		 * ^            -> The beginning of a line
-		 * [ \t]*       -> Any space or tab characters
-		 * %s           -> 1st parameter for String.format, the annotation text prefix
-		 * [ \t]*       -> Again, any space or tab characters
-		 * %s           -> 2nd parameter for String.format, the annotation prefix
-		 * ([a-zA-Z]+)  -> The name of the annotation (region 1)
-		 * [ \t]*       -> Again, any space or tab characters
-		 * %s           -> 3rd parameter for String.format, the annotation args prefix
-		 * (.*)         -> The arguments for the annotation (region 2).
-		 * %s           -> 4th parameter for String.format, the annotation args suffix
-		 * [ \t]*       -> Again, any space or tab characters
-		 * %s           -> 5th parameter for String.format, the annotation text suffix
-		 * [ \t]*       -> Again, any space or tab characters
-		 * $            -> The end of the line.
-		 * \r?          -> Include the carriage return (optionally)
-		 * \n?          -> Include the new line. (optionally)
-		 * 
-		 * Use Pattern.quote() to make sure the parameters passed are escaped if needed. Cause we want to treat them as literals.
-		 * Revisions
-		 *  - 1: (?m)^[ \t]*%s[ \t]*%s([a-zA-Z]+)[ \t]*%s(.*)%s[ \t]*$
-		 *         - Initial version
-		 *  - 2: (?m)%s[ \t]*%s([a-zA-Z]+)[ \t]*%s(.*)%s[ \t]*$
-		 *         - Removed whitespace at beginning so that part will be a RawTemplateSection.
-		 *  - 3: (?m)^[ \t]*%s[ \t]*%s([a-zA-Z]+)[ \t]*%s(.*)%s[ \t]*$\r?
-		 *         - Added whitespace at beginning and added carriage return at the end (this solved empty lines issue in XSLT).
-		 *  - 4: (?m)^[ \t]*%s[ \t]*%s([a-zA-Z]+)[ \t]*%s(.*)%s[ \t]*$\r?\n
-		 *         - Added new line to the end.
-		 *  - 5: (?m)^[ \t]*%s[ \t]*%s([a-zA-Z]+)[ \t]*%s(.*)%s[ \t]*%s[ \t]*$\r?\n?
-		 *         - Added annotation text suffix as parameter and made newline optional
-		 */
-		Pattern compiledPattern = Pattern.compile(
-				String.format(
-						"(?m)^[ \\t]*%s[ \\t]*%s([a-zA-Z]+)[ \\t]*%s(.*)%s[ \\t]*%s[ \\t]*$\\r?\\n?",
-						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationTextPrefix)),
-						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationPrefix)),
-						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationArgsPrefix)),
-						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationArgsSuffix)),
-						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationTextSuffix))
-				)
-		);
-		
-		// Collect the annotations and return them based on the pattern.
-		return collectAnnotations(templateContent, compiledPattern);
-	}
-	
-	/**
-	 * Private method for collecting annotation using the template part to scan and a pattern.
-	 * The pattern must contain 2 groups, the first being the annotation name and the second the annotation params.
+	 * Collection annotations which are in-line in a String. Some parts may be a annotation and other not.
 	 * @param templateContent The template part to scan.
-	 * @param pattern The pattern to use while scanning.
-	 * @return The annotations found.
+	 * @param fileFormatConfig The file format config.
+	 * @param beginIndex The character index of the templateContent to start scanning.
+	 * @param endIndex The character index of the templateContent to stop scanning.
+	 * @return A list of annotations found.
 	 * @throws TemplatePreprocessorException
 	 */
-	private static ArrayList<TemplateAnnotation> collectAnnotations(String templateContent, Pattern pattern) throws TemplatePreprocessorException {
+	private static ArrayList<TemplateAnnotation> collectInlineAnnotations(String templateContent, FileFormatConfig fileFormatConfig, int beginIndex, int endIndex) throws TemplatePreprocessorException {
 		ArrayList<TemplateAnnotation> annotations = new ArrayList<>();
 		
+		/**
+		 * [ \t]*       -> Any space or tab characters before the annotation.
+		 * %s           -> The annotation regex.
+		 */
+		Pattern annotationPattern = Pattern.compile(
+				String.format(
+						"[ \\t]*%s",
+						ANNOTATION_REGEX(
+								fileFormatConfig.getAnnotationPrefix(), 
+								fileFormatConfig.getAnnotationArgsPrefix(), 
+								fileFormatConfig.getAnnotationArgsSuffix()
+						)
+				),
+				// Match case insensitive.
+				Pattern.CASE_INSENSITIVE
+		);
+		
 		// Create the matcher.
-		Matcher matcher = pattern.matcher(templateContent);
+		Matcher matcher = annotationPattern.matcher(templateContent);
+		// Set the region to search.
+		matcher.region(beginIndex, endIndex);
 		// Loop through the results.
 		while (matcher.find()) {
 			
@@ -143,6 +126,118 @@ public class AnnotationScanner {
 			} catch (AnnotationException e) {
 				throw new TemplatePreprocessorException(e);
 			}
+		}
+		
+		return annotations;
+	}
+	
+	private static void collectCommentAnnotations(String templateContent, FileFormatConfig fileFormatConfig, Pattern commentPattern, int commentContentRegion, ArrayList<TemplateAnnotation> annotations) throws TemplatePreprocessorException {
+		// Create the matcher.
+		Matcher commentMatcher = commentPattern.matcher(templateContent);
+		// Loop through the results.
+		while (commentMatcher.find()) {
+			logger.info(String.format("Found comment with annotation. (start: %d; end: %d; commentStart: %d; commentEnd: %d; comment: '%s')", commentMatcher.start(), commentMatcher.end(), commentMatcher.start(commentContentRegion), commentMatcher.end(commentContentRegion), commentMatcher.group(commentContentRegion)));
+			// Collect the annotation in the content of the comment.
+			ArrayList<TemplateAnnotation> foundCommentAnnotations = collectInlineAnnotations(templateContent, fileFormatConfig, commentMatcher.start(commentContentRegion), commentMatcher.end(commentContentRegion));
+			if (foundCommentAnnotations.size() == 1) {
+				TemplateAnnotation onlyAnnotationInComment = foundCommentAnnotations.get(0);
+				logger.info(String.format("Only annotation found: '%s'", templateContent.substring(onlyAnnotationInComment.getAnnotationBeginIndex(), onlyAnnotationInComment.getAnnotationEndIndex())));
+				// If the annotation is the only thing on the line, we take the whole line as begin and end index to make sure its not in the result.
+				if (
+						// If the regions of the annotation are the same as the comment content bounds.
+						(
+								onlyAnnotationInComment.getAnnotationBeginIndex() == commentMatcher.start(commentContentRegion) 
+								&& onlyAnnotationInComment.getAnnotationEndIndex() == commentMatcher.end(commentContentRegion)
+						)
+						// Or the remaining content is only white-space.
+						|| (
+								onlyAnnotationInComment.getAnnotationBeginIndex() == commentMatcher.start(commentContentRegion)
+								&& onlyAnnotationInComment.getAnnotationEndIndex() < commentMatcher.end(commentContentRegion)
+								&& templateContent.substring(onlyAnnotationInComment.getAnnotationEndIndex(), commentMatcher.end(commentContentRegion)).trim().length() == 0
+						)
+				) {
+					// Update the section annotation bounds.
+					logger.info("The comment only contains an annotation, so the whole comment is now part of the annotation.");
+					onlyAnnotationInComment.setAnnotationBeginIndex(commentMatcher.start());
+					onlyAnnotationInComment.setAnnotationEndIndex(commentMatcher.end());
+				}
+			}
+			annotations.addAll(foundCommentAnnotations);
+		}
+	}
+	
+	/**
+	 * Collection all text annotations (in single and multi-line comment parts).
+	 * @param templateContent The template content to scan.
+	 * @param fileFormatConfig The file format config.
+	 * @return The list of annotations found.
+	 * @throws TemplatePreprocessorException
+	 */
+	public static ArrayList<TemplateAnnotation> collectTextAnnotations(String templateContent, FileFormatConfig fileFormatConfig) throws TemplatePreprocessorException {
+		// Initialize a collection for the template annotations.
+		ArrayList<TemplateAnnotation> annotations = new ArrayList<TemplateAnnotation>();
+		
+
+		
+		// First search for single-line comment sections and scan for annotations in there.
+		if (fileFormatConfig.getSingleLineCommentPrefix() != null && fileFormatConfig.getSingleLineCommentPrefix().length() > 0) {
+			// Single line comments can start anywhere on a line (beginning or after some code), but always end with line-end.
+			/**
+			 * $               -> The end of the line.
+			 * \r?             -> Include the carriage return (optionally)
+			 * \n?             -> Include the new line. (optionally)
+			 */
+			Pattern singleLinePattern = Pattern.compile(
+					String.format(
+							"%s$\\r?\\n?",
+							COMMENT_REGEX(
+									fileFormatConfig.getSingleLineCommentPrefix(), 
+									fileFormatConfig.getAnnotationPrefix()
+							)
+					),
+					// Match case insensitive.
+					Pattern.CASE_INSENSITIVE
+					// Find the pattern on any line (not only the first or last line).
+					| Pattern.MULTILINE
+			);
+			
+			// Collect the annotation for the single-line comment sections.
+			collectCommentAnnotations(templateContent, fileFormatConfig, singleLinePattern, 1, annotations);
+		}
+		
+		// Second search for multi-line comment sections and scan for annotations in there.
+		if (fileFormatConfig.getMultiLineCommentPrefix() != null
+				&& fileFormatConfig.getMultiLineCommentPrefix().length() > 0 
+				&& fileFormatConfig.getMultiLineCommentSuffix() != null 
+				&& fileFormatConfig.getMultiLineCommentSuffix().length() > 0)
+		{
+			/**
+			 * If there is nothing but empty characters between line start and the comment start we take it into the match.
+			 * %s              -> 3st parameter for String.format, the multi-line comment suffix.
+			 * [ \t]*          -> Again, any space or tab characters
+			 * $?              -> The end of the line. (optionally)
+			 * \r?             -> Include the carriage return (optionally)
+			 * \n?             -> Include the new line. (optionally)
+			 */
+			Pattern multiLinePattern = Pattern.compile(
+					String.format(
+							"%s%s[ \\t]*$?\\r?\\n?",
+							COMMENT_REGEX(
+									fileFormatConfig.getMultiLineCommentPrefix(), 
+									fileFormatConfig.getAnnotationPrefix()
+							),
+							Pattern.quote(TemplatePreprocessor.doubleEntityEncode(fileFormatConfig.getMultiLineCommentSuffix()))
+					),
+					// Match case insensitive.
+					Pattern.CASE_INSENSITIVE
+					// Find the pattern on any line (not only the first or last line).
+					| Pattern.MULTILINE
+					// Also set the . to also match newlines.
+					| Pattern.DOTALL 
+			);
+			
+			// Collect the annotation for the single-line comment sections.
+			collectCommentAnnotations(templateContent, fileFormatConfig, multiLinePattern, 1, annotations);
 		}
 		
 		return annotations;

@@ -47,7 +47,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		FileFormatConfig fileFormatConfig = _config.getTemplateConfig().getFileFormatConfig();
 		
 		// Find the annotations in the template and add the to the templateAnnotations set.
-		ArrayList<TemplateAnnotation> templateAnnotations = AnnotationScanner.collectAnnotations(rawTemplateContent, fileFormatConfig.getSingleLineCommentPrefix(), fileFormatConfig.getAnnotationPrefix(), fileFormatConfig.getAnnotationArgsPrefix(), fileFormatConfig.getAnnotationArgsSuffix(), "");	
+		ArrayList<TemplateAnnotation> templateAnnotations = AnnotationScanner.collectTextAnnotations(rawTemplateContent, fileFormatConfig);
 	
 		// Add all template section annotations from the config file.
 		if (_config.getTemplateConfig() != null

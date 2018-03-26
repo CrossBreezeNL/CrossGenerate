@@ -19,7 +19,13 @@ Feature: Unit_TextTemplate_Section_Suffix
       <XGenConfig>
         <Model/>
         <Template rootSectionName="Template">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <FileFormat
+            templateType="text" 
+            singleLineCommentPrefix="--" 
+            annotationPrefix="@XGen" 
+            annotationArgsPrefix="(" 
+            annotationArgsSuffix=")"
+          />
           <Output type="single_output" />
         </Template>
         <Binding>
