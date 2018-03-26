@@ -1,7 +1,6 @@
 package com.xbreeze.xgenerate.test;
 
 import org.junit.runner.RunWith;
-import org.testng.annotations.Test;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
@@ -16,8 +15,7 @@ import cucumber.api.junit.Cucumber;
 		// Find the feature files in the root 'features' folder.
 		features = "src/test/resources/features",
 		glue = "com.xbreeze.xgenerate.test.steps",
-		plugin = {"pretty", "html:target/cucumber"},
+		plugin = {"pretty", "json:target/cucumber-unit.json"},
 		tags = {"@Unit"}
 )
-@Test
 public class RunXGenerateUnitTest { }

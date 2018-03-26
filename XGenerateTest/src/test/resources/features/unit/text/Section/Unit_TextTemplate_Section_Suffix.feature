@@ -30,7 +30,7 @@ Feature: Unit_TextTemplate_Section_Suffix
       </XGenConfig>
       """
 
-  Scenario Outline: Section with suffix single line
+  Scenario Outline: Section with suffix single line <suffixStyle>
     And the following template named "Section_Suffix_single_line_<suffixStyle>.txt":
       """
       -- @XGenSection(name="Column" end="column_name" suffix="<suffix>" suffixStyle="<suffixStyle>")
@@ -51,7 +51,7 @@ Feature: Unit_TextTemplate_Section_Suffix
       | allButLast  | /** not last */  | FirstColumn/** not last */ | SecondColumn/** not last */  | ThirdColumn                 |
 
   @KnownIssue
-  Scenario Outline: Section with suffix multi line
+  Scenario Outline: Section with suffix multi line <suffixStyle>
     # KnownIssue: The suffix is appeneded to the end of a section, but if there are new lines at the end of a section it probably should but the suffix before the new lines.
     And the following template named "Section_Suffix_multi_line_<suffixStyle>.txt":
       """

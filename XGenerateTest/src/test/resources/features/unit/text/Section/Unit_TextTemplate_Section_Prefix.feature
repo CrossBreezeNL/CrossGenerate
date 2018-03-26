@@ -30,7 +30,7 @@ Feature: Unit_TextTemplate_Section_Prefix
       </XGenConfig>
       """
 
-  Scenario Outline: Section with prefix single line
+  Scenario Outline: Section with prefix single line <prefixStyle>
     And the following template named "Section_Prefix_single_line_<prefixStyle>.txt":
       """
       -- @XGenSection(name="Column" end="column_name" prefix="<prefix>" prefixStyle="<prefixStyle>")
@@ -50,7 +50,7 @@ Feature: Unit_TextTemplate_Section_Prefix
       | allButFirst | /** not first */ | FirstColumn                | /** not first */SecondColumn | /** not first */ThirdColumn |
       | allButLast  | /** not last */  | /** not last */FirstColumn | /** not last */SecondColumn  | ThirdColumn                 |
 
-  Scenario Outline: Section with prefix multi line
+  Scenario Outline: Section with prefix multi line <prefixStyle>
     And the following template named "Section_Prefix_multi_line_<prefixStyle>.txt":
       """
       -- @XGenSection(name="Column" prefix="<prefix>" prefixStyle="<prefixStyle>")

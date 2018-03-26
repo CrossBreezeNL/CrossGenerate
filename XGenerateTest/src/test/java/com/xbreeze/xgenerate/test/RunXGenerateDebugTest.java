@@ -1,7 +1,6 @@
 package com.xbreeze.xgenerate.test;
 
 import org.junit.runner.RunWith;
-import org.testng.annotations.Test;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
@@ -19,5 +18,4 @@ import cucumber.api.junit.Cucumber;
 		plugin = {"pretty", "html:target/cucumber"},
 		tags = {"@Debug"}
 )
-@Test
 public class RunXGenerateDebugTest { }

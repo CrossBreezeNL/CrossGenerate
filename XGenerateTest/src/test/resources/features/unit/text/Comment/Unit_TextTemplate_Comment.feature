@@ -31,7 +31,7 @@ Feature: Unit_TextTemplate_Comment
       </XGenConfig>
       """
 
-  Scenario Outline: Single line text comment
+  Scenario Outline: Single line text comment <Scenario>
     And the following template named "TextTemplate_Comment_SingleLine_<Scenario>.xml":
       """
       <Comment-content>
@@ -49,7 +49,7 @@ Feature: Unit_TextTemplate_Comment
       # When applying a single line comment in a text template the annotation is either fully an annotation or comment.
       | CommentBefore  | -- Some comment @XGenComment(Something) | -- Some comment @XGenComment(Something) |
 
-  Scenario Outline: Multi line text comment
+  Scenario Outline: Multi line text comment <Scenario>
     And the following template named "TextTemplate_Comment_MultiLine_<Scenario>.xml":
       """
       /**

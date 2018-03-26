@@ -4,21 +4,21 @@
 	<groupId>com.xbreeze.xgenerate</groupId>
 	<artifactId>XGenerateTest</artifactId>
 	<version>2.0.0-SNAPSHOT</version>
-	
+
 	<properties>
+	  <xgenerate.version>2.0.0-SNAPSHOT</xgenerate.version>
 		<cucumber.version>2.4.0</cucumber.version>
 		<junit.version>4.12</junit.version>
-		<testng.version>6.14.2</testng.version>
 		<saxon.version>9.8.0-8</saxon.version>
+		<surefire.version>2.21.0</surefire.version>
 	</properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>com.xbreeze.xgenerate</groupId>
 			<artifactId>XGenerateLib</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
+			<version>${xgenerate.version}</version>
 		</dependency>
-	
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-java8</artifactId>
@@ -32,45 +32,51 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-testng</artifactId>
-			<version>${cucumber.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>${testng.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${surefire.version}</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<reportFormat>plain</reportFormat>
+					<testFailureIgnore>true</testFailureIgnore>
+					<includes>
+						<include>com.xbreeze.xgenerate.test.RunXGenerateIntegrationTest</include>
+						<include>com.xbreeze.xgenerate.test.RunXGenerateUnitTest</include>
+					</includes>
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.19.1</version>
-				<configuration>
-					<suiteXmlFiles>
-						<suiteXmlFile>TestSuite/TestNG.xml</suiteXmlFile>
-					</suiteXmlFiles>
-				</configuration>
+				<groupId>net.masterthought</groupId>
+				<artifactId>maven-cucumber-reporting</artifactId>
+				<version>3.15.0</version>
+				<executions>
+					<execution>
+						<id>execution</id>
+						<phase>test</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<projectName>${project.name}</projectName>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<jsonFiles>
+								<jsonFile>${project.build.directory}/cucumber-integration.json</jsonFile>
+								<jsonFile>${project.build.directory}/cucumber-unit.json</jsonFile>
+							</jsonFiles>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>

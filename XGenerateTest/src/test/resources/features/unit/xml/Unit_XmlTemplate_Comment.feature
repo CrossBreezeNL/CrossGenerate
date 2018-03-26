@@ -23,7 +23,7 @@ Feature: Unit_XmlTemplate_Comment
       </XGenConfig>
       """
 
-  Scenario Outline: Comment in XML
+  Scenario Outline: Comment in XML <Scenario>
     And the following template named "XmlFileWithComment.xml":
       """
       <?xml version="1.0" encoding="UTF-8"?>
