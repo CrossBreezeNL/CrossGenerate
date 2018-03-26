@@ -120,7 +120,7 @@ public class NamedTemplateSection extends TemplateSection {
 				TemplateSectionAnnotation templateSectionAnnotation = namedTemplateSection.getTemplateSectionAnnotation();
 				
 				// Repeat the template for each section binding.
-				if (sectionModelBindingConfigs.length > 0) {
+				if (sectionModelBindingConfigs != null && sectionModelBindingConfigs.length > 0) {
 					// For each section model binding, repeat the content of the section.
 					for (SectionModelBindingConfig sectionModelBindingConfig : sectionModelBindingConfigs) {
 						
