@@ -19,6 +19,39 @@ import com.xbreeze.xgenerate.template.annotation.TemplateAnnotation;
  */
 public class AnnotationScanner {
 	protected static final Logger logger = Logger.getLogger(TemplatePreprocessor.class.getName());
+	
+	/**
+	 * Collection annotations which are in-line in a String. Some parts may be a annotation and other not. 
+	 * @param templateContent The template part to scan.
+	 * @param annotationPrefix The annotation prefix.
+	 * @param annotationArgsPrefix The annotation args prefix.
+	 * @param annotationArgsSuffix The annotation args suffix.
+	 * @return A list of annotations found.
+	 * @throws TemplatePreprocessorException
+	 */
+	public static ArrayList<TemplateAnnotation> collectInlineAnnotations(String templateContent, String annotationPrefix, String annotationArgsPrefix, String annotationArgsSuffix) throws TemplatePreprocessorException {
+		/**
+		 * [ \t]*       -> Any space or tab characters before the annotation.
+		 * %s           -> 1nd parameter for String.format, the annotation prefix
+		 * ([a-zA-Z]+)  -> The name of the annotation (region 1)
+		 * [ \t]*       -> Again, any space or tab characters
+		 * %s           -> 3rd parameter for String.format, the annotation args prefix
+		 * (.*)         -> The arguments for the annotation (region 2).
+		 * %s           -> 4th parameter for String.format, the annotation args suffix
+		 */
+		Pattern compiledPattern = Pattern.compile(
+				String.format(
+						"[ \t]*%s([a-zA-Z]+)[ \t]*%s(.*)%s",
+						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationPrefix)),
+						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationArgsPrefix)),
+						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationArgsSuffix))
+				)
+		);
+		
+		// Collect the annotations and return them based on the pattern.
+		return collectAnnotations(templateContent, compiledPattern);
+	}
+	
 	/**
 	 * Static method for scanning for annotations
 	 * @param templateContent the template part that is searched for annotations
@@ -26,7 +59,6 @@ public class AnnotationScanner {
 	 * @throws TemplatePreprocessorException 
 	 */
 	public static ArrayList<TemplateAnnotation> collectAnnotations(String templateContent, String annotationTextPrefix, String annotationPrefix, String annotationArgsPrefix, String annotationArgsSuffix, String annotationTextSuffix) throws TemplatePreprocessorException {
-		ArrayList<TemplateAnnotation> annotations = new ArrayList<>();
 		/**
 		 * (?m)         -> Multi-line match (indicates it can match on sub-parts of the input).
 		 * ^            -> The beginning of a line
@@ -69,8 +101,24 @@ public class AnnotationScanner {
 						Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationTextSuffix))
 				)
 		);
+		
+		// Collect the annotations and return them based on the pattern.
+		return collectAnnotations(templateContent, compiledPattern);
+	}
+	
+	/**
+	 * Private method for collecting annotation using the template part to scan and a pattern.
+	 * The pattern must contain 2 groups, the first being the annotation name and the second the annotation params.
+	 * @param templateContent The template part to scan.
+	 * @param pattern The pattern to use while scanning.
+	 * @return The annotations found.
+	 * @throws TemplatePreprocessorException
+	 */
+	private static ArrayList<TemplateAnnotation> collectAnnotations(String templateContent, Pattern pattern) throws TemplatePreprocessorException {
+		ArrayList<TemplateAnnotation> annotations = new ArrayList<>();
+		
 		// Create the matcher.
-		Matcher matcher = compiledPattern.matcher(templateContent);
+		Matcher matcher = pattern.matcher(templateContent);
 		// Loop through the results.
 		while (matcher.find()) {
 			

@@ -321,7 +321,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			if (annotationNodeTextContent != null && annotationNodeTextContent.length() > 0) {
 				logger.info(String.format("The annotation node was found on the current element (%s -> %s -> '%s')", templateNode.getNodeName(), annotationNode.getNodeName(), annotationNodeTextContent));
 				// Find the annotations in the comment node.
-				ArrayList<TemplateAnnotation> collectedAnnotations = AnnotationScanner.collectAnnotations(annotationNodeTextContent, "", fileFormatConfig.getAnnotationPrefix(), fileFormatConfig.getAnnotationArgsPrefix(), fileFormatConfig.getAnnotationArgsSuffix(), "");
+				ArrayList<TemplateAnnotation> collectedAnnotations = AnnotationScanner.collectInlineAnnotations(annotationNodeTextContent, fileFormatConfig.getAnnotationPrefix(), fileFormatConfig.getAnnotationArgsPrefix(), fileFormatConfig.getAnnotationArgsSuffix());
 				// If annotations are found on the node, strip its annotations text.
 				if (collectedAnnotations.size() > 0) {
 					logger.info(String.format("Found %d annotations on the current element (%s -> %s)", collectedAnnotations.size(), templateNode.getNodeName(), annotationNode.getNodeName()));
@@ -378,13 +378,15 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 					}
 					
 					// Now update the annotation text content, without the annotations.
+					// Strip the resulting annotation text to strip leading and trailing white-spaces. 
+					String strippedAnnotationText = strippedAnnotationNodeTextContentBuffer.toString().trim();
 					// Attribute
 					if (annotationNode != null && annotationNode instanceof Attr) {
-						annotationNode.setNodeValue(strippedAnnotationNodeTextContentBuffer.toString());
+						annotationNode.setNodeValue(strippedAnnotationText);
 					}
 					// Element
 					else {
-						annotationNode.setTextContent(strippedAnnotationNodeTextContentBuffer.toString());
+						annotationNode.setTextContent(strippedAnnotationText);
 					}
 				}
 			}
