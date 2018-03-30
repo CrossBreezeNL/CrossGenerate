@@ -27,7 +27,7 @@ When CrossGenerate is invoked with a model, template and config as input, it per
 
 Below is a graphical illustration of this process.
 
-[![Cross Generate Process](./img/CrossGenerate.gif)](./img/CrossGenerate.gif)
+[![Cross Generate Process](./img/xg_process_animation.gif)](./img/xg_process_animation.gif)
 
 
 [comment]: Footnotes
