@@ -91,8 +91,8 @@
         <xs:attribute name="includeEnd" type="xs:boolean"/>
         <xs:attribute name="name" type="xs:string" use="required"/>
         <xs:attribute name="nrOfLines" type="xs:int"/>
-        <xs:attribute name="placeholderOnFirstLine" type="xs:string"/>
-        <xs:attribute name="placeholderOnLastLine" type="xs:string"/>
+        <xs:attribute name="literalOnFirstLine" type="xs:string"/>
+        <xs:attribute name="literalOnLastLine" type="xs:string"/>
         <xs:attribute name="prefix" type="xs:string"/>
         <xs:attribute name="prefixAction" type="repetitionAction"/>
         <xs:attribute name="prefixStyle" type="repetitionStyle"/>

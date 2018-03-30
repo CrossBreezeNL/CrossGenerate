@@ -73,11 +73,11 @@ Feature: Unit_TextTemplate_Section_Bounds
       GO;
       """
 
-  Scenario: Multiline section with placeholderOnLastLine
+  Scenario: Multiline section with literalOnLastLine
     Given I have the following model file: "general/model.xml"
     And the following template named "DropTables.sql":
       """
-      -- @XGenSection(name="Entity" placeholderOnLastLine="GO;")
+      -- @XGenSection(name="Entity" literalOnLastLine="GO;")
       DROP TABLE entity_name;
       GO;
       -- End of template
@@ -223,11 +223,11 @@ Feature: Unit_TextTemplate_Section_Bounds
       """
 
   @NotImplemented
-  Scenario: Section with placeholderOnFirstLine
+  Scenario: Section with literalOnFirstLine
     Given I have the following model file: "general/model.xml"
     And the following template named "DropTables.sql":
       """
-      -- @XGenSection(name="Entity" placeholderOnFirstLine="DROP")
+      -- @XGenSection(name="Entity" literalOnFirstLine="DROP")
       -- section starts on the next line
       DROP TABLE entity_name;
       GO;
@@ -305,7 +305,7 @@ Feature: Unit_TextTemplate_Section_Bounds
     Given I have the following model file: "general/model.xml"
     And the following template named "DropTables.sql":
       """
-      -- @XGenSection(name="Entity" begin="-- begin drop statement" includeBegin="false" placeholderOnLastLine="GO")
+      -- @XGenSection(name="Entity" begin="-- begin drop statement" includeBegin="false" literalOnLastLine="GO")
       -- section starts on the next line
       -- begin drop statement
       DROP TABLE entity_name;

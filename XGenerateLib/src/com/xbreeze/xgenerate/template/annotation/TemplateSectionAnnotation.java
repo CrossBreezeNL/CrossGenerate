@@ -66,14 +66,14 @@ public class TemplateSectionAnnotation extends TemplateAnnotation {
 	private Boolean includeEnd = true;
 	
 	/**
-	 * Placeholder which exists on the first line of the section, the whole line will be taken into the section.
+	 * Literal which exists on the first line of the section, the whole line will be taken into the section.
 	 */
-	private String placeholderOnFirstLine;
+	private String literalOnFirstLine;
 	
 	/**
-	 * 	Placeholder which exists on the last line of the section, the whole line will be taken into the section.
+	 * 	Literal which exists on the last line of the section, the whole line will be taken into the section.
 	 */
-	private String placeholderOnLastLine;
+	private String literalOnLastLine;
 	
 	/**
 	 * Defined the number of lines of the section after the @XGenSection annotation.
@@ -209,33 +209,33 @@ public class TemplateSectionAnnotation extends TemplateAnnotation {
 	}
 
 	/**
-	 * @return the placeholderOnFirstLine
+	 * @return the literalOnFirstLine
 	 */
 	@XmlAttribute
-	public String getPlaceholderOnFirstLine() {
-		return placeholderOnFirstLine;
+	public String getLiteralOnFirstLine() {
+		return literalOnFirstLine;
 	}
 
 	/**
-	 * @param placeholderOnFirstLine the placeholderOnFirstLine to set
+	 * @param literalOnFirstLine the literalOnFirstLine to set
 	 */
-	public void setPlaceholderOnFirstLine(String placeholderOnFirstLine) {
-		this.placeholderOnFirstLine = placeholderOnFirstLine;
+	public void setLiteralOnFirstLine(String literalOnFirstLine) {
+		this.literalOnFirstLine = literalOnFirstLine;
 	}
 
 	/**
-	 * @return the placeholderOnLastLine
+	 * @return the literalOnLastLine
 	 */
 	@XmlAttribute
-	public String getPlaceholderOnLastLine() {
-		return placeholderOnLastLine;
+	public String getLiteralOnLastLine() {
+		return literalOnLastLine;
 	}
 
 	/**
-	 * @param placeholderOnLastLine the placeholderOnLastLine to set
+	 * @param literalOnLastLine the literalOnLastLine to set
 	 */
-	public void setPlaceholderOnLastLine(String placeholderOnLastLine) {
-		this.placeholderOnLastLine = placeholderOnLastLine;
+	public void setLiteralOnLastLine(String literalOnLastLine) {
+		this.literalOnLastLine = literalOnLastLine;
 	}
 
 	/**

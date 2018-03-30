@@ -118,8 +118,8 @@ The Section configuration defines a section in a template. This can either be de
     includeBegin='<include-begin>'
     end='<end-characters>'
     includeEnd='<include-begin>'
-    placeholderOnFirstLine='<placeholder-on-first-line>'
-    placeholderOnLastLine='<placeholder-on-last-line'
+    literalOnFirstLine='<literal-on-first-line>'
+    literalOnLastLine='<literal-on-last-line'
     nrOfLines='<nr-of-lines>'
   ]
   [
@@ -143,9 +143,9 @@ The Section configuration defines a section in a template. This can either be de
 | includeBegin               | Whether to include the characters specified in `begin` in the output | true |
 | end[^5]                    | Character sequence which defines the beginning of the section. | | Cannot be used in conjunction with `nrOfLines`. |
 | includeEnd                 | Whether to include the characters specified in `end` in the output | true |
-| placeholderOnFirstLine[^5] | Placeholder which exists on the first line of the section, the whole line will be taken into the section. | | Cannot be used in conjunction with `begin`. |
-| placeholderOnLastLine[^5]  | Placeholder which exists on the last line of the section, the whole line will be taken into the section. | | Cannot be used in conjunction with `end` or `nrOfLines`. |
-| nrOfLines[^5]              | Defined the number of lines of the section after the `@XGenSection` annotation. | 1 | Cannot be used in conjunction with `end` or `placeholderOnLastLine`. |
+| literalOnFirstLine[^5] | Literal which exists on the first line of the section, the whole line will be taken into the section. | | Cannot be used in conjunction with `begin`. |
+| literalOnLastLine[^5]  | Literal which exists on the last line of the section, the whole line will be taken into the section. | | Cannot be used in conjunction with `end` or `nrOfLines`. |
+| nrOfLines[^5]              | Defined the number of lines of the section after the `@XGenSection` annotation. | 1 | Cannot be used in conjunction with `end` or `literalOnLastLine`. |
 | prefix                     | The prefix to prepend using the `prefixStyle`. |
 | prefixStyle                | The style of the prefix, see [Prefix & suffix styles](#prefix-suffix-styles) | allButFirst | Only interpreted when `prefix` is given. |
 | prefixAction               | The action to be performed with the prefix, either add or remove. | add | Only interpreted when `prefix` is given. _Only add is supported at the moment._ |
