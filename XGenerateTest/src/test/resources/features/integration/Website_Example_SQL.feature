@@ -28,7 +28,7 @@ Feature: Integration_Website_Example_SQL
       GO
       -- @XGenSection(name="CreateTable" literalOnLastLine="GO")
       CREATE TABLE [schema_name].[table_name] (
-        -- @XGenSection(name="TableColumn" suffix="," prefixStyle="allButLast")
+        -- @XGenSection(name="TableColumn" suffix="," suffixStyle="allButLast")
         [column_name]            column_fulldatatype        NULL
       );
       GO
