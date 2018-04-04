@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
+import org.apache.http.client.utils.URIBuilder;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -131,8 +132,8 @@ public class XGenerateTestSteps {
 	
 	private void compareActualAndExpectedOutput(String outputName, String expectedResultContent) throws Throwable {
 		Boolean outputFound = false;
-		for(GenerationResult generationResult:this._generationResults.getGenerationResults()) {
-			if (generationResult.getOutputFileLocation() != null && _outputFolderUri.resolve(outputName).equals(URI.create(generationResult.getOutputFileLocation()))) {
+		for(GenerationResult generationResult : this._generationResults.getGenerationResults()) {
+			if (generationResult.getOutputFileLocation() != null && _outputFolderUri.resolve(uriEncode(outputName)).equals(URI.create(generationResult.getOutputFileLocation()))) {
 				outputFound = true;
 				assertEquals(
 						"The expected and actual result content is different",
@@ -152,5 +153,9 @@ public class XGenerateTestSteps {
 	
 	private URI resolveSupportFile(String relativeFileLocation) {
 		return this._featureSupportFilesLocation.resolve(relativeFileLocation);
+	}
+	
+	private String uriEncode(String uriPart) {
+		return new URIBuilder().setPath(uriPart).toString();
 	}
 }
