@@ -1,5 +1,5 @@
 @Unit
-Feature: Unit_Template_OutputType
+Feature: Unit_Config_Template_OutputType
   In this feature we will describe the OutputType feature in the template config.
 
   Background: 
@@ -12,7 +12,7 @@ Feature: Unit_Template_OutputType
         <entity name="C"/>
       </entities>
       """
-    And the following template named "Unit_Template_OutputType_table_name.txt":
+    And the following template named "Unit_Config_Template_OutputType_table_name.txt":
       """
       table_name
       
@@ -35,7 +35,7 @@ Feature: Unit_Template_OutputType
       """
     When I run the generator
     Then I expect 1 generation result
-    And an output named "Unit_Template_OutputType_A B C.txt" with content:
+    And an output named "Unit_Config_Template_OutputType_A B C.txt" with content:
       """
       A
       B
@@ -60,17 +60,17 @@ Feature: Unit_Template_OutputType
       """
     When I run the generator
     Then I expect 3 generation result
-    And an output named "Unit_Template_OutputType_A.txt" with content:
+    And an output named "Unit_Config_Template_OutputType_A.txt" with content:
       """
       A
       
       """
-    And an output named "Unit_Template_OutputType_B.txt" with content:
+    And an output named "Unit_Config_Template_OutputType_B.txt" with content:
       """
       B
       
       """
-    And an output named "Unit_Template_OutputType_C.txt" with content:
+    And an output named "Unit_Config_Template_OutputType_C.txt" with content:
       """
       C
       
