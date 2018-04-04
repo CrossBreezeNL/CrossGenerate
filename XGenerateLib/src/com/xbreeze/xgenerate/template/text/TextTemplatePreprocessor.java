@@ -211,7 +211,8 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 			}
 			
 			// Set the ending index of the current section for the next cycle. only if current annotation is not a templateSectionAnnotation
-			if (!(templateAnnotation instanceof TemplateSectionAnnotation)) {
+			// Do not set ending index if the current section is a templateSectionAnnotation specified in a config.
+			if ((templateAnnotation.isDefinedInTemplate()) || !(templateAnnotation instanceof TemplateSectionAnnotation)) {
 				previousSectionEndIndex = templateAnnotation.getAnnotationEndIndex();
 			}
 		}
