@@ -1,21 +1,85 @@
 @Unit
-Feature: Unit_TextTemplate_Section_Bounds
-  In this feature we will describe the section bounds feature in text templates.
+Feature: Unit_TextTemplateFromConfig_Section_Bounds
+  In this feature we will describe the section bounds feature for text templates specified in config.
+
+  Background:
+    Given I have the following model file: "general/model.xml"
+    And the following template named "DropTables.sql":
+      """
+      -- Begin of template
+      DROP TABLE entity_name;
+      GO;
+      -- End of template
+      """
+     
+  Scenario: Section with begin and end character sequence, including both
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model/>
+        <Template rootSectionName="System">
+          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="single_output" />
+          <Sections>
+            <Section name="Entity" begin="DROP TABLE" includeBegin="true" end="GO;" includeEnd="true"/>
+          </Sections>
+        </Template>
+        <Binding>
+          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
+          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
+            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity"/>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "DropTables.sql" with content:
+      """
+      -- Begin of template
+      DROP TABLE Order;
+      GO;DROP TABLE Customer;
+      GO;
+      -- End of template
+      """
+ 
+  Scenario: Section with begin and end character sequence, including begin only
+    
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model/>
+        <Template rootSectionName="System">
+          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="single_output" />
+          <Sections>
+            <Section name="Entity" begin="DROP TABLE" includeBegin="true" end="GO;" includeEnd="false"/>
+          </Sections>
+        </Template>
+        <Binding>
+          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
+          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
+            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity"/>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "DropTables.sql" with content:
+      """
+      -- Begin of template
+      DROP TABLE Order;
+      DROP TABLE Customer;
+      GO;
+      -- End of template
+      """
+      
   
-  Scenario: implicit root section only
-    Given I have the following model:
-      """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <modeldefinition>
-        <system name="ExampleSource">
-        </system>
-      </modeldefinition>
-      """
-    And the following template named "CreateSchema.sql":
-      """
-      CREATE SCHEMA system_name;
-      GO;
-      """
+  Scenario: Section with begin and end character sequence, including end only
+   
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -24,37 +88,9 @@ Feature: Unit_TextTemplate_Section_Bounds
         <Template rootSectionName="System">
           <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="single_output" />
-        </Template>
-        <Binding>
-          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
-          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system" />
-        </Binding>
-      </XGenConfig>
-      """
-    When I run the generator
-    Then I expect 1 generation result
-    And an output named "CreateSchema.sql" with content:
-      """
-      CREATE SCHEMA ExampleSource;
-      GO;
-      """
-
-  Scenario: Single line section
-    Given I have the following model file: "general/model.xml"
-    And the following template named "DropTables.sql":
-      """
-      -- @XGenSection(name="Entity")
-      DROP TABLE entity_name;
-      GO;
-      """
-    And the following config:
-      """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <XGenConfig>
-        <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
-          <Output type="single_output" />
+          <Sections>
+            <Section name="Entity" begin="DROP TABLE" includeBegin="false" end="GO;" includeEnd="true"/>
+          </Sections>
         </Template>
         <Binding>
           <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
@@ -68,133 +104,15 @@ Feature: Unit_TextTemplate_Section_Bounds
     Then I expect 1 generation result
     And an output named "DropTables.sql" with content:
       """
+      -- Begin of template
       DROP TABLE Order;
-      DROP TABLE Customer;
-      GO;
-      """
-
-  Scenario: Multiline section with literalOnLastLine
-    Given I have the following model file: "general/model.xml"
-    And the following template named "DropTables.sql":
-      """
-      -- @XGenSection(name="Entity" literalOnLastLine="GO;")
-      DROP TABLE entity_name;
+      GO; Customer;
       GO;
       -- End of template
-      """
-    And the following config:
-      """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <XGenConfig>
-        <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
-          <Output type="single_output" />
-        </Template>
-        <Binding>
-          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
-          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
-            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity"/>
-          </SectionModelBinding>
-        </Binding>
-      </XGenConfig>
-      """
-    When I run the generator
-    Then I expect 1 generation result
-    And an output named "DropTables.sql" with content:
-      """
-      DROP TABLE Order;
-      GO;
-      DROP TABLE Customer;
-      GO;
-      -- End of template
-      """
-
-  Scenario: Multiline section with nrOfLines
-    Given I have the following model file: "general/model.xml"
-    And the following template named "DropTables.sql":
-      """
-      -- @XGenSection(name="Entity" nrOfLines="2")
-      DROP TABLE entity_name;
-      GO;
-      -- End of template
-      """
-    And the following config:
-      """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <XGenConfig>
-        <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
-          <Output type="single_output" />
-        </Template>
-        <Binding>
-          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
-          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
-            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity"/>
-          </SectionModelBinding>
-        </Binding>
-      </XGenConfig>
-      """
-    When I run the generator
-    Then I expect 1 generation result
-    And an output named "DropTables.sql" with content:
-      """
-      DROP TABLE Order;
-      GO;
-      DROP TABLE Customer;
-      GO;
-      -- End of template
-      """
-
-  Scenario: Multiline section with end character sequence, including end
-    Given I have the following model file: "general/model.xml"
-    And the following template named "DropTables.sql":
-      """
-      -- @XGenSection(name="Entity" end="GO;" includeEnd="true")
-      
-      DROP TABLE entity_name;
-      GO;
-      -- End of template
-      """
-    And the following config:
-      """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <XGenConfig>
-        <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
-          <Output type="single_output" />
-        </Template>
-        <Binding>
-          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
-          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
-            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity"/>
-          </SectionModelBinding>
-        </Binding>
-      </XGenConfig>
-      """
-    When I run the generator
-    Then I expect 1 generation result
-    And an output named "DropTables.sql" with content:
       """
       
-      DROP TABLE Order;
-      GO;
-      DROP TABLE Customer;
-      GO;
-      -- End of template
-      """
-
-  Scenario: Multiline section with end character sequence, excluding end
-    Given I have the following model file: "general/model.xml"
-    And the following template named "DropTables.sql":
-      """
-      -- @XGenSection(name="Entity" end="GO;" includeEnd="false")
-      DROP TABLE entity_name;
-      GO;
-      -- End of template
-      """
+  Scenario: Section with begin and end character sequence, excluding both
+  
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -203,6 +121,9 @@ Feature: Unit_TextTemplate_Section_Bounds
         <Template rootSectionName="System">
           <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="single_output" />
+          <Sections>
+            <Section name="Entity" begin="DROP TABLE" includeBegin="false" end="GO;" includeEnd="false"/>
+          </Sections>
         </Template>
         <Binding>
           <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
@@ -216,22 +137,15 @@ Feature: Unit_TextTemplate_Section_Bounds
     Then I expect 1 generation result
     And an output named "DropTables.sql" with content:
       """
+      -- Begin of template
       DROP TABLE Order;
-      DROP TABLE Customer;
+       Customer;
       GO;
       -- End of template
-      """
-
-  Scenario: Section with literalOnFirstLine
-    Given I have the following model file: "general/model.xml"
-    And the following template named "DropTables.sql":
-      """
-      -- @XGenSection(name="Entity" literalOnFirstLine="DROP")
-      -- section starts on the next line
-      DROP TABLE entity_name;
-      GO;
-      -- End of template
-      """
+      """         
+     
+  Scenario: Section with begin character sequence and nr of lines
+   
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -240,6 +154,9 @@ Feature: Unit_TextTemplate_Section_Bounds
         <Template rootSectionName="System">
           <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="single_output" />
+          <Sections>
+            <Section name="Entity" begin="DROP TABLE" includeBegin="true" nrOfLines="2"/>
+          </Sections>
         </Template>
         <Binding>
           <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
@@ -253,23 +170,16 @@ Feature: Unit_TextTemplate_Section_Bounds
     Then I expect 1 generation result
     And an output named "DropTables.sql" with content:
       """
-      -- section starts on the next line
+      -- Begin of template
       DROP TABLE Order;
+      GO;
       DROP TABLE Customer;
       GO;
       -- End of template
-      """
-
-  Scenario: Section with begin character sequence, including begin
-    Given I have the following model file: "general/model.xml"
-    And the following template named "DropTables.sql":
-      """
-      -- @XGenSection(name="Entity" begin="DROP TABLE" includeBegin="true")
-      -- section starts on the next line
-      DROP TABLE entity_name;
-      GO;
-      -- End of template
-      """
+      """      
+ 
+  Scenario: Section with begin character sequence only (and implicit nrOfLines = 1)
+  
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -278,6 +188,9 @@ Feature: Unit_TextTemplate_Section_Bounds
         <Template rootSectionName="System">
           <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="single_output" />
+          <Sections>
+            <Section name="Entity" begin="DROP TABLE" includeBegin="true"/>
+          </Sections>
         </Template>
         <Binding>
           <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
@@ -291,26 +204,15 @@ Feature: Unit_TextTemplate_Section_Bounds
     Then I expect 1 generation result
     And an output named "DropTables.sql" with content:
       """
-      -- section starts on the next line
+      -- Begin of template
       DROP TABLE Order;
       DROP TABLE Customer;
       GO;
       -- End of template
-      """
+      """     
 
-  Scenario: Section with begin character sequence, excluding begin
-    # Here the begin is not included, but the new line of the begin line will be included.
-    # So therefore there will be an extra newline at the beginning of each section.
-    Given I have the following model file: "general/model.xml"
-    And the following template named "DropTables.sql":
-      """
-      -- @XGenSection(name="Entity" begin="-- begin drop statement" includeBegin="false" literalOnLastLine="GO")
-      -- section starts on the next line
-      -- begin drop statement
-      DROP TABLE entity_name;
-      GO;
-      -- End of template
-      """
+  Scenario: Section with begin character sequence and literalOnLastLine
+  
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -319,6 +221,9 @@ Feature: Unit_TextTemplate_Section_Bounds
         <Template rootSectionName="System">
           <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="single_output" />
+          <Sections>
+            <Section name="Entity" begin="DROP TABLE" includeBegin="true" literalOnLastLine="GO;"/>
+          </Sections>
         </Template>
         <Binding>
           <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
@@ -332,12 +237,77 @@ Feature: Unit_TextTemplate_Section_Bounds
     Then I expect 1 generation result
     And an output named "DropTables.sql" with content:
       """
-      -- section starts on the next line
-      -- begin drop statement
+      -- Begin of template
       DROP TABLE Order;
       GO;
-      
       DROP TABLE Customer;
       GO;
       -- End of template
+      """     
+  
+  Scenario: Section with literalOnFirstLine and end character sequence
+  
+    And the following config:
       """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model/>
+        <Template rootSectionName="System">
+          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="single_output" />
+          <Sections>
+            <Section name="Entity" literalOnFirstLine="TABLE" end="GO;" includeEnd="true" />
+          </Sections>
+        </Template>
+        <Binding>
+          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
+          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
+            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity"/>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "DropTables.sql" with content:
+      """
+      -- Begin of template
+      DROP TABLE Order;
+      GO;DROP TABLE Customer;
+      GO;
+      -- End of template
+      """     
+  
+  Scenario: Section with literalOnFirstLine and nrOfLines
+  
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model/>
+        <Template rootSectionName="System">
+          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="single_output" />
+          <Sections>
+            <Section name="Entity" literalOnFirstLine="TABLE" nrOfLines="2" />
+          </Sections>
+        </Template>
+        <Binding>
+          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
+          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
+            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity"/>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "DropTables.sql" with content:
+      """
+      -- Begin of template
+      DROP TABLE Order;
+      GO;
+      DROP TABLE Customer;
+      GO;
+      -- End of template
+      """     

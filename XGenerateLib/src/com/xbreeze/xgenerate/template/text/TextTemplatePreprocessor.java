@@ -82,6 +82,32 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				if (!sectionAnnotation.isIncludeBegin())
 					sectionBeginCharIndex += sectionAnnotation.getBegin().length();
 			}
+			//if literalOnFirstLine is specified, we use literalOnFirstLine
+			else if (sectionAnnotation.getLiteralOnFirstLine() != null && sectionAnnotation.getLiteralOnFirstLine().length() > 0) {
+				//Construct a regex for entire line containing the literal (* matches everything but line terminator)
+				 Pattern pattern = Pattern.compile(String.format(".*%s.*", Pattern.quote(sectionAnnotation.getLiteralOnFirstLine())));
+				 Matcher matcher = null;
+						 
+				 //if annotation is in template, apply regex on raw template, after annotation, otherwise apply on complete raw template
+				 if (annotationInTemplate) {
+					 matcher = pattern.matcher(rawTemplateContent.substring(sectionAnnotation.getAnnotationEndIndex()));
+				 }
+				 else {
+					 matcher = pattern.matcher(rawTemplateContent);
+				 }
+				 
+				 //If pattern is found, section begin charindex is the start of the matching line.
+				 if (matcher.find()) {
+					sectionBeginCharIndex = matcher.start();
+					//If annotation was specified in the template, ensure we add the annotation end index to the start position found
+					if (annotationInTemplate) {
+						sectionBeginCharIndex += sectionAnnotation.getAnnotationEndIndex();
+					}
+				 } 
+				 else {
+					throw new TemplatePreprocessorException(String.format("The begin part of the section can't be found (%s)", sectionAnnotation.getName()));
+					}
+			}
 			// If begin is not specified and the annotation was specified in the template, we use the end position of the annotation.
 			else if (annotationInTemplate) {
 				// Set the section begin index to the end index of the annotation.
