@@ -24,6 +24,8 @@ import com.xbreeze.xgenerate.template.section.NamedTemplateSection;
 import com.xbreeze.xgenerate.template.section.RawTemplateSection;
 import com.xbreeze.xgenerate.template.section.SectionedTemplate;
 
+import net.sf.saxon.lib.Logger;
+
 public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	/**
 	 * Constructor.
@@ -296,13 +298,10 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				return -1;
 			}
 		}
-		// If end was not specified, and the annotation was specified in the template the nrOfLines=1 by default.
-		else if (templateSectionAnnotation.isDefinedInTemplate()) {
+		// If end was not specified, check nrOfLines, this has a default value of 1 if not explicitly set.	
+		else  {
 			// Get the nrOfLines from the annotation.
 			Integer sectionNrOfLines = templateSectionAnnotation.getNrOfLines();
-			// If nrOfLines is undefined, the value is 1.
-			if (sectionNrOfLines == null)
-				sectionNrOfLines = 1;
 			
 			// Loop through the newlines as of the start of the section.
 			for (int currentNrOfLines = 0; currentNrOfLines < sectionNrOfLines; currentNrOfLines++) {
@@ -321,9 +320,9 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 			sectionEndCharIndex += 1;
 		}
 		// Otherwise, we can't get the end location.
-		else {
-			throw new TemplatePreprocessorException(String.format("No end of section defined (%s)", sectionAnnotationBounds.getName()));
-		}
+		//else {
+		//	throw new TemplatePreprocessorException(String.format("No end of section defined (%s)", sectionAnnotationBounds.getName()));
+		//}
 		
 		// If the found index is out of range, return -1.
 		if (sectionEndCharIndex > sectionEndSearchEndIndex)
