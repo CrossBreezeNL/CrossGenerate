@@ -119,9 +119,9 @@ An example of Template Attribute Injection:
 
 ```xml
 <TemplateAttributeInjection
-  parentNodeXPath="//*[@name='attribute_name']" 
+  templateXPath="//*[@name='attribute_name']" 
   attributeName="scale" 
-  defaultValue=""
+  attributeValue=""
 />
 ```
 
@@ -195,10 +195,10 @@ This section is defined in the config since the input columns on the OLE DB Dest
     </Sections>
     <TemplateAttributeInjections>
       <!-- Inject an attribute for the scale, precision, cachedScale & cachedPrecision on elements where the name is 'attribute_name'. -->
-      <TemplateAttributeInjection parentNodeXPath="//*[@name='attribute_name']" attributeName="scale" defaultValue=""/>
-      <TemplateAttributeInjection parentNodeXPath="//*[@name='attribute_name']" attributeName="precision" defaultValue=""/>
-      <TemplateAttributeInjection parentNodeXPath="//*[@name='attribute_name']" attributeName="cachedScale" defaultValue=""/>
-      <TemplateAttributeInjection parentNodeXPath="//*[@name='attribute_name']" attributeName="cachedPrecision" defaultValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[@name='attribute_name']" attributeName="scale" attributeValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[@name='attribute_name']" attributeName="precision" attributeValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[@name='attribute_name']" attributeName="cachedScale" attributeValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[@name='attribute_name']" attributeName="cachedPrecision" attributeValue=""/>
     </TemplateAttributeInjections>
     <TemplatePlaceholderInjections>
       <!-- Inject a placeholder for the dataType, length, precision, scale, codePage attributes for the columns. -->

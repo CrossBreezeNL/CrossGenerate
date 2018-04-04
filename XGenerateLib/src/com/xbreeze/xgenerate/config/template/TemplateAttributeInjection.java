@@ -6,9 +6,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class TemplateAttributeInjection {
 
 	/**
-	 * The XPath for parent node where attribute needs to be injected
+	 * The XPath for template where attribute needs to be injected
 	 */
-	private String _parentNodeXPath;
+	private String _templateXPath;
 
 	/**
 	 * The name of the attribute to inject
@@ -18,34 +18,32 @@ public class TemplateAttributeInjection {
 	/**
 	 * Default value for the newly injected attribute
 	 */
-	private String _defaultValue;
+	private String _attributeValue;
 
 	@XmlAttribute
-	public String get_parentNodeXPath() {
-		return _parentNodeXPath;
+	public String getTemplateXPath() {
+		return _templateXPath;
 	}
 
-	public void set_parentNodeXPath(String _parentNodeXPath) {
-		this._parentNodeXPath = _parentNodeXPath;
+	public void setTemplateXPath(String templateXPath) {
+		this._templateXPath = templateXPath;
 	}
 
 	@XmlAttribute
-	public String get_attributeName() {
+	public String getAttributeName() {
 		return _attributeName;
 	}
 
-	public void set_attributeName(String _attributeName) {
-		this._attributeName = _attributeName;
+	public void setAttributeName(String attributeName) {
+		this._attributeName = attributeName;
 	}
 
 	@XmlAttribute
-	public String get_defaultValue() {
-		return _defaultValue;
+	public String getAttributeValue() {
+		return _attributeValue;
 	}
 
-	public void set_defaultValue(String _defaultValue) {
-		this._defaultValue = _defaultValue;
+	public void setAttributeValue(String attributeValue) {
+		this._attributeValue = attributeValue;
 	}
-
-	
 }

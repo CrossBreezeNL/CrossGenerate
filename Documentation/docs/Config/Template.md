@@ -168,9 +168,9 @@ The Section configuration defines a section in a template. This can either be de
 ### Syntax
 ``` xml
 <TemplateAttributeInjection
-  parentNodeXPath="<parent-node-xpath>"
+  templateXPath="<template-xpath>"
   attributeName="<attribute-name>"
-  defaultValue="<default-value>"
+  attributeValue="<attribute-value>"
 />
 ```
 
@@ -178,9 +178,9 @@ The Section configuration defines a section in a template. This can either be de
 
 | Parameter                   | Description | Default | Remark |
 |:---                         |:--- |:--- |:--- |
-| parentNodeXPath[^1]         | The XPath for parent node where attribute needs to be injected. | | |
+| templateXPath[^1]         | The XPath for template node where attribute needs to be injected. | | |
 | attributeName[^1]           | The name of the attribute to inject. | | |
-| defaultValue                | Default value for the newly injected attribute. | | |
+| attributeValue                | Default value for the newly injected attribute. | | |
 
 ## TemplatePlaceholderInjection
 

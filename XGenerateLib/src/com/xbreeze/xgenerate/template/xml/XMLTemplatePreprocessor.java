@@ -197,18 +197,20 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		if (templateAttributeInjections != null) {
 			for (TemplateAttributeInjection tai: templateAttributeInjections){
 				try {
-					NodeList templateNodes = (NodeList)XMLUtils.getXPath().evaluate(tai.get_parentNodeXPath(), xmlDoc, XPathConstants.NODESET);
+					NodeList templateNodes = (NodeList)XMLUtils.getXPath().evaluate(tai.getTemplateXPath(), xmlDoc, XPathConstants.NODESET);
 					for (int i = 0; i < templateNodes.getLength(); i++) {
 						if (templateNodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
 							Element templateNode = (Element)templateNodes.item(i);
-							//only inject attribute if it does not already exist
-							if (!templateNode.hasAttribute(tai.get_attributeName())) {
-								templateNode.setAttribute(tai.get_attributeName(), tai.get_defaultValue());
+							// Only inject attribute if it does not already exist
+							if (!templateNode.hasAttribute(tai.getAttributeName())) {
+								templateNode.setAttribute(tai.getAttributeName(), tai.getAttributeValue());
+							} else {
+								throw new TemplatePreprocessorException(String.format("Trying to inject an attribute on an existing attribute, this is not allowed ('%s' -> '%s').", tai.getTemplateXPath(), tai.getAttributeName()));
 							}
 						}
 					}
 				} catch (XPathExpressionException e) {
-					throw new TemplatePreprocessorException(String.format("Error while processing template attribute injection for xpath %s: %s", tai.get_parentNodeXPath(),  e.getMessage())); 
+					throw new TemplatePreprocessorException(String.format("Error while processing template attribute injection for xpath %s: %s", tai.getTemplateXPath(),  e.getMessage())); 
 				}
 			}
 		}

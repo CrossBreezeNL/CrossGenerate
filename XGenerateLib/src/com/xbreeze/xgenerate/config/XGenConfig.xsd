@@ -111,8 +111,8 @@
   <xs:complexType name="templateAttributeInjection">
     <xs:sequence/>
     <xs:attribute name="attributeName" type="xs:string"/>
-    <xs:attribute name="defaultValue" type="xs:string"/>
-    <xs:attribute name="parentNodeXPath" type="xs:string"/>
+    <xs:attribute name="attributeValue" type="xs:string"/>
+    <xs:attribute name="templateXPath" type="xs:string"/>
   </xs:complexType>
 
   <xs:complexType name="templatePlaceholderInjection">
