@@ -76,7 +76,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				if (sectionBeginCharIndex == -1)
 					throw new TemplatePreprocessorException(String.format("The begin part of the section can't be found (%s)", sectionAnnotation.getName()));
 
-				// If the section includes the begin, than add the length of the begin.
+				// If the section does not need to include the begin, than add the length of the begin to remove begin characters from section.
 				if (!sectionAnnotation.isIncludeBegin())
 					sectionBeginCharIndex += sectionAnnotation.getBegin().length();
 			}
@@ -190,7 +190,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				// It's not represented in the preprocessed template.
 			}
 			
-			// TemplateSectionAnnotation
+			// TemplateSectionBoundsAnnotation
 			else if (templateAnnotation instanceof TemplateSectionBoundsAnnotation) {
 				// Add a NamedTemplateSection for each TemplateSectionAnnotation.
 				TemplateSectionBoundsAnnotation templateSectionBoundsAnnotation = (TemplateSectionBoundsAnnotation) templateAnnotation;
@@ -210,8 +210,10 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				throw new TemplatePreprocessorException(String.format("Unhandled annotation found: %s", templateAnnotation.getAnnotationName()));
 			}
 			
-			// Set the ending index of the current section for the next cycle.
-			previousSectionEndIndex = templateAnnotation.getAnnotationEndIndex();
+			// Set the ending index of the current section for the next cycle. only if current annotation is not a templateSectionAnnotation
+			if (!(templateAnnotation instanceof TemplateSectionAnnotation)) {
+				previousSectionEndIndex = templateAnnotation.getAnnotationEndIndex();
+			}
 		}
 		
 		// After the last annotation match there might still be some raw template. If so check for the section end and add a raw template section.
