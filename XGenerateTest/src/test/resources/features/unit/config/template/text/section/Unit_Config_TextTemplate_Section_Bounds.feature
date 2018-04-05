@@ -12,7 +12,7 @@ Feature: Unit_Config_TextTemplate_Section_Bounds
       -- End of template
       """
 
-  Scenario: Section with begin and end character sequence, including both
+  Scenario Outline: Section with begin and end character sequence, <Scenario>
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -22,7 +22,7 @@ Feature: Unit_Config_TextTemplate_Section_Bounds
           <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="single_output" />
           <Sections>
-            <Section name="Entity" begin="DROP TABLE" includeBegin="true" end="GO;" includeEnd="true"/>
+            <Section name="Entity" begin="DROP TABLE " includeBegin="<includeBegin>" end="GO;" includeEnd="<includeEnd>"/>
           </Sections>
         </Template>
         <Binding>
@@ -38,107 +38,18 @@ Feature: Unit_Config_TextTemplate_Section_Bounds
     And an output named "DropTables.sql" with content:
       """
       -- Begin of template
-      DROP TABLE Order;
-      GO;DROP TABLE Customer;
-      GO;
+      <expectedLine1>
+      <expectedLine2>
+      <expectedLine3>
       -- End of template
       """
 
-  Scenario: Section with begin and end character sequence, including begin only
-    And the following config:
-      """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <XGenConfig>
-        <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
-          <Output type="single_output" />
-          <Sections>
-            <Section name="Entity" begin="DROP TABLE" includeBegin="true" end="GO;" includeEnd="false"/>
-          </Sections>
-        </Template>
-        <Binding>
-          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
-          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
-            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity"/>
-          </SectionModelBinding>
-        </Binding>
-      </XGenConfig>
-      """
-    When I run the generator
-    Then I expect 1 generation result
-    And an output named "DropTables.sql" with content:
-      """
-      -- Begin of template
-      DROP TABLE Order;
-      DROP TABLE Customer;
-      GO;
-      -- End of template
-      """
-
-  Scenario: Section with begin and end character sequence, including end only
-    And the following config:
-      """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <XGenConfig>
-        <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
-          <Output type="single_output" />
-          <Sections>
-            <Section name="Entity" begin="DROP TABLE" includeBegin="false" end="GO;" includeEnd="true"/>
-          </Sections>
-        </Template>
-        <Binding>
-          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
-          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
-            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity"/>
-          </SectionModelBinding>
-        </Binding>
-      </XGenConfig>
-      """
-    When I run the generator
-    Then I expect 1 generation result
-    And an output named "DropTables.sql" with content:
-      """
-      -- Begin of template
-      DROP TABLE Order;
-      GO; Customer;
-      GO;
-      -- End of template
-      """
-
-  Scenario: Section with begin and end character sequence, excluding both
-    And the following config:
-      """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <XGenConfig>
-        <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
-          <Output type="single_output" />
-          <Sections>
-            <Section name="Entity" begin="DROP TABLE" includeBegin="false" end="GO;" includeEnd="false"/>
-          </Sections>
-        </Template>
-        <Binding>
-          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
-          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
-            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity"/>
-          </SectionModelBinding>
-        </Binding>
-      </XGenConfig>
-      """
-    When I run the generator
-    Then I expect 1 generation result
-    And an output named "DropTables.sql" with content:
-      """
-      -- Begin of template
-      DROP TABLE Order;
-       Customer;
-      GO;
-      -- End of template
-      """
+    Examples: 
+      | Scenario             | includeBegin | includeEnd | expectedLine1     | expectedLine2           | expectedLine3 |
+      | including both       | true         | true       | DROP TABLE Order; | GO;DROP TABLE Customer; | GO;           |
+      | including begin only | true         | false      | DROP TABLE Order; | DROP TABLE Customer;    | GO;           |
+      | including end only   | false        | true       | DROP TABLE Order; | GO;Customer;            | GO;           |
+      | excluding both       | false        | false      | DROP TABLE Order; | Customer;               | GO;           |
 
   Scenario: Section with begin character sequence and nr of lines
     And the following config:
