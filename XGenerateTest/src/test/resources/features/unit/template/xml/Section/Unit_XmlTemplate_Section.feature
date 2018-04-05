@@ -83,7 +83,7 @@ Feature: Unit_XmlTemplate_Section
         <Tables>
           <Table name="Order" description=""/>
           <Table name="Customer" description=""/>
-        </Objects>
+        </Tables>
       </Database>
       """
 

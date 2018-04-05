@@ -114,23 +114,33 @@ The Section configuration defines a section in a template. This can either be de
 <Section
   name='<name-of-section>'
   [
-    begin='<begin-characters>'
-    includeBegin='<include-begin>'
-    end='<end-characters>'
-    includeEnd='<include-begin>'
-    literalOnFirstLine='<literal-on-first-line>'
-    literalOnLastLine='<literal-on-last-line'
-    nrOfLines='<nr-of-lines>'
-  ]
-  [
-    prefix='<prefix>'
-    prefixStyle='<prefix-style>'
-    prefixAction='<prefix-action>'
-  ]
-  [
-    suffix='<suffix>'
-    suffixStyle='<suffix-style>'
-    prefixAction='<prefix-action>'
+    <!-- The XML section parameters. -->
+    [
+      templateXPath='template-xpath'
+    ]
+    |
+    <!-- The text section parameters. -->
+    [
+      [
+        begin='<begin-characters>'
+        includeBegin='<include-begin>'
+        end='<end-characters>'
+        includeEnd='<include-begin>'
+        literalOnFirstLine='<literal-on-first-line>'
+        literalOnLastLine='<literal-on-last-line'
+        nrOfLines='<nr-of-lines>'
+      ]
+      [
+        prefix='<prefix>'
+        prefixStyle='<prefix-style>'
+        prefixAction='<prefix-action>'
+      ]
+      [
+        suffix='<suffix>'
+        suffixStyle='<suffix-style>'
+        prefixAction='<prefix-action>'
+      ]
+    ]
   ]
 />
 ```
@@ -138,13 +148,26 @@ The Section configuration defines a section in a template. This can either be de
 
 | Parameter                  | Description | Default | Remark |
 |:---                        |:--- |:--- |:--- |
-| name[^1]                      | The name of the section. Must be unique within one template. | | This can only contain a-z, A-Z, 0-9, _ and - characters. |
+| name[^1]                   | The name of the section. Must be unique within one template. | | This can only contain a-z, A-Z, 0-9, _ and - characters. |
+
+#### XML section parameters
+The following parameters are only relevent for specifying a XML section.
+
+| Parameter                  | Description | Default | Remark |
+|:---                        |:--- |:--- |:--- |
+| templateXPath[^1]          | The XPath which needs to be executed on the template document to get the element which resembles the section element. | | |
+
+#### Text section parameters
+The following parameters are only relevent for specifying a text section.
+
+| Parameter                  | Description | Default | Remark |
+|:---                        |:--- |:--- |:--- |
 | begin[^5]                  | Character sequence which defines the beginning of the section. | | If begin is not specified, it will automatically start on the first line after the annotation. This can thus only be done with an inline annotation. |
 | includeBegin               | Whether to include the characters specified in `begin` in the output | true |
 | end[^5]                    | Character sequence which defines the beginning of the section. | | Cannot be used in conjunction with `nrOfLines`. |
 | includeEnd                 | Whether to include the characters specified in `end` in the output | true |
-| literalOnFirstLine[^5] | Literal which exists on the first line of the section, the whole line will be taken into the section. | | Cannot be used in conjunction with `begin`. |
-| literalOnLastLine[^5]  | Literal which exists on the last line of the section, the whole line will be taken into the section. | | Cannot be used in conjunction with `end` or `nrOfLines`. |
+| literalOnFirstLine[^5]     | Literal which exists on the first line of the section, the whole line will be taken into the section. | | Cannot be used in conjunction with `begin`. |
+| literalOnLastLine[^5]      | Literal which exists on the last line of the section, the whole line will be taken into the section. | | Cannot be used in conjunction with `end` or `nrOfLines`. |
 | nrOfLines[^5]              | Defined the number of lines of the section after the `@XGenSection` annotation. | 1 | Cannot be used in conjunction with `end` or `literalOnLastLine`. |
 | prefix                     | The prefix to prepend using the `prefixStyle`. |
 | prefixStyle                | The style of the prefix, see [Prefix & suffix styles](#prefix-suffix-styles) | allButFirst | Only interpreted when `prefix` is given. |
@@ -178,9 +201,9 @@ The Section configuration defines a section in a template. This can either be de
 
 | Parameter                   | Description | Default | Remark |
 |:---                         |:--- |:--- |:--- |
-| templateXPath[^1]         | The XPath for template node where attribute needs to be injected. | | |
+| templateXPath[^1]           | The XPath for template node where attribute needs to be injected. | | |
 | attributeName[^1]           | The name of the attribute to inject. | | |
-| attributeValue                | Default value for the newly injected attribute. | | |
+| attributeValue              | Default value for the newly injected attribute. | | |
 
 ## TemplatePlaceholderInjection
 
