@@ -1,8 +1,8 @@
 @Unit
-Feature: Unit_TextTemplateFromConfig_Section_Bounds
+Feature: Unit_Config_TextTemplate_Section_Bounds
   In this feature we will describe the section bounds feature for text templates specified in config.
 
-  Background:
+  Background: 
     Given I have the following model file: "general/model.xml"
     And the following template named "DropTables.sql":
       """
@@ -11,7 +11,7 @@ Feature: Unit_TextTemplateFromConfig_Section_Bounds
       GO;
       -- End of template
       """
-     
+
   Scenario: Section with begin and end character sequence, including both
     And the following config:
       """
@@ -43,9 +43,8 @@ Feature: Unit_TextTemplateFromConfig_Section_Bounds
       GO;
       -- End of template
       """
- 
+
   Scenario: Section with begin and end character sequence, including begin only
-    
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -76,10 +75,8 @@ Feature: Unit_TextTemplateFromConfig_Section_Bounds
       GO;
       -- End of template
       """
-      
-  
+
   Scenario: Section with begin and end character sequence, including end only
-   
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -110,9 +107,8 @@ Feature: Unit_TextTemplateFromConfig_Section_Bounds
       GO;
       -- End of template
       """
-      
+
   Scenario: Section with begin and end character sequence, excluding both
-  
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -142,10 +138,9 @@ Feature: Unit_TextTemplateFromConfig_Section_Bounds
        Customer;
       GO;
       -- End of template
-      """         
-     
+      """
+
   Scenario: Section with begin character sequence and nr of lines
-   
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -176,10 +171,9 @@ Feature: Unit_TextTemplateFromConfig_Section_Bounds
       DROP TABLE Customer;
       GO;
       -- End of template
-      """      
- 
+      """
+
   Scenario: Section with begin character sequence only (and implicit nrOfLines = 1)
-  
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -209,10 +203,9 @@ Feature: Unit_TextTemplateFromConfig_Section_Bounds
       DROP TABLE Customer;
       GO;
       -- End of template
-      """     
+      """
 
   Scenario: Section with begin character sequence and literalOnLastLine
-  
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -243,10 +236,9 @@ Feature: Unit_TextTemplateFromConfig_Section_Bounds
       DROP TABLE Customer;
       GO;
       -- End of template
-      """     
-  
+      """
+
   Scenario: Section with literalOnFirstLine and end character sequence
-  
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -276,10 +268,9 @@ Feature: Unit_TextTemplateFromConfig_Section_Bounds
       GO;DROP TABLE Customer;
       GO;
       -- End of template
-      """     
-  
+      """
+
   Scenario: Section with literalOnFirstLine and nrOfLines
-  
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -310,4 +301,4 @@ Feature: Unit_TextTemplateFromConfig_Section_Bounds
       DROP TABLE Customer;
       GO;
       -- End of template
-      """     
+      """

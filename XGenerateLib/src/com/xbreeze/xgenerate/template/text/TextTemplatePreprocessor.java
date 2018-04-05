@@ -9,9 +9,9 @@ import java.util.regex.Pattern;
 import com.xbreeze.xgenerate.UnhandledException;
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.FileFormatConfig;
-import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.RawTemplate;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
+import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.annotation.TemplateAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateCommentAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
@@ -23,8 +23,6 @@ import com.xbreeze.xgenerate.template.section.CommentTemplateSection;
 import com.xbreeze.xgenerate.template.section.NamedTemplateSection;
 import com.xbreeze.xgenerate.template.section.RawTemplateSection;
 import com.xbreeze.xgenerate.template.section.SectionedTemplate;
-
-import net.sf.saxon.lib.Logger;
 
 public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	/**
@@ -82,13 +80,13 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				if (!sectionAnnotation.isIncludeBegin())
 					sectionBeginCharIndex += sectionAnnotation.getBegin().length();
 			}
-			//if literalOnFirstLine is specified, we use literalOnFirstLine
+			// If literalOnFirstLine is specified, we use literalOnFirstLine
 			else if (sectionAnnotation.getLiteralOnFirstLine() != null && sectionAnnotation.getLiteralOnFirstLine().length() > 0) {
-				//Construct a regex for entire line containing the literal (* matches everything but line terminator)
+				// Construct a regex for entire line containing the literal (* matches everything but line terminator)
 				 Pattern pattern = Pattern.compile(String.format(".*%s.*", Pattern.quote(sectionAnnotation.getLiteralOnFirstLine())));
 				 Matcher matcher = null;
 						 
-				 //if annotation is in template, apply regex on raw template, after annotation, otherwise apply on complete raw template
+				 // If annotation is in template, apply regex on raw template, after annotation, otherwise apply on complete raw template
 				 if (annotationInTemplate) {
 					 matcher = pattern.matcher(rawTemplateContent.substring(sectionAnnotation.getAnnotationEndIndex()));
 				 }
@@ -96,17 +94,17 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 					 matcher = pattern.matcher(rawTemplateContent);
 				 }
 				 
-				 //If pattern is found, section begin charindex is the start of the matching line.
+				 // If pattern is found, section begin charindex is the start of the matching line.
 				 if (matcher.find()) {
 					sectionBeginCharIndex = matcher.start();
-					//If annotation was specified in the template, ensure we add the annotation end index to the start position found
+					// If annotation was specified in the template, ensure we add the annotation end index to the start position found
 					if (annotationInTemplate) {
 						sectionBeginCharIndex += sectionAnnotation.getAnnotationEndIndex();
 					}
 				 } 
 				 else {
 					throw new TemplatePreprocessorException(String.format("The begin part of the section can't be found (%s)", sectionAnnotation.getName()));
-					}
+				}
 			}
 			// If begin is not specified and the annotation was specified in the template, we use the end position of the annotation.
 			else if (annotationInTemplate) {
@@ -276,7 +274,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		}
 		
 		// If the current section is not the root section the end of the section should've been found by now.
-		// So we throw and exception.
+		// So we throw an exception.
 		if (!isRootSection && previousSectionEndIndex < rawTemplateContentEndIndex) {
 			throw new TemplatePreprocessorException(String.format("The end of section '%s' can't be found!", parentTemplateSection.getSectionName()));
 		}

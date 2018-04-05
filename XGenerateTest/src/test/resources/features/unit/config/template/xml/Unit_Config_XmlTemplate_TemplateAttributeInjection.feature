@@ -1,5 +1,5 @@
 @Unit
-Feature: Unit_Config_Template_TemplateAttributeInjection
+Feature: Unit_Config_XmlTemplate_TemplateAttributeInjection
   In this feature we will describe the TemplateAttributeInjection feature in the template config.
 
   @KnownIsse
