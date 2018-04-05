@@ -1,7 +1,7 @@
 @Unit
-Feature: Unit_TextTemplate_SectionFromConfig_Prefix
-  In this feature we will describe the section prefix feature for text templates used in config.
-  
+Feature: Unit_Config_TextTemplate_Section_Suffix
+  In this feature we will describe the section suffix feature in text templates.
+
   Background: 
     Given I have the following model:
       """
@@ -13,17 +13,15 @@ Feature: Unit_TextTemplate_SectionFromConfig_Prefix
          </attributes>
         </modeldefinition>
       """
-   
-    And the following template named "Section_Prefix.txt":
+    And the following template named "Section_Suffix.txt":
       """
       -- Begin of template
       column_name
       -- End of template
-      """  
-  
-  Scenario Outline: Section with prefix single line <prefixStyle>
-         
-    And the following config:      
+      """
+
+  Scenario Outline: Section with suffix single line <suffixStyle>
+    And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
@@ -38,7 +36,7 @@ Feature: Unit_TextTemplate_SectionFromConfig_Prefix
           />
           <Output type="single_output" />
           <Sections>
-            <Section name="Column" literalOnFirstLine="column" end="name" includeEnd="true" prefix="<prefix>" prefixStyle="<prefixStyle>"/> 
+            <Section name="Column" begin="column" includeBegin="true" end="name" includeEnd="true" suffix="<suffix>" suffixStyle="<suffixStyle>"/>
           </Sections>
         </Template>
         <Binding>
@@ -50,7 +48,7 @@ Feature: Unit_TextTemplate_SectionFromConfig_Prefix
       """
     When I run the generator
     Then I expect 1 generation result
-    And an output named "Section_Prefix.txt" with content:
+    And an output named "Section_Suffix.txt" with content:
       """
       -- Begin of template
       <expected-result-1><expected-result-2><expected-result-3>
@@ -58,16 +56,16 @@ Feature: Unit_TextTemplate_SectionFromConfig_Prefix
       """
 
     Examples: 
-      | prefixStyle | prefix           | expected-result-1          | expected-result-2            | expected-result-3           |
-      | firstOnly   | /** first */     | /** first */FirstColumn    | SecondColumn                 | ThirdColumn                 |
-      | lastOnly    | /** last */      | FirstColumn                | SecondColumn                 | /** last */ThirdColumn      |
-      | allButFirst | /** not first */ | FirstColumn                | /** not first */SecondColumn | /** not first */ThirdColumn |
-      | allButLast  | /** not last */  | /** not last */FirstColumn | /** not last */SecondColumn  | ThirdColumn                 |
+      | suffixStyle | suffix           | expected-result-1          | expected-result-2            | expected-result-3           |
+      | firstOnly   | /** first */     | FirstColumn/** first */    | SecondColumn                 | ThirdColumn                 |
+      | lastOnly    | /** last */      | FirstColumn                | SecondColumn                 | ThirdColumn/** last */      |
+      | allButFirst | /** not first */ | FirstColumn                | SecondColumn/** not first */ | ThirdColumn/** not first */ |
+      | allButLast  | /** not last */  | FirstColumn/** not last */ | SecondColumn/** not last */  | ThirdColumn                 |
 
-
-  Scenario Outline: Section with prefix multi line <prefixStyle>   
-      
-    And the following config:      
+  @KnownIssue
+  Scenario Outline: Section with suffix multi line <suffixStyle>
+    # KnownIssue: The suffix is appeneded to the end of a section, but if there are new lines at the end of a section it probably should but the suffix before the new lines.
+    And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
@@ -82,7 +80,7 @@ Feature: Unit_TextTemplate_SectionFromConfig_Prefix
           />
           <Output type="single_output" />
           <Sections>
-            <Section name="Column" literalOnFirstLine="column" prefix="<prefix>" prefixStyle="<prefixStyle>"/> 
+            <Section name="Column" begin="column" includeBegin="true" suffix="<suffix>" suffixStyle="<suffixStyle>"/>
           </Sections>
         </Template>
         <Binding>
@@ -94,19 +92,19 @@ Feature: Unit_TextTemplate_SectionFromConfig_Prefix
       """
     When I run the generator
     Then I expect 1 generation result
-    And an output named "Section_Prefix.txt" with content:
+    And an output named "Section_Suffix.txt" with content:
       """
       -- Begin of template
       <expected-result-1>
       <expected-result-2>
       <expected-result-3>
       -- End of template
+
       """
 
-
     Examples: 
-      | prefixStyle | prefix           | expected-result-1          | expected-result-2            | expected-result-3           |
-      | firstOnly   | /** first */     | /** first */FirstColumn    | SecondColumn                 | ThirdColumn                 |
-      | lastOnly    | /** last */      | FirstColumn                | SecondColumn                 | /** last */ThirdColumn      |
-      | allButFirst | /** not first */ | FirstColumn                | /** not first */SecondColumn | /** not first */ThirdColumn |
-      | allButLast  | /** not last */  | /** not last */FirstColumn | /** not last */SecondColumn  | ThirdColumn                 |
+      | suffixStyle | suffix           | expected-result-1          | expected-result-2            | expected-result-3           |
+      | firstOnly   | /** first */     | FirstColumn/** first */    | SecondColumn                 | ThirdColumn                 |
+      | lastOnly    | /** last */      | FirstColumn                | SecondColumn                 | ThirdColumn/** last */      |
+      | allButFirst | /** not first */ | FirstColumn                | SecondColumn/** not first */ | ThirdColumn/** not first */ |
+      | allButLast  | /** not last */  | FirstColumn/** not last */ | SecondColumn/** not last */  | ThirdColumn                 |
