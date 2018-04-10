@@ -47,7 +47,10 @@ public abstract class TemplatePreprocessor {
 		// Perform the specific sectionizing for the current template.
 		// This should detect sections from the raw template and transform it into a SectionedTemplate object.
 		String rootSectionName = templateConfig.getRootSectionName();
-		SectionModelBindingConfig[] rootSectionModelBindings = _config.getBindingConfig().getSectionModelBindingConfigs(rootSectionName);
+		
+		SectionModelBindingConfig[] rootSectionModelBindings = null;
+		if (_config.getBindingConfig() != null)
+			rootSectionModelBindings = _config.getBindingConfig().getSectionModelBindingConfigs(rootSectionName);
 		
 		// Check whether there is only 1 root section model binding. If not, throw an exception.
 		if (rootSectionModelBindings == null || rootSectionModelBindings.length != 1) {
