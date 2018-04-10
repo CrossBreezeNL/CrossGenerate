@@ -23,6 +23,7 @@ import com.xbreeze.xgenerate.template.section.CommentTemplateSection;
 import com.xbreeze.xgenerate.template.section.NamedTemplateSection;
 import com.xbreeze.xgenerate.template.section.RawTemplateSection;
 import com.xbreeze.xgenerate.template.section.SectionedTemplate;
+import com.xbreeze.xgenerate.template.xml.XMLUtils;
 
 public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	/**
@@ -364,7 +365,8 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	 * @param endIndex The ending index of the raw template.
 	 */
 	private void addRawTemplate(NamedTemplateSection parentTemplateSection, String rawTemplateContent, int startIndex, int endIndex) {
-		String rawTemplateSectionContent = rawTemplateContent.substring(startIndex, endIndex);
+		// Escape XML chars, since the raw template will be put in an XSLT transformation.
+		String rawTemplateSectionContent = XMLUtils.excapeXMLChars(rawTemplateContent.substring(startIndex, endIndex));
 		logger.info(String.format("Found a raw template section in section '%s' between index %d and %d: '%s'", parentTemplateSection.getSectionName(), startIndex, endIndex, rawTemplateSectionContent));
 		parentTemplateSection.addTemplateSection(new RawTemplateSection(rawTemplateSectionContent, startIndex, endIndex));
 	}
