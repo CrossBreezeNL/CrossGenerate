@@ -22,7 +22,7 @@ Feature: Unit_Config_XmlTemplate_AnnotationFormat
         <Template rootSectionName="Database">
           <FileFormat
             templateType="xml"
-            commentNodeXPath="<commentNodeXPath>"
+            commentNodeXPath="@description"
             annotationPrefix="<annotationPrefix>"
             annotationArgsPrefix="<annotationArgsPrefix>"
             annotationArgsSuffix="<annotationArgsSuffix>"
@@ -43,12 +43,12 @@ Feature: Unit_Config_XmlTemplate_AnnotationFormat
       """
 
     Examples: 
-      | Scenario         | commentNodeXPath | annotationPrefix | annotationArgsPrefix | annotationArgsSuffix | expectedResult             |
-      | Standard         | @description     | @XGen            | (                    | )                    | <Database description=""/> |
-      | Diff prefix      | @description     | Bla              | (                    | )                    | <Database description=""/> |
-      | Diff args prefix | @description     | @XGen            | Bla                  | )                    | <Database description=""/> |
-      | Diff args suffix | @description     | @XGen            | (                    | Bla                  | <Database description=""/> |
-      | All same         | @description     | @                | @                    | @                    | <Database description=""/> |
+      | Scenario         | annotationPrefix | annotationArgsPrefix | annotationArgsSuffix | expectedResult             |
+      | Standard         | @XGen            | (                    | )                    | <Database description=""/> |
+      | Diff prefix      | Bla              | (                    | )                    | <Database description=""/> |
+      | Diff args prefix | @XGen            | Bla                  | )                    | <Database description=""/> |
+      | Diff args suffix | @XGen            | (                    | Bla                  | <Database description=""/> |
+      | All same         | @                | @                    | @                    | <Database description=""/> |
 
   Scenario: Annotation format default values
     Given the following template named "ExampleTemplate.xml":
