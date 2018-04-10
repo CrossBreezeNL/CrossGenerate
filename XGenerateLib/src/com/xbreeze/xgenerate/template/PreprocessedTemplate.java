@@ -157,11 +157,15 @@ public class PreprocessedTemplate {
 		);
 		
 		// Perform placeholder replacement for the current accessor.
-		processedTemplate = replacePlaceholders(processedTemplate, String.format(placeholderRegex, Pattern.quote(fileFormatConfig.getCurrentAccessor())), "%s/@$1", modelXPath, placeholderType);
+		{
+			String currentAccessorPlaceholderRegex = String.format(placeholderRegex, Pattern.quote(TemplatePreprocessor.doubleEntityEncode(fileFormatConfig.getCurrentAccessor())));
+			processedTemplate = replacePlaceholders(processedTemplate, currentAccessorPlaceholderRegex, "%s/@$1", modelXPath, placeholderType);
+		}
 		
 		// Perform placeholder replacement for the child accessor.
 		if (fileFormatConfig.getChildAccessor() != null && fileFormatConfig.getChildAccessor().length() > 0) {
-			processedTemplate = replacePlaceholders(processedTemplate, String.format(placeholderRegex, Pattern.quote(fileFormatConfig.getChildAccessor())), "%s/$1", modelXPath, placeholderType);
+			String childAccessorPlaceholderRefex = String.format(placeholderRegex, Pattern.quote(TemplatePreprocessor.doubleEntityEncode(fileFormatConfig.getChildAccessor())));
+			processedTemplate = replacePlaceholders(processedTemplate, childAccessorPlaceholderRefex, "%s/$1", modelXPath, placeholderType);
 		}
 		
 		return processedTemplate;
@@ -213,7 +217,7 @@ public class PreprocessedTemplate {
 		String placeholderReplacement = String.format(placeholderFormat, modelXPath);
 
 		// Perform the replacement for the placeholder.
-		//logger.info(String.format("Processing placeholder '%s': '%s' -> %s", placeholderName, placeholderRegex, placeholderReplacement));
+		//logger.info(String.format("Processing placeholder '%s' -> %s", placeholderRegex, placeholderReplacement));
 		return templatePartToProcess.replaceAll(placeholderRegex, placeholderReplacement);		
 	}
 	

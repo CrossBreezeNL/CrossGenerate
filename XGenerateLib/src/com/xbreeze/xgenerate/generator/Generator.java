@@ -218,6 +218,12 @@ public class Generator extends GeneratorStub {
 					logger.info("Begin template pre-processing");
 					PreprocessedTemplate preprocessedTemplate = templatePreprocessor.preProcess(rawTemplate, outputFileUri);
 					preprocessedTemplateString = preprocessedTemplate.toString();
+					// If in debug mode, write the preprocessed template.
+					if (this.isDebugMode()) {
+						System.out.println("---------- Preprocessed template: ----------");
+						System.out.println(preprocessedTemplateString);
+						System.out.println("--------------------------------------------");
+					}
 					//generationResult.setPreprocessedTemplate(preprocessedTemplateString);
 					logger.info("End template pre-processing");
 				}

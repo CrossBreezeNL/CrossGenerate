@@ -25,7 +25,7 @@ public class GeneratorStub {
 		logger.info("Initializing generator");
 	}
 	
-	public boolean getDebugMode() {
+	public boolean isDebugMode() {
 		return _debugMode;
 	}
 
@@ -35,7 +35,7 @@ public class GeneratorStub {
 	}
 	
 	
-	public boolean getTestMode() {
+	public boolean isTestMode() {
 		return _testMode;
 	}
 

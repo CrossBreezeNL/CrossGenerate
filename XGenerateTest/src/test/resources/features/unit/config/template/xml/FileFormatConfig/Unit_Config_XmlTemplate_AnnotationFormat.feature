@@ -13,7 +13,7 @@ Feature: Unit_Config_XmlTemplate_AnnotationFormat
     Given the following template named "ExampleTemplate.xml":
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <Database description="<templateAnnotationPrefix>Comment<annotationArgsPrefix>Some comment<annotationArgsSuffix>"/>
+      <Database description="<annotationPrefix>Comment<annotationArgsPrefix>Some comment<annotationArgsSuffix>"/>
       """
     And the following config:
       """

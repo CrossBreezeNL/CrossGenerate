@@ -25,6 +25,7 @@ import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.model.Model;
 import com.xbreeze.xgenerate.template.RawTemplate;
 
+import cucumber.api.Scenario;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -43,10 +44,14 @@ public class XGenerateTestSteps {
 	URI _configFileUri;
 	
 	@Before
-	public void beforeScenario() {
+	public void beforeScenario(Scenario scenario) {
 		// Initialize the generator.
 		this._generator = new Generator();
 		this._generator.setTestMode(true);
+		// Enable debug mode if there is a tag @Debug.
+		if (scenario.getSourceTagNames().contains("@Debug")) {
+			this._generator.setDebugMode(true);
+		}
 	}
 
 	@Given("^I have the following model:$")
