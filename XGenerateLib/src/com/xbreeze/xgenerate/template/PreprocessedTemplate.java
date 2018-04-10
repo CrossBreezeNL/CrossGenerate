@@ -4,6 +4,7 @@ import java.net.URI;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import com.xbreeze.xgenerate.config.binding.PlaceholderConfig;
 import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
@@ -104,9 +105,6 @@ public class PreprocessedTemplate {
 		// Store the result in a local String.
 		String processedTemplatePart = templatePart;
 		
-		// Store the current accessor in a local variable.
-		String currentAccessor = fileFormatConfig.getCurrentAccessor();
-		
 		// Process the placeholder of this section.
 		processedTemplatePart = PreprocessedTemplate.processPlaceholder(
 				parentBindingConfig.getPlaceholderName(),
@@ -114,7 +112,7 @@ public class PreprocessedTemplate {
 				// If not bounded, we use the model XPath.
 				(isBounded) ? "." : parentBindingConfig.getModelXPath(),
 				processedTemplatePart,
-				currentAccessor,
+				fileFormatConfig,
 				placeholderType
 		);
 		
@@ -125,7 +123,7 @@ public class PreprocessedTemplate {
 						placeholder.getName(),
 						placeholder.getModelXPath(),
 						processedTemplatePart,
-						currentAccessor,
+						fileFormatConfig,
 						placeholderType
 				);
 			}
@@ -139,10 +137,13 @@ public class PreprocessedTemplate {
 	 * @param placeholderName The placeholder name.
 	 * @param modelXPath The model XPath
 	 * @param templatePartToProcess The template part to process
-	 * @param currentAccessor The current accessor as defined in the config.
+	 * @param fileFormatConfig The file format config.
+	 * @param placeholderType The placeholder type.
 	 * @return The processed template, where placeholders are replaced with XSLT expressions.
 	 */
-	private static String processPlaceholder(String placeholderName, String modelXPath, String templatePartToProcess, String currentAccessor, PlaceholderType placeholderType) {
+	private static String processPlaceholder(String placeholderName, String modelXPath, String templatePartToProcess, FileFormatConfig fileFormatConfig, PlaceholderType placeholderType) {
+		String processedTemplate = templatePartToProcess;
+		
 		/**
 		 * The regex to find a placeholder:
 		 * %s            - The placeholder name
@@ -152,9 +153,30 @@ public class PreprocessedTemplate {
 		String placeholderRegex =  String.format(
 				"%s%s([a-zA-Z]+)",
 				placeholderName,
-				currentAccessor
+				"%s"
 		);
 		
+		// Perform placeholder replacement for the current accessor.
+		processedTemplate = replacePlaceholders(processedTemplate, String.format(placeholderRegex, Pattern.quote(fileFormatConfig.getCurrentAccessor())), "%s/@$1", modelXPath, placeholderType);
+		
+		// Perform placeholder replacement for the child accessor.
+		if (fileFormatConfig.getChildAccessor() != null && fileFormatConfig.getChildAccessor().length() > 0) {
+			processedTemplate = replacePlaceholders(processedTemplate, String.format(placeholderRegex, Pattern.quote(fileFormatConfig.getChildAccessor())), "%s/$1", modelXPath, placeholderType);
+		}
+		
+		return processedTemplate;
+	}
+	
+	/**
+	 * Replace the placeholders in the templatePartToProcess.
+	 * @param templatePartToProcess The template part to process.
+	 * @param placeholderRegex The regex for finding placeholders.
+	 * @param placeholderReplaceXPath The replacement value for the placeholders.
+	 * @param modelXPath The XPath to the model.
+	 * @param placeholderType The placeholder type.
+	 * @return The processed template part, where placeholders are replaced wit the XSLT instruction.
+	 */
+	private static String replacePlaceholders(String templatePartToProcess, String placeholderRegex, String placeholderReplaceXPath, String modelXPath, PlaceholderType placeholderType) {
 		String placeholderFormat;
 		switch (placeholderType) {
 			case XSL_INLINE:
@@ -168,7 +190,7 @@ public class PreprocessedTemplate {
 				 * @    - The XML attribute accessor.
 				 * $1   - The value of group 1 (the attribute name to select from the find regex)
 				 */
-				placeholderFormat = "{%s/@$1}";
+				placeholderFormat = String.format("{%s}", placeholderReplaceXPath);
 				break;
 			// In all other cases return the value-of version.
 			case XSL_VALUE_OF:
@@ -183,7 +205,7 @@ public class PreprocessedTemplate {
 				 * @    - The XML attribute accessor.
 				 * $1   - The value of group 1 (the attribute name to select from the find regex)
 				 */
-				placeholderFormat = "</xsl:text><xsl:value-of select=\"%s/@$1\" /><xsl:text>";
+				placeholderFormat = String.format("</xsl:text><xsl:value-of select=\"%s\" /><xsl:text>", placeholderReplaceXPath);
 				break;
 		}
 		
@@ -192,7 +214,7 @@ public class PreprocessedTemplate {
 
 		// Perform the replacement for the placeholder.
 		//logger.info(String.format("Processing placeholder '%s': '%s' -> %s", placeholderName, placeholderRegex, placeholderReplacement));
-		return templatePartToProcess.replaceAll(placeholderRegex, placeholderReplacement);
+		return templatePartToProcess.replaceAll(placeholderRegex, placeholderReplacement);		
 	}
 	
 	private enum PlaceholderType {

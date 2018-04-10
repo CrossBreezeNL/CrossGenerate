@@ -256,12 +256,16 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			case current:
 				accessor = _config.getTemplateConfig().getFileFormatConfig().getCurrentAccessor();
 				break;
-			case child:	
+			case child:
 				accessor = _config.getTemplateConfig().getFileFormatConfig().getChildAccessor();
 				break;
 			default:
 				throw new TemplatePreprocessorException(String.format("Unrecognized scope defined in TemplatePlaceholderInjection '%s'", tpi.getScope().toString()));
 		}
+		// If the accessor is not set, throw an exception.
+		if (accessor == null)
+			throw new TemplatePreprocessorException(String.format("%s scope used in TemplatePlaceholderInjection, but not defined in FileFormatConfig.", tpi.getScope().toString()));
+		
 		return String.format("%s%s%s", placeholderName, accessor, tpi.getModelNode());
 	}
 	
