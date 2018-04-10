@@ -24,7 +24,7 @@ public class TemplateConfig {
 	 * The section name of the root section.
 	 * A template implicitly always has a root section containing the whole template. This variable defines to name.
 	 */
-	private String _rootSectionName;
+	private String _rootSectionName = "_template_";
 	
 	/**
 	 * The FileFormat of the template.
@@ -59,7 +59,7 @@ public class TemplateConfig {
 	/**
 	 * @return the rootSectionName
 	 */
-	@XmlAttribute(required=true)
+	@XmlAttribute
 	public String getRootSectionName() {
 		return _rootSectionName;
 	}
