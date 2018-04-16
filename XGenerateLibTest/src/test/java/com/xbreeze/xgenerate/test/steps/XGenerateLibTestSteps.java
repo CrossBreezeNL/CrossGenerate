@@ -32,7 +32,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class XGenerateTestSteps {
+public class XGenerateLibTestSteps {
 	private final URI _outputFolderUri = URI.create("file:///C:/CrossGenerate/Output/");
 	private final URI _featureSupportFilesLocation = URI.create("file:///C:/GIT/Repos/CrossBreeze/CrossGenerate/CrossGenerate/XGenerateTest/src/test/resources/feature-support-files/");
 	
