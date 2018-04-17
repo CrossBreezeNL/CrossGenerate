@@ -77,9 +77,7 @@ public class RawTemplate {
 			BOMInputStream bomInputStream = new BOMInputStream(fis);
 			// Create a String using the BOMInputStream and the charset.
 			// The charset can be null, this gives no errors.
-			String rawTemplateString = IOUtils.toString(bomInputStream, bomInputStream.getBOMCharsetName());
-			// Double entity-encode XML entity encoded stuff.
-			rawTemplateContent = TemplatePreprocessor.doubleEntityEncode(rawTemplateString);
+			rawTemplateContent = IOUtils.toString(bomInputStream, bomInputStream.getBOMCharsetName());
 		} catch (IOException e) {
 			throw new TemplateException(String.format("Couldn't read the template file (%s)", rawTemplateFilePath));
 		}

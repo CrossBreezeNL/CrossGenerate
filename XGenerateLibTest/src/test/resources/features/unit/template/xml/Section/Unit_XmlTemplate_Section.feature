@@ -36,9 +36,7 @@ Feature: Unit_XmlTemplate_Section
       <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource"/>
       """
 
-  @KnownIssue
   Scenario: Implicit root and explicit section
-    # KnownIssue: Here there is a problem with the newlines and whitespaces, and also with the order of attribute.
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -79,7 +77,7 @@ Feature: Unit_XmlTemplate_Section
     
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource"/>
+      <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
         <Tables>
           <Table name="Order" description=""/>
           <Table name="Customer" description=""/>
@@ -87,9 +85,7 @@ Feature: Unit_XmlTemplate_Section
       </Database>
       """
 
-  @KnownIssue
   Scenario: Implicit root and explicit recurring section
-    # KnownIssue: Here there is a problem with the newlines and whitespaces, and also with the order of attribute.
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -140,13 +136,11 @@ Feature: Unit_XmlTemplate_Section
         <MoreTables>
           <AnotherTable name="Order" description=""/>
           <AnotherTable name="Customer" description=""/>
-        </MoreTables> 
+        </MoreTables>
       </Database>
       """
 
-  @KnownIssue
   Scenario: Implicit root and explicit recursive section
-    # KnownIssue: Here there is a problem with the newlines and whitespaces, and also with the order of attribute.
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -164,7 +158,7 @@ Feature: Unit_XmlTemplate_Section
         <Tables>
           <Table name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)">
             <AnotherTable name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)"/>
-          </Table>  
+          </Table>
         </Tables>
       </Database>
       """
@@ -199,14 +193,12 @@ Feature: Unit_XmlTemplate_Section
           <Table name="Customer" description="">
             <AnotherTable name="Order" description=""/>
             <AnotherTable name="Customer" description=""/>
-          </Table>          
-        </Tables>       
+          </Table>
+        </Tables>
       </Database>
       """
       
-  @KnownIssue
   Scenario: Implicit root and explicit nested section
-    # KnownIssue: Here there is a problem with the newlines and whitespaces, and also with the order of attribute.
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -237,7 +229,7 @@ Feature: Unit_XmlTemplate_Section
             <Columns>
               <Column name="attribute_name" description="@XGenSection(name=&quot;Columns&quot;)"/>
             </Columns>
-          </Table>  
+          </Table>
         </Tables>
       </Database>
       """
@@ -267,17 +259,17 @@ Feature: Unit_XmlTemplate_Section
         <Tables>
           <Table name="Order" description="">
             <Columns>
-              <Column name="OrderId"/>
-              <Column name="OrderDate"/>
+              <Column name="OrderId" description=""/>
+              <Column name="OrderDate" description=""/>
             </Columns>
           </Table>
           <Table name="Customer" description="">
             <Columns>
-              <Column name="CustomerId"/>
-              <Column name="FirstName"/>
-              <Column name="LastName"/>
+              <Column name="CustomerId" description=""/>
+              <Column name="FirstName" description=""/>
+              <Column name="LastName" description=""/>
             </Columns>
-          </Table>          
-        </Tables>       
+          </Table>
+        </Tables>
       </Database>
       """

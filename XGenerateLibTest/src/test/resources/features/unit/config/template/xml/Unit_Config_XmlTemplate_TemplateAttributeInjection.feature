@@ -2,9 +2,7 @@
 Feature: Unit_Config_XmlTemplate_TemplateAttributeInjection
   In this feature we will describe the TemplateAttributeInjection feature in the template config.
 
-  @KnownIsse
   Scenario Outline: Single <Scenario> template attribute injection
-    # KnownIssue: Alignment of XML is not in line with input.
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -16,8 +14,8 @@ Feature: Unit_Config_XmlTemplate_TemplateAttributeInjection
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <tables>
-        <table name="table_name" filter="yes" />
-        <table name="table_name" filter="no" />
+        <table name="table_name" filter="yes"/>
+        <table name="table_name" filter="no"/>
       </tables>
       """
     And the following config:

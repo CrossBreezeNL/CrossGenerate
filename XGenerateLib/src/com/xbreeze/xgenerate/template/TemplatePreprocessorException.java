@@ -23,4 +23,13 @@ public class TemplatePreprocessorException extends CrossGenerateException {
 	public TemplatePreprocessorException(Throwable throwable) {
 		super(throwable);
 	}
+	
+	/**
+	 * Constructor.
+	 * @param message The exception message.
+	 * @param throwable The throwable.
+	 */
+	public TemplatePreprocessorException(String message, Throwable throwable) {
+		super(message, throwable);
+	}
 }

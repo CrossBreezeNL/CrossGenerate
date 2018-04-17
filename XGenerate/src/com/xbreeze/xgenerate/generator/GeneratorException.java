@@ -15,4 +15,8 @@ public class GeneratorException extends CrossGenerateException {
 	public GeneratorException(Throwable throwable) {
 		super(throwable);
 	}
+	
+	public GeneratorException(String message, Throwable throwable) {
+		super(message, throwable);
+	}
 }

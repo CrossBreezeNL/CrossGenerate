@@ -22,9 +22,7 @@ Feature: Unit_Config_XmlTemplate_Section
       </Database>
       """
 
-  @KnownIssue
   Scenario Outline: Implicit root and explicit section <Scenario>
-    # KnownIssue: Here there is a problem with the newlines and whitespaces, and also with the order of attribute.
     Given the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -48,7 +46,7 @@ Feature: Unit_Config_XmlTemplate_Section
     And an output named "ExampleTemplate.xml" with content:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <Database name="ExampleSource"/>
+      <Database name="ExampleSource">
         <Tables>
           <expectedResult>
         </Tables>
@@ -56,7 +54,7 @@ Feature: Unit_Config_XmlTemplate_Section
       """
 
     Examples: 
-      | Scenario | templateXPath                               | expectedResult               |
-      | Simple   | /Database/Tables/Table                      | <Table name="Order"/>        |
-      | Filtered | /Database/Tables/Table[@name='entity_name'] | <Table name="Order"/>        |
+      | Scenario | templateXPath                               | expectedResult              |
+      | Simple   | /Database/Tables/Table                      | <Table name="Order"/>       |
+      | Filtered | /Database/Tables/Table[@name='entity_name'] | <Table name="Order"/>       |
       | Invalid  | /Database/Tables/Table[@name='incorrect']   | <Table name="entity_name"/> |

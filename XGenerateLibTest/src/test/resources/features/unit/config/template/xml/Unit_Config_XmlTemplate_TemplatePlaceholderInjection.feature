@@ -2,9 +2,7 @@
 Feature: Unit_Config_XmlTemplate_TemplatePlaceholderInjection
   In this feature we will describe the TemplatePlaceholderInjection feature in the template config.
 
-  @KnownIsse
   Scenario Outline: Single <Scenario> template placeholder injection
-    # KnownIssue: Alignment of XML is not in line with input.
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -18,8 +16,8 @@ Feature: Unit_Config_XmlTemplate_TemplatePlaceholderInjection
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <tables>
-        <table name="table_name" filter="yes" someProperty="Bla1" />
-        <table name="table_name" filter="no" someProperty="Bla2" />
+        <table name="table_name" filter="yes" someProperty="Bla1"/>
+        <table name="table_name" filter="no" someProperty="Bla2"/>
       </tables>
       """
     And the following config:

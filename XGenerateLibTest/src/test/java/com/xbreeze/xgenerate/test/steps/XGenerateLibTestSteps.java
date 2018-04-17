@@ -34,7 +34,7 @@ import cucumber.api.java.en.When;
 
 public class XGenerateLibTestSteps {
 	private final URI _outputFolderUri = URI.create("file:///C:/CrossGenerate/Output/");
-	private final URI _featureSupportFilesLocation = URI.create("file:///C:/GIT/Repos/CrossBreeze/CrossGenerate/CrossGenerate/XGenerateTest/src/test/resources/feature-support-files/");
+	private final URI _featureSupportFilesLocation = URI.create("file:///C:/GIT/Repos/CrossBreeze/CrossGenerate/CrossGenerate/XGenerateLibTest/src/test/resources/feature-support-files/");
 	
 	XGenConfig _xGenConfig;
 	RawTemplate _rawTemplate;

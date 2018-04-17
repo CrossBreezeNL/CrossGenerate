@@ -73,11 +73,11 @@ Feature: Unit_Config_XmlTemplate_PlaceholderFormat
       """
 
     Examples: 
-      | Scenario            | AccessorName | AccessorChar | Template                                           | ExpectedResult                             |
+      | Scenario            | AccessorName | AccessorChar | Template                          | ExpectedResult                   |
       | Current simple      | current      | _            | <Database name="database_name"/>                   | <Database name="ExampleSource"/>           |
       | Current multichar   | current      | blaat        | <Database name="databaseblaatname"/>               | <Database name="ExampleSource"/>           |
       # Cucumber escapes XML entities by default, so when entering &gt; it is resolved before passing it into the generator. So we need to double encode it.
       # In an IDE this resembles the option to do 'placeholder->attribute'. When saving the XML file in the IDE to will be stored as 'placeholder-&gt;attribute'.
-      | Current XML encoded | current      | -&amp;gt;    | <Database name="database-&amp;gt;name"/>           | <Database name="ExampleSource"/>           |
+      | Current XML encoded | current      | -&amp;gt;    | <Database name="database->name"/> | <Database name="ExampleSource"/> |
       | Child simple        | child        | $            | <Database description="database$description"/>     | <Database description="Some description"/> |
       | Child multichar     | child        | blaat        | <Database description="databaseblaatdescription"/> | <Database description="Some description"/> |

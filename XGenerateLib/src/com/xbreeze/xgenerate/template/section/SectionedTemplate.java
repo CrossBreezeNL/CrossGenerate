@@ -34,7 +34,7 @@ import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
  *
  * @author Harmen
  */
-public abstract class SectionedTemplate extends NamedTemplateSection {
+public class SectionedTemplate extends NamedTemplateSection {
 
 	/**
 	 * Constructor.

@@ -40,8 +40,8 @@ Feature: Unit_Config_XmlTemplate_CommentNode
       """
 
     Examples: 
-      | Scenario               | commentNodeXPath   | Template                                                                                  | ExpectedResult                                     |
-      | child attribute        | @description       | <Database description="@XGenComment(Some comment)"/>                                      | <Database description=""/>                         |
-      | nested child attribute | child/@description | <Database><child description="@XGenComment(Some comment)"/></Database>                    | <Database><child description=""/></Database>       |
-      | child element          | description        | <Database><description>@XGenComment(Some comment)</description></Database>                | <Database><description/></Database>                |
-      | nested child element   | child/description  | <Database><child><description>@XGenComment(Some comment)</description></child></Database> | <Database><child><description/></child></Database> |
+      | Scenario               | commentNodeXPath   | Template                                                                                  | ExpectedResult                                                  |
+      | child attribute        | @description       | <Database description="@XGenComment(Some comment)"/>                                      | <Database description=""/>                                      |
+      | nested child attribute | child/@description | <Database><child description="@XGenComment(Some comment)"/></Database>                    | <Database><child description=""/></Database>                    |
+      | child element          | description        | <Database><description>@XGenComment(Some comment)</description></Database>                | <Database><description></description></Database>                |
+      | nested child element   | child/description  | <Database><child><description>@XGenComment(Some comment)</description></child></Database> | <Database><child><description></description></child></Database> |

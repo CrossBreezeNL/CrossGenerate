@@ -34,9 +34,9 @@ public class AnnotationScanner {
 	private static String ANNOTATION_REGEX(String annotationPrefix, String annotationArgsPrefix, String annotationArgsSuffix) {
 		return String.format(
 				"%s([a-zA-Z]+)[ \\t]*%s(.*[^ \\t])[ \\t]*%s",
-				Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationPrefix)),
-				Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationArgsPrefix)),
-				Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationArgsSuffix))
+				Pattern.quote(annotationPrefix),
+				Pattern.quote(annotationArgsPrefix),
+				Pattern.quote(annotationArgsSuffix)
 		);
 	}
 	
@@ -53,8 +53,8 @@ public class AnnotationScanner {
 	 */
 	private static String COMMENT_REGEX(String commentPrefix, String annotationPrefix) {
 		return String.format("^?[ \\t]*%s[ \\t]*(.*%s.*)[ \\t]*",
-				Pattern.quote(TemplatePreprocessor.doubleEntityEncode(commentPrefix)),
-				Pattern.quote(TemplatePreprocessor.doubleEntityEncode(annotationPrefix))
+				Pattern.quote(commentPrefix),
+				Pattern.quote(annotationPrefix)
 		);
 	}
 	
@@ -78,7 +78,7 @@ public class AnnotationScanner {
 	 * @return A list of annotations found.
 	 * @throws TemplatePreprocessorException
 	 */
-	private static ArrayList<TemplateAnnotation> collectInlineAnnotations(String templateContent, FileFormatConfig fileFormatConfig, int beginIndex, int endIndex) throws TemplatePreprocessorException {
+	public static ArrayList<TemplateAnnotation> collectInlineAnnotations(String templateContent, FileFormatConfig fileFormatConfig, int beginIndex, int endIndex) throws TemplatePreprocessorException {
 		ArrayList<TemplateAnnotation> annotations = new ArrayList<>();
 		
 		/**
@@ -177,8 +177,6 @@ public class AnnotationScanner {
 		// Initialize a collection for the template annotations.
 		ArrayList<TemplateAnnotation> annotations = new ArrayList<TemplateAnnotation>();
 		
-
-		
 		// First search for single-line comment sections and scan for annotations in there.
 		if (fileFormatConfig.getSingleLineCommentPrefix() != null && fileFormatConfig.getSingleLineCommentPrefix().length() > 0) {
 			// Single line comments can start anywhere on a line (beginning or after some code), but always end with line-end.
@@ -226,7 +224,7 @@ public class AnnotationScanner {
 									fileFormatConfig.getMultiLineCommentPrefix(), 
 									fileFormatConfig.getAnnotationPrefix()
 							),
-							Pattern.quote(TemplatePreprocessor.doubleEntityEncode(fileFormatConfig.getMultiLineCommentSuffix()))
+							Pattern.quote(fileFormatConfig.getMultiLineCommentSuffix())
 					),
 					// Match case insensitive.
 					Pattern.CASE_INSENSITIVE
