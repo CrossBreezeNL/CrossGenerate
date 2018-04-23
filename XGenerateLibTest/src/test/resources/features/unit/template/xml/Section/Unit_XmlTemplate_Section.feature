@@ -36,7 +36,7 @@ Feature: Unit_XmlTemplate_Section
       <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource"/>
       """
 
-  Scenario: Implicit root and explicit section
+  Scenario: Implicit root and explicit section in attribute
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -74,7 +74,6 @@ Feature: Unit_XmlTemplate_Section
     When I run the generator
     Then I expect 1 generation result
     And an output named "ExampleTemplate.xml" with content:
-    
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
@@ -84,6 +83,59 @@ Feature: Unit_XmlTemplate_Section
         </Tables>
       </Database>
       """
+
+  Scenario Outline: Implicit root and explicit section in element <Scenario>
+    Given I have the following model:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <modeldefinition>
+        <system name="ExampleSource" id="29e17cc2-efd2-4013-8f9a-5714081874b3">
+          <entity name="Order"/>
+          <entity name="Customer"/>
+        </system>
+      </modeldefinition>
+      """
+    And the following template named "ExampleTemplate.xml":
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="system_id" name="system_name">
+        <Tables>
+          <Table name="entity_name"><description someAttr="someValue">@XGenSection(name=&quot;Tables&quot;)</description></Table>
+        </Tables>
+      </Database>
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Template rootSectionName="Database">
+          <FileFormat templateType="xml" currentAccessor="_" commentNodeXPath="<commentNodeXPath>" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="output_per_element" />
+        </Template>
+        <Binding>
+          <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="system">
+            <SectionModelBinding section="Tables" modelXPath="./entity" placeholderName="entity"/>
+          </SectionModelBinding>           
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "ExampleTemplate.xml" with content:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
+        <Tables>
+          <Table name="Order"><description someAttr="someValue"></description></Table>
+          <Table name="Customer"><description someAttr="someValue"></description></Table>
+        </Tables>
+      </Database>
+      """
+
+    Examples: 
+      | Scenario     | commentNodeXPath     |
+      | element      | ./description        |
+      | element-text | ./description/text() |
 
   Scenario: Implicit root and explicit recurring section
     Given I have the following model:
@@ -197,7 +249,7 @@ Feature: Unit_XmlTemplate_Section
         </Tables>
       </Database>
       """
-      
+
   Scenario: Implicit root and explicit nested section
     Given I have the following model:
       """

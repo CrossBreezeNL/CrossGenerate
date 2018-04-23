@@ -44,8 +44,9 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	 */
 	@Override
 	protected PreprocessedTemplate getPreprocessedTemplate(RawTemplate rawTemplate) throws TemplatePreprocessorException {
+		logger.info(String.format("Creating pre-processed template for '%s'.", rawTemplate.getRawTemplateFileName()));
+
 		FileFormatConfig fileFormatConfig = _config.getTemplateConfig().getFileFormatConfig();
-		logger.info(String.format("Performing xml sectionizing for '%s'.", rawTemplate.getRawTemplateFileName()));
 		
 		// Store the template in a String so it can be updated while some modifications are done.
 		String preprocessedTemplate = rawTemplate.getRawTemplateContent();
@@ -92,16 +93,20 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			logger.info("Processing sections defined in config.");
 			
 			// Loop through the template attribute injections and apply them.
-			for (TemplateSectionAnnotation sa : _config.getTemplateConfig().getSectionAnnotations()){
+			for (TemplateSectionAnnotation sa : _config.getTemplateConfig().getSectionAnnotations()) {
+				logger.info(String.format("Processing section '%s' defined in the config.", sa.getName()));
 				// Create an AutoPilot for querying the document.
 				AutoPilot ap = new AutoPilot(nv);
-				
-				// Search for the element to inject an attribute on.
+				int sectionNodesFound = 0;
+				// Search for the node the section represents.
 				try {
 					// Set the XPath expression from the config.
 					ap.selectXPath(sa.getTemplateXPath());
 					// Execute the XPath expression and loop through the results.
 			        while ((ap.evalXPath()) != -1) {
+			        	// Increase the section nodes found.
+			        	++sectionNodesFound;
+			        	
 			        	// Get the element offset and length (including whitespaces).
 			        	long elementOffset = nv.expandWhiteSpaces(nv.getElementFragment(), VTDNav.WS_LEADING);
 			        	int contentOffset = (int)elementOffset;
@@ -113,10 +118,16 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			        	tsba.setAnnotationEndIndex(contentOffset + contentLength);
 			        	// Add the bounds to the collection.
 			        	templateAnnotations.add(tsba);
+			        	logger.info(String.format("Section '%s' bounds found (%d:%d)", sa.getName(), tsba.getAnnotationBeginIndex(), tsba.getAnnotationEndIndex()));
 			        }
-				} catch (XPathParseException | XPathEvalException | NavException e) {
+				}
+				catch (XPathParseException | XPathEvalException | NavException e) {
 					throw new TemplatePreprocessorException(String.format("Error while processing template section annotation for XPath %s: %s", sa.getTemplateXPath(),  e.getMessage()));
 				}
+				
+				// If there are no nodes found for this section, log a severe error.
+				if (sectionNodesFound == 0)
+					logger.severe(String.format("No template nodes found for section '%s' using XPath '%s'", sa.getName(), sa.getTemplateXPath()));
 			}
 		}
 		
@@ -144,10 +155,31 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		        	annotationAp.selectXPath(fileFormatConfig.getCommentNodeXPath());
 		        	// We don't need to check whether the index is -1, since the parent XPath is filtering on this node existing.
 		        	// There can also be only 1 node, so we don't need to loop on the result.
-		        	int annotationAttributeValueIndex = annotationAp.evalXPath() + 1;
-		        	String annotationAttributeValue = annotationNav.toString(annotationAttributeValueIndex);
-		        	int annotationValueStartIndex = (int)annotationNav.getTokenOffset(annotationAttributeValueIndex);
-					int annotationValueEndIndex = annotationValueStartIndex + annotationNav.getTokenLength(annotationAttributeValueIndex);
+		        	// The annotation node can be either an attribute or an element.
+		        	// When it is an attribute, we take the attribute value and if it is a element we take the element text.
+		        	int annotationNodeIndex = annotationAp.evalXPath();
+		        	int annotationValueIndex = -1;
+		        	switch (nv.getTokenType(annotationNodeIndex)) {
+			        	case VTDNav.TOKEN_ATTR_NAME:
+			        		annotationValueIndex = annotationNodeIndex + 1;
+			        		break;
+			        	case VTDNav.TOKEN_STARTING_TAG:
+			        		annotationValueIndex = annotationNav.getText();
+			        		break;
+			        	case VTDNav.TOKEN_CHARACTER_DATA:
+			        		annotationValueIndex = annotationNodeIndex;
+			        		break;
+		        		default:
+		        			throw new TemplatePreprocessorException(String.format("Found unsupported XML node type for annotations usung XPath '%s' at %d.", fileFormatConfig.getCommentNodeXPath(), annotationNodeIndex));
+		        	}
+		        	// If the annotation value index isn't found, throw an exception.
+		        	if (annotationValueIndex == -1)
+		        		throw new TemplatePreprocessorException(String.format("Error while getting annotation value for XPath '%s' at %d.", fileFormatConfig.getCommentNodeXPath(), annotationNodeIndex));
+		        	
+		        	// Get the annotation value.
+		        	String annotationAttributeValue = annotationNav.toString(annotationValueIndex);
+		        	int annotationValueStartIndex = (int)annotationNav.getTokenOffset(annotationValueIndex);
+					int annotationValueEndIndex = annotationValueStartIndex + annotationNav.getTokenLength(annotationValueIndex);
 					logger.info(String.format("Found annotation node value '%s'; start=%d; end=%d", annotationAttributeValue, annotationValueStartIndex, annotationValueEndIndex));
 					
 					ArrayList<TemplateAnnotation> foundInlineAnnotations = AnnotationScanner.collectInlineAnnotations(preprocessedTemplate, fileFormatConfig, annotationValueStartIndex, annotationValueEndIndex);

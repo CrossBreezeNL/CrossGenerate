@@ -30,6 +30,8 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	 */
 	@Override
 	protected PreprocessedTemplate getPreprocessedTemplate(RawTemplate rawTemplate) throws TemplatePreprocessorException {
+		logger.info(String.format("Creating pre-processed template for '%s'.", rawTemplate.getRawTemplateFileName()));
+
 		// Store the raw template content into a local variable.
 		String rawTemplateContent = rawTemplate.getRawTemplateContent();
 		// Store the file format config into a local variable.
