@@ -25,7 +25,7 @@ import com.xbreeze.xgenerate.generator.GenerationResult.GenerationStatus;
 import com.xbreeze.xgenerate.model.Model;
 import com.xbreeze.xgenerate.model.ModelPreprocessor;
 import com.xbreeze.xgenerate.model.ModelPreprocessorException;
-import com.xbreeze.xgenerate.template.PreprocessedTemplate;
+import com.xbreeze.xgenerate.template.XsltTemplate;
 import com.xbreeze.xgenerate.template.RawTemplate;
 import com.xbreeze.xgenerate.template.TemplateException;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
@@ -210,18 +210,18 @@ public class Generator extends GeneratorStub {
 				// Get the template configuration.
 				TemplateConfig templateConfig = xGenConfig.getTemplateConfig();				
 				// Pre-process the template.
-				String preprocessedTemplateString;
+				String xsltTemplateString;
 				{
 					// Get the template preprocessor for the template type we are dealing with.
 					TemplatePreprocessor templatePreprocessor = templateConfig.getFileFormatConfig().getTemplateType().getTemplatePreprocessor(xGenConfig);
 					// Pre-process the raw template into a pre-processed template.
 					logger.info("Begin template pre-processing");
-					PreprocessedTemplate preprocessedTemplate = templatePreprocessor.preProcess(rawTemplate, outputFileUri);
-					preprocessedTemplateString = preprocessedTemplate.toString();
+					XsltTemplate xsltTemplate = templatePreprocessor.preProcess(rawTemplate, outputFileUri);
+					xsltTemplateString = xsltTemplate.toString();
 					// If in debug mode, write the preprocessed template.
 					if (this.isDebugMode()) {
 						System.out.println("---------- Preprocessed template: ----------");
-						System.out.println(preprocessedTemplateString);
+						System.out.println(xsltTemplateString);
 						System.out.println("--------------------------------------------");
 					}
 					//generationResult.setPreprocessedTemplate(preprocessedTemplateString);
@@ -233,7 +233,7 @@ public class Generator extends GeneratorStub {
 					logger.info("Begin XSLT transformation");
 					
 					// Create a string reader on the pre-processed template.
-					StringReader xslStringReader = new StringReader(preprocessedTemplateString);
+					StringReader xslStringReader = new StringReader(xsltTemplateString);
 					StreamSource xslSource = new StreamSource(xslStringReader);
 					
 					// Create a stream writer, to write the resulting output.

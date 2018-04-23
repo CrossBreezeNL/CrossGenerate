@@ -4,19 +4,16 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.xbreeze.xgenerate.UnhandledException;
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.FileFormatConfig;
+import com.xbreeze.xgenerate.template.PreprocessedTemplate;
 import com.xbreeze.xgenerate.template.RawTemplate;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.annotation.TemplateAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionBoundsAnnotation;
-import com.xbreeze.xgenerate.template.annotation.UnknownAnnotationException;
-import com.xbreeze.xgenerate.template.annotation.UnknownAnnotationParamException;
 import com.xbreeze.xgenerate.template.scanner.AnnotationScanner;
-import com.xbreeze.xgenerate.template.section.SectionedTemplate;
 
 public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	/**
@@ -28,13 +25,11 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	}
 
 	/**
-	 * Sectionize the text template and return the SectionedTemplate.
-	 * @throws UnknownAnnotationException 
+	 * Create the pre-proccesed text template.
 	 * @throws TemplatePreprocessorException 
-	 * @throws UnknownAnnotationParamException 
 	 */
 	@Override
-	protected SectionedTemplate sectionizeTemplate(RawTemplate rawTemplate, String rootSectionName) throws TemplatePreprocessorException, UnhandledException {
+	protected PreprocessedTemplate getPreprocessedTemplate(RawTemplate rawTemplate) throws TemplatePreprocessorException {
 		// Store the raw template content into a local variable.
 		String rawTemplateContent = rawTemplate.getRawTemplateContent();
 		// Store the file format config into a local variable.
@@ -115,6 +110,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 			templateAnnotations.add(new TemplateSectionBoundsAnnotation(sectionAnnotation, sectionBeginCharIndex));
 		}
 		
-		return sectionizeTemplate(rawTemplateContent, rootSectionName, templateAnnotations);
+		// Return the pre-processed template.
+		return new PreprocessedTemplate(rawTemplateContent, templateAnnotations);
 	}
 }

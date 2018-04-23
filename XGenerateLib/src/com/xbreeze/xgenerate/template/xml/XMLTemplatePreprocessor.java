@@ -9,6 +9,7 @@ import com.xbreeze.xgenerate.config.template.FileFormatConfig;
 import com.xbreeze.xgenerate.config.template.TemplateAttributeInjection;
 import com.xbreeze.xgenerate.config.template.TemplatePlaceholderInjection;
 import com.xbreeze.xgenerate.generator.GeneratorException;
+import com.xbreeze.xgenerate.template.PreprocessedTemplate;
 import com.xbreeze.xgenerate.template.RawTemplate;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
@@ -17,7 +18,6 @@ import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionBoundsAnnotation;
 import com.xbreeze.xgenerate.template.scanner.AnnotationScanner;
 import com.xbreeze.xgenerate.template.section.NamedTemplateSection;
-import com.xbreeze.xgenerate.template.section.SectionedTemplate;
 import com.ximpleware.AutoPilot;
 import com.ximpleware.ModifyException;
 import com.ximpleware.NavException;
@@ -39,11 +39,11 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	}
 
 	/**
-	 * Sectionize the XML template and return the SectionedTemplate.
+	 * Create the PreproceddedTemplate for the XML template.
 	 * @throws TemplatePreprocessorException 
 	 */
 	@Override
-	protected SectionedTemplate sectionizeTemplate(RawTemplate rawTemplate, String rootSectionName) throws TemplatePreprocessorException {
+	protected PreprocessedTemplate getPreprocessedTemplate(RawTemplate rawTemplate) throws TemplatePreprocessorException {
 		FileFormatConfig fileFormatConfig = _config.getTemplateConfig().getFileFormatConfig();
 		logger.info(String.format("Performing xml sectionizing for '%s'.", rawTemplate.getRawTemplateFileName()));
 		
@@ -173,7 +173,8 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			}
 		}
 		
-		return sectionizeTemplate(preprocessedTemplate, rootSectionName, templateAnnotations);
+		// Return the pre-processed template.
+		return new PreprocessedTemplate(preprocessedTemplate, templateAnnotations);
 	}
 	
 	/**
