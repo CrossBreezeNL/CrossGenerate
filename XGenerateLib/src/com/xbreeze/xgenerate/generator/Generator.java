@@ -214,7 +214,7 @@ public class Generator extends GeneratorStub {
 				{
 					// Get the template preprocessor for the template type we are dealing with.
 					TemplatePreprocessor templatePreprocessor = templateConfig.getFileFormatConfig().getTemplateType().getTemplatePreprocessor(xGenConfig);
-					// Pre-process the raw template into a pre-processed template.
+					// Pre-process the raw template into a xslt template.
 					logger.info("Begin template pre-processing");
 					XsltTemplate xsltTemplate = templatePreprocessor.preProcess(rawTemplate, outputFileUri);
 					xsltTemplateString = xsltTemplate.toString();
