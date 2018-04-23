@@ -1,4 +1,4 @@
-package com.xbreeze.xgenerate.test;
+package com.xbreeze.xgenerate.test.old;
 
 import java.net.URI;
 import java.net.URISyntaxException;
