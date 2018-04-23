@@ -191,6 +191,53 @@ Feature: Unit_XmlTemplate_Section
         </MoreTables>
       </Database>
       """
+      
+  Scenario: Implicit root and explicit consequtive recurring section
+    Given I have the following model:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <modeldefinition>
+        <system name="ExampleSource" id="29e17cc2-efd2-4013-8f9a-5714081874b3">
+          <entity name="Order"/>
+          <entity name="Customer"/>
+        </system>
+      </modeldefinition>
+      """
+    And the following template named "ExampleTemplate.xml":
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="system_id" name="system_name">
+        <Table name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)"/>
+        <AnotherTable name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)"/>
+      </Database>
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Template rootSectionName="Database">
+          <FileFormat templateType="xml" currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="output_per_element" />
+        </Template>
+        <Binding>
+           <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="system">
+            <SectionModelBinding section="Tables" modelXPath="./entity" placeholderName="entity"/>              
+           </SectionModelBinding>           
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "ExampleTemplate.xml" with content:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
+        <Table name="Order" description=""/>
+        <Table name="Customer" description=""/>
+        <AnotherTable name="Order" description=""/>
+        <AnotherTable name="Customer" description=""/>
+      </Database>
+      """
 
   Scenario: Implicit root and explicit recursive section
     Given I have the following model:

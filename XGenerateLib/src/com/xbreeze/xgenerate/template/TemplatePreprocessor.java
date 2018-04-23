@@ -165,7 +165,7 @@ public abstract class TemplatePreprocessor {
 				}
 				
 				// Check whether the end index is found (-1 means not found), and whether the end index is before the next annotation.
-				if (parentSectionEndIndex != -1 && parentSectionEndIndex < templateAnnotation.getAnnotationBeginIndex()) {
+				if (parentSectionEndIndex != -1 && parentSectionEndIndex <= templateAnnotation.getAnnotationBeginIndex()) {
 					
 					// If the parent section end index is later then the expected beginning of the next section we create a raw template with the part between.
 					if (parentSectionEndIndex > expectedSectionBeginIndex) {
