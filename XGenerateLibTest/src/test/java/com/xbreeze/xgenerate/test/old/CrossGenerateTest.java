@@ -11,20 +11,19 @@ public class CrossGenerateTest {
 	public static void main(String[] args) {
 		
 		// Execute the Microsoft SQL test.
-		//doMicrosoftSQLTest();
+		doMicrosoftSQLTest();
 		
 		// Execute the Microsoft SSIS test.
-		//doMicrosoftSSISTest();
+		doMicrosoftSSISTest();
 		
 		// Execute the PowerCenter test.
-		//doPowerCenterTest();
+		doPowerCenterTest();
 		
 		// Execute the IBM DataStage test.
 		doDataStageTest();
 		
 	}
 	
-	@SuppressWarnings("unused")
 	private static void doMicrosoftSQLTest() {
 		Generator generator = new Generator();
 		
@@ -49,7 +48,6 @@ public class CrossGenerateTest {
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private static void doMicrosoftSSISTest() {
 		Generator generator = new Generator();
 		
@@ -74,7 +72,6 @@ public class CrossGenerateTest {
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private static void doPowerCenterTest() {
 		Generator generator = new Generator();
 		
@@ -99,7 +96,6 @@ public class CrossGenerateTest {
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private static void doDataStageTest() {
 		Generator generator = new Generator();
 		
