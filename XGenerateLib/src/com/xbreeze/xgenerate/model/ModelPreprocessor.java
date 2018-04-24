@@ -32,7 +32,7 @@ public class ModelPreprocessor {
 		
 		// ModelAttributeInjections
 		if (modelConfig != null && modelConfig.getModelAttributeInjections() != null && modelConfig.getModelAttributeInjections().size() > 0) {
-			logger.info("ModelAttributeInjections defined, so pre-processing the model");
+			logger.fine("ModelAttributeInjections defined, so pre-processing the model");
 			
 			for (ModelAttributeInjection mai : modelConfig.getModelAttributeInjections()) {
 				try {
@@ -47,7 +47,7 @@ public class ModelPreprocessor {
 						if (currentNode.getNodeType() != Node.ELEMENT_NODE)
 							throw new ModelPreprocessorException(String.format("The ModelAttributeInjection modelXPath does not result in a element (%s -> %s)", mai.getModelXPath(), currentNode.getNodeName()));
 						
-						logger.info(String.format("Injecting model attribute '%s' to element '%s'", mai.getTargetAttribute(), currentNode.getNodeName()));
+						logger.fine(String.format("Injecting model attribute '%s' to element '%s'", mai.getTargetAttribute(), currentNode.getNodeName()));
 						// Create the new Attribute node.
 						Attr newAttribute = model.getModelDocument().createAttribute(mai.getTargetAttribute());
 

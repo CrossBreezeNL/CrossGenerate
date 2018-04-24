@@ -3,6 +3,7 @@
 	<name>XBLicensing</name>
 	<comment></comment>
 	<projects>
+		<project>XBLogging</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

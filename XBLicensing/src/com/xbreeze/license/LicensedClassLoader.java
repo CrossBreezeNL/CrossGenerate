@@ -22,7 +22,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.Random;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.http.HttpEntity;
@@ -35,6 +34,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import com.xbreeze.util.StringHelper;
+import com.xbreeze.logging.LogHelper;
 
 /**
  * LicensedClassLoader does a verification on license information and remotely
@@ -45,7 +45,7 @@ import com.xbreeze.util.StringHelper;
  */
 public class LicensedClassLoader extends ClassLoader {
 	// The class logger.
-	private static final Logger logger = Logger.getLogger(LicensedClassLoader.class.getName());
+	private static final Logger logger =  LogHelper.getLogger();
 
 	private static final String XBREEZE_BASE_PACKAGE = "com.xbreeze.";
 
@@ -101,11 +101,9 @@ public class LicensedClassLoader extends ClassLoader {
 		}
 
 		// When running in developer mode output informational and skip license check.
-		if (_config.getDeveloperMode()) {
-			logger.setLevel(Level.INFO);
+		if (_config.getDeveloperMode()) {			
 			logger.info("Notice: Running in developer mode");
-		} else {
-			logger.setLevel(Level.WARNING);
+		} else {			
 			// If the license is invalid, throw an exception.
 			if (!validateLicense()) {
 				throw new LicenseException("License invalid");
@@ -173,7 +171,7 @@ public class LicensedClassLoader extends ClassLoader {
 
 	@Override
 	public InputStream getResourceAsStream(String resourceName) {
-		logger.info(String.format("Trying to load resource %s", resourceName));
+		logger.fine(String.format("Trying to load resource %s", resourceName));
 		if (handleByParent(resourceName))
 			return super.getResourceAsStream(resourceName);
 
@@ -280,7 +278,7 @@ public class LicensedClassLoader extends ClassLoader {
 			// The resource location will be using a forward slash (/) for remote loading.
 			// When the files are loaded locally we have the flip the slashes and make it relative to the config url.
 			Path localClassPath = Paths.get(this._config.getUrl()).resolve(resourceLocation.replace("/", "\\"));
-			logger.info(String.format("Loading local class or resource %s", localClassPath));
+			logger.fine(String.format("Loading local class or resource %s", localClassPath));
 			try {
 				return Files.readAllBytes(localClassPath);
 			} catch (IOException e) {
@@ -293,11 +291,11 @@ public class LicensedClassLoader extends ClassLoader {
 		else {
 			// Create the class file name by replacing the . with a / and add .class at the
 			// end.
-			logger.info(String.format("Loading remote class or resource %s", resourceLocation));
+			logger.fine(String.format("Loading remote class or resource %s", resourceLocation));
 			try {
 				return getClassOrResourceFromNetwork(resourceLocation);
 			} catch (LicenseException e) {
-				logger.info(String.format("Couldn't load using remote path: %s: %s", resourceLocation, e.getMessage()));
+				logger.fine(String.format("Couldn't load using remote path: %s: %s", resourceLocation, e.getMessage()));
 				// Return null, so its clear the class or resource couldn't be found.
 				return null;
 			}

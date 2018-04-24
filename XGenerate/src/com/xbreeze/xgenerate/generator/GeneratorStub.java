@@ -3,6 +3,8 @@ package com.xbreeze.xgenerate.generator;
 import java.net.URI;
 import java.util.logging.Logger;
 
+import com.xbreeze.logging.LogHelper;
+import com.xbreeze.logging.LogLevel;
 /**
  * Skeleton Generator class, used for building the project, runtime the Generator class is loaded through the licensedClassLoader, 
  * this class only functions as a placeholder
@@ -11,11 +13,15 @@ import java.util.logging.Logger;
  */
 public class GeneratorStub {
 	// The logger for this class.
-	private static final Logger logger = Logger.getLogger(GeneratorStub.class.getName());
+	private static final Logger logger = LogHelper.getLogger();
 	
 	protected boolean _debugMode = false;
 	
 	protected boolean _testMode = false;
+	
+	protected LogLevel _logLevel = LogLevel.NORMAL;
+	
+	protected URI _logDestination;
 
 	/**
 	 * Constructor.
@@ -42,6 +48,20 @@ public class GeneratorStub {
 	public void setTestMode(boolean testMode) {
 		this._testMode = testMode;
 	}
+	
+	
+
+	public LogLevel getLogLevel() {
+		return _logLevel;
+	}
+	
+	public URI getLogDestination() {
+		return _logDestination;
+	}
+
+	public void setLogLevelAndDestination(LogLevel loglevel, URI logDestination) throws GeneratorException {
+		logger.warning("Invoking generator stub instead of actual generator");
+	}
 
 	/**
 	 * Set the model using a file location.
@@ -49,11 +69,11 @@ public class GeneratorStub {
 	 * @throws GeneratorException 
 	 */
 	public void setModelFromFile(URI modelFileUri) throws GeneratorException {
-		logger.warning("Invoking placeholder Generator");
+		logger.warning("Invoking generator stub instead of actual generator");
 	}
 		
 	public void generateFromFilesAndWriteOutput(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException {
-		logger.warning("Invoking placeholder Generator");
+		logger.warning("Invoking generator stub instead of actual generator");
 	}
 	
 }

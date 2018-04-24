@@ -4,6 +4,7 @@
 	<comment></comment>
 	<projects>
 		<project>XBLicensing</project>
+		<project>XBLogging</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

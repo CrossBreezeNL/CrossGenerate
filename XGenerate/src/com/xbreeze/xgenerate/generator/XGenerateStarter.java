@@ -31,7 +31,7 @@ public class XGenerateStarter {
 			if (args.length > 0) {
 				System.err.println("Incorrect number of arguments specified");
 			}
-			System.out.println("Usage: CrossGenerate -config AppConfigFileLocation [-mtc ModelFileLocation::TemplateFileLocation::GenConfigFileLocation]+ [-debug true]");
+			System.out.println("Usage: CrossGenerate -config AppConfigFileLocation [-mtc ModelFileLocation::TemplateFileLocation::GenConfigFileLocation]+ [-debug true] [-loglevel verbose|normal] [-logdestination path-to-logfile]");
 		} else {
 			
 			try {

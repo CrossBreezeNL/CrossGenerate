@@ -84,7 +84,7 @@ public class XGenAppConfig {
 	 * @throws ConfigException 
 	 */
 	public static XGenAppConfig fromFile(URI appConfigFileUri) throws ConfigException {
-		logger.info(String.format("Creating XGenAppConfigFile object from '%s'", appConfigFileUri));
+		logger.fine(String.format("Creating XGenAppConfigFile object from '%s'", appConfigFileUri));
 		File xGenAppConfigFile = new File(appConfigFileUri);
 		XGenAppConfig xGenAppConfig;
 		

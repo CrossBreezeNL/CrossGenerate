@@ -10,8 +10,14 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.5.5</version>
-		</dependency>
-	</dependencies>
+		</dependency>		 
+    <dependency>
+      <groupId>com.xbreeze.xblogging</groupId>
+      <artifactId>XBLogging</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+	
 	
 	<build>
 		<sourceDirectory>src</sourceDirectory>
