@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
-import com.xbreeze.xgenerate.template.PreprocessedTemplate;
+import com.xbreeze.xgenerate.template.XsltTemplate;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation.RepetitionAction;
@@ -80,10 +80,10 @@ public class NamedTemplateSection extends TemplateSection {
 		return this._templateSections;
 	}
 	
-	public void appendTemplateXslt(PreprocessedTemplate preprocessedTemplate, XGenConfig config, SectionModelBindingConfig parentBindingConfig) throws TemplatePreprocessorException {
+	public void appendTemplateXslt(XsltTemplate xsltTemplate, XGenConfig config, SectionModelBindingConfig parentBindingConfig) throws TemplatePreprocessorException {
 		
 		// Add a comment in the XSLT marking the section start.
-		preprocessedTemplate.append("<!-- Section begin: %s -->", this._sectionName);
+		xsltTemplate.append("<!-- Section begin: %s -->", this._sectionName);
 		
 		// Loop through the template sections and add the needed parts to the pre-processed template (XSLT).
 		for (TemplateSection templateSection : this.getTemplateSections()) {
@@ -93,7 +93,7 @@ public class NamedTemplateSection extends TemplateSection {
 				CommentTemplateSection commentTemplateSection = (CommentTemplateSection) templateSection;
 				// Transform CommentTemplateSection into XSLT comments.
 				// '-- @XGenComment(Some comment written here)' => '<xsl:comment>Some comment written here</xsl:comment>'.
-				preprocessedTemplate.append("<!-- Comment: %s -->", commentTemplateSection.getComment());
+				xsltTemplate.append("<!-- Comment: %s -->", commentTemplateSection.getComment());
 			}
 			
 			// NamedTemplateSection
@@ -125,24 +125,24 @@ public class NamedTemplateSection extends TemplateSection {
 					for (SectionModelBindingConfig sectionModelBindingConfig : sectionModelBindingConfigs) {
 						
 						// Append the start of the for-each.
-						preprocessedTemplate.append("<xsl:for-each select=\"%s\">", sectionModelBindingConfig.getModelXPath());
+						xsltTemplate.append("<xsl:for-each select=\"%s\">", sectionModelBindingConfig.getModelXPath());
 						
 						// If there is a prefix defined in the annotation, add the logic here.
 						if (templateSectionAnnotation.getPrefix() != null && templateSectionAnnotation.getPrefix().length() > 0) {
-							preprocessedTemplate.append(getRepetitionXSLT(templateSectionAnnotation.getPrefix(), templateSectionAnnotation.getPrefixStyle(), templateSectionAnnotation.getPrefixAction()));
+							xsltTemplate.append(getRepetitionXSLT(templateSectionAnnotation.getPrefix(), templateSectionAnnotation.getPrefixStyle(), templateSectionAnnotation.getPrefixAction()));
 						}
 						
 						// Append the Xstl of the named template section.
 						// The content of the template section needs to be resolved before adding the content here. Recursive call needed.
-						namedTemplateSection.appendTemplateXslt(preprocessedTemplate, config, sectionModelBindingConfig);
+						namedTemplateSection.appendTemplateXslt(xsltTemplate, config, sectionModelBindingConfig);
 						
 						// If there is a suffix defined in the annotation, add the logic here.
 						if (templateSectionAnnotation.getSuffix() != null && templateSectionAnnotation.getSuffix().length() > 0) {
-							preprocessedTemplate.append(getRepetitionXSLT(templateSectionAnnotation.getSuffix(), templateSectionAnnotation.getSuffixStyle(), templateSectionAnnotation.getSuffixAction()));
+							xsltTemplate.append(getRepetitionXSLT(templateSectionAnnotation.getSuffix(), templateSectionAnnotation.getSuffixStyle(), templateSectionAnnotation.getSuffixAction()));
 						}
 						
 						// Append the end of the for-each.
-						preprocessedTemplate.append("</xsl:for-each>");
+						xsltTemplate.append("</xsl:for-each>");
 					}
 				}
 				
@@ -151,7 +151,7 @@ public class NamedTemplateSection extends TemplateSection {
 					// If there is no binding we log a warning and add the contents of the named template without a xsl:for-each.
 					logger.warning(String.format("There is no section model binding configured for section '%s'", namedTemplateSection.getSectionName()));
 					// Append the Xstl of the named template section with the parent binding config.
-					namedTemplateSection.appendTemplateXslt(preprocessedTemplate, config, parentBindingConfig);		
+					namedTemplateSection.appendTemplateXslt(xsltTemplate, config, parentBindingConfig);		
 				}
 			}
 			
@@ -215,14 +215,14 @@ public class NamedTemplateSection extends TemplateSection {
 				}
 				
 				// Process the placeholder of this section.
-				placeholderProcessedTemplateContent = PreprocessedTemplate.processPlaceholders(placeholderProcessedTemplateContent, parentBindingConfig, config.getTemplateConfig().getFileFormatConfig());
+				placeholderProcessedTemplateContent = XsltTemplate.processPlaceholders(placeholderProcessedTemplateContent, parentBindingConfig, config.getTemplateConfig().getFileFormatConfig());
 				
 				// Append the raw template section into the pre-processed template.
-				preprocessedTemplate.append("<!-- Raw begin -->");
-				preprocessedTemplate.append("<xsl:text>");
-				preprocessedTemplate.append(placeholderProcessedTemplateContent);
-				preprocessedTemplate.append("</xsl:text>");
-				preprocessedTemplate.append("<!-- Raw end -->");
+				xsltTemplate.append("<!-- Raw begin -->");
+				xsltTemplate.append("<xsl:text>");
+				xsltTemplate.append(placeholderProcessedTemplateContent);
+				xsltTemplate.append("</xsl:text>");
+				xsltTemplate.append("<!-- Raw end -->");
 			}
 			
 			// If we get a TemplateSection we don't handle, throw an exception.
@@ -234,7 +234,7 @@ public class NamedTemplateSection extends TemplateSection {
 		}
 		
 		// Add a comment in the XSLT marking the section end.
-		preprocessedTemplate.append("<!-- Section end: %s -->", this._sectionName);
+		xsltTemplate.append("<!-- Section end: %s -->", this._sectionName);
 		
 	}
 	

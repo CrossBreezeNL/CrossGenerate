@@ -22,7 +22,7 @@
     <FileFormat type="IBM_DataStage" commentNodeXPath="Property[@Name=&quot;Description&quot;]" currentAccessor="_" childAccessor="$" templateType="xml" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <Output type="output_per_element" />
     <Sections>
-      <Section name="Entity" templateXPath="DSExport/Job" />
+      <Section name="Entity" templateXPath="/DSExport/Job" />
     </Sections>
     <TemplatePlaceholderInjections>
       <TemplatePlaceholderInjection templateXPath="//SubRecord[Property/text()='attribute_name']/Property[@Name='SqlType']" modelNode="etldatatype" scope="current" />

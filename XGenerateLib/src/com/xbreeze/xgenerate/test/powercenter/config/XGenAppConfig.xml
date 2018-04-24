@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<XGenAppConfig xmlns="XGenAppConfig">
-  <App>
-    <ModelFolder>C:\Users\Harmen\Documents\NetBeansProjects\XGenerate\XGeneratePlayground\src\com\xbreeze\xgenerate\test\common\model</ModelFolder>
-    <OutputFolder>C:\CrossGenerate\Output</OutputFolder>
-    <TemplateFolder>C:\Users\Harmen\Documents\NetBeansProjects\XGenerate\XGeneratePlayground\src\com\xbreeze\xgenerate\test\powercenter\template</TemplateFolder>
-  </App>
-</XGenAppConfig>

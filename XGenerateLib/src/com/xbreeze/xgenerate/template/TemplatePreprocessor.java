@@ -1,8 +1,6 @@
 package com.xbreeze.xgenerate.template;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.ListIterator;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -43,10 +41,11 @@ public abstract class TemplatePreprocessor {
 	}
 	
 	/**
-	 * Procedure which each specific implementation of the TemplateSectionizer needs to implement to get to the generic SectionizedTemplate.
-	 * In this procedure the raw template needs to be split in sections with their respective content.
+	 * @param config the XGenConfig to set
 	 */
-	protected abstract SectionedTemplate sectionizeTemplate(RawTemplate rawTemplate, String rootSectionName)  throws TemplatePreprocessorException, UnhandledException;
+	public void setConfig(XGenConfig config) {
+		this._config = config;
+	}
 	
 	/**
 	 * Perform the pre-processing to get to the pre-processed template.
@@ -54,7 +53,7 @@ public abstract class TemplatePreprocessor {
 	 * @throws UnhandledException 
 	 * @throws UnknownAnnotationException 
 	 */
-	public PreprocessedTemplate preProcess(RawTemplate rawTemplate, URI outputFileUri) throws TemplatePreprocessorException, UnhandledException {
+	public XsltTemplate preProcess(RawTemplate rawTemplate, URI outputFileUri) throws TemplatePreprocessorException, UnhandledException {
 		TemplateConfig templateConfig = _config.getTemplateConfig();
 		
 		// Perform the specific sectionizing for the current template.
@@ -73,63 +72,57 @@ public abstract class TemplatePreprocessor {
 		// Assign the section model binding for the root section to a local variable.
 		SectionModelBindingConfig rootSectionModelBinding = rootSectionModelBindings[0];
 		
+		// Pre-process the template.
+		PreprocessedTemplate preprocessedTemplate = this.getPreprocessedTemplate(rawTemplate);
+		
 		// Sectionize the template.
-		SectionedTemplate sectionizedTemplate = this.sectionizeTemplate(rawTemplate, rootSectionName);
+		SectionedTemplate sectionizedTemplate = this.sectionizeTemplate(preprocessedTemplate, rootSectionName);
 		
 		// Now the templates are pre-processed by their specific preprocessor, we can perform the generic pre-processing here.
 		// TODO: Put in right output folder.
-		PreprocessedTemplate preprocessedTemplate = new PreprocessedTemplate(rawTemplate.getRawTemplateFileName(), rawTemplate.getRawTemplateFileLocation(), templateConfig, outputFileUri, rootSectionModelBinding);
+		XsltTemplate xsltTemplate = new XsltTemplate(rawTemplate.getRawTemplateFileName(), rawTemplate.getRawTemplateFileLocation(), templateConfig, outputFileUri, rootSectionModelBinding);
 		
 		// Append the Xslt from the section to the pre-processed template.
-		sectionizedTemplate.appendTemplateXslt(preprocessedTemplate, _config, rootSectionModelBinding);
+		sectionizedTemplate.appendTemplateXslt(xsltTemplate, _config, rootSectionModelBinding);
 		
 		// Finalize the template before returning it.
-		preprocessedTemplate.finalizeTemplate();
+		xsltTemplate.finalizeTemplate();
 		
 		// Return the pre-processed template.
-		return preprocessedTemplate;
-	}
-
-	/**
-	 * @param config the XGenConfig to set
-	 */
-	public void setConfig(XGenConfig config) {
-		this._config = config;
+		return xsltTemplate;
 	}
 	
 	/**
+	 * Procedure which each specific implementation of the TemplatePreprocessor needs to implement to get to the generic PreprocessedTemplate.
+	 * In this procedure the raw template needs to be pre-processed and annotations gathered.
+	 */
+	protected abstract PreprocessedTemplate getPreprocessedTemplate(RawTemplate rawTemplate) throws TemplatePreprocessorException;
+	
+	/**
 	 * Sectionize the template after its annotations and configurations are processed into a list of annotations.
-	 * @param preprocessedTemplate The preprocessed template.
+	 * @param preprocessedTemplate The pre-processed template.
 	 * @param rootSectionName The root section name.
-	 * @param templateAnnotations The template annotations.
 	 * @return The sectionized template.
 	 * @throws TemplatePreprocessorException
 	 */
-	protected SectionedTemplate sectionizeTemplate(String preprocessedTemplate, String rootSectionName, ArrayList<TemplateAnnotation> templateAnnotations) throws TemplatePreprocessorException {
-		// Now the section begin indexes are found, we sort the collection based on the section begin index for sections and annotation index for other annotations.
-		// This makes the order of set according to where section should be created in the preprocessed template.
-		Collections.sort(templateAnnotations);
-
-		// Loop through the template annotations and create the appropriate sections.
-		{
-			// Initialize the sectionized template.
-			SectionedTemplate sectionizedTextTemplate = new SectionedTemplate(rootSectionName);
-			
-			// We use the ListIterator here since we can go forward and backward.
-			ListIterator<TemplateAnnotation> taIterator = templateAnnotations.listIterator();
-			
-			// Create an implicit template section bounds annotation with the begin index on 0.
-			TemplateSectionBoundsAnnotation rootSectionBoundsAnnotation = new TemplateSectionBoundsAnnotation(sectionizedTextTemplate.getTemplateSectionAnnotation(), 0);
-			// Set the root begin and end index.
-			rootSectionBoundsAnnotation.setAnnotationEndIndex(preprocessedTemplate.length());
-			
-			// Process the content of the section.
-			// Pass in 0 for parentPreviousSectionEndIndex.
-			processNamedTemplateSection(rootSectionBoundsAnnotation, sectionizedTextTemplate, preprocessedTemplate, taIterator, 0, true);
-			
-			// Return the SectionizedTextTemplate;
-			return sectionizedTextTemplate;
-		}
+	private SectionedTemplate sectionizeTemplate(PreprocessedTemplate preprocessedTemplate, String rootSectionName) throws TemplatePreprocessorException {
+		// Initialize the sectionized template.
+		SectionedTemplate sectionizedTextTemplate = new SectionedTemplate(rootSectionName);
+		
+		// We use the ListIterator here since we can go forward and backward.
+		ListIterator<TemplateAnnotation> taIterator = preprocessedTemplate.getTemplateAnnotations().listIterator();
+		
+		// Create an implicit template section bounds annotation with the begin index on 0.
+		TemplateSectionBoundsAnnotation rootSectionBoundsAnnotation = new TemplateSectionBoundsAnnotation(sectionizedTextTemplate.getTemplateSectionAnnotation(), 0);
+		// Set the root begin and end index.
+		rootSectionBoundsAnnotation.setAnnotationEndIndex(preprocessedTemplate.getPreprocessedRawTemplate().length());
+		
+		// Process the content of the section.
+		// Pass in 0 for parentPreviousSectionEndIndex.
+		processNamedTemplateSection(rootSectionBoundsAnnotation, sectionizedTextTemplate, preprocessedTemplate.getPreprocessedRawTemplate(), taIterator, 0, true);
+		
+		// Return the SectionizedTextTemplate;
+		return sectionizedTextTemplate;
 	}
 	
 	/**
@@ -138,7 +131,7 @@ public abstract class TemplatePreprocessor {
 	 * @param rawTemplateContent
 	 * @throws TemplatePreprocessorException 
 	 */
-	protected int processNamedTemplateSection(TemplateSectionBoundsAnnotation parentSectionBounds, NamedTemplateSection parentTemplateSection, String rawTemplateContent, ListIterator<TemplateAnnotation> taIterator, int parentPreviousSectionEndIndex, boolean isRootSection) throws TemplatePreprocessorException {
+	private int processNamedTemplateSection(TemplateSectionBoundsAnnotation parentSectionBounds, NamedTemplateSection parentTemplateSection, String rawTemplateContent, ListIterator<TemplateAnnotation> taIterator, int parentPreviousSectionEndIndex, boolean isRootSection) throws TemplatePreprocessorException {
 		logger.info(String.format("processNamedTemplateSection called for section '%s', parentPreviousSectionEndIndex=%d", parentTemplateSection.getSectionName(), parentPreviousSectionEndIndex));
 		// Loop through the template annotations.
 		int previousSectionEndIndex = parentPreviousSectionEndIndex; 
@@ -172,7 +165,7 @@ public abstract class TemplatePreprocessor {
 				}
 				
 				// Check whether the end index is found (-1 means not found), and whether the end index is before the next annotation.
-				if (parentSectionEndIndex != -1 && parentSectionEndIndex < templateAnnotation.getAnnotationBeginIndex()) {
+				if (parentSectionEndIndex != -1 && parentSectionEndIndex <= templateAnnotation.getAnnotationBeginIndex()) {
 					
 					// If the parent section end index is later then the expected beginning of the next section we create a raw template with the part between.
 					if (parentSectionEndIndex > expectedSectionBeginIndex) {
@@ -298,7 +291,7 @@ public abstract class TemplatePreprocessor {
 	 * @return The position of the end if found, otherwise -1.
 	 * @throws TemplatePreprocessorException
 	 */
-	protected int findSectionEndIndex(TemplateSectionBoundsAnnotation sectionAnnotationBounds, String rawTemplateContent, int sectionEndSearchBeginIndex, int sectionEndSearchEndIndex) throws TemplatePreprocessorException {
+	private int findSectionEndIndex(TemplateSectionBoundsAnnotation sectionAnnotationBounds, String rawTemplateContent, int sectionEndSearchBeginIndex, int sectionEndSearchEndIndex) throws TemplatePreprocessorException {
 		// The variable to return at the end, if the end is not found this function will return -1.
 		int sectionEndCharIndex = -1;
 		
@@ -368,7 +361,7 @@ public abstract class TemplatePreprocessor {
 	 * @param startIndex The starting index of the raw template.
 	 * @param endIndex The ending index of the raw template.
 	 */
-	protected void addRawTemplate(NamedTemplateSection parentTemplateSection, String rawTemplateContent, int startIndex, int endIndex) {
+	private void addRawTemplate(NamedTemplateSection parentTemplateSection, String rawTemplateContent, int startIndex, int endIndex) {
 		// Escape XML chars, since the raw template will be put in an XSLT transformation.
 		String rawTemplateSectionContent = XMLUtils.excapeXMLChars(doubleEntityEncode(rawTemplateContent.substring(startIndex, endIndex)));
 		logger.info(String.format("Found a raw template section in section '%s' between index %d and %d: '%s'", parentTemplateSection.getSectionName(), startIndex, endIndex, rawTemplateSectionContent));
