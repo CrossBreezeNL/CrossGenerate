@@ -74,7 +74,7 @@ Feature: Unit_commandline_logging
     When I run the generator
     Then I expect 1 generation result
     And a log file containing "[severe]" but not containing "[info]"
-    
+
    Scenario: logging from commandline, info warnings and severe
     Given the following additional comma separated commandline arguments:
     """
@@ -84,3 +84,14 @@ Feature: Unit_commandline_logging
     When I run the generator
     Then I expect 1 generation result
     And a log file containing "[info]" but not containing "[fine]"   
+    
+    
+    Scenario: logging from commandline, running in debug mode
+    Given the following additional comma separated commandline arguments:
+    """
+    -loglevelfile, info, -loglevelconsole, warning, -logdestination, C:\CrossGenerate\Test\Log\testlog.log, -debug, true
+    """
+    
+    When I run the generator
+    Then I expect 1 generation result
+    And a log file containing "[com.xbreeze.xgenerate." but not containing "[fine]"   
