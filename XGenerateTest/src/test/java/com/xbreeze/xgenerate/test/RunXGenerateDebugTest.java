@@ -6,7 +6,7 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 /**
- * Class to set the options for the Cucumber runner.
+ * Class to set the options for the Cucumber runner for debug mode.
  * @author Harmen
  *
  */
@@ -15,7 +15,7 @@ import cucumber.api.junit.Cucumber;
 		// Find the feature files in the root 'features' folder.
 		features = "src/test/resources/features",
 		glue = "com.xbreeze.xgenerate.test.steps",
-		plugin = {"pretty", "json:target/cucumber-integration.json"},
-		tags = {"@Integration"}
+		plugin = {"pretty", "html:target/cucumber"},
+		tags = {"@Debug"}
 )
-public class RunXGenerateLibIntegrationTest { }
+public class RunXGenerateDebugTest { }

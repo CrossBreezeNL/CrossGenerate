@@ -189,11 +189,11 @@ public class XGenerateStarter {
 			}			
 		}
 		
-		Formatter logFormatter;
+		GeneratorLogFormatter logFormatter;
 		
-		//When running in debug mode, output with default log formatting, otherwise use custom log formatting
+		//When running in debug mode, output with debug log formatting, otherwise use non-debug log formatting
 		if (debugMode) {
-			logFormatter = new SimpleFormatter();
+			logFormatter = new GeneratorDebugLogFormatter();
 		}
 		else {
 			logFormatter = new GeneratorLogFormatter();

@@ -18,4 +18,4 @@ import cucumber.api.junit.Cucumber;
 		plugin = {"pretty", "json:target/cucumber-unit.json"},
 		tags = {"@Unit"}
 )
-public class RunXGenerateLibUnitTest { }
+public class RunXGenerateUnitTest { }
