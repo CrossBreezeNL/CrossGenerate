@@ -1,7 +1,8 @@
 package com.xbreeze.xgenerate.test.steps;
 
 import static org.junit.Assert.assertEquals;
-
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,13 +65,13 @@ public class XgenerateTestSteps {
 		this.appConfigContent = appConfigContent;
 	}
 	
-	@And("^the following additional (comma separated) commandline arguments:$")
+	@And("^the following additional comma separated commandline arguments:$")
 	public void theFollowingCommandLineArguments(String commandLineArgs) throws Throwable {
 		//Strip single and double quotes
 		//Split string on comma
 		String[] cmdLineArgs = commandLineArgs.replace("\"", "").replaceAll("'", "").split(",");
 		for (int i = 0; i < cmdLineArgs.length;i++) {
-			this.commandLineArgs.add(cmdLineArgs[i]);
+			this.commandLineArgs.add(cmdLineArgs[i].trim());
 		}		
 	}
 	
@@ -130,17 +131,23 @@ public class XgenerateTestSteps {
 		assertEquals(String.format("The expected number of log files is 0, found %s logfiles", nrOfLogFiles), 0, nrOfLogFiles);		
 	}
 	
-	@Then("^a log file with content:$")
-	public void andALogNamedWithContents(String expectedLogContent) throws Throwable {
+	@Then("^a log file containing \"(.*)\" but not containing \"(.*)\"$")
+	public void andALogContaining(String textExpected, String textNotExpected) throws Throwable {
 		File logDir = new File(this.logFolderName);
 		int nrOfLogFiles = logDir.listFiles().length;
 		//Assume only one logfile was created
 		assertEquals(String.format("The expected number of log files is 1, found %s logfiles", nrOfLogFiles), 1, nrOfLogFiles);
 		
-		//Get log file name		
-		this.compareActualAndExpectedOutput(logDir.listFiles()[0].getAbsolutePath(), expectedLogContent);
+		//Check for expected content
+		Boolean found = this.findTextInLog(logDir.listFiles()[0].getAbsolutePath(), textExpected);
+		assertTrue(String.format("Did not found %s in log file while expected", textExpected), found);
+		
+		//Check for unexpected content		
+		found = this.findTextInLog(logDir.listFiles()[0].getAbsolutePath(), textNotExpected);
+		assertFalse(String.format("Found %s in log file while not expected", textNotExpected), found);
+		
+		
 	}
-	
 	
 	private String writeToFile(URI location, String filePrefix, String fileSuffix, String fileContents) throws IOException {
 		String fileName = filePrefix + String.valueOf(Thread.currentThread().getId()) + fileSuffix;
@@ -149,14 +156,11 @@ public class XgenerateTestSteps {
 		return fileName;
 	}
 	
-	private void compareActualAndExpectedOutput(String fileName, String expectedContent) throws Throwable {	
+	private Boolean findTextInLog(String fileName, String textToFind) throws Throwable {	
 		//Read file into stringbuffer
 		String actualContent = new String(Files.readAllBytes(Paths.get(fileName)));
-		assertEquals(
-				"The expected and actual log content is different",
-				expectedContent,
-				actualContent
-		);		
+		return actualContent.contains(textToFind);
+						
 	}
 		
 }

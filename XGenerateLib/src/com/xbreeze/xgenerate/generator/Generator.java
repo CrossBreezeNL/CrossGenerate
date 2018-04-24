@@ -8,9 +8,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.nio.file.Paths;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
@@ -35,12 +32,10 @@ import com.xbreeze.xgenerate.template.TemplatePreprocessor;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.annotation.UnknownAnnotationException;
 import com.xbreeze.xgenerate.template.xml.XMLUtils;
-import com.xbreeze.logging.LogHelper;
-import com.xbreeze.logging.LogLevel;
 
 public class Generator extends GeneratorStub {
 	// The logger for this class.
-	private static final Logger logger = LogHelper.getLogger();
+	private static final Logger logger =  Logger.getLogger(Generator.class.getName());
 	
 	/**
 	 * The Model to work with.
@@ -78,31 +73,6 @@ public class Generator extends GeneratorStub {
 	 */
 	public Model getModel() {
 		return this._model;
-	}
-	
-
-	
-
-	@Override
-	public void setLogLevelAndDestination(LogLevel logLevel, URI logDestination) throws GeneratorException {
-		this._logDestination = logDestination;
-		this._logLevel = logLevel;
-		//if loglevel is set to verbose, and a log destination is given, make sure that already existing log handlers are set to informational
-		if (logLevel == LogLevel.VERBOSE && logDestination != null) {
-			for (Handler h: logger.getHandlers()) {
-				h.setLevel(Level.INFO);				
-			}
-		}
-		//if logDestination is not null, assign a file handler to the logger
-		if (logDestination != null) {
-			try {
-				FileHandler fh = new FileHandler(logDestination.toString(), true);
-				fh.setLevel(LogHelper.translateLogLevel(logLevel));
-				logger.addHandler(fh);
-			} catch (SecurityException | IOException e) {
-				throw new GeneratorException(String.format("Error setting log destination: %s", e.getMessage()));
-			}			
-		}
 	}
 
 	/**

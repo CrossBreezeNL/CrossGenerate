@@ -29,28 +29,58 @@ Feature: Unit_commandline_logging
         </Binding>
       </XGenConfig>
       """      
-  Scenario: No logging from commandline
-    Given the following app config:
-      """
+      And the following app config:
+       """
       <?xml version="1.0" encoding="utf-8"?>
-			<XGenAppConfig>
-			  <App>
-			    <ConfigFolder>C:\CrossGenerate\Test\Config\</ConfigFolder>
-			    <ModelFolder>C:\CrossGenerate\Test\Model\</ModelFolder>
-			    <OutputFolder>C:\CrossGenerate\Test\Output\</OutputFolder>
-			    <TemplateFolder>C:\CrossGenerate\Test\Template\</TemplateFolder>
-			  </App>
-			  <License>
-			    <ContractId>0</ContractId>
-			    <DeveloperMode>true</DeveloperMode>
-			    <LicenseKey>0</LicenseKey>
-			    <Tag></Tag>
-			    <Url>file:///C:/GIT/Repos/CrossBreeze/CrossGenerate/CrossGenerate/XGenerateLib/target/classes/</Url>
-			    <Version>2.0</Version>
-			  </License>
-			</XGenAppConfig>
+      <XGenAppConfig>
+        <App>
+          <ConfigFolder>C:\CrossGenerate\Test\Config\</ConfigFolder>
+          <ModelFolder>C:\CrossGenerate\Test\Model\</ModelFolder>
+          <OutputFolder>C:\CrossGenerate\Test\Output\</OutputFolder>
+          <TemplateFolder>C:\CrossGenerate\Test\Template\</TemplateFolder>
+        </App>
+        <License>
+          <ContractId>0</ContractId>
+          <DeveloperMode>true</DeveloperMode>
+          <LicenseKey>0</LicenseKey>
+          <Tag></Tag>
+          <Url>file:///C:/GIT/Repos/CrossBreeze/CrossGenerate/CrossGenerate/XGenerateLib/target/classes/</Url>
+          <Version>2.0</Version>
+        </License>
+      </XGenAppConfig>
       """
+      
+  Scenario: No logging from commandline
     When I run the generator
     Then I expect 1 generation result
     And no log file
+  
+  Scenario: logging from commandline, incorrect log level parameter
+    Given the following additional comma separated commandline arguments:
+    """
+    -loglevel, super, -logdestination, C:\CrossGenerate\Test\Log\testlog.log
+    """
     
+    When I run the generator
+    Then I expect 0 generation result
+    And no log file
+  
+  Scenario: logging from commandline, only warnings and severe
+    Given the following additional comma separated commandline arguments:
+    """
+    -loglevelfile, warning, -loglevelconsole, warning, -logdestination, C:\CrossGenerate\Test\Log\testlog.log
+    """
+    
+    When I run the generator
+    Then I expect 1 generation result
+    And a log file containing "[severe]" but not containing "[info]"
+    
+   Scenario: logging from commandline, info warnings and severe
+    Given the following additional comma separated commandline arguments:
+    """
+    -loglevelfile, info, -loglevelconsole, warning, -logdestination, C:\CrossGenerate\Test\Log\testlog.log
+    """
+    
+    When I run the generator
+    Then I expect 1 generation result
+    And a log file containing "[info]" but not containing "[fine]"   

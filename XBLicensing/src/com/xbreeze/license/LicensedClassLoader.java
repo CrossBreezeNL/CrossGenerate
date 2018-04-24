@@ -34,7 +34,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import com.xbreeze.util.StringHelper;
-import com.xbreeze.logging.LogHelper;
 
 /**
  * LicensedClassLoader does a verification on license information and remotely
@@ -45,7 +44,7 @@ import com.xbreeze.logging.LogHelper;
  */
 public class LicensedClassLoader extends ClassLoader {
 	// The class logger.
-	private static final Logger logger =  LogHelper.getLogger();
+	private static final Logger logger = Logger.getLogger(LicensedClassLoader.class.getName());
 
 	private static final String XBREEZE_BASE_PACKAGE = "com.xbreeze.";
 
