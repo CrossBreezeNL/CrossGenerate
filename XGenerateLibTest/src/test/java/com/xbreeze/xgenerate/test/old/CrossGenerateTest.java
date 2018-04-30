@@ -11,16 +11,16 @@ public class CrossGenerateTest {
 	public static void main(String[] args) {
 		
 		// Execute the Microsoft SQL test.
-//		doMicrosoftSQLTest();
+		doMicrosoftSQLTest();
 		
 		// Execute the Microsoft SSIS test.
-//		doMicrosoftSSISTest();
+		doMicrosoftSSISTest();
 		
 		// Execute the PowerCenter test.
 		doPowerCenterTest();
 		
 		// Execute the IBM DataStage test.
-//		doDataStageTest();
+		doDataStageTest();
 		
 	}
 	
