@@ -4,9 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
 import java.nio.file.Paths;
+import java.util.logging.LogManager;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -45,9 +47,26 @@ public class XGenerateLibTestSteps {
 	
 	@Before
 	public void beforeScenario(Scenario scenario) {
+		LogManager logManager = LogManager.getLogManager();
+		// Read the logging configuration from the resource file.
+		try {
+			logManager.readConfiguration(XGenerateLibTestSteps.class.getResourceAsStream("logging.properties"));
+		} catch (SecurityException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		// When running in debug mode, output with debug log formatting.
+		if (scenario.getSourceTagNames().contains("@Debug")) {
+			// Set the console handler log level.
+			System.setProperty("java.util.logging.ConsoleHandler.level", "FINE");
+			// Set the log format for debug mode.
+			System.setProperty("java.util.logging.SimpleFormatter.format", "@%2$s ->%n [%1$tF %1$tT] [%4$-7s] %5$s %n");
+		}
+		
 		// Initialize the generator.
 		this._generator = new Generator();
 		this._generator.setTestMode(true);
+		
 		// Enable debug mode if there is a tag @Debug.
 		if (scenario.getSourceTagNames().contains("@Debug")) {
 			this._generator.setDebugMode(true);
