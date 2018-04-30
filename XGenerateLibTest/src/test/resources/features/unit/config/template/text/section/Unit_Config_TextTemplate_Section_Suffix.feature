@@ -62,9 +62,7 @@ Feature: Unit_Config_TextTemplate_Section_Suffix
       | allButFirst | /** not first */ | FirstColumn                | SecondColumn/** not first */ | ThirdColumn/** not first */ |
       | allButLast  | /** not last */  | FirstColumn/** not last */ | SecondColumn/** not last */  | ThirdColumn                 |
 
-  @KnownIssue
   Scenario Outline: Section with suffix multi line <suffixStyle>
-    # KnownIssue: The suffix is appeneded to the end of a section, but if there are new lines at the end of a section it probably should but the suffix before the new lines.
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -99,7 +97,6 @@ Feature: Unit_Config_TextTemplate_Section_Suffix
       <expected-result-2>
       <expected-result-3>
       -- End of template
-
       """
 
     Examples: 

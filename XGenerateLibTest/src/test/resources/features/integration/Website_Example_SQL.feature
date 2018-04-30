@@ -3,7 +3,6 @@
 @Integration
 Feature: Integration_Website_Example_SQL
 
-  @KnownIssue
   Scenario: Re-create original code
     Given I have the following model:
       """

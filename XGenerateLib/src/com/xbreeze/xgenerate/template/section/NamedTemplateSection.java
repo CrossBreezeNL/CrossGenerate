@@ -116,9 +116,6 @@ public class NamedTemplateSection extends TemplateSection {
 						//config.getBindingConfig().getSectionModelBindingConfigs(namedTemplateSection.getSectionName())
 				);*/
 
-				// Store the annotation in a local variable.
-				TemplateSectionAnnotation templateSectionAnnotation = namedTemplateSection.getTemplateSectionAnnotation();
-				
 				// Repeat the template for each section binding.
 				if (sectionModelBindingConfigs != null && sectionModelBindingConfigs.length > 0) {
 					// For each section model binding, repeat the content of the section.
@@ -127,19 +124,9 @@ public class NamedTemplateSection extends TemplateSection {
 						// Append the start of the for-each.
 						xsltTemplate.append("<xsl:for-each select=\"%s\">", sectionModelBindingConfig.getModelXPath());
 						
-						// If there is a prefix defined in the annotation, add the logic here.
-						if (templateSectionAnnotation.getPrefix() != null && templateSectionAnnotation.getPrefix().length() > 0) {
-							xsltTemplate.append(getRepetitionXSLT(templateSectionAnnotation.getPrefix(), templateSectionAnnotation.getPrefixStyle(), templateSectionAnnotation.getPrefixAction()));
-						}
-						
 						// Append the Xstl of the named template section.
 						// The content of the template section needs to be resolved before adding the content here. Recursive call needed.
 						namedTemplateSection.appendTemplateXslt(xsltTemplate, config, sectionModelBindingConfig);
-						
-						// If there is a suffix defined in the annotation, add the logic here.
-						if (templateSectionAnnotation.getSuffix() != null && templateSectionAnnotation.getSuffix().length() > 0) {
-							xsltTemplate.append(getRepetitionXSLT(templateSectionAnnotation.getSuffix(), templateSectionAnnotation.getSuffixStyle(), templateSectionAnnotation.getSuffixAction()));
-						}
 						
 						// Append the end of the for-each.
 						xsltTemplate.append("</xsl:for-each>");
@@ -153,6 +140,14 @@ public class NamedTemplateSection extends TemplateSection {
 					// Append the Xstl of the named template section with the parent binding config.
 					namedTemplateSection.appendTemplateXslt(xsltTemplate, config, parentBindingConfig);		
 				}
+			}
+			
+			// RepetitionTemplateSection (Prefix or Suffix section)
+			// It's important this section type is handled before the raw template section, since its a sub-type.
+			else if (templateSection instanceof RepetitionTemplateSection) {
+				RepetitionTemplateSection repetitionTemplateSection = (RepetitionTemplateSection)templateSection;
+				// Append the repetition xslt for this section.
+				xsltTemplate.append(getRepetitionXSLT(repetitionTemplateSection.getContent(), repetitionTemplateSection.getRepetitionStyle(), repetitionTemplateSection.getRepetitionAction()));
 			}
 			
 			// RawTemplateSection
@@ -271,7 +266,7 @@ public class NamedTemplateSection extends TemplateSection {
 		switch (action) {
 			case add:
 				// Return the XSLT for the prefix or suffix.
-				return String.format("<xsl:if test=\"%s\">%s</xsl:if>", condition, prefixOrSuffix);
+				return String.format("<xsl:if test=\"%s\"><text>%s</text></xsl:if>", condition, prefixOrSuffix);
 			default:
 				throw new TemplatePreprocessorException(String.format("Unrecognized repetition action specified: %s", action));
 		}

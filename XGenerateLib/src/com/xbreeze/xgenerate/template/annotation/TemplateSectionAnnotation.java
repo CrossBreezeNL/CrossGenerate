@@ -10,6 +10,14 @@ import javax.xml.bind.annotation.XmlAttribute;
  * @author Harmen
  */
 public class TemplateSectionAnnotation extends TemplateAnnotation {
+	
+	/**
+	 * The repetition types.
+	 */
+	public enum RepetitionType {
+		prefix,
+		suffix
+	}
 
 	/**
 	 * The repetition style for a prefix or suffix.
