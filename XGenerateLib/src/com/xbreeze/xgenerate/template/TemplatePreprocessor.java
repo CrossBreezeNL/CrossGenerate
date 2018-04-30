@@ -158,7 +158,7 @@ public abstract class TemplatePreprocessor {
 				// Get the begin and end position of the whitespace at the begin of the section.
 				int whitespaceStartIndex = previousSectionEndIndex + matcher.start();
 				int whitespaceEndIndex = previousSectionEndIndex + matcher.end();
-				logger.info(String.format("Whitespace found between %d and %d, so creating seperate sections.", whitespaceStartIndex, whitespaceEndIndex));
+				logger.fine(String.format("Whitespace found between %d and %d, so creating seperate sections.", whitespaceStartIndex, whitespaceEndIndex));
 				// Add the template content before the suffix position as a raw template.
 				addRawTemplate(parentTemplateSection, rawTemplateContent, whitespaceStartIndex, whitespaceEndIndex);
 				// Add the repetition template section for the suffix.
@@ -166,7 +166,7 @@ public abstract class TemplatePreprocessor {
 			}
 			// No whitespace found, so add the suffix to the start.
 			else {
-				logger.info("No whitespace found, so creating prefix repetition section at the start.");
+				logger.fine("No whitespace found, so creating prefix repetition section at the start.");
 				// Add the repetition template section for the suffix.
 				addRepetitionTemplate(parentTemplateSection, parentSectionBounds.getTemplateSectionAnnotation().getPrefix(), previousSectionEndIndex, RepetitionType.prefix, parentSectionBounds.getTemplateSectionAnnotation().getPrefixStyle(), parentSectionBounds.getTemplateSectionAnnotation().getPrefixAction());
 			}
@@ -236,7 +236,7 @@ public abstract class TemplatePreprocessor {
 									// Get the begin and end position of the whitespace at the end of the section.
 									int whitespaceStartIndex = matcher.start();
 									int whitespaceEndIndex = matcher.end();
-									logger.info(String.format("Whitespace found between %d and %d, so creating seperate sections.", whitespaceStartIndex, whitespaceEndIndex));
+									logger.fine(String.format("Whitespace found between %d and %d, so creating seperate sections.", whitespaceStartIndex, whitespaceEndIndex));
 									// Add the template content before the suffix position as a raw template.
 									addRawTemplate(parentTemplateSection, rawTemplateContent, previousSectionEndIndex, whitespaceStartIndex);
 									// Add the repetition template section for the suffix.
@@ -246,7 +246,7 @@ public abstract class TemplatePreprocessor {
 								}
 								// No whitespace found, so add the suffix to the end.
 								else {
-									logger.info("No whitespace found, so creating repetition section at the end.");
+									logger.fine("No whitespace found, so creating repetition section at the end.");
 									// Add the whole template part as raw template, since there is no whitespace at the end.
 									addRawTemplate(parentTemplateSection, rawTemplateContent, previousSectionEndIndex, parentSectionEndIndex);
 									// Add the repetition template section for the suffix.

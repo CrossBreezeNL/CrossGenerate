@@ -166,7 +166,7 @@ public class NamedTemplateSection extends TemplateSection {
 				// ^ Maybe with this information we can check the unique placeholder names upfront and store
 				// ^ Them in this object to be used in the XMLPreprocessor.
 				if (placeholderProcessedTemplateContent.indexOf(PLACEHOLDER_PLACEHOLDER_NAME) != -1) {
-					logger.info("Placeholder name placeholder found, replacing with right name");
+					logger.fine("Placeholder name placeholder found, replacing with right name");
 					/**
 					 * TODO: This is a simple way to inject a if for placeholder injections. Should be designed properly later.
 					 * In the template we find something like 'someAttribute="{{PLACEHOLDER_NAME}}_someModelNode"'

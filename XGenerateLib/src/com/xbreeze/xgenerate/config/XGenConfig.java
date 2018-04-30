@@ -123,7 +123,7 @@ public class XGenConfig {
 	 * @throws ConfigException 
 	 */
 	public static XGenConfig fromFile(URI configFileUri) throws ConfigException {
-		logger.info(String.format("Creating XGenConfigFile object from '%s'", configFileUri));
+		logger.fine(String.format("Creating XGenConfigFile object from '%s'", configFileUri));
 		File XGenConfigFile = new File(configFileUri);
 		
 		XGenConfig xGenConfig;

@@ -91,7 +91,7 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 			// If the annotation class only has 1 set method and its name is set<annotation-name>, we call this method with the full params string.
 			// This is for example for the Comment annotation, where the whole params content is the comment.
 			if (annotationSetMethods.length  == 1 && annotationSetMethods[0].getName().equalsIgnoreCase(getSetMethodName(annotationName))) {
-				logger.info(String.format("Only 1 argument allowed for the annotation, so whole params value is assigned to %s.", annotationName));
+				logger.fine(String.format("Only 1 argument allowed for the annotation, so whole params value is assigned to %s.", annotationName));
 				// Invoke the set method on the parameter named the same as the annotation name.
 				invokeSetMethod(templateAnnotation, annotationSetMethods, annotationName, annotationParams);
 			}
@@ -127,7 +127,7 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 					String paramName = matcher.group(1);
 					// Group 3/5: The arguments for the annotation.
 					String paramValue = (matcher.group(3) != null) ? matcher.group(3) : matcher.group(5);
-					logger.info(String.format("Found annotation param key-value pair (%s='%s')", paramName, paramValue));
+					logger.fine(String.format("Found annotation param key-value pair (%s='%s')", paramName, paramValue));
 					
 					// Invoke the set method.
 					invokeSetMethod(templateAnnotation, annotationSetMethods, paramName, paramValue);

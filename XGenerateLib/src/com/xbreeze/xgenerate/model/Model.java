@@ -66,7 +66,7 @@ public class Model {
 	 * @throws GeneratorException 
 	 */
 	public static Model fromFile(URI modelFileUri) throws GeneratorException {
-		logger.info(String.format("Creating Model object from '%s'", modelFileUri));
+		logger.fine(String.format("Creating Model object from '%s'", modelFileUri));
 		Document modelDocument;
 		DocumentBuilder documentBuilder = XMLUtils.getDocumentBuilder();
 		try {

@@ -48,7 +48,6 @@ public class Generator extends GeneratorStub {
 	 */	
 	public Generator() {
 		logger.fine("Initializing generator");
-		
 	}
 		
 	/**
@@ -213,10 +212,10 @@ public class Generator extends GeneratorStub {
 				// Pre-process the template.
 				String xsltTemplateString;
 				{
+					logger.info("Begin template pre-processing");
 					// Get the template preprocessor for the template type we are dealing with.
 					TemplatePreprocessor templatePreprocessor = templateConfig.getFileFormatConfig().getTemplateType().getTemplatePreprocessor(xGenConfig);
 					// Pre-process the raw template into a xslt template.
-					logger.info("Begin template pre-processing");
 					XsltTemplate xsltTemplate = templatePreprocessor.preProcess(rawTemplate, outputFileUri);
 					xsltTemplateString = xsltTemplate.toString();
 					// If in debug mode, write the preprocessed template.
@@ -231,7 +230,7 @@ public class Generator extends GeneratorStub {
 				
 				// Now the pre-processing is done, we can start the XSLT transformation using the model and the pre-processed template (XSLT).
 				{
-					logger.info("Begin XSLT transformation");
+					logger.info("Begin template transformation");
 					
 					// Create a string reader on the pre-processed template.
 					StringReader xslStringReader = new StringReader(xsltTemplateString);
@@ -254,7 +253,7 @@ public class Generator extends GeneratorStub {
 					//Invoke transform on the model
 					xslTransformer.transform(_model.getAsDOMSource(), outputResult);								
 					
-					logger.info("End XSLT transformation");
+					logger.info("End template transformation");
 				}
 			}
 			

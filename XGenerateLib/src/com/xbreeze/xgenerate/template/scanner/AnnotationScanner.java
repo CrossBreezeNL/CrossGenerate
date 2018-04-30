@@ -141,7 +141,7 @@ public class AnnotationScanner {
 			ArrayList<TemplateAnnotation> foundCommentAnnotations = collectInlineAnnotations(templateContent, fileFormatConfig, commentMatcher.start(commentContentRegion), commentMatcher.end(commentContentRegion));
 			if (foundCommentAnnotations.size() == 1) {
 				TemplateAnnotation onlyAnnotationInComment = foundCommentAnnotations.get(0);
-				logger.info(String.format("Only annotation found: '%s'", templateContent.substring(onlyAnnotationInComment.getAnnotationBeginIndex(), onlyAnnotationInComment.getAnnotationEndIndex())));
+				logger.fine(String.format("Only annotation found: '%s'", templateContent.substring(onlyAnnotationInComment.getAnnotationBeginIndex(), onlyAnnotationInComment.getAnnotationEndIndex())));
 				// If the annotation is the only thing on the line, we take the whole line as begin and end index to make sure its not in the result.
 				if (
 						// If the regions of the annotation are the same as the comment content bounds.
@@ -157,7 +157,7 @@ public class AnnotationScanner {
 						)
 				) {
 					// Update the section annotation bounds.
-					logger.info("The comment only contains an annotation, so the whole comment is now part of the annotation.");
+					logger.fine("The comment only contains an annotation, so the whole comment is now part of the annotation.");
 					onlyAnnotationInComment.setAnnotationBeginIndex(commentMatcher.start());
 					onlyAnnotationInComment.setAnnotationEndIndex(commentMatcher.end());
 				}

@@ -62,7 +62,7 @@ public class RawTemplate {
 	
 	public static RawTemplate fromFile(URI rawTemplateFileUri) throws TemplateException {
 		// Construct a Path object using the file location.
-		logger.info(String.format("Creating RawTemplate object from '%s'", rawTemplateFileUri));
+		logger.fine(String.format("Creating RawTemplate object from '%s'", rawTemplateFileUri));
 		Path rawTemplateFilePath = Paths.get(rawTemplateFileUri);
 		
 		// Get the file name and its content.
