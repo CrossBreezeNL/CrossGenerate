@@ -5,10 +5,16 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.net.URI;
 import java.nio.file.Paths;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Filter;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -54,14 +60,34 @@ public class XGenerateLibTestSteps {
 		} catch (SecurityException | IOException e) {
 			e.printStackTrace();
 		}
+		Logger logger = logManager.getLogger("");
 		
+		Level logLevel = Level.INFO;
 		// When running in debug mode, output with debug log formatting.
 		if (scenario.getSourceTagNames().contains("@Debug")) {
 			// Set the console handler log level.
-			System.setProperty("java.util.logging.ConsoleHandler.level", "FINE");
+			logLevel = Level.FINE;
 			// Set the log format for debug mode.
 			System.setProperty("java.util.logging.SimpleFormatter.format", "@%2$s ->%n [%1$tF %1$tT] [%4$-7s] %5$s %n");
 		}
+		
+		// Add a logger for the console to log message below warning (and error).
+		ConsoleHandler outputConsoleHandler = new ConsoleHandler() {
+			@Override
+			protected synchronized void setOutputStream(OutputStream out) throws SecurityException {
+				super.setOutputStream(System.out);
+			}
+			
+		};
+		outputConsoleHandler.setLevel(logLevel);
+		// Only log message with a lower level then warning.
+		outputConsoleHandler.setFilter(new Filter() {
+			@Override
+			public boolean isLoggable(LogRecord record) {
+				return record.getLevel().intValue() < Level.WARNING.intValue();
+			}
+		});
+		logger.addHandler(outputConsoleHandler);
 		
 		// Initialize the generator.
 		this._generator = new Generator();
