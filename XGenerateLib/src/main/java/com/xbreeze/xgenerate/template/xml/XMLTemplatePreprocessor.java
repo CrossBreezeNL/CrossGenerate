@@ -180,7 +180,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		        	String annotationAttributeValue = annotationNav.toString(annotationValueIndex);
 		        	int annotationValueStartIndex = (int)annotationNav.getTokenOffset(annotationValueIndex);
 					int annotationValueEndIndex = annotationValueStartIndex + annotationNav.getTokenLength(annotationValueIndex);
-					logger.info(String.format("Found annotation node value '%s'; start=%d; end=%d", annotationAttributeValue, annotationValueStartIndex, annotationValueEndIndex));
+					logger.fine(String.format("Found annotation node value '%s'; start=%d; end=%d", annotationAttributeValue, annotationValueStartIndex, annotationValueEndIndex));
 					
 					ArrayList<TemplateAnnotation> foundInlineAnnotations = AnnotationScanner.collectInlineAnnotations(preprocessedTemplate, fileFormatConfig, annotationValueStartIndex, annotationValueEndIndex);
 		        	
@@ -297,7 +297,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		// Loop through the template placeholder injections and apply them.
 		for (TemplatePlaceholderInjection tpi : templatePlaceholderInjections) {
 			String placeholderToInject = getPlaceholderInjectionValue(NamedTemplateSection.PLACEHOLDER_PLACEHOLDER_NAME, tpi);
-			logger.info(String.format("Performing template placeholder injection (templateXPath='%s' => '%s')", tpi.getTemplateXPath(), placeholderToInject));
+			logger.fine(String.format("Performing template placeholder injection (templateXPath='%s' => '%s')", tpi.getTemplateXPath(), placeholderToInject));
 			
 			// Create an AutoPilot for querying the document.
 			AutoPilot ap = new AutoPilot(nv);

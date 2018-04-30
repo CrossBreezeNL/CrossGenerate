@@ -147,7 +147,7 @@ public abstract class TemplatePreprocessor {
 		// Before processing the content, we first check whether a prefix is set on the annotation.
 		if (parentSectionBounds.getTemplateSectionAnnotation().getPrefix() != null && parentSectionBounds.getTemplateSectionAnnotation().getPrefix().length() > 0) {
 			// If the prefix is set, we scan for any whitespace at the beginning of the section and store it as a separate RawTemplate part after which we add the RepetitionTemplateSection for the prefix.
-			logger.info(String.format("Prefix is defined for section '%s', searching for whitespace and creating appropriate sections.", parentTemplateSection.getSectionName()));
+			logger.fine(String.format("Prefix is defined for section '%s', searching for whitespace and creating appropriate sections.", parentTemplateSection.getSectionName()));
 			// Now we scan for any whitespace at the end of the found raw-template and add the suffix section before the whitespace.
 			// So <raw-template><prefix>
 			// \A     -> The begin of the input
@@ -206,14 +206,14 @@ public abstract class TemplatePreprocessor {
 					if (parentSectionEndIndex == -1) {
 						// Before we add the raw template, we first check whether the end of the section is in this part of raw template.
 						// If so we set the end index of this section, add the template up till that part as raw template, set the iterator one back and return the end index (so the parent will pickup the remaining annotations).
-						logger.info(String.format("Searching for section end index for '%s' between index %d and %d", parentTemplateSection.getSectionName(), previousSectionEndIndex, nextSectionBeginIndex));
+						logger.fine(String.format("Searching for section end index for '%s' between index %d and %d", parentTemplateSection.getSectionName(), previousSectionEndIndex, nextSectionBeginIndex));
 						parentSectionEndIndex = findSectionEndIndex(parentSectionBounds, rawTemplateContent, previousSectionEndIndex, nextSectionBeginIndex);
 						if (parentSectionEndIndex != -1) {
 							// Store the section end index on the parent annotation.
 							parentSectionBounds.setAnnotationEndIndex(parentSectionEndIndex);
 							// Store the end index on the parent template section.
 							parentTemplateSection.setSectionEndIndex(parentSectionEndIndex);
-							logger.info(String.format("Successfully found begin and end position of section (%s -> %d:%d)", parentTemplateSection.getSectionName(), parentTemplateSection.getSectionBeginIndex(), parentTemplateSection.getSectionEndIndex()));
+							logger.info(String.format("Successfully found begin and end position of section '%s' (%d:%d)", parentTemplateSection.getSectionName(), parentTemplateSection.getSectionBeginIndex(), parentTemplateSection.getSectionEndIndex()));
 						}
 					}
 					
@@ -225,7 +225,7 @@ public abstract class TemplatePreprocessor {
 							// If there is a suffix defined for the parent section, add a repetition section before the newline.
 							TemplateSectionAnnotation currentSectionAnnotation = parentSectionBounds.getTemplateSectionAnnotation();
 							if (currentSectionAnnotation.getSuffix() != null && currentSectionAnnotation.getSuffix().length() > 0) {
-								logger.info(String.format("Suffix is defined for section '%s', searching for whitespace and creating appropriate sections.", parentTemplateSection.getSectionName()));
+								logger.fine(String.format("Suffix is defined for section '%s', searching for whitespace and creating appropriate sections.", parentTemplateSection.getSectionName()));
 								// Now we scan for any whitespace at the end of the found raw-template and add the suffix section before the whitespace.
 								// So <raw-template><suffix><whitespace>
 								// \s  -> Any whitespace character: [ \t\n\x0B\f\r]
@@ -296,7 +296,7 @@ public abstract class TemplatePreprocessor {
 					// Add a CommentTemplateSection for each TemplateCommentAnnotation.
 					TemplateCommentAnnotation templateCommentAnnotation = ((TemplateCommentAnnotation) templateAnnotation);
 					parentTemplateSection.addTemplateSection(new CommentTemplateSection(templateCommentAnnotation.getComment(), templateCommentAnnotation.getAnnotationBeginIndex(), templateCommentAnnotation.getAnnotationEndIndex()));
-					logger.info(String.format("Added CommentTemplateSection to SectionizedTextTemplate (%d:%d)", templateCommentAnnotation.getAnnotationBeginIndex(), templateCommentAnnotation.getAnnotationEndIndex()));
+					logger.fine(String.format("Added CommentTemplateSection to SectionizedTextTemplate (%d:%d)", templateCommentAnnotation.getAnnotationBeginIndex(), templateCommentAnnotation.getAnnotationEndIndex()));
 				}
 				
 				else if (templateAnnotation instanceof TemplateSectionAnnotation) {
@@ -308,7 +308,7 @@ public abstract class TemplatePreprocessor {
 				else if (templateAnnotation instanceof TemplateSectionBoundsAnnotation) {
 					// Add a NamedTemplateSection for each TemplateSectionAnnotation.
 					TemplateSectionBoundsAnnotation templateSectionBoundsAnnotation = (TemplateSectionBoundsAnnotation) templateAnnotation;
-					logger.info(String.format("Start of processing NamedTemplateSection %s", templateSectionBoundsAnnotation.getName()));
+					logger.info(String.format("Start of processing section '%s'", templateSectionBoundsAnnotation.getName()));
 					// Create the named template section.
 					NamedTemplateSection namedTemplateSection = new NamedTemplateSection(templateSectionBoundsAnnotation.getName(), templateSectionBoundsAnnotation.getAnnotationBeginIndex(), templateSectionBoundsAnnotation.getTemplateSectionAnnotation());
 					// If the end index is already known, also set it.
@@ -320,7 +320,7 @@ public abstract class TemplatePreprocessor {
 					processNamedTemplateSection(templateSectionBoundsAnnotation, namedTemplateSection, rawTemplateContent, taIterator, previousSectionEndIndex, false);
 					// Add the named template section to the sectionized template.
 					parentTemplateSection.addTemplateSection(namedTemplateSection);
-					logger.info(String.format("Added NamedTemplateSection to SectionizedTextTemplate (%s -> %d:%d)", namedTemplateSection.getSectionName(), namedTemplateSection.getSectionBeginIndex(), namedTemplateSection.getSectionEndIndex()));
+					logger.fine(String.format("Added NamedTemplateSection to SectionizedTextTemplate (%s -> %d:%d)", namedTemplateSection.getSectionName(), namedTemplateSection.getSectionBeginIndex(), namedTemplateSection.getSectionEndIndex()));
 				}
 				
 				// If there is some other annotation found we didn't handle, let's throw an exception.
@@ -423,7 +423,7 @@ public abstract class TemplatePreprocessor {
 	private void addRawTemplate(NamedTemplateSection parentTemplateSection, String rawTemplateContent, int startIndex, int endIndex) {
 		// Escape XML chars, since the raw template will be put in an XSLT transformation.
 		String rawTemplateSectionContent = XMLUtils.excapeXMLChars(doubleEntityEncode(rawTemplateContent.substring(startIndex, endIndex)));
-		logger.info(String.format("Found a raw template section in section '%s' between index %d and %d: '%s'", parentTemplateSection.getSectionName(), startIndex, endIndex, rawTemplateSectionContent));
+		logger.fine(String.format("Found a raw template section in section '%s' between index %d and %d: '%s'", parentTemplateSection.getSectionName(), startIndex, endIndex, rawTemplateSectionContent));
 		parentTemplateSection.addTemplateSection(new RawTemplateSection(rawTemplateSectionContent, startIndex, endIndex));
 	}
 	
@@ -435,7 +435,7 @@ public abstract class TemplatePreprocessor {
 	 * @param endIndex The ending index of the raw template.
 	 */
 	private void addRepetitionTemplate(NamedTemplateSection parentTemplateSection, String repetitionContent, int sectionIndex, RepetitionType repetitionType, RepetitionStyle repetitionStyle, RepetitionAction repetitionAction) {
-		logger.info(String.format("Found a repetition template section in section '%s' at index %d: %s", parentTemplateSection.getSectionName(), sectionIndex, repetitionType.name()));
+		logger.fine(String.format("Found a repetition template section in section '%s' at index %d: %s", parentTemplateSection.getSectionName(), sectionIndex, repetitionType.name()));
 		parentTemplateSection.addTemplateSection(new RepetitionTemplateSection(repetitionContent, sectionIndex, repetitionType, repetitionStyle, repetitionAction));
 	}
 	

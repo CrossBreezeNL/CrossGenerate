@@ -136,7 +136,7 @@ public class AnnotationScanner {
 		Matcher commentMatcher = commentPattern.matcher(templateContent);
 		// Loop through the results.
 		while (commentMatcher.find()) {
-			logger.info(String.format("Found comment with annotation. (start: %d; end: %d; commentStart: %d; commentEnd: %d; comment: '%s')", commentMatcher.start(), commentMatcher.end(), commentMatcher.start(commentContentRegion), commentMatcher.end(commentContentRegion), commentMatcher.group(commentContentRegion)));
+			logger.fine(String.format("Found comment with annotation. (start: %d; end: %d; commentStart: %d; commentEnd: %d; comment: '%s')", commentMatcher.start(), commentMatcher.end(), commentMatcher.start(commentContentRegion), commentMatcher.end(commentContentRegion), commentMatcher.group(commentContentRegion)));
 			// Collect the annotation in the content of the comment.
 			ArrayList<TemplateAnnotation> foundCommentAnnotations = collectInlineAnnotations(templateContent, fileFormatConfig, commentMatcher.start(commentContentRegion), commentMatcher.end(commentContentRegion));
 			if (foundCommentAnnotations.size() == 1) {
