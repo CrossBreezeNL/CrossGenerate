@@ -23,7 +23,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class XgenerateTestSteps {
+public class XGenerateTestSteps {
 	private final URI _workingFolderUri = URI.create("file:///C:/CrossGenerate/Test/Config");
 	private final URI _logFolderUri = URI.create("file:///C:/CrossGenerate/Test/Log");
 	
