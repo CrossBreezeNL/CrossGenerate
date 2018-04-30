@@ -221,9 +221,9 @@ public class Generator extends GeneratorStub {
 					xsltTemplateString = xsltTemplate.toString();
 					// If in debug mode, write the preprocessed template.
 					if (this.isDebugMode()) {
-						System.out.println("---------- Preprocessed template: ----------");
-						System.out.println(xsltTemplateString);
-						System.out.println("--------------------------------------------");
+						logger.fine("---------- Preprocessed template: ----------");
+						logger.fine(xsltTemplateString);
+						logger.fine("--------------------------------------------");
 					}
 					//generationResult.setPreprocessedTemplate(preprocessedTemplateString);
 					logger.info("End template pre-processing");
