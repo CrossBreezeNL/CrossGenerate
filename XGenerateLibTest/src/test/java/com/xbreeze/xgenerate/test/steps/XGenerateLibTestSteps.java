@@ -62,7 +62,7 @@ public class XGenerateLibTestSteps {
 		}
 		Logger logger = logManager.getLogger("");
 		
-		Level logLevel = Level.WARNING;
+		Level logLevel = Level.INFO;
 		// When running in debug mode, output with debug log formatting.
 		if (scenario.getSourceTagNames().contains("@Debug")) {
 			// Set the console handler log level.
@@ -71,6 +71,8 @@ public class XGenerateLibTestSteps {
 			System.setProperty("java.util.logging.SimpleFormatter.format", "@%2$s ->%n [%1$tF %1$tT] [%4$-7s] %5$s %n");
 		}
 		
+		// Set log level for the logger.
+		logger.setLevel(logLevel);
 		// Add a logger for the console to log message below warning (and error).
 		ConsoleHandler outputConsoleHandler = new ConsoleHandler() {
 			@Override
@@ -83,7 +85,7 @@ public class XGenerateLibTestSteps {
 		outputConsoleHandler.setFilter(new Filter() {
 			@Override
 			public boolean isLoggable(LogRecord record) {
-				return record.getLevel().intValue() < Level.WARNING.intValue();
+				return record.getLevel().intValue() < Level.SEVERE.intValue();
 			}
 		});
 		logger.addHandler(outputConsoleHandler);
@@ -94,6 +96,7 @@ public class XGenerateLibTestSteps {
 		
 		// Enable debug mode if there is a tag @Debug.
 		if (scenario.getSourceTagNames().contains("@Debug")) {
+			logger.info("Enabling debug mode");
 			this._generator.setDebugMode(true);
 		}
 	}
