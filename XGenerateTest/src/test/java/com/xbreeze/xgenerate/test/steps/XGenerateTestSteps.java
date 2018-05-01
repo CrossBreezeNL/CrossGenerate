@@ -24,28 +24,31 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class XGenerateTestSteps {
-	private final URI _workingFolderUri = URI.create("file:///C:/CrossGenerate/Test/Config");
-	private final URI _logFolderUri = URI.create("file:///C:/CrossGenerate/Test/Log");
 	
 	private String modelContent;
 	private String templateContent;
 	private String configContent;
 	private String appConfigContent;
 	private LinkedList<String> commandLineArgs;
-	private String templateName;
-	private URI outputFolderName;
+	private String templateName;	
 	private URI logFolderName;
-
+	private URI outputFolderName;
+	
 	@Before
 	public void beforeScenario()
 	{
-		this.commandLineArgs = new LinkedList<String>();
-		
+		this.commandLineArgs = new LinkedList<String>();		
 	}
+	
 	@Given("^I have the following model:$")
 	public void iHaveTheFollowingModel(String modelContent) throws Throwable {
 		//Save the model to file, create a unique file name in case of parallel processing
 		this.modelContent = modelContent;
+	}
+	
+	@And("^the log destination directory \\\"(.*)\\\" is empty.$")
+	public void theLogDestinationFolderIsEmpty(String logFolder) {		
+		this.logFolderName = Paths.get(logFolder).toUri();
 	}
 	
 	@And("^the following template named \"(.*)\":$")
@@ -77,38 +80,44 @@ public class XGenerateTestSteps {
 	
 	@When("^I run the generator$")
 	public void iRunTheGenerator() throws Throwable {	
-		//Save the app config to a file
-		String appConfigFileName = this.writeToFile(_workingFolderUri, "AppConfig_", ".xml", this.appConfigContent);
-		URI appConfigUri = _workingFolderUri.resolve(appConfigFileName);
-		//Read back the file into Config object to obtain template and output folders specified
-		AppConfig appConfig = XGenAppConfig.fromFile(appConfigUri).getAppConfig();
+		//Get AppConfig object
+		AppConfig appConfig = XGenAppConfig.fromString(this.appConfigContent).getAppConfig();
+		
+		
 		URI templateFolder = new URI("file:///" + appConfig.getTemplateFolder().replace("\\", "/"));
 		URI configFolder = new URI("file:///" + appConfig.getConfigFolder().replace("\\", "/"));
 		URI modelFolder = new URI("file:///" + appConfig.getModelFolder().replace("\\", "/"));
 		
+		
 		//Save output folder name for later use during output verification
 		this.outputFolderName = new URI("file:///" + appConfig.getOutputFolder().replace("\\", "/"));
-		
-		//TODO change this when logfolder is supported from app config
-		this.logFolderName = this._logFolderUri;
 		
 		//Remove all files from the output and log folder
 		FileUtils.cleanDirectory(new File(this.outputFolderName));
 		FileUtils.cleanDirectory(new File(this.logFolderName));
-		
+
+				
 		//Save the template, config and model files to appropriate locations found in config
 		String modelFileName = this.writeToFile(modelFolder, "model_", ".xml", this.modelContent);
 		String templateFileName = this.writeToFile(templateFolder, this.templateName, "", this.templateContent);
 		String configFileName = this.writeToFile(configFolder, "config_", ".xml", configContent);
+		
+		//Save config file to output folder
+		String appConfigFileName = this.writeToFile(outputFolderName, "appConfig_", ".xml", this.appConfigContent);		
+		URI fullAppConfigFileURI = outputFolderName.resolve(appConfigFileName);
+		
 		//Add a commandline argument for the MTC combination
 		this.commandLineArgs.add("-mtc");
 		this.commandLineArgs.add(modelFileName + "::" + templateFileName + "::" + configFileName);
 		//Add app config file to commandline arguments
 		this.commandLineArgs.add("-config");
-		this.commandLineArgs.add(appConfigUri.toString().replace("file:/", ""));
+		this.commandLineArgs.add(fullAppConfigFileURI.toString().replace("file:/", ""));
 
 		//Invoke generator
 		XGenerateStarter.main(this.commandLineArgs.toArray(new String[0]));
+		
+		//Remove app config file		
+		Files.delete(Paths.get(fullAppConfigFileURI));
 		
 	}
 

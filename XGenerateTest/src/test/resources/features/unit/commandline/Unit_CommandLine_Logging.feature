@@ -49,7 +49,8 @@ Feature: Unit_CommandLine_Logging
        </License>
       </XGenAppConfig>
       """
-
+    And the log destination directory "C:\CrossGenerate\Test\Log" is empty.
+    
   Scenario: No logging from commandline
     When I run the generator
     Then I expect 1 generation result
