@@ -62,7 +62,7 @@ public class XGenerateLibTestSteps {
 		}
 		Logger logger = logManager.getLogger("");
 		
-		Level logLevel = Level.INFO;
+		Level logLevel = Level.WARNING;
 		// When running in debug mode, output with debug log formatting.
 		if (scenario.getSourceTagNames().contains("@Debug")) {
 			// Set the console handler log level.
@@ -77,7 +77,6 @@ public class XGenerateLibTestSteps {
 			protected synchronized void setOutputStream(OutputStream out) throws SecurityException {
 				super.setOutputStream(System.out);
 			}
-			
 		};
 		outputConsoleHandler.setLevel(logLevel);
 		// Only log message with a lower level then warning.
