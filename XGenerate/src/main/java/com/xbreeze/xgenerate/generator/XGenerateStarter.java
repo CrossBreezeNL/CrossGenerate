@@ -1,13 +1,17 @@
 package com.xbreeze.xgenerate.generator;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
+import java.util.logging.Filter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import com.xbreeze.license.LicenseException;
@@ -23,7 +27,7 @@ import com.xbreeze.xgenerate.config.app.XGenAppConfig;
 public class XGenerateStarter {
 	
 	//Set the parent logger in this class by creating a logger named com.xbreeze
-	private static final Logger logger = Logger.getLogger("com.xbreeze");
+	private static final Logger logger = Logger.getLogger("");
 	
 	/**
 	 * The main for running CrossGenerate from command line.
@@ -36,7 +40,7 @@ public class XGenerateStarter {
 			if (args.length > 0) {
 				System.err.println("Incorrect number of arguments specified");
 			}
-			System.out.println("Usage: CrossGenerate -config AppConfigFileLocation [-mtc ModelFileLocation::TemplateFileLocation::GenConfigFileLocation]+ [-debug true] [-loglevelfile fine|info|warning] [-loglevelconsole fine|info|warning] [-logdestination path-to-logfile]");
+			System.out.println("Usage: CrossGenerate -config|c AppConfigFileLocation [-ModelTemplateConfig|mtc ModelFileLocation::TemplateFileLocation::GenConfigFileLocation]+ [-debug|d true] [-consoleLogLevel|cll fine|info|warning] [-fileLogLevel|fll fine|info|warning] [-fileLogDestination|fld path-to-logfile]");
 		}
 		
 		// If correct amount of arguments, go through the arguments.
@@ -44,6 +48,15 @@ public class XGenerateStarter {
 			
 			// Set debug mode default.
 			boolean debugMode = false;
+			
+			// Setup the global LogManager.
+			LogManager logManager = LogManager.getLogManager();
+			// Read the logging configuration from the resource file.
+			try {
+				logManager.readConfiguration(XGenerateStarter.class.getResourceAsStream("logging.properties"));
+			} catch (SecurityException | IOException e) {
+				System.err.println(String.format("Error while getting logging configuration", e.getMessage()));
+			}
 			
 			// Create a list for the model-template-config combinations.
 			ArrayList<ModelTemplateConfigCombination> modelTemplateConfigCombinations = new ArrayList<ModelTemplateConfigCombination>();
@@ -53,10 +66,8 @@ public class XGenerateStarter {
 			// Try reading the parameters from the console.
 			try {
 				
-				// Set logging defaults
-				Level logLevelFile = Level.INFO;
-				Level logLevelConsole = Level.INFO;
-				String logDestination = null;
+				Level fileLogLevel = null;
+				String fileLogDestination = null;
 				
 				// Loop through the arguments as pairs.
 				for (int i=0; i<args.length; i+=2) {
@@ -64,8 +75,9 @@ public class XGenerateStarter {
 					String value = args[i+1];
 					
 					// Handle the key-value pair.
-					switch (key) {
-						// config
+					switch (key.toLowerCase()) {
+						// config | c
+						case "-c":
 						case "-config":
 							// If the appConfig is already set, print en error.
 							if (appConfig != null)
@@ -77,35 +89,76 @@ public class XGenerateStarter {
 								throw new GeneratorException(String.format("Error found in app config: %s", e.getMessage()));
 							}
 							break;
-						// mtc (Model - Template - Config)
+						// ModelTemplateConfig | mtc
 						case "-mtc":
-						case "-ModelTemplateConfig":
+						case "-modeltemplateconfig":
 							modelTemplateConfigCombinations.add(ModelTemplateConfigCombination.fromString(value));
 							break;
-						// debug - d
+						// debug | d
 						case "-d":
 						case "-debug":
 							debugMode = Boolean.parseBoolean(value);
 							break;
-						// consoleLogLevel - cll
+						// consoleLogLevel | cll
 						case "-cll":
-						case "-consoleLogLevel":
-							logLevelConsole = getLogLevel(value);
+						case "-consoleloglevel":
+							// Add a logger for the console to log message below warning (and error).
+							ConsoleHandler outputConsoleHandler = new ConsoleHandler() {
+								@Override
+								protected synchronized void setOutputStream(OutputStream out) throws SecurityException {
+									super.setOutputStream(System.out);
+								}
+							};
+							Level consoleLogLevel = getLogLevel(value);
+							outputConsoleHandler.setLevel(consoleLogLevel);
+							// Only log message with a lower level then warning.
+							outputConsoleHandler.setFilter(new Filter() {
+								@Override
+								public boolean isLoggable(LogRecord record) {
+									return record.getLevel().intValue() < Level.SEVERE.intValue();
+								}
+							});
+							// Update the log level to the lowest level.
+							logger.setLevel((consoleLogLevel.intValue() < logger.getLevel().intValue()) ? consoleLogLevel : logger.getLevel());
+							logger.addHandler(outputConsoleHandler);
 							break;
-						// fileLogLevel - fll
+						// fileLogLevel | fll
 						case "-fll":
-						case "-fileLogLevel":
-							logLevelFile = getLogLevel(value);
+						case "-fileloglevel":
+							// Set the system property for file handler level.
+							fileLogLevel = getLogLevel(value);
 							break;
-						// fileLogDestination - fld
+						// fileLogDestination | fld
 						case "-fld":
-						case "-fileLogDestination":
-							logDestination = value;
+						case "-filelogdestination":
+							fileLogDestination = value;
 							break;						
 						// unrecognized parameter							
 						default:
 							throw new GeneratorException(String.format("Unexpected parameter specified: '%s'", key));
 					}
+				}
+				
+				// If the file log destination is set, create a file handler.
+				if (fileLogDestination != null && fileLogDestination.length() > 0) {
+					try {
+						// Create the file handler for the file logger.
+						FileHandler fh = new FileHandler(fileLogDestination, true);
+						if (fileLogLevel != null) {
+							// Set the log level on the file handler.
+							fh.setLevel(fileLogLevel);
+							// Update the log level to the lowest level.
+							logger.setLevel((fileLogLevel.intValue() < logger.getLevel().intValue()) ? fileLogLevel : logger.getLevel());							
+						}
+						// Add the file log handler.
+						logger.addHandler(fh);
+					} catch (SecurityException | IOException e) {
+						throw new GeneratorException(String.format("Error setting log destination: %s", e.getMessage()));
+					}
+				}
+				// If the file log level is set, but the destination is not set, throw an exception.
+				else if (fileLogLevel != null) {
+					throw new GeneratorException("fileLogLevel is set but no fileLogDestination specified.");
 				}
 				
 				// If the appConfig is still null, print an error.
@@ -114,10 +167,7 @@ public class XGenerateStarter {
 				
 				// If there is no mtc combination specified, print an error.
 				if (modelTemplateConfigCombinations.size() == 0)
-					throw new GeneratorException("No Model-Template-Config (mtc) combintation(s) specified");
-				
-				// Setup the logger
-				setLogLevelAndDestination(logLevelFile, logLevelConsole, logDestination, debugMode);
+					throw new GeneratorException("No Model-Template-Config (mtc) combination(s) specified");
 			}
 			// When an error occurred during reading of all arguments, print an error in the console.
 			catch (GeneratorException e) {
@@ -187,58 +237,6 @@ public class XGenerateStarter {
 	}
 	
 	/**
-	 * Set the log level and destination.
-	 * @param consoleLogLevel The console log level.
-	 * @param fileLogLevel The file log level.
-	 * @param fileLogDestination The file log destination.
-	 * @param debugMode Debug mode indicator.
-	 * @throws GeneratorException
-	 */
-	private static void setLogLevelAndDestination(Level consoleLogLevel, Level fileLogLevel, String fileLogDestination, Boolean debugMode) throws GeneratorException {
-		// Unlink logger from parent handlers and instantiate a new console handler so loglevel can be specified for the console hander
-		logger.setUseParentHandlers(false);
-		
-		// Set logger log level to finest necessary (fine = 500, info=800, etc)
-		logger.setLevel((fileLogLevel.intValue() < consoleLogLevel.intValue()) ? fileLogLevel : consoleLogLevel);
-		
-		// Create a log formatter.
-		GeneratorLogFormatter logFormatter;
-		// When running in debug mode, output with debug log formatting.
-		if (debugMode) {
-			logFormatter = new GeneratorDebugLogFormatter();
-		}
-		// Otherwise use non-debug log formatting
-		else {
-			logFormatter = new GeneratorLogFormatter();
-		}
-		
-		// Create a console handler for console logging.
-		ConsoleHandler consoleHandler = new ConsoleHandler();
-		// Set the console handler log level.
-		consoleHandler.setLevel(consoleLogLevel);
-		// Set the formatter for the console log.
-		consoleHandler.setFormatter(logFormatter);
-		// Add the console log handler.
-		logger.addHandler(consoleHandler);
-		
-		// If logDestination is not null, assign a file handler to the logger
-		if (fileLogDestination != null && fileLogDestination.length() > 0) {
-			try {
-				// Create the file handler for the file logger.
-				FileHandler fh = new FileHandler(fileLogDestination.toString(), true);
-				// Set the level of the file log.
-				fh.setLevel(fileLogLevel);
-				// Set the formatter on the file log.
-				fh.setFormatter(logFormatter);
-				// Add the file log handler.
-				logger.addHandler(fh);
-			} catch (SecurityException | IOException e) {
-				throw new GeneratorException(String.format("Error setting log destination: %s", e.getMessage()));
-			}
-		}
-	}
-	
-	/**
 	 * Get the log level using the textual representation from the config.
 	 * @param level The log level
 	 * @return The Level constant.
@@ -247,7 +245,7 @@ public class XGenerateStarter {
 	private static Level getLogLevel(String level) throws GeneratorException {
 		try {
 			return Level.parse(level.toUpperCase());
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException | NullPointerException e) {
 			throw new GeneratorException(String.format("Unknown LogLevel specified: '%s'", level), e);
 		}		
 	}
