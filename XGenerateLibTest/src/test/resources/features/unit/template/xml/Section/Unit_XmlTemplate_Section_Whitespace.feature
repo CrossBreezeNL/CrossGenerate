@@ -1,4 +1,4 @@
-@Unit @Debug
+@Unit
 Feature: Unit_XmlTemplate_Section_Whitespace
   In this feature we will describe the section annotation whitespace feature in XML templates
   

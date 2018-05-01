@@ -68,7 +68,7 @@ public class XGenerateLibTestSteps {
 			// Set the console handler log level.
 			logLevel = Level.FINE;
 			// Set the log format for debug mode.
-			System.setProperty("java.util.logging.SimpleFormatter.format", "@%2$s ->%n [%1$tF %1$tT] [%4$-7s] %5$s %n");
+			System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF %1$tT] [%4$-7s] %5$s [%2$s] %n");
 		}
 		
 		// Set log level for the logger.

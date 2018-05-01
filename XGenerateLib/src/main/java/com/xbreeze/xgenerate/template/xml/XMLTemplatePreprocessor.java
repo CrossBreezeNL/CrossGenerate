@@ -107,15 +107,9 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			        	// Increase the section nodes found.
 			        	++sectionNodesFound;
 			        	
-			        	// Get the element offset and length (including whitespaces).
-			        	long elementOffset = nv.expandWhiteSpaces(nv.getElementFragment(), VTDNav.WS_LEADING);
-			        	int contentOffset = (int)elementOffset;
-			        	int contentLength = (int)(elementOffset>>32);
-			        	
-			        	// Create a new TemplateSectionBoundsAnnotation using the annotation and offset.
-			        	TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(sa, contentOffset);
-			        	// Set the end index.
-			        	tsba.setAnnotationEndIndex(contentOffset + contentLength);
+			        	// Get the TemplateSectionBoundsAnnotation of the current element, correcting for whitespace around the element.
+			        	TemplateSectionBoundsAnnotation tsba = getTemplateSectionBoundsWithWhitespace(preprocessedTemplate, nv, sa);
+
 			        	// Add the bounds to the collection.
 			        	templateAnnotations.add(tsba);
 			        	logger.info(String.format("Section '%s' bounds found (%d:%d)", sa.getName(), tsba.getAnnotationBeginIndex(), tsba.getAnnotationEndIndex()));
@@ -185,15 +179,11 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 					ArrayList<TemplateAnnotation> foundInlineAnnotations = AnnotationScanner.collectInlineAnnotations(preprocessedTemplate, fileFormatConfig, annotationValueStartIndex, annotationValueEndIndex);
 		        	
 					for (TemplateSectionAnnotation tsa : foundInlineAnnotations.stream().filter(sa -> sa instanceof TemplateSectionAnnotation).toArray(TemplateSectionAnnotation[]::new)) {
-						// Get the element offset and length (including whitespaces).
-						long elementOffset = nv.expandWhiteSpaces(nv.getElementFragment(), VTDNav.WS_LEADING);
-						int sectionBoundsStart = (int)elementOffset;
-						int sectionBoundsEnd = sectionBoundsStart + (int)(elementOffset>>32);
-						logger.info(String.format("Found template section bounds for section %s: start=%d; end=%d", tsa.getName(), sectionBoundsStart, sectionBoundsEnd));
+						
+			        	// Get the TemplateSectionBoundsAnnotation of the current element, correcting for whitespace around the element.
+			        	TemplateSectionBoundsAnnotation tsba = getTemplateSectionBoundsWithWhitespace(preprocessedTemplate, nv, tsa);
 						
 						// Create the template section bounds annotation.
-						TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(tsa, sectionBoundsStart);
-						tsba.setAnnotationEndIndex(sectionBoundsEnd);
 						foundInlineAnnotations.add(tsba);
 					}
 		        	
@@ -207,6 +197,76 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		
 		// Return the pre-processed template.
 		return new PreprocessedTemplate(preprocessedTemplate, templateAnnotations);
+	}
+	
+	/**
+	 * Get a TemplateSectionBoundsAnnotation based on a TemplateSectionAnnotation and a VTDNav at the section element location.
+	 * It finds the surrounding whitespace and add the right parts to the indexes of the section bounds.
+	 * @param preprocessedTemplate The preprocessed template.
+	 * @param nv The VTDNav object which is at the position of the element to create bounds for.
+	 * @param tsa The TemplateSectionAnnotation.
+	 * @return The new TemplateSectionBoundsAnnotation
+	 * @throws NavException
+	 */
+	private TemplateSectionBoundsAnnotation getTemplateSectionBoundsWithWhitespace(String preprocessedTemplate, VTDNav nv, TemplateSectionAnnotation tsa) throws NavException {
+    	// Get the element offset and length (including whitespaces).
+    	long elementOffset = nv.getElementFragment();
+    	int contentStartIndex = (int)elementOffset;
+    	int contentEndIndex = contentStartIndex + (int)(elementOffset>>32);
+    	
+    	long elementOffsetInclusingWS = nv.expandWhiteSpaces(elementOffset);
+    	int contentStartIndexIncludingWS = (int)elementOffsetInclusingWS;
+    	int contentEndIndexIncludingWS = contentStartIndexIncludingWS + (int)(elementOffsetInclusingWS>>32);
+    	
+    	// If there is whitespace before the element start, check whether there are lines before the line where the element starts.
+    	int whiteSpaceLengthBefore = 0;
+    	if (contentStartIndex != contentStartIndexIncludingWS) {
+    		logger.info("Whitespace before element exists, scanning for bounds.");
+    		// Find whitespace before the line where the element starts.
+    		int lastNewLineIndex = preprocessedTemplate.substring(contentStartIndexIncludingWS, contentStartIndex).lastIndexOf('\n');
+    		// If there is a newline before the element start in the whitespace, skip the whitespace till the last newline.
+    		if (lastNewLineIndex != -1) {
+    			// Calculate the whitespace length before the section bounds.
+    			whiteSpaceLengthBefore = contentStartIndex - (contentStartIndexIncludingWS + lastNewLineIndex + 1);
+    		} else {
+    			// No newline found, so all whitespace before the element can be included.
+    			whiteSpaceLengthBefore = contentStartIndex - contentStartIndexIncludingWS;
+    		}
+    	}
+    	
+    	// If there is whitespace after the element end, check wether there is whitespace after the first newline.
+    	int whiteSpaceLengthAfter = 0;
+    	if (contentEndIndex != contentEndIndexIncludingWS) {
+    		logger.info("Whitespace after element exists, scanning for bounds.");
+    		// Find the first newline after the element close.
+    		int firstNewLineIndex = preprocessedTemplate.substring(contentEndIndex, contentEndIndexIncludingWS).indexOf('\n');
+    		// If the first new-line char was found, and its not the last part of the whitespace set the whitespace length after uptill including the newline.
+    		if (firstNewLineIndex != -1) {
+    			logger.info(String.format("Newline found in whitespace after element, taking whitespace uptill including (index=%s)", firstNewLineIndex));
+    			whiteSpaceLengthAfter = firstNewLineIndex + 1;
+    		}
+    		// If the new line is not found set all the whitespace after to include in the section bounds.
+    		else {
+    			whiteSpaceLengthAfter = contentEndIndexIncludingWS - contentEndIndex;
+    		}
+    	}
+    	
+    	// Update the content start and end index.
+    	if (whiteSpaceLengthBefore + whiteSpaceLengthAfter > 0) {
+    		logger.info(String.format("Found whitespace before and/or after the XML element (before=%d; after=%d)", whiteSpaceLengthBefore, whiteSpaceLengthAfter));
+    		contentStartIndex -= whiteSpaceLengthBefore;
+    		contentEndIndex += whiteSpaceLengthAfter;
+		}
+    	
+		logger.info(String.format("Found template section bounds for section %s: start=%d; end=%d", tsa.getName(), contentStartIndex, contentEndIndex));
+		logger.fine(String.format(" -> '%s'", preprocessedTemplate.substring(contentStartIndex, contentEndIndex)));
+    	
+    	// Create a new TemplateSectionBoundsAnnotation using the annotation and offset.
+    	TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(tsa, contentStartIndex);
+    	// Set the end index.
+    	tsba.setAnnotationEndIndex(contentEndIndex);
+    	// Return the TemplateSectionBoundsAnnotation.
+    	return tsba;
 	}
 	
 	/**
