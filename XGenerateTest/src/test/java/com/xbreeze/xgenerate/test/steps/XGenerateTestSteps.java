@@ -4,8 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,6 +18,7 @@ import org.apache.commons.io.FileUtils;
 import com.xbreeze.xgenerate.config.app.AppConfig;
 import com.xbreeze.xgenerate.config.app.XGenAppConfig;
 import com.xbreeze.xgenerate.generator.XGenerateStarter;
+import com.xbreeze.xgenerate.test.util.CapturedConsolePrintStream;
 
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -33,6 +36,7 @@ public class XGenerateTestSteps {
 	private String templateName;	
 	private URI logFolderName;
 	private URI outputFolderName;
+	private ByteArrayOutputStream baos;
 	
 	@Before
 	public void beforeScenario()
@@ -80,7 +84,19 @@ public class XGenerateTestSteps {
 	
 	@When("^I run the generator$")
 	public void iRunTheGenerator() throws Throwable {	
-		//Get AppConfig object
+		
+		//Create a arraybuffer and capturedConsolePrintStreams for out and err printstreams
+		baos = new ByteArrayOutputStream();
+		PrintStream stdOut = System.out;
+		PrintStream stdErr = System.err;
+		CapturedConsolePrintStream newOut = new CapturedConsolePrintStream(baos, stdOut);
+		CapturedConsolePrintStream newErr = new CapturedConsolePrintStream(baos, stdErr);
+		
+		//Redirect std and err out to the new captured streams
+		System.setOut(newOut);
+		System.setErr(newErr);
+		
+		//Get AppConfig object		
 		AppConfig appConfig = XGenAppConfig.fromString(this.appConfigContent).getAppConfig();
 		
 		
@@ -118,7 +134,10 @@ public class XGenerateTestSteps {
 		
 		//Remove app config file		
 		Files.delete(Paths.get(fullAppConfigFileURI));
-		
+
+		//Restore std and err output streams
+		System.setOut(stdOut);
+		System.setErr(stdErr);
 	}
 
 	@Then("^I expect (\\d+) generation results?$")
@@ -154,9 +173,19 @@ public class XGenerateTestSteps {
 		//Check for unexpected content		
 		found = this.findTextInLog(logDir.listFiles()[0].getAbsolutePath(), textNotExpected);
 		assertFalse(String.format("Found %s in log file while not expected", textNotExpected), found);
-		
-		
 	}
+	
+	@Then("^a console output containing \"(.*)\" but not containing \"(.*)\"$")
+	public void andAConsoleOutputContaining(String textExpected, String textNotExpected) throws Throwable {
+		
+		//Check for expected content
+		Boolean found = this.findTextInString(baos.toString(), textExpected);
+		assertTrue(String.format("Did not found %s in console output while expected", textExpected), found);
+		
+		//Check for unexpected content		
+		found = this.findTextInString(baos.toString(), textNotExpected);
+		assertFalse(String.format("Found %s in console output while not expected", textNotExpected), found);		
+	}	
 	
 	private String writeToFile(URI location, String filePrefix, String fileSuffix, String fileContents) throws IOException {
 		String fileName = filePrefix + String.valueOf(Thread.currentThread().getId()) + fileSuffix;
@@ -170,6 +199,10 @@ public class XGenerateTestSteps {
 		String actualContent = new String(Files.readAllBytes(Paths.get(fileName)));
 		return actualContent.contains(textToFind);
 						
+	}
+	
+	private Boolean findTextInString(String content, String textToFind) throws Throwable {
+		return content.contains(textToFind);
 	}
 		
 }

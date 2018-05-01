@@ -65,17 +65,40 @@ Feature: Unit_CommandLine_Logging
     Then I expect 0 generation result
     And no log file
 
-  Scenario Outline: logging from commandline, scenario <Scenario>
+  Scenario Outline: file logging from commandline, scenario <Scenario>
     Given the following additional comma separated commandline arguments:
       """
-      -Debug, true, -<ConsoleLogLevel>, <ConsoleLogLevelValue>, -<FileLogLevelParam>, <FileLogLevelParamValue>, -<FileLogDestinationParam>, <FileLogdestinationValue>
+      -Debug, true, -<FileLogLevelParam>, <FileLogLevelParamValue>, -<FileLogDestinationParam>, C:\\CrossGenerate\\Test\\Log\\testlog.log
       """
     When I run the generator
     Then I expect 1 generation result
     And a log file containing "<ResultContains>" but not containing "<ResultNotContains>"
 
     Examples: 
-      | Scenario                                     | FileLogLevelParam | FileLogLevelParamValue | ConsoleLogLevel | ConsoleLogLevelValue | FileLogDestinationParam | FileLogdestinationValue                   | ResultContains | ResultNotContains |
-      | fullnames proper case, both warning          | fileLogLevel      | warning                | consoleLogLevel | warning              | fileLogDestination      | C:\\CrossGenerate\\Test\\Log\\testlog.log | [WARNING]      | [INFO   ]         |
-      | fullnames lower case, both warning           | fileloglevel      | warning                | consoleloglevel | warning              | filelogdestination      | C:\\CrossGenerate\\Test\\Log\\testlog.log | [WARNING]      | [INFO   ]         |
-      | shortnames, info to file, warning to console | fll               | info                   | cll             | warning              | fld                     | C:\\CrossGenerate\\Test\\Log\\testlog.log | [INFO   ]      | [FINE   ]         |
+      | Scenario                                      | FileLogLevelParam | FileLogLevelParamValue | FileLogDestinationParam | ResultContains | ResultNotContains |
+      | all fullnames proper case  warning            | fileLogLevel      | warning                | fileLogDestination      | [WARNING]      | [INFO   ]         |
+      | all fullnames lower case,  warning            | fileloglevel      | warning                | filelogdestination      | [WARNING]      | [INFO   ]         |
+      | loglevel shortname, lower case, warning       | fll               | warning                | filelogdestination      | [WARNING]      | [INFO   ]         |
+      | loglevel shortname, upper case, warning       | FLL               | warning                | filelogdestination      | [WARNING]      | [INFO   ]         |
+      | logdestination shortname, lower case, warning | fll               | warning                | fld                     | [WARNING]      | [INFO   ]         |
+      | logdestinaion shortname, upper case, warning  | fll               | warning                | FLD                     | [WARNING]      | [INFO   ]         |
+      | Log level is info                             | fll               | info                   | fld                     | [INFO   ]      | [FINE   ]         |
+      | log level is fine                             | fll               | fine                   | fld                     | [FINE   ]      | [(nothing)  ]     |
+
+  Scenario Outline: console logging from commandline, scenario <Scenario>
+    Given the following additional comma separated commandline arguments:
+      """
+      -Debug, true, -<ConsoleLogLevelParam>, <ConsoleLogLevelParamValue>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And a console output containing "<ResultContains>" but not containing "<ResultNotContains>"
+
+    Examples: 
+      | Scenario                      | ConsoleLogLevelParam | ConsoleLogLevelParamValue | ResultContains | ResultNotContains |
+      | Fullname proper case  warning | consoleLogLevel      | warning                   | [WARNING]      | [INFO   ]         |
+      | Fullname lowercase  warning   | consoleloglevel      | warning                   | [WARNING]      | [INFO   ]         |
+      | Shortname lowercase  warning  | cll                  | warning                   | [WARNING]      | [INFO   ]         |
+      | Shortname uppercase warning   | CLL                  | warning                   | [WARNING]      | [INFO   ]         |
+      | log level is info             | CLL                  | info                      | [INFO   ]      | [FINE   ]         |
+      | log level is fine             | CLL                  | fine                      | [FINE   ]      | [(nothing)   ]    |
