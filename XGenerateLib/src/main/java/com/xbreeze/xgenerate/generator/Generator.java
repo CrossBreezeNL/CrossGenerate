@@ -11,9 +11,11 @@ import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -241,7 +243,31 @@ public class Generator extends GeneratorStub {
 					StreamResult outputResult = new StreamResult(xslResultWriter);
 					
 					// Create the transformer objects to transform the XSLT with the Model into the output.
-					Transformer xslTransformer = XMLUtils.getXmlTransformer().newTransformer(xslSource);
+					TransformerFactory xsltTransformerFactory = XMLUtils.getXmlTransformer();
+					// Create an ErrorListener for the TransformerFactory and Transformer, so warnings are logged using the local logger.
+					ErrorListener errorListener = new ErrorListener() {
+						@Override
+						public void warning(TransformerException exception) throws TransformerException {
+							// Send warnings to the local logger on the fine log level, so this is only visible when running in debug mode.
+							logger.fine(String.format("Warning fired during template transformation: %s", exception.getMessage()));
+						}
+						
+						@Override
+						public void fatalError(TransformerException exception) throws TransformerException {
+							throw new TransformerException(exception);
+						}
+						
+						@Override
+						public void error(TransformerException exception) throws TransformerException {
+							throw new TransformerException(exception);
+						}
+					};
+					// Set the error listener on the factory (for template compile-time warnings and errors).
+					xsltTransformerFactory.setErrorListener(errorListener);
+					// Create the XSLT Transformer.
+					Transformer xslTransformer = xsltTransformerFactory.newTransformer(xslSource);
+					// Set the error listener on the transformer (for template run-time warnings and errors).
+					xslTransformer.setErrorListener(errorListener);
 					
 					// If running in test mode, cast the xslTransformer to net.sf.saxon.jaxp.TransformerImpl and set our custom
 					// output resolver to get the output in GenerationResults instead of files					 
