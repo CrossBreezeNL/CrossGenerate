@@ -22,13 +22,12 @@ Feature: Unit_Config_XmlTemplate_TemplateAttributeInjection
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Template">
-          <FileFormat templateType="xml" />
+        <XmlTemplate rootSectionName="Template">
           <Output type="output_per_element" />
           <TemplateAttributeInjections>
             <TemplateAttributeInjection templateXPath="<templateXPath>" attributeName="<attributeName>" attributeValue="<attributeValue>" />
           </TemplateAttributeInjections>
-        </Template>
+        </XmlTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table"/>
         </Binding>

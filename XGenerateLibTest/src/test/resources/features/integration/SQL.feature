@@ -69,10 +69,10 @@ Feature: Integration_SQL
 			<?xml version="1.0" encoding="UTF-8"?>
 			<XGenConfig>
 			  <Model/>
-			  <Template rootSectionName="System">
-			    <FileFormat templateType="text" currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+			  <TextTemplate rootSectionName="System">
+			    <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
 			    <Output type="single_output" />
-			  </Template>
+			  </TextTemplate>
 			  <Binding>
 			    <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
 			    <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system">

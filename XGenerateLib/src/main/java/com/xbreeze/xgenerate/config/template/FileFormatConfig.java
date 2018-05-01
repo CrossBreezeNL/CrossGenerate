@@ -2,8 +2,6 @@ package com.xbreeze.xgenerate.config.template;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-import com.xbreeze.xgenerate.template.TemplateType;
-
 /**
  * The FileFormat represents the configuration of the template its file format.
  * One can specify the type and version of a file format.
@@ -34,12 +32,6 @@ public class FileFormatConfig {
 	 * For example when the FileFormatType is Microsoft_SSIS, one could specify 2016 here to point to Microsoft SQL Server 2016 here.
 	 */
 	private String _version;
-	
-	/**
-	 * The type of the template.
-	 * @see TemplateType
-	 */
-	private TemplateType _templateType;
 	
 	/**
 	 * The current accessor.
@@ -130,21 +122,6 @@ public class FileFormatConfig {
 	 */
 	public void setVersion(String version) {
 		this._version = version;
-	}
-	
-	/**
-	 * @return the templateType
-	 */
-	@XmlAttribute
-	public TemplateType getTemplateType() {
-		return _templateType;
-	}
-
-	/**
-	 * @param templateType the templateType to set
-	 */
-	public void setTemplateType(TemplateType templateType) {
-		this._templateType = templateType;
 	}
 	
 	/**

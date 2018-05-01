@@ -18,13 +18,13 @@ Feature: Unit_Config_TextTemplate_Section_Bounds
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+        <TextTemplate rootSectionName="System">
+          <FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="single_output" />
           <Sections>
             <Section name="Entity" begin="DROP TABLE " includeBegin="<includeBegin>" end="GO;" includeEnd="<includeEnd>"/>
           </Sections>
-        </Template>
+        </TextTemplate>
         <Binding>
           <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
           <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
@@ -57,13 +57,13 @@ Feature: Unit_Config_TextTemplate_Section_Bounds
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+        <TextTemplate rootSectionName="System">
+          <FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="single_output" />
           <Sections>
             <Section name="Entity" begin="DROP TABLE" includeBegin="true" nrOfLines="2"/>
           </Sections>
-        </Template>
+        </TextTemplate>
         <Binding>
           <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
           <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
@@ -90,13 +90,13 @@ Feature: Unit_Config_TextTemplate_Section_Bounds
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+        <TextTemplate rootSectionName="System">
+          <FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="single_output" />
           <Sections>
             <Section name="Entity" begin="DROP TABLE" includeBegin="true"/>
           </Sections>
-        </Template>
+        </TextTemplate>
         <Binding>
           <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
           <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
@@ -122,13 +122,13 @@ Feature: Unit_Config_TextTemplate_Section_Bounds
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+        <TextTemplate rootSectionName="System">
+          <FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="single_output" />
           <Sections>
             <Section name="Entity" begin="DROP TABLE" includeBegin="true" literalOnLastLine="GO;"/>
           </Sections>
-        </Template>
+        </TextTemplate>
         <Binding>
           <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
           <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
@@ -155,13 +155,13 @@ Feature: Unit_Config_TextTemplate_Section_Bounds
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+        <TextTemplate rootSectionName="System">
+          <FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="single_output" />
           <Sections>
             <Section name="Entity" literalOnFirstLine="TABLE" end="GO;" includeEnd="true" />
           </Sections>
-        </Template>
+        </TextTemplate>
         <Binding>
           <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
           <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
@@ -187,13 +187,13 @@ Feature: Unit_Config_TextTemplate_Section_Bounds
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="System">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+        <TextTemplate rootSectionName="System">
+          <FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="single_output" />
           <Sections>
             <Section name="Entity" literalOnFirstLine="TABLE" nrOfLines="2" />
           </Sections>
-        </Template>
+        </TextTemplate>
         <Binding>
           <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
           <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 

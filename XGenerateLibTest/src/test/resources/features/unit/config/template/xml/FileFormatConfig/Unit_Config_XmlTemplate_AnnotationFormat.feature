@@ -19,16 +19,15 @@ Feature: Unit_Config_XmlTemplate_AnnotationFormat
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Database">
+        <XmlTemplate rootSectionName="Database">
           <FileFormat
-            templateType="xml"
             commentNodeXPath="@description"
             annotationPrefix="<annotationPrefix>"
             annotationArgsPrefix="<annotationArgsPrefix>"
             annotationArgsSuffix="<annotationArgsSuffix>"
           />
           <Output type="single_output" />
-        </Template>
+        </XmlTemplate>
         <Binding>
           <SectionModelBinding section="Database" modelXPath="/modeldefinition" placeholderName="database" />
         </Binding>
@@ -60,13 +59,10 @@ Feature: Unit_Config_XmlTemplate_AnnotationFormat
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Database">
-          <FileFormat
-            templateType="xml"
-            commentNodeXPath="@description"
-          />
+        <XmlTemplate rootSectionName="Database">
+          <FileFormat commentNodeXPath="@description" />
           <Output type="single_output" />
-        </Template>
+        </XmlTemplate>
         <Binding>
           <SectionModelBinding section="Database" modelXPath="/modeldefinition" placeholderName="database" />
         </Binding>

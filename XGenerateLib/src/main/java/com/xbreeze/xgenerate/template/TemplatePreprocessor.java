@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import com.xbreeze.xgenerate.UnhandledException;
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
-import com.xbreeze.xgenerate.config.template.TemplateConfig;
+import com.xbreeze.xgenerate.config.template.RootTemplateConfig;
 import com.xbreeze.xgenerate.template.annotation.TemplateAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateCommentAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
@@ -58,7 +58,7 @@ public abstract class TemplatePreprocessor {
 	 * @throws UnknownAnnotationException 
 	 */
 	public XsltTemplate preProcess(RawTemplate rawTemplate, URI outputFileUri) throws TemplatePreprocessorException, UnhandledException {
-		TemplateConfig templateConfig = _config.getTemplateConfig();
+		RootTemplateConfig templateConfig = _config.getTemplateConfig();
 		
 		// Perform the specific sectionizing for the current template.
 		// This should detect sections from the raw template and transform it into a SectionedTemplate object.

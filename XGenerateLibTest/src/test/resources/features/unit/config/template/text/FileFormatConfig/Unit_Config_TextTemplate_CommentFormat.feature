@@ -18,13 +18,10 @@ Feature: Unit_Config_TextTemplate_CommentFormat
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Database">
-          <FileFormat
-            templateType="text"
-            singleLineCommentPrefix="<singleLineCommentPrefix>"
-          />
+        <TextTemplate rootSectionName="Database">
+          <FileFormat singleLineCommentPrefix="<singleLineCommentPrefix>" />
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Database" modelXPath="/modeldefinition" placeholderName="database" />
         </Binding>
@@ -52,14 +49,13 @@ Feature: Unit_Config_TextTemplate_CommentFormat
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Database">
+        <TextTemplate rootSectionName="Database">
           <FileFormat
-            templateType="text"
             multiLineCommentPrefix="<multiLineCommentPrefix>"
             multiLineCommentSuffix="<multiLineCommentSuffix>"
           />
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Database" modelXPath="/modeldefinition" placeholderName="database" />
         </Binding>

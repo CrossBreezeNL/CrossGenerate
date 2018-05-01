@@ -19,9 +19,9 @@
       <ModelAttributeInjection modelXPath="//attribute[@datatype='uniqueidentifier']" targetAttribute="etldatatype" targetValue="guid"/>
     </ModelAttributeInjections>
   </Model>
-  <Template rootSectionName="StgPackage">
+  <XmlTemplate rootSectionName="StgPackage">
     <!-- Define the FileFormat, here all attributes with the name 'description' are scanned for annotations. -->
-    <FileFormat templateType="xml" currentAccessor="_" commentNodeXPath="@*[lower-case(local-name())='description']" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <FileFormat currentAccessor="_" commentNodeXPath="@*[lower-case(local-name())='description']" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <!-- Output a SSIS package per element of the root section, so 1 package per entity. -->
     <Output type="output_per_element" />
     <Sections>
@@ -50,7 +50,7 @@
       <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@cachedScale"  modelNode="scale" scope="current" />
       <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@cachedCodePage"  modelNode="codePage" scope="current" />
     </TemplatePlaceholderInjections>
-  </Template>
+  </XmlTemplate>
  <Binding>
    <!-- Create a binding between the 'StgPackage' sections in the template and the 'entity' elements in the model. -->
    <SectionModelBinding section="StgPackage" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity">

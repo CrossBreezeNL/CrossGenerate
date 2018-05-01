@@ -13,10 +13,10 @@ Feature: Unit_XmlTemplate_Comment
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="Template">
-          <FileFormat templateType="xml" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+        <XmlTemplate rootSectionName="Template">
+          <FileFormat commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="single_output" />
-        </Template>
+        </XmlTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/modeldefinition" placeholderName="model" />
         </Binding>

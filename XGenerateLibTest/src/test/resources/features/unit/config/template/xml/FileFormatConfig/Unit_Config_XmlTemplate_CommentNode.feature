@@ -19,13 +19,10 @@ Feature: Unit_Config_XmlTemplate_CommentNode
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Database">
-          <FileFormat
-            templateType="xml"
-            commentNodeXPath="<commentNodeXPath>"
-          />
+        <XmlTemplate rootSectionName="Database">
+          <FileFormat commentNodeXPath="<commentNodeXPath>" />
           <Output type="single_output" />
-        </Template>
+        </XmlTemplate>
         <Binding>
           <SectionModelBinding section="Database" modelXPath="/modeldefinition" placeholderName="database" />
         </Binding>

@@ -26,9 +26,8 @@ Feature: Unit_Config_TextTemplate_Section_Suffix
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="Template">
+        <TextTemplate rootSectionName="Template">
           <FileFormat
-            templateType="text" 
             singleLineCommentPrefix="--" 
             annotationPrefix="@XGen" 
             annotationArgsPrefix="(" 
@@ -38,7 +37,7 @@ Feature: Unit_Config_TextTemplate_Section_Suffix
           <Sections>
             <Section name="Column" begin="column" includeBegin="true" end="name" includeEnd="true" suffix="<suffix>" suffixStyle="<suffixStyle>"/>
           </Sections>
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/modeldefinition" placeholderName="model"> 
             <SectionModelBinding section="Column" modelXPath="attributes/attribute" placeholderName="column"/>
@@ -68,9 +67,8 @@ Feature: Unit_Config_TextTemplate_Section_Suffix
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="Template">
+        <TextTemplate rootSectionName="Template">
           <FileFormat
-            templateType="text" 
             singleLineCommentPrefix="--" 
             annotationPrefix="@XGen" 
             annotationArgsPrefix="(" 
@@ -80,7 +78,7 @@ Feature: Unit_Config_TextTemplate_Section_Suffix
           <Sections>
             <Section name="Column" begin="column" includeBegin="true" suffix="<suffix>" suffixStyle="<suffixStyle>"/>
           </Sections>
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/modeldefinition" placeholderName="model"> 
             <SectionModelBinding section="Column" modelXPath="attributes/attribute" placeholderName="column"/>

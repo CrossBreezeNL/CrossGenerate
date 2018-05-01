@@ -13,9 +13,8 @@ Feature: Unit_TextTemplate_Comment
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="Template">
+        <TextTemplate rootSectionName="Template">
           <FileFormat
-            templateType="text"
             singleLineCommentPrefix="--"
             multiLineCommentPrefix="/*"
             multiLineCommentSuffix="*/"
@@ -24,7 +23,7 @@ Feature: Unit_TextTemplate_Comment
             annotationArgsSuffix=")"
           />
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/modeldefinition" placeholderName="model" />
         </Binding>

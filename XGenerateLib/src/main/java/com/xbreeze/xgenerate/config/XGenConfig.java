@@ -16,6 +16,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.transform.stream.StreamSource;
@@ -28,7 +29,9 @@ import org.xml.sax.SAXParseException;
 
 import com.xbreeze.xgenerate.config.binding.BindingConfig;
 import com.xbreeze.xgenerate.config.model.ModelConfig;
-import com.xbreeze.xgenerate.config.template.TemplateConfig;
+import com.xbreeze.xgenerate.config.template.RootTemplateConfig;
+import com.xbreeze.xgenerate.config.template.TextTemplateConfig;
+import com.xbreeze.xgenerate.config.template.XMLTemplateConfig;
 
 /**
  * The XGenConfig class represents the configuration object for CrossGenerate.
@@ -52,10 +55,13 @@ public class XGenConfig {
 	// 
 	/**
 	 * The template configuration
-	 * @see TemplateConfig
+	 * @see XMLTemplateConfig
 	 */
-	@XmlElement(name="Template")
-	private TemplateConfig templateConfig;
+    @XmlElements({
+        @XmlElement(name="TextTemplate", type=TextTemplateConfig.class),
+        @XmlElement(name="XmlTemplate", type=XMLTemplateConfig.class),
+    })
+	private RootTemplateConfig templateConfig;
 	
 	/**
 	 * The binding configuration.
@@ -81,14 +87,14 @@ public class XGenConfig {
 	/**
 	 * @return the template
 	 */
-	public TemplateConfig getTemplateConfig() {
+	public RootTemplateConfig getTemplateConfig() {
 		return templateConfig;
 	}
 
 	/**
 	 * @param templateConfig the template to set
 	 */
-	public void setTemplateConfig(TemplateConfig templateConfig) {
+	public void setTemplateConfig(XMLTemplateConfig templateConfig) {
 		this.templateConfig = templateConfig;
 	}
 

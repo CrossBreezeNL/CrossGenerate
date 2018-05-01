@@ -22,16 +22,16 @@ import javax.xml.transform.stream.StreamSource;
 import com.xbreeze.xgenerate.UnhandledException;
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.config.XGenConfig;
-import com.xbreeze.xgenerate.config.template.TemplateConfig;
+import com.xbreeze.xgenerate.config.template.RootTemplateConfig;
 import com.xbreeze.xgenerate.generator.GenerationResult.GenerationStatus;
 import com.xbreeze.xgenerate.model.Model;
 import com.xbreeze.xgenerate.model.ModelPreprocessor;
 import com.xbreeze.xgenerate.model.ModelPreprocessorException;
-import com.xbreeze.xgenerate.template.XsltTemplate;
 import com.xbreeze.xgenerate.template.RawTemplate;
 import com.xbreeze.xgenerate.template.TemplateException;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
+import com.xbreeze.xgenerate.template.XsltTemplate;
 import com.xbreeze.xgenerate.template.annotation.UnknownAnnotationException;
 import com.xbreeze.xgenerate.template.xml.XMLUtils;
 
@@ -210,13 +210,13 @@ public class Generator extends GeneratorStub {
 			
 			try {
 				// Get the template configuration.
-				TemplateConfig templateConfig = xGenConfig.getTemplateConfig();				
+				RootTemplateConfig templateConfig = xGenConfig.getTemplateConfig();				
 				// Pre-process the template.
 				String xsltTemplateString;
 				{
 					logger.info("Begin template pre-processing");
 					// Get the template preprocessor for the template type we are dealing with.
-					TemplatePreprocessor templatePreprocessor = templateConfig.getFileFormatConfig().getTemplateType().getTemplatePreprocessor(xGenConfig);
+					TemplatePreprocessor templatePreprocessor = templateConfig.getTemplatePreprocessor(xGenConfig);
 					// Pre-process the raw template into a xslt template.
 					XsltTemplate xsltTemplate = templatePreprocessor.preProcess(rawTemplate, outputFileUri);
 					xsltTemplateString = xsltTemplate.toString();

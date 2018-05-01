@@ -18,16 +18,15 @@ Feature: Unit_TextTemplate_Section_Suffix
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="Template">
+        <TextTemplate rootSectionName="Template">
           <FileFormat
-            templateType="text" 
             singleLineCommentPrefix="--" 
             annotationPrefix="@XGen" 
             annotationArgsPrefix="(" 
             annotationArgsSuffix=")"
           />
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/modeldefinition" placeholderName="model"> 
             <SectionModelBinding section="Column" modelXPath="attributes/attribute" placeholderName="column"/>

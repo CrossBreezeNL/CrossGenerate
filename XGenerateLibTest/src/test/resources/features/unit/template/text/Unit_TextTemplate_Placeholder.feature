@@ -19,10 +19,9 @@ Feature: Unit_TextTemplate_Placeholder
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="Columns">
-          <FileFormat templateType="text" />
+        <TextTemplate rootSectionName="Columns">
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Columns" modelXPath="/modeldefinition/attribute" placeholderName="column" />
         </Binding>

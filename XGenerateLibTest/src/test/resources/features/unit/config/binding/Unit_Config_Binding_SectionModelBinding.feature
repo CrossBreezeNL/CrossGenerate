@@ -18,10 +18,9 @@ Feature: Unit_Config_Binding_SectionModelBinding
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template>
-          <FileFormat templateType="text" />
+        <TextTemplate>
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="_template_" modelXPath="/entities/entity" placeholderName="table" />
         </Binding>
@@ -47,10 +46,9 @@ Feature: Unit_Config_Binding_SectionModelBinding
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="<rootSectionName>">
-          <FileFormat templateType="text" />
+        <TextTemplate rootSectionName="<rootSectionName>">
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="<rootSectionName>" modelXPath="<modelXPath>" placeholderName="<placeholderName>" />
         </Binding>
@@ -78,10 +76,10 @@ Feature: Unit_Config_Binding_SectionModelBinding
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Template">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" />
+        <TextTemplate rootSectionName="Template">
+          <FileFormat singleLineCommentPrefix="--" />
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="<rootModelXPath>" placeholderName="root">
             <SectionModelBinding section="Section" modelXPath="<childModelXPath>" placeholderName="<childPlaceholderName>" />

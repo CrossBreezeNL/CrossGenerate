@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import com.xbreeze.xgenerate.template.annotation.TemplatePlaceholderScope;
 
-public class TemplatePlaceholderInjection {
+public class XMLTemplatePlaceholderInjection {
 	
 	/**
 	 * The XPath to evaluate on the template document to find the node on which to inject the placeholder.

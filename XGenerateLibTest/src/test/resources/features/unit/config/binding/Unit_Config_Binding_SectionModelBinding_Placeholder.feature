@@ -18,10 +18,9 @@ Feature: Unit_Config_Binding_SectionModelBinding_Placeholder
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Template">
-          <FileFormat templateType="text" />
+        <TextTemplate rootSectionName="Template">
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table">
             <Placeholders>

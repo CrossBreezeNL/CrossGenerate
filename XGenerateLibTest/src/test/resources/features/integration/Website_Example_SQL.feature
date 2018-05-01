@@ -37,10 +37,10 @@ Feature: Integration_Website_Example_SQL
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="StagingScript">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" />
+        <TextTemplate rootSectionName="StagingScript">
+          <FileFormat singleLineCommentPrefix="--" />
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="StagingScript" modelXPath="/system" placeholderName="schema">
               <SectionModelBinding section="CreateTable" modelXPath="entity" placeholderName="table">
@@ -114,10 +114,10 @@ Feature: Integration_Website_Example_SQL
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="StagingScript">
-          <FileFormat templateType="text" singleLineCommentPrefix="--" />
+        <TextTemplate rootSectionName="StagingScript">
+          <FileFormat singleLineCommentPrefix="--" />
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="StagingScript" modelXPath="/system" placeholderName="schema">
               <SectionModelBinding section="CreateTable" modelXPath="entity" placeholderName="table">

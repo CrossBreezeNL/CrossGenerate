@@ -18,16 +18,15 @@ Feature: Unit_Config_TextTemplate_AnnotationFormat
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Template">
+        <TextTemplate rootSectionName="Template">
           <FileFormat
-            templateType="text"
             singleLineCommentPrefix="--"
             annotationPrefix="<annotationPrefix>"
             annotationArgsPrefix="<annotationArgsPrefix>"
             annotationArgsSuffix="<annotationArgsSuffix>"
           />
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/modeldefinition" placeholderName="database" />
         </Binding>
@@ -57,13 +56,10 @@ Feature: Unit_Config_TextTemplate_AnnotationFormat
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Template">
-          <FileFormat
-            templateType="text"
-            singleLineCommentPrefix="--"
-          />
+        <TextTemplate rootSectionName="Template">
+          <FileFormat singleLineCommentPrefix="--" />
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/modeldefinition" placeholderName="database" />
         </Binding>

@@ -22,12 +22,9 @@ Feature: Unit_Config_TextTemplate_PlaceholderFormat
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Database">
-          <FileFormat
-            templateType="text"
-          />
+        <TextTemplate rootSectionName="Database">
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="database" />
         </Binding>
@@ -49,13 +46,10 @@ Feature: Unit_Config_TextTemplate_PlaceholderFormat
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Database">
-          <FileFormat
-            templateType="text"
-            <AccessorName>Accessor="<AccessorChar>"
-          />
+        <TextTemplate rootSectionName="Database">
+          <FileFormat <AccessorName>Accessor="<AccessorChar>" />
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="database" />
         </Binding>

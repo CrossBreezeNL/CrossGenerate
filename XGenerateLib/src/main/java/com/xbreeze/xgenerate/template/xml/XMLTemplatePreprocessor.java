@@ -6,8 +6,9 @@ import java.util.ArrayList;
 
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.FileFormatConfig;
-import com.xbreeze.xgenerate.config.template.TemplateAttributeInjection;
-import com.xbreeze.xgenerate.config.template.TemplatePlaceholderInjection;
+import com.xbreeze.xgenerate.config.template.XMLTemplateAttributeInjection;
+import com.xbreeze.xgenerate.config.template.XMLTemplateConfig;
+import com.xbreeze.xgenerate.config.template.XMLTemplatePlaceholderInjection;
 import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.template.PreprocessedTemplate;
 import com.xbreeze.xgenerate.template.RawTemplate;
@@ -53,21 +54,24 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		
 		// First perform all modifications on the XML document (like attribute and placeholder injection).
 		// This is to make sure the document doesn't change anymore when sectionizing, since character indexes are stored.
-		
-		// Perform template attribute injections on XML document (if defined).
-		if (_config.getTemplateConfig() != null
-				&& _config.getTemplateConfig().getTemplateAttributeInjections() != null
-				&& _config.getTemplateConfig().getTemplateAttributeInjections().size() > 0) 
-		{
-			preprocessedTemplate = performAttributeInjections(preprocessedTemplate, _config.getTemplateConfig().getTemplateAttributeInjections());
-		}
-		
-		// Perform the template placeholder injections on the XML document (if defined).
-		if (_config.getTemplateConfig() != null
-				&& _config.getTemplateConfig().getTemplatePlaceholderInjections() != null
-				&& _config.getTemplateConfig().getTemplatePlaceholderInjections().size() > 0) 
-		{
-			preprocessedTemplate = performPlaceholderInjections(preprocessedTemplate, _config.getTemplateConfig().getTemplatePlaceholderInjections());
+
+		// Check whether the template is a XML template.
+		if (_config.getTemplateConfig() != null && _config.getTemplateConfig() instanceof XMLTemplateConfig) {
+			XMLTemplateConfig xmlTemplateConfig = (XMLTemplateConfig)_config.getTemplateConfig();
+			
+			// Perform template attribute injections on XML document (if defined).
+			if (xmlTemplateConfig.getTemplateAttributeInjections() != null
+					&& xmlTemplateConfig.getTemplateAttributeInjections().size() > 0) 
+			{
+				preprocessedTemplate = performAttributeInjections(preprocessedTemplate, xmlTemplateConfig.getTemplateAttributeInjections());
+			}
+			
+			// Perform the template placeholder injections on the XML document (if defined).
+			if (xmlTemplateConfig.getTemplatePlaceholderInjections() != null
+					&& xmlTemplateConfig.getTemplatePlaceholderInjections().size() > 0) 
+			{
+				preprocessedTemplate = performPlaceholderInjections(preprocessedTemplate, xmlTemplateConfig.getTemplatePlaceholderInjections());
+			}
 		}
 		
 		// Now all modifications are done we can sectionize the XML document using the sections defined
@@ -275,7 +279,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	 * @param templateAttributeInjections
 	 * @throws TemplatePreprocessorException
 	 */
-	private String performAttributeInjections(String template, ArrayList<TemplateAttributeInjection> templateAttributeInjections) throws TemplatePreprocessorException {
+	private String performAttributeInjections(String template, ArrayList<XMLTemplateAttributeInjection> templateAttributeInjections) throws TemplatePreprocessorException {
 		logger.info("Performing template attribute injections.");
 		
 		// Create a VTDNav for navigating the document.
@@ -295,7 +299,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		}
 		
 		// Loop through the template attribute injections and apply them.
-		for (TemplateAttributeInjection tai: templateAttributeInjections){
+		for (XMLTemplateAttributeInjection tai: templateAttributeInjections){
 			// Create an AutoPilot for querying the document.
 			AutoPilot ap = new AutoPilot(nv);
 			
@@ -335,7 +339,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	 * @param templatePlaceholderInjections
 	 * @throws TemplatePreprocessorException
 	 */
-	private String performPlaceholderInjections(String template, ArrayList<TemplatePlaceholderInjection> templatePlaceholderInjections) throws TemplatePreprocessorException {
+	private String performPlaceholderInjections(String template, ArrayList<XMLTemplatePlaceholderInjection> templatePlaceholderInjections) throws TemplatePreprocessorException {
 		logger.info("Performing template placeholder injections.");
 		
 		// Create a VTDNav for navigating the document.
@@ -355,7 +359,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		}
 		
 		// Loop through the template placeholder injections and apply them.
-		for (TemplatePlaceholderInjection tpi : templatePlaceholderInjections) {
+		for (XMLTemplatePlaceholderInjection tpi : templatePlaceholderInjections) {
 			String placeholderToInject = getPlaceholderInjectionValue(NamedTemplateSection.PLACEHOLDER_PLACEHOLDER_NAME, tpi);
 			logger.fine(String.format("Performing template placeholder injection (templateXPath='%s' => '%s')", tpi.getTemplateXPath(), placeholderToInject));
 			
@@ -413,7 +417,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	 * @return The new string value for the node.
 	 * @throws TemplatePreprocessorException
 	 */
-	private String getPlaceholderInjectionValue(String placeholderName, TemplatePlaceholderInjection tpi) throws TemplatePreprocessorException {
+	private String getPlaceholderInjectionValue(String placeholderName, XMLTemplatePlaceholderInjection tpi) throws TemplatePreprocessorException {
 		String accessor;
 		switch (tpi.getScope()) {
 			case current:

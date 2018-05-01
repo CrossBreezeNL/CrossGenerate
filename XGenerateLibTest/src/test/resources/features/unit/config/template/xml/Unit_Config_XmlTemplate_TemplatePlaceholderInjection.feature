@@ -24,13 +24,13 @@ Feature: Unit_Config_XmlTemplate_TemplatePlaceholderInjection
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Template">
-          <FileFormat templateType="xml" currentAccessor="_" childAccessor="$" />
+        <XmlTemplate rootSectionName="Template">
+          <FileFormat currentAccessor="_" childAccessor="$" />
           <Output type="output_per_element" />
           <TemplatePlaceholderInjections>
             <TemplatePlaceholderInjection templateXPath="<templateXPath>" modelNode="<modelNode>" scope="<scope>" />
           </TemplatePlaceholderInjections>
-        </Template>
+        </XmlTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table"/>
         </Binding>

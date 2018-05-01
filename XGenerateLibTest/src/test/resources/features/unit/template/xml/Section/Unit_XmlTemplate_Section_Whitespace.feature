@@ -24,10 +24,10 @@ Feature: Unit_XmlTemplate_Section_Whitespace
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
-        <Template rootSectionName="Database">
-          <FileFormat templateType="xml" currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+        <XmlTemplate rootSectionName="Database">
+          <FileFormat currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="output_per_element" />
-        </Template>
+        </XmlTemplate>
         <Binding>
           <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="system">
             <SectionModelBinding section="Tables" modelXPath="./entity" placeholderName="entity">

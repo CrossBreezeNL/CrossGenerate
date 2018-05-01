@@ -20,10 +20,9 @@ Feature: Unit_CommandLine_Logging
       """
          <XGenConfig>
           <Model/>
-          <Template rootSectionName="Template">
-            <FileFormat templateType="text" />
+          <TextTemplate rootSectionName="Template">
             <Output type="single_output" />
-          </Template>
+          </TextTemplate>
           <Binding>
             <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table" />
           </Binding>

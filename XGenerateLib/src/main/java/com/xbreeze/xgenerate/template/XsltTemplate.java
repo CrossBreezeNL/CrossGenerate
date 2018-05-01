@@ -10,7 +10,7 @@ import com.xbreeze.xgenerate.config.binding.PlaceholderConfig;
 import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
 import com.xbreeze.xgenerate.config.template.FileFormatConfig;
 import com.xbreeze.xgenerate.config.template.OutputConfig.OutputType;
-import com.xbreeze.xgenerate.config.template.TemplateConfig;
+import com.xbreeze.xgenerate.config.template.RootTemplateConfig;
 
 public class XsltTemplate {
 	// The logger for this class.
@@ -41,7 +41,7 @@ public class XsltTemplate {
 	 * @param outputFolder
 	 * @param rootSectionModelBindingConfig
 	 */
-	public XsltTemplate(String templateId, String templateFileLocation, TemplateConfig templateConfig, URI outputFileUri, SectionModelBindingConfig rootSectionModelBindingConfig) {
+	public XsltTemplate(String templateId, String templateFileLocation, RootTemplateConfig templateConfig, URI outputFileUri, SectionModelBindingConfig rootSectionModelBindingConfig) {
 		this._templateBuffer = new StringBuffer();
 		this._outputType = templateConfig.getOutputConfig().getType();
 		
@@ -52,7 +52,7 @@ public class XsltTemplate {
 	/**
 	 * Initialize the template, by creating the starting elements for the XSLT.
 	 */
-	private void initTemplate(String templateId, String templateFileName, TemplateConfig templateConfig, URI outputFileUri, SectionModelBindingConfig rootSectionModelBindingConfig) {
+	private void initTemplate(String templateId, String templateFileName, RootTemplateConfig templateConfig, URI outputFileUri, SectionModelBindingConfig rootSectionModelBindingConfig) {
 		appendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		// https://www.w3schools.com/xml/ref_xsl_el_stylesheet.asp
 		appendLine("<xsl:stylesheet id=\"%s\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"3.0\">", templateId);

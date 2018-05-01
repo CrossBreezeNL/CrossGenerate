@@ -3,7 +3,7 @@ package com.xbreeze.xgenerate.config.template;
 import javax.xml.bind.annotation.XmlAttribute;
 
 
-public class TemplateAttributeInjection {
+public class XMLTemplateAttributeInjection {
 
 	/**
 	 * The XPath for template where attribute needs to be injected

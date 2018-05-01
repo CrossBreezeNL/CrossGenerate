@@ -28,10 +28,9 @@ Feature: Unit_Config_Model_ModelAttributeInjection
             <ModelAttributeInjection modelXPath="<modelXPath>" targetAttribute="type" target<targetType>="<targetValue>" />
           </ModelAttributeInjections>
         </Model>
-        <Template rootSectionName="Template">
-          <FileFormat templateType="text" />
+        <TextTemplate rootSectionName="Template">
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table" />
         </Binding>
@@ -66,10 +65,9 @@ Feature: Unit_Config_Model_ModelAttributeInjection
             <ModelAttributeInjection modelXPath="//entity[@name='C']" targetAttribute="type" targetValue="The entity is C" />
           </ModelAttributeInjections>
         </Model>
-        <Template rootSectionName="Template">
-          <FileFormat templateType="text" />
+        <TextTemplate rootSectionName="Template">
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table" />
         </Binding>

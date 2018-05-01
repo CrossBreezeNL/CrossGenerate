@@ -24,10 +24,9 @@ Feature: Unit_Config_Template_OutputType
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="Template">
-          <FileFormat templateType="text" />
+        <TextTemplate rootSectionName="Template">
           <Output type="single_output" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table" />
         </Binding>
@@ -49,10 +48,9 @@ Feature: Unit_Config_Template_OutputType
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <Template rootSectionName="Template">
-          <FileFormat templateType="text" />
+        <TextTemplate rootSectionName="Template">
           <Output type="output_per_element" />
-        </Template>
+        </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table" />
         </Binding>
