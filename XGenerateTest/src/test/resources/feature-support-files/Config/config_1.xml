@@ -1,0 +1,10 @@
+   <XGenConfig>
+    <Model/>
+    <Template rootSectionName="Template">
+      <FileFormat templateType="text" />
+      <Output type="single_output" />
+    </Template>
+    <Binding>
+      <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table" />
+    </Binding>
+  </XGenConfig>

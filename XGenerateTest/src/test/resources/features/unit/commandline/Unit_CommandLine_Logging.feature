@@ -34,10 +34,10 @@ Feature: Unit_CommandLine_Logging
       <?xml version="1.0" encoding="utf-8"?>
       <XGenAppConfig>
        <App>
-         <ConfigFolder>C:\CrossGenerate\Test\Config\</ConfigFolder>
-         <ModelFolder>C:\CrossGenerate\Test\Model\</ModelFolder>
+         <ConfigFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateTest\src\test\resources\feature-support-files\Config\</ConfigFolder>
+         <ModelFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateTest\src\test\resources\feature-support-files\Model\</ModelFolder>
          <OutputFolder>C:\CrossGenerate\Test\Output\</OutputFolder>
-         <TemplateFolder>C:\CrossGenerate\Test\Template\</TemplateFolder>
+         <TemplateFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateTest\src\test\resources\feature-support-files\Template\</TemplateFolder>
        </App>
        <License>
          <ContractId>0</ContractId>
@@ -55,38 +55,28 @@ Feature: Unit_CommandLine_Logging
     Then I expect 1 generation result
     And no log file
 
-  Scenario: logging from commandline, incorrect log level parameter
+  Scenario: logging from commandline, different parameter combinations
     Given the following additional comma separated commandline arguments:
       """
-      -loglevel, super, -logdestination, C:\CrossGenerate\Test\Log\testlog.log
+      -fll, super, -filelogdestination, C:\CrossGenerate\Test\Log\testlog.log
       """
     When I run the generator
     Then I expect 0 generation result
     And no log file
 
-  Scenario: logging from commandline, only warnings and severe
+  @Debug
+  Scenario Outline: logging from commandline, scenario <Scenario>
     Given the following additional comma separated commandline arguments:
       """
-      -loglevelfile, warning, -loglevelconsole, warning, -logdestination, C:\CrossGenerate\Test\Log\testlog.log
+      -<FileLogLevelParam>, <FileLogLevelParamValue>, -<ConsoleLogLevel>, <ConsoleLogLevelValue>, -<FileLogDestinationParam>, <FileLogdestinationValue>, -debug, <DebugMode>
       """
     When I run the generator
     Then I expect 1 generation result
-    And a log file containing "[severe]" but not containing "[info]"
+    And a log file containing "<ResultContains>" but not containing "<ResultNotContains>"
 
-  Scenario: logging from commandline, info warnings and severe
-    Given the following additional comma separated commandline arguments:
-      """
-      -loglevelfile, info, -loglevelconsole, warning, -logdestination, C:\CrossGenerate\Test\Log\testlog.log
-      """
-    When I run the generator
-    Then I expect 1 generation result
-    And a log file containing "[info]" but not containing "[fine]"
-
-  Scenario: logging from commandline, running in debug mode
-    Given the following additional comma separated commandline arguments:
-      """
-      -loglevelfile, info, -loglevelconsole, warning, -logdestination, C:\CrossGenerate\Test\Log\testlog.log, -debug, true
-      """
-    When I run the generator
-    Then I expect 1 generation result
-    And a log file containing "[com.xbreeze.xgenerate." but not containing "[fine]"
+    Examples: 
+      | Scenario                                     | FileLogLevelParam | FileLogLevelParamValue | ConsoleLogLevel | ConsoleLogLevelValue | FileLogDestinationParam | FileLogdestinationValue                   | DebugMode | ResultContains          | ResultNotContains |
+      | fullnames proper case, both warning          | fileLogLevel      | warning                | consoleLogLevel | warning              | fileLogDestination      | C:\\CrossGenerate\\Test\\Log\\testlog.log | false     | [severe]                | [info]            |
+      | fullnames lower case, both warning           | fileloglevel      | warning                | consoleloglevel | warning              | filelogdestination      | C:\\CrossGenerate\\Test\\Log\\testlog.log | false     | [severe]                | [info]            |
+      | shortnames, info to file, warning to console | fll               | info                   | cll             | warning              | fld                     | C:\\CrossGenerate\\Test\\Log\\testlog.log | false     | [info]                  | [fine]            |
+      | debugmode                                    | fll               | info                   | cll             | warning              | fld                     | C:\\CrossGenerate\\Test\\Log\\testlog.log | true      | [com.xbreeze.xgenerate. | [fine]            |
