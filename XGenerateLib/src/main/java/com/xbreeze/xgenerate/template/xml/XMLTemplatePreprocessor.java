@@ -127,7 +127,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 				
 				// If there are no nodes found for this section, log a severe error.
 				if (sectionNodesFound == 0)
-					logger.severe(String.format("No template nodes found for section '%s' using XPath '%s'", sa.getName(), sa.getTemplateXPath()));
+					logger.warning(String.format("No template nodes found for section '%s' using XPath '%s'", sa.getName(), sa.getTemplateXPath()));
 			}
 		}
 		
