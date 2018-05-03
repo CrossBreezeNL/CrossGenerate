@@ -41,6 +41,13 @@ public class XMLTemplateConfig extends RootTemplateConfig {
 	private ArrayList<XMLNodeTextTemplateConfig> xmlNodeTextTemplates;
 	
 	/**
+	 * Default constructor.
+	 */
+	public XMLTemplateConfig() {
+		super();
+	}
+	
+	/**
 	 * @return the templateAttributeInjections
 	 */
 	@XmlElement(name="TemplateAttributeInjection")

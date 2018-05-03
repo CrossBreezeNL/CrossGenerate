@@ -101,18 +101,26 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 				
 				// Find the argument name-value pairs.
 				/**
-				 * [ \t]*           -> Any space or tab characters
-				 * ,?               -> A comma between parameters (optional)
-				 * [ \t]*           -> Any space or tab characters
-				 * ([a-zA-Z]+)      -> The name of the parameter (region 1)
-				 * [ \t]*           -> Again, any space or tab characters
-				 * =                -> The equals sign
-				 * [ \t]*           -> Again, any space or tab characters
-				 * ('|"|\Qquot;\E)? -> Single quote, Double quote, start of the param value (optional)
-				 * ([^\"])+         -> Any character except double quote (the param value)
-				 * ('|"|\Qquot;\E)? -> Single quite, Double quote, end of the param value (optional)
+				 * [ \t]*                         -> Any space or tab characters
+				 * ,?                             -> A comma between parameters (optional)
+				 * [ \t]*                         -> Any space or tab characters
+				 * (?<paramName>[a-z]+)           -> The name of the parameter (region 1: paramName)
+				 * [ \t]*                         -> Again, any space or tab characters
+				 * =                              -> The equals sign
+				 * [ \t]*                         -> Again, any space or tab characters
+				 * (                              -> Start of parameter value (region 2)
+				 * (?<simpleParamValue>[a-z]+)    -> Value without quotes. (region 3: simpleParamValue)
+				 * |                              -> Choice between parameter value with or without quotes.
+				 * ('|"|\Q&quot;\E)               -> Single quote, Double quote, XML single quote, start of the param value (optional) (region 4)
+				 * (?<complexParamValue>.+?)      -> Any character except the one in region 4 (? so it does lazy matching). (region 5: complexParamValue)
+				 * \4                             -> Must be same as region 4.
+				 * )                              -> End of parameter value (end of region 2)
 				 */
-				Pattern compiledPattern = Pattern.compile("[ \t]*,?[ \t]*([a-zA-Z]+)[ \t]*=[ \t]*(([a-zA-Z]+)|(\"|\\Q&quot;\\E)([^\"]+)(\"|\\Q&quot;\\E))");
+				Pattern compiledPattern = Pattern.compile(
+						"[ \\t]*,?[ \\t]*(?<paramName>[a-z]+)[ \\t]*=[ \\t]*((?<simpleParamValue>[a-z]+)|('|\"|\\Q&quot;\\E)(?<complexParamValue>.+?)\\4)",
+						// Match case insensitive.
+						Pattern.CASE_INSENSITIVE
+				);
 				Matcher matcher = compiledPattern.matcher(annotationParams);
 
 				// Store the previous end match index to check whether we aren't skipping bits.
@@ -124,9 +132,9 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 						throw new AnnotationException(String.format("Part of annotation params found which is not according to the expected format: %s (%d:%d)", annotationParams.substring(previousEndMatchIndex, matcher.start()), previousEndMatchIndex, matcher.start()));
 					
 					// Group 1: The name of the annotation.
-					String paramName = matcher.group(1);
+					String paramName = matcher.group("paramName");
 					// Group 3/5: The arguments for the annotation.
-					String paramValue = (matcher.group(3) != null) ? matcher.group(3) : matcher.group(5);
+					String paramValue = (matcher.group("simpleParamValue") != null) ? matcher.group("simpleParamValue") : matcher.group("complexParamValue");
 					logger.fine(String.format("Found annotation param key-value pair (%s='%s')", paramName, paramValue));
 					
 					// Invoke the set method.

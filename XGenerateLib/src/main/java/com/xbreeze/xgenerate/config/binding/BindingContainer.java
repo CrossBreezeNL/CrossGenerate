@@ -63,7 +63,7 @@ public abstract class BindingContainer {
 	 * @return Get the section model bindings bound to the section.
 	 */
 	public SectionModelBindingConfig[] getSectionModelBindingConfigs(String sectionName) {
-		if (this._sectionModelBindingConfigs != null)
+		if (sectionName != null && this._sectionModelBindingConfigs != null)
 			return this._sectionModelBindingConfigs.stream().filter(smb -> smb.getSectionName().equalsIgnoreCase(sectionName)).toArray(SectionModelBindingConfig[]::new);
 		return null;
 	}

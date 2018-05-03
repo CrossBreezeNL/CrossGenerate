@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.FileFormatConfig;
+import com.xbreeze.xgenerate.config.template.XMLNodeTextTemplateConfig;
 import com.xbreeze.xgenerate.config.template.XMLTemplateAttributeInjection;
 import com.xbreeze.xgenerate.config.template.XMLTemplateConfig;
 import com.xbreeze.xgenerate.config.template.XMLTemplatePlaceholderInjection;
@@ -19,6 +20,7 @@ import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionBoundsAnnotation;
 import com.xbreeze.xgenerate.template.scanner.AnnotationScanner;
 import com.xbreeze.xgenerate.template.section.NamedTemplateSection;
+import com.xbreeze.xgenerate.template.text.TextTemplatePreprocessor;
 import com.ximpleware.AutoPilot;
 import com.ximpleware.ModifyException;
 import com.ximpleware.NavException;
@@ -46,8 +48,19 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	@Override
 	protected PreprocessedTemplate getPreprocessedTemplate(RawTemplate rawTemplate) throws TemplatePreprocessorException {
 		logger.info(String.format("Creating pre-processed template for '%s'.", rawTemplate.getRawTemplateFileName()));
+		
+		// Check whether the template is a XML template.
+		XMLTemplateConfig xmlTemplateConfig;
+		if (_config.getTemplateConfig() != null && _config.getTemplateConfig() instanceof XMLTemplateConfig) {
+			xmlTemplateConfig = (XMLTemplateConfig)_config.getTemplateConfig();
+		}
+		// If the template config is not there is not a XMLTemplate there is something really wrong.
+		else {
+			throw new TemplatePreprocessorException("XMLTemplatePreprocessor used for a non XML template, this shouldn't happen!");
+		}
 
-		FileFormatConfig fileFormatConfig = _config.getTemplateConfig().getFileFormatConfig();
+		// Store the file format config in a local variable.
+		FileFormatConfig fileFormatConfig = xmlTemplateConfig.getFileFormatConfig();
 		
 		// Store the template in a String so it can be updated while some modifications are done.
 		String preprocessedTemplate = rawTemplate.getRawTemplateContent();
@@ -55,23 +68,18 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		// First perform all modifications on the XML document (like attribute and placeholder injection).
 		// This is to make sure the document doesn't change anymore when sectionizing, since character indexes are stored.
 
-		// Check whether the template is a XML template.
-		if (_config.getTemplateConfig() != null && _config.getTemplateConfig() instanceof XMLTemplateConfig) {
-			XMLTemplateConfig xmlTemplateConfig = (XMLTemplateConfig)_config.getTemplateConfig();
-			
-			// Perform template attribute injections on XML document (if defined).
-			if (xmlTemplateConfig.getTemplateAttributeInjections() != null
-					&& xmlTemplateConfig.getTemplateAttributeInjections().size() > 0) 
-			{
-				preprocessedTemplate = performAttributeInjections(preprocessedTemplate, xmlTemplateConfig.getTemplateAttributeInjections());
-			}
-			
-			// Perform the template placeholder injections on the XML document (if defined).
-			if (xmlTemplateConfig.getTemplatePlaceholderInjections() != null
-					&& xmlTemplateConfig.getTemplatePlaceholderInjections().size() > 0) 
-			{
-				preprocessedTemplate = performPlaceholderInjections(preprocessedTemplate, xmlTemplateConfig.getTemplatePlaceholderInjections());
-			}
+		// Perform template attribute injections on XML document (if defined).
+		if (xmlTemplateConfig.getTemplateAttributeInjections() != null
+				&& xmlTemplateConfig.getTemplateAttributeInjections().size() > 0) 
+		{
+			preprocessedTemplate = performAttributeInjections(preprocessedTemplate, xmlTemplateConfig.getTemplateAttributeInjections());
+		}
+		
+		// Perform the template placeholder injections on the XML document (if defined).
+		if (xmlTemplateConfig.getTemplatePlaceholderInjections() != null
+				&& xmlTemplateConfig.getTemplatePlaceholderInjections().size() > 0) 
+		{
+			preprocessedTemplate = performPlaceholderInjections(preprocessedTemplate, xmlTemplateConfig.getTemplatePlaceholderInjections());
 		}
 		
 		// Now all modifications are done we can sectionize the XML document using the sections defined
@@ -90,10 +98,9 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		}
 		
 		// Create the xml sections using the sections from the config.
-		if (_config.getTemplateConfig() != null
-				&& _config.getTemplateConfig().getSectionAnnotations() != null
-				&& _config.getTemplateConfig().getSectionAnnotations().size() > 0)
-		{
+		if (xmlTemplateConfig.getSectionAnnotations() != null
+				&& xmlTemplateConfig.getSectionAnnotations().size() > 0
+		) {
 			logger.info("Processing sections defined in config.");
 			
 			// Loop through the template attribute injections and apply them.
@@ -130,9 +137,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		}
 		
 		// Scan the XML document for annotations (if the comment node XPath is defined).
-		// TODO: this does not take into account text based sections in a XML template yet.
-		if (_config.getTemplateConfig() != null 
-				&& fileFormatConfig != null 
+		if (fileFormatConfig != null 
 				&& fileFormatConfig.getCommentNodeXPath() != null 
 				&& fileFormatConfig.getCommentNodeXPath().length() > 0)
 		{
@@ -153,23 +158,8 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		        	annotationAp.selectXPath(fileFormatConfig.getCommentNodeXPath());
 		        	// We don't need to check whether the index is -1, since the parent XPath is filtering on this node existing.
 		        	// There can also be only 1 node, so we don't need to loop on the result.
-		        	// The annotation node can be either an attribute or an element.
-		        	// When it is an attribute, we take the attribute value and if it is a element we take the element text.
 		        	int annotationNodeIndex = annotationAp.evalXPath();
-		        	int annotationValueIndex = -1;
-		        	switch (nv.getTokenType(annotationNodeIndex)) {
-			        	case VTDNav.TOKEN_ATTR_NAME:
-			        		annotationValueIndex = annotationNodeIndex + 1;
-			        		break;
-			        	case VTDNav.TOKEN_STARTING_TAG:
-			        		annotationValueIndex = annotationNav.getText();
-			        		break;
-			        	case VTDNav.TOKEN_CHARACTER_DATA:
-			        		annotationValueIndex = annotationNodeIndex;
-			        		break;
-		        		default:
-		        			throw new TemplatePreprocessorException(String.format("Found unsupported XML node type for annotations usung XPath '%s' at %d.", fileFormatConfig.getCommentNodeXPath(), annotationNodeIndex));
-		        	}
+		        	int annotationValueIndex = XMLUtils.getNodeValueIndex(annotationNav, annotationNodeIndex);
 		        	// If the annotation value index isn't found, throw an exception.
 		        	if (annotationValueIndex == -1)
 		        		throw new TemplatePreprocessorException(String.format("Error while getting annotation value for XPath '%s' at %d.", fileFormatConfig.getCommentNodeXPath(), annotationNodeIndex));
@@ -178,7 +168,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		        	String annotationAttributeValue = annotationNav.toString(annotationValueIndex);
 		        	int annotationValueStartIndex = (int)annotationNav.getTokenOffset(annotationValueIndex);
 					int annotationValueEndIndex = annotationValueStartIndex + annotationNav.getTokenLength(annotationValueIndex);
-					logger.fine(String.format("Found annotation node value '%s'; start=%d; end=%d", annotationAttributeValue, annotationValueStartIndex, annotationValueEndIndex));
+					logger.fine(String.format("Found annotation node value (start=%d; end=%d): '%s'", annotationValueStartIndex, annotationValueEndIndex, annotationAttributeValue));
 					
 					ArrayList<TemplateAnnotation> foundInlineAnnotations = AnnotationScanner.collectInlineAnnotations(preprocessedTemplate, fileFormatConfig, annotationValueStartIndex, annotationValueEndIndex);
 		        	
@@ -197,6 +187,62 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			} catch (XPathParseException | XPathEvalException | NavException e) {
 				throw new TemplatePreprocessorException("Error while processing template annotations.", e);
 			}
+		}
+		
+		// Handle the TextTemplates defined in a XmlTemplate.
+		if (xmlTemplateConfig.getXmlNodeTextTemplates() != null
+				&& xmlTemplateConfig.getXmlNodeTextTemplates().size() > 0
+		) {
+			logger.info("Text template(s) defined in XML template, so processing them.");
+			
+			// Create an AutoPilot for querying the document.
+			AutoPilot annotatedElementAp = new AutoPilot(nv);
+			
+				// Loop through the text templates defined for the XML template.
+				for (XMLNodeTextTemplateConfig textTemplateConfig : xmlTemplateConfig.getXmlNodeTextTemplates()) {
+					try {
+						annotatedElementAp.selectXPath(textTemplateConfig.getNode());
+						// Check whether the node can be found, if so handle it.
+						int textTemplateNodeIndex = -1;
+						if ((textTemplateNodeIndex = annotatedElementAp.evalXPath()) != -1) {
+							// Get the index of the node value, the XPath points to an element for example, but we want the text part of the element in that case.
+							// Same for attribute, we want the attribute value.
+				        	int annotationValueIndex = XMLUtils.getNodeValueIndex(nv, textTemplateNodeIndex);
+				        	// If the annotation value index isn't found, throw an exception.
+				        	if (annotationValueIndex == -1)
+				        		throw new TemplatePreprocessorException(String.format("Coulnd't find text template content for XPath '%s' at %d.", textTemplateConfig.getNode(), textTemplateNodeIndex));
+				        	
+				        	// We are at the point now were the annotationValueIndex points to the text template content.
+				        	// Get the annotation value.
+				        	String textTemplateContent = nv.toString(annotationValueIndex);
+				        	int textTemplateStartIndex = (int)nv.getTokenOffset(annotationValueIndex);
+							int textTemplateEndIndex = textTemplateStartIndex + nv.getTokenLength(annotationValueIndex);
+							logger.fine(String.format("Found text template node value (start=%d; end=%d): '%s'", textTemplateStartIndex, textTemplateEndIndex, textTemplateContent));
+							
+							// Create a template section annotation for the root section of the template.
+							TemplateSectionAnnotation tsa = new TemplateSectionAnnotation(textTemplateConfig.getRootSectionName());
+					    	// Create a new TemplateSectionBoundsAnnotation using the section-annotation and start index.
+					    	TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(tsa, textTemplateStartIndex);
+					    	// Set the end index.
+					    	tsba.setAnnotationEndIndex(textTemplateEndIndex);
+					    	// Add the template section bounds annotations to the list of annotations of the parent template.
+					    	templateAnnotations.add(tsba);
+							
+							// Now let the TextTemplatePreprocessor handle the template using the TextTemplate config and the template bounds.
+							ArrayList<TemplateAnnotation> textTemplateAnnotations = TextTemplatePreprocessor.getTemplateAnnotations(preprocessedTemplate, textTemplateConfig, textTemplateStartIndex, textTemplateEndIndex);
+							// Add the found template annotations to the list of annotations of the parent template.
+							templateAnnotations.addAll(textTemplateAnnotations);
+						}
+						// If not, throw an exception.
+						else {
+							throw new TemplatePreprocessorException(String.format("Couldn't find TextTemplate node '%s'.", textTemplateConfig.getNode()));
+						}
+					}
+					// If some exception occurs while performing the XML Xpath stuff, rethrow the exception in a TemplatePreprocessorException.
+					catch (XPathParseException | XPathEvalException | NavException e) {
+						throw new TemplatePreprocessorException(String.format("Error while finding TextTemplate node '%s': %s", textTemplateConfig.getNode(), e.getMessage()), e);
+					}
+				}
 		}
 		
 		// Return the pre-processed template.
@@ -218,49 +264,53 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
     	int contentStartIndex = (int)elementOffset;
     	int contentEndIndex = contentStartIndex + (int)(elementOffset>>32);
     	
-    	long elementOffsetInclusingWS = nv.expandWhiteSpaces(elementOffset);
-    	int contentStartIndexIncludingWS = (int)elementOffsetInclusingWS;
-    	int contentEndIndexIncludingWS = contentStartIndexIncludingWS + (int)(elementOffsetInclusingWS>>32);
-    	
-    	// If there is whitespace before the element start, check whether there are lines before the line where the element starts.
-    	int whiteSpaceLengthBefore = 0;
-    	if (contentStartIndex != contentStartIndexIncludingWS) {
-    		logger.info("Whitespace before element exists, scanning for bounds.");
-    		// Find whitespace before the line where the element starts.
-    		int lastNewLineIndex = preprocessedTemplate.substring(contentStartIndexIncludingWS, contentStartIndex).lastIndexOf('\n');
-    		// If there is a newline before the element start in the whitespace, skip the whitespace till the last newline.
-    		if (lastNewLineIndex != -1) {
-    			// Calculate the whitespace length before the section bounds.
-    			whiteSpaceLengthBefore = contentStartIndex - (contentStartIndexIncludingWS + lastNewLineIndex + 1);
-    		} else {
-    			// No newline found, so all whitespace before the element can be included.
-    			whiteSpaceLengthBefore = contentStartIndex - contentStartIndexIncludingWS;
-    		}
+    	try {
+	    	long elementOffsetInclusingWS = nv.expandWhiteSpaces(elementOffset);
+	    	int contentStartIndexIncludingWS = (int)elementOffsetInclusingWS;
+	    	int contentEndIndexIncludingWS = contentStartIndexIncludingWS + (int)(elementOffsetInclusingWS>>32);
+	    	
+	    	// If there is whitespace before the element start, check whether there are lines before the line where the element starts.
+	    	int whiteSpaceLengthBefore = 0;
+	    	if (contentStartIndex != contentStartIndexIncludingWS) {
+	    		logger.info("Whitespace before element exists, scanning for bounds.");
+	    		// Find whitespace before the line where the element starts.
+	    		int lastNewLineIndex = preprocessedTemplate.substring(contentStartIndexIncludingWS, contentStartIndex).lastIndexOf('\n');
+	    		// If there is a newline before the element start in the whitespace, skip the whitespace till the last newline.
+	    		if (lastNewLineIndex != -1) {
+	    			// Calculate the whitespace length before the section bounds.
+	    			whiteSpaceLengthBefore = contentStartIndex - (contentStartIndexIncludingWS + lastNewLineIndex + 1);
+	    		} else {
+	    			// No newline found, so all whitespace before the element can be included.
+	    			whiteSpaceLengthBefore = contentStartIndex - contentStartIndexIncludingWS;
+	    		}
+	    	}
+	    	
+	    	// If there is whitespace after the element end, check wether there is whitespace after the first newline.
+	    	int whiteSpaceLengthAfter = 0;
+	    	if (contentEndIndex != contentEndIndexIncludingWS) {
+	    		logger.info("Whitespace after element exists, scanning for bounds.");
+	    		// Find the first newline after the element close.
+	    		int firstNewLineIndex = preprocessedTemplate.substring(contentEndIndex, contentEndIndexIncludingWS).indexOf('\n');
+	    		// If the first new-line char was found, and its not the last part of the whitespace set the whitespace length after uptill including the newline.
+	    		if (firstNewLineIndex != -1) {
+	    			logger.info(String.format("Newline found in whitespace after element, taking whitespace uptill including (index=%s)", firstNewLineIndex));
+	    			whiteSpaceLengthAfter = firstNewLineIndex + 1;
+	    		}
+	    		// If the new line is not found set all the whitespace after to include in the section bounds.
+	    		else {
+	    			whiteSpaceLengthAfter = contentEndIndexIncludingWS - contentEndIndex;
+	    		}
+	    	}
+	    	
+	    	// Update the content start and end index.
+	    	if (whiteSpaceLengthBefore + whiteSpaceLengthAfter > 0) {
+	    		logger.info(String.format("Found whitespace before and/or after the XML element (before=%d; after=%d)", whiteSpaceLengthBefore, whiteSpaceLengthAfter));
+	    		contentStartIndex -= whiteSpaceLengthBefore;
+	    		contentEndIndex += whiteSpaceLengthAfter;
+			}
+    	} catch (ArrayIndexOutOfBoundsException e) {
+    		logger.warning(String.format("Error while expanding whitespace for element at %d:%d", contentStartIndex, contentEndIndex));
     	}
-    	
-    	// If there is whitespace after the element end, check wether there is whitespace after the first newline.
-    	int whiteSpaceLengthAfter = 0;
-    	if (contentEndIndex != contentEndIndexIncludingWS) {
-    		logger.info("Whitespace after element exists, scanning for bounds.");
-    		// Find the first newline after the element close.
-    		int firstNewLineIndex = preprocessedTemplate.substring(contentEndIndex, contentEndIndexIncludingWS).indexOf('\n');
-    		// If the first new-line char was found, and its not the last part of the whitespace set the whitespace length after uptill including the newline.
-    		if (firstNewLineIndex != -1) {
-    			logger.info(String.format("Newline found in whitespace after element, taking whitespace uptill including (index=%s)", firstNewLineIndex));
-    			whiteSpaceLengthAfter = firstNewLineIndex + 1;
-    		}
-    		// If the new line is not found set all the whitespace after to include in the section bounds.
-    		else {
-    			whiteSpaceLengthAfter = contentEndIndexIncludingWS - contentEndIndex;
-    		}
-    	}
-    	
-    	// Update the content start and end index.
-    	if (whiteSpaceLengthBefore + whiteSpaceLengthAfter > 0) {
-    		logger.info(String.format("Found whitespace before and/or after the XML element (before=%d; after=%d)", whiteSpaceLengthBefore, whiteSpaceLengthAfter));
-    		contentStartIndex -= whiteSpaceLengthBefore;
-    		contentEndIndex += whiteSpaceLengthAfter;
-		}
     	
 		logger.info(String.format("Found template section bounds for section %s: start=%d; end=%d", tsa.getName(), contentStartIndex, contentEndIndex));
 		logger.fine(String.format(" -> '%s'", preprocessedTemplate.substring(contentStartIndex, contentEndIndex)));

@@ -14,6 +14,13 @@ import com.xbreeze.xgenerate.template.text.TextTemplatePreprocessor;
 public class TextTemplateConfig extends RootTemplateConfig {
 	
 	/**
+	 * Default constructor.
+	 */
+	public TextTemplateConfig() {
+		super();
+	}
+	
+	/**
 	 * Return the TextTemplatePreprocessor.
 	 */
 	@Override

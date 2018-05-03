@@ -128,6 +128,27 @@ public class XMLUtils {
 	}
 	
 	/**
+	 * Get the value node index based in a given node index.
+	 * @param nv The VTDNav object.
+	 * @param nodeIndex The node index.
+	 * @return The value node index.
+	 */
+	public static int getNodeValueIndex(VTDNav nv, int nodeIndex) {
+    	// The annotation node can be either an attribute or an element.
+    	// When it is an attribute, we take the attribute value and if it is a element we take the element text.
+    	switch (nv.getTokenType(nodeIndex)) {
+	    	case VTDNav.TOKEN_ATTR_NAME:
+	    		return nodeIndex + 1;
+	    	case VTDNav.TOKEN_STARTING_TAG:
+	    		return nv.getText();
+	    	case VTDNav.TOKEN_CHARACTER_DATA:
+	    		return nodeIndex;
+			default:
+				return -1;
+    	}
+	}
+	
+	/**
 	 * Write the new XML structure to a String.
 	 * @param xm The XMLModifier
 	 * @return The resulting XML document as a String.

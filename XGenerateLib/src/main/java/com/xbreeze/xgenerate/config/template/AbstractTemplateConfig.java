@@ -24,7 +24,7 @@ public abstract class AbstractTemplateConfig {
 	 * The section name of the root section.
 	 * A template implicitly always has a root section containing the whole template. This variable defines to name.
 	 */
-	private String _rootSectionName = "_template_";
+	private String _rootSectionName;
 	
 	/**
 	 * The FileFormat of the template.

@@ -106,15 +106,6 @@ public class NamedTemplateSection extends TemplateSection {
 				
 				// Get the local section model bindings for the section.
 				SectionModelBindingConfig[] sectionModelBindingConfigs = parentBindingConfig.getSectionModelBindingConfigs(namedTemplateSection.getSectionName());
-				/**
-				// Merge an array of parent and global model binding configs.
-				SectionModelBindingConfig[] sectionModelBindingConfigs = ArrayUtils.addAll(
-						// Get the parent model binding configs for this section.
-						parentBindingConfig.getSectionModelBindingConfigs(namedTemplateSection.getSectionName())//,
-						// Get the global model binding configs for this section.
-						// TODO: Only look into the global config if not the parent, or create a function to recursively walk to the parents and check for section config.
-						//config.getBindingConfig().getSectionModelBindingConfigs(namedTemplateSection.getSectionName())
-				);*/
 
 				// Repeat the template for each section binding.
 				if (sectionModelBindingConfigs != null && sectionModelBindingConfigs.length > 0) {
@@ -135,8 +126,12 @@ public class NamedTemplateSection extends TemplateSection {
 				
 				// If there is no section model binding, log a warning message.
 				else {
-					// If there is no binding we log a warning and add the contents of the named template without a xsl:for-each.
-					logger.warning(String.format("There is no section model binding configured for section '%s'", namedTemplateSection.getSectionName()));
+					// If the section name is set, bit there is no binding, log a warning.
+					// The section name can be empty for the root section of a text templates which resides in a XML template.
+					if (namedTemplateSection.getSectionName() != null) {
+						// If there is no binding we log a warning and add the contents of the named template without a xsl:for-each.
+						logger.warning(String.format("There is no section model binding configured for section '%s'", namedTemplateSection.getSectionName()));
+					}
 					// Append the Xstl of the named template section with the parent binding config.
 					namedTemplateSection.appendTemplateXslt(xsltTemplate, config, parentBindingConfig);		
 				}

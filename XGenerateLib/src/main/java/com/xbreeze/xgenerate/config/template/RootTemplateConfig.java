@@ -15,11 +15,25 @@ import com.xbreeze.xgenerate.template.TemplatePreprocessor;
  */
 @XmlTransient
 public abstract class RootTemplateConfig extends AbstractTemplateConfig {
+	
+	/**
+	 * The default root section name.
+	 */
+	private static final String DEFAULT_ROOT_SECTION_NAME = "_template_";
+	
 	/**
 	 * The Output configuration for the Template.
 	 * @see OutputConfig
 	 */
 	private OutputConfig _outputConfig;
+	
+	/**
+	 * Default constructor for root templates.
+	 * This will set the root section name to the default value.
+	 */
+	public RootTemplateConfig() {
+		this.setRootSectionName(DEFAULT_ROOT_SECTION_NAME);
+	}
 	
 	/**
 	 * @return the output

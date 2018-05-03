@@ -131,9 +131,22 @@ public class AnnotationScanner {
 		return annotations;
 	}
 	
-	private static void collectCommentAnnotations(String templateContent, FileFormatConfig fileFormatConfig, Pattern commentPattern, int commentContentRegion, ArrayList<TemplateAnnotation> annotations) throws TemplatePreprocessorException {
+	/**
+	 * Collection annotations found in comment parts of a template.
+	 * @param templateContent The template content.
+	 * @param fileFormatConfig The file format config.
+	 * @param commentPattern The comment pattern.
+	 * @param commentContentRegion The comment content region (pattern group nr).
+	 * @param annotations The annotations list to add new found annotations in.
+	 * @param beginIndex The begin index of the templateContent to search from.
+	 * @param endIndex The end index of the templateContent to search till.
+	 * @throws TemplatePreprocessorException
+	 */
+	private static void collectCommentAnnotations(String templateContent, FileFormatConfig fileFormatConfig, Pattern commentPattern, int commentContentRegion, ArrayList<TemplateAnnotation> annotations, int beginIndex, int endIndex) throws TemplatePreprocessorException {
 		// Create the matcher.
 		Matcher commentMatcher = commentPattern.matcher(templateContent);
+		// Set the region to search.
+		commentMatcher.region(beginIndex, endIndex);
 		// Loop through the results.
 		while (commentMatcher.find()) {
 			logger.fine(String.format("Found comment with annotation. (start: %d; end: %d; commentStart: %d; commentEnd: %d; comment: '%s')", commentMatcher.start(), commentMatcher.end(), commentMatcher.start(commentContentRegion), commentMatcher.end(commentContentRegion), commentMatcher.group(commentContentRegion)));
@@ -173,7 +186,7 @@ public class AnnotationScanner {
 	 * @return The list of annotations found.
 	 * @throws TemplatePreprocessorException
 	 */
-	public static ArrayList<TemplateAnnotation> collectTextAnnotations(String templateContent, FileFormatConfig fileFormatConfig) throws TemplatePreprocessorException {
+	public static ArrayList<TemplateAnnotation> collectTextAnnotations(String templateContent, FileFormatConfig fileFormatConfig, int beginIndex, int endIndex) throws TemplatePreprocessorException {
 		// Initialize a collection for the template annotations.
 		ArrayList<TemplateAnnotation> annotations = new ArrayList<TemplateAnnotation>();
 		
@@ -200,7 +213,7 @@ public class AnnotationScanner {
 			);
 			
 			// Collect the annotation for the single-line comment sections.
-			collectCommentAnnotations(templateContent, fileFormatConfig, singleLinePattern, 1, annotations);
+			collectCommentAnnotations(templateContent, fileFormatConfig, singleLinePattern, 1, annotations, beginIndex, endIndex);
 		}
 		
 		// Second search for multi-line comment sections and scan for annotations in there.
@@ -235,7 +248,7 @@ public class AnnotationScanner {
 			);
 			
 			// Collect the annotation for the single-line comment sections.
-			collectCommentAnnotations(templateContent, fileFormatConfig, multiLinePattern, 1, annotations);
+			collectCommentAnnotations(templateContent, fileFormatConfig, multiLinePattern, 1, annotations, beginIndex, endIndex);
 		}
 		
 		return annotations;

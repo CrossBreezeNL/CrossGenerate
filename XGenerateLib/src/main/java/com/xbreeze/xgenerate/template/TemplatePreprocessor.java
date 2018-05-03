@@ -127,7 +127,7 @@ public abstract class TemplatePreprocessor {
 		
 		// Process the content of the section.
 		// Pass in 0 for parentPreviousSectionEndIndex.
-		processNamedTemplateSection(rootSectionBoundsAnnotation, sectionizedTextTemplate, preprocessedTemplate.getPreprocessedRawTemplate(), taIterator, 0, true);
+		processNamedTemplateSection(rootSectionBoundsAnnotation, sectionizedTextTemplate, preprocessedTemplate.getPreprocessedRawTemplate(), taIterator, 0, true, -1);
 		
 		// Return the SectionizedTextTemplate;
 		return sectionizedTextTemplate;
@@ -139,7 +139,7 @@ public abstract class TemplatePreprocessor {
 	 * @param rawTemplateContent
 	 * @throws TemplatePreprocessorException 
 	 */
-	private int processNamedTemplateSection(TemplateSectionBoundsAnnotation parentSectionBounds, NamedTemplateSection parentTemplateSection, String rawTemplateContent, ListIterator<TemplateAnnotation> taIterator, int parentPreviousSectionEndIndex, boolean isRootSection) throws TemplatePreprocessorException {
+	private int processNamedTemplateSection(TemplateSectionBoundsAnnotation parentSectionBounds, NamedTemplateSection parentTemplateSection, String rawTemplateContent, ListIterator<TemplateAnnotation> taIterator, int parentPreviousSectionEndIndex, boolean isRootSection, int parentMaxSectionEndIndex) throws TemplatePreprocessorException {
 		logger.fine(String.format("processNamedTemplateSection called for section '%s', parentPreviousSectionEndIndex=%d", parentTemplateSection.getSectionName(), parentPreviousSectionEndIndex));
 		// Loop through the template annotations.
 		int previousSectionEndIndex = parentPreviousSectionEndIndex; 
@@ -193,6 +193,16 @@ public abstract class TemplatePreprocessor {
 				else {
 					// Set the actual 'next section' index to the end of the template.
 					nextSectionBeginIndex = rawTemplateContent.length();
+				}
+				
+				// If the next section begin index is greater then the parent its parent end index, set it back.
+				if (parentMaxSectionEndIndex != -1 && nextSectionBeginIndex > parentMaxSectionEndIndex) {
+					nextSectionBeginIndex = parentMaxSectionEndIndex;
+					// To be safe, nullify the templateAnnotation if set and set the iterator one back.
+					if (templateAnnotation != null) {
+						taIterator.previous();
+						templateAnnotation = null;
+					}
 				}
 				
 				// If the templateAnnotation start index is not the next number after the previous section end, we add a RawTemplateSection to the parent NamedTemplateSection.
@@ -317,7 +327,16 @@ public abstract class TemplatePreprocessor {
 					
 					// Process the content of the named template (recursively).
 					// This process will return the end index of the section (or throw an exception if not found).
-					processNamedTemplateSection(templateSectionBoundsAnnotation, namedTemplateSection, rawTemplateContent, taIterator, previousSectionEndIndex, false);
+					processNamedTemplateSection(templateSectionBoundsAnnotation, namedTemplateSection, rawTemplateContent, taIterator, previousSectionEndIndex, false, parentTemplateSection.getSectionEndIndex());
+					
+					// If the end of the section isn't set, throw an exception.
+					if (namedTemplateSection.getSectionEndIndex() == -1)
+						throw new TemplatePreprocessorException(String.format("The end of section '%s' wasn't found.", namedTemplateSection.getSectionName()));
+					
+					// Check the end index of the section, this should exceed the parent bounds, if set already.
+					if (parentTemplateSection.getSectionEndIndex() != -1 && namedTemplateSection.getSectionEndIndex() > parentTemplateSection.getSectionEndIndex())
+						throw new TemplatePreprocessorException(String.format("The found end-index of section '%s' is after the parent section '%s' end index.", namedTemplateSection.getSectionEndIndex(), parentTemplateSection.getSectionEndIndex()));
+					
 					// Add the named template section to the sectionized template.
 					parentTemplateSection.addTemplateSection(namedTemplateSection);
 					logger.fine(String.format("Added NamedTemplateSection to SectionizedTextTemplate (%s -> %d:%d)", namedTemplateSection.getSectionName(), namedTemplateSection.getSectionBeginIndex(), namedTemplateSection.getSectionEndIndex()));
@@ -376,7 +395,9 @@ public abstract class TemplatePreprocessor {
 		else if (templateSectionAnnotation.getLiteralOnLastLine() != null && templateSectionAnnotation.getLiteralOnLastLine().length() > 0) {
 		    Pattern pattern = Pattern.compile(String.format("%s.*\\r?\\n?", Pattern.quote(templateSectionAnnotation.getLiteralOnLastLine())));
 		    Matcher matcher = pattern.matcher(rawTemplateContent);
-			if (matcher.find(sectionEndSearchBeginIndex) && matcher.end() <= sectionEndSearchEndIndex) {
+		    // Set the region to search in.
+		    matcher.region(sectionEndSearchBeginIndex, sectionEndSearchEndIndex);
+			if (matcher.find()) {
 				return matcher.end();
 			} else {
 				return -1;
@@ -397,17 +418,19 @@ public abstract class TemplatePreprocessor {
 					break;
 			}
 			
-			if (sectionEndCharIndex == -1)
-				return -1;
-			
 			// Add the 1 to the length to compensate for the \n character.
-			sectionEndCharIndex += 1;
+			if (sectionEndCharIndex != -1)
+				sectionEndCharIndex += 1;
 		}
 		// Otherwise, we can't get the end location, leave the return value at the initial -1.
 		
 		// If the found index is out of range, return -1.
 		if (sectionEndCharIndex > sectionEndSearchEndIndex)
 			return -1;
+		
+		// If the find index is before the start index, throw an exception since this shouldn't happen.
+		if (sectionEndCharIndex != -1 && sectionEndCharIndex < sectionEndSearchBeginIndex)
+			throw new TemplatePreprocessorException(String.format("The found section end index %d is lower than the starting index %d, this shouldn't happen!", sectionEndCharIndex, sectionEndSearchBeginIndex));
 		
 		// Otherwise return the found index.
 		return sectionEndCharIndex;
