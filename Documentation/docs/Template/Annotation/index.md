@@ -1,13 +1,14 @@
 # Annotation
 
-CrossGenerate supports creating annotations in a text template.
+CrossGenerate supports creating annotations in a text and XML template.
 
 ## Annotations
 The following annotations are supported inside a template:
 
 | Annotation           | Description | Documentation |
 |:---                  |:---         |:---           |
-| [Section](./Section) | Define a section inside a template | [Click here](./Section) |
+| [TextSection](./TextSection) | Define a section inside a text template | [Click here](./TextSection) |
+| [XmlSection](./XmlSection) | Define a section inside a XML template | [Click here](./XmlSection) |
 | [Comment](./Comment) | Create a comment in a template which isn't in the output. | [Click here](./Comment) |
 
 ## Syntax

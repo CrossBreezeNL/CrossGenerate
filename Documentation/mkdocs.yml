@@ -27,10 +27,11 @@ pages:
 - Template:
     - 'Introduction'    : 'Template/index.md'
     - 'Text template'   : 'Template/TextTemplate/index.md'
-    - 'XML template'    : 'Template/XMLTemplate/index.md'
+    - 'XML template'    : 'Template/XmlTemplate/index.md'
     - 'Annotation':
         - 'Overview'                : 'Template/Annotation/index.md'
-        - 'Section'                 : 'Template/Annotation/Section.md'
+        - 'TextSection'             : 'Template/Annotation/TextSection.md'
+        - 'XmlSection'              : 'Template/Annotation/XmlSection.md'
         - 'Comment'                 : 'Template/Annotation/Comment.md'
 - Binding:
     - 'Introduction'    : 'Binding/index.md'
@@ -38,7 +39,7 @@ pages:
     - 'Configuration'   : 'Config/index.md'
     - 'Model'           : 'Config/Model.md'
     - 'Template':
-        - 'XMLTemplate'           : 'Config/Template/XMLTemplate.md'
+        - 'XmlTemplate'           : 'Config/Template/XmlTemplate.md'
         - 'TextTemplate'          : 'Config/Template/TextTemplate.md'
         - 'Generic options'   : 'Config/Template/GenericTemplate.md'
     - 'Binding'         : 'Config/Binding.md'

@@ -12,7 +12,7 @@ The configuration for CrossGenerate is designed to be the glue between model and
   </Model>
   <!--
     The following section is the template,
-    this can either be XMLTemplate or TextTemplate.
+    this can either be XmlTemplate or TextTemplate.
   -->
   <...Template>
     ...
@@ -27,7 +27,7 @@ The configuration for CrossGenerate is designed to be the glue between model and
 | Section                             | Description |
 |:---                                 |:--- |
 | Model                               | See [Model](./Model) |
-| XMLTemplate or TextTemplate[^1]     | See [XMLTemplate](./Template/XMLTemplate) or [TextTemplate](./Template/TextTemplate) |
+| XmlTemplate or TextTemplate[^1]     | See [XmlTemplate](./Template/XmlTemplate) or [TextTemplate](./Template/TextTemplate) |
 | Binding[^1]                         | See [Binding](./Binding) |
 
 

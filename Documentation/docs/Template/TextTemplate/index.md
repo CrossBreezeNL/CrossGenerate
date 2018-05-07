@@ -19,7 +19,7 @@ An example of a section configuration annotation inside a SQL template would be:
 ``` sql
 USE [SomeDatabase];
 GO
--- @XGenSection(name="SomeExampleSection", nrOfLines=2)
+-- @XGenTextSection(name="SomeExampleSection", nrOfLines=2)
 SELECT *
 FROM [SomeSchema].[SomeTable]
 ```

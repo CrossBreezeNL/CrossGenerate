@@ -1,15 +1,15 @@
-# XMLTemplate
+# XmlTemplate
 
-## XMLTemplate
+## XmlTemplate
 ### Syntax
 
 ```xml
-<XMLTemplate rootSectionName="...">
+<XmlTemplate rootSectionName="...">
   <FileFormat/>
   <Output ... />
-  <Sections>
-    <Section ... />
-  </Sections>
+  <XmlSections>
+    <XmlSection ... />
+  </XmlSections>
   <TemplateAttributeInjections>
     <TemplateAttributeInjection ... />
   </TemplateAttributeInjections>
@@ -19,7 +19,7 @@
   <TextTemplates>
     <TextTemplate ... />
   </TextTemplates>
-</XMLTemplate>
+</XmlTemplate>
 ```
 
 ### Parameters
@@ -32,7 +32,7 @@
 |:---                              |:--- |
 | FileFormat[^2]                   | See [FileFormat](#fileformat) |
 | Output[^2]                       | See [Output](GenericTemplate/#output) |
-| Section                          | See [Section](#section) |
+| XmlSection                       | See [XmlSection](#xmlsection) |
 | TemplateAttributeInjection       | See [TemplateAttributeInjection](#templateattributeinjection) |
 | TemplatePlaceholderInjection     | See [TemplatePlaceholderInjection](#templateplaceholderinjection) |
 | TextTemplate                     | See [TextTemplate](#texttemplate) |
@@ -54,12 +54,12 @@
 | commentNodeXPath[^1]         | The template comment node XPath, this will be executed on the template and the resulting elements or attributes are inspected for annotations.| | This is only relevant for xml templates. | 
 
 
-## Section
-The Section configuration defines a section in a template.
+## XmlSection
+The XmlSection configuration defines a section in a XML template. This can either be defined in the template part of the config or in the template directly. The syntax here is provided for the configuration, but the same parameters are also available when specifying the section inline in a template using the [XmlSection](../Template/Annotation/XmlSection) annotation.
 
 ### Syntax
 ``` xml
-<Section
+<XmlSection
   name="..."
   templateXPath="..."
 />
@@ -120,9 +120,9 @@ A XML template can contain elements or attribute which in itself contain a text 
   rootSectionName="..."
 >
   <FileFormat ... />
-  <Sections>
-    <Section ... />
-  </Sections>
+  <TextSections>
+    <TextSection ... />
+  </TextSections>
 </TextTemplate>
 ```
 
@@ -136,7 +136,7 @@ A XML template can contain elements or attribute which in itself contain a text 
 | Section                          | Description |
 |:---                              |:--- |
 | FileFormat[^2]                   | See [FileFormat](TextTemplate/#fileformat) |
-| Section                          | See [Section](TextTemplate/#section) |
+| TextSection                      | See [TextSection](TextTemplate/#textsection) |
 
 [comment]: Footnotes
 [^1]: required parameter
