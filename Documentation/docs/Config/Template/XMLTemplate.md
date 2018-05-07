@@ -25,7 +25,7 @@
 ### Parameters
 | Parameter                        | Description | Default | Remark |
 |:---                              |:--- |:--- |:--- |
-| rootSectionName[^1]              | The name of the root section. | \_root\_ | |
+| rootSectionName[^1]              | The name of the root section. | \_template\_ | |
 
 ### Child sections
 | Section                          | Description |
