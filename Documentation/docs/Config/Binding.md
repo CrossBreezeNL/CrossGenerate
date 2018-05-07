@@ -22,17 +22,16 @@ A SectionModelBinding defines how the model should be mapped to the template.
 ### Syntax
 ``` xml
 <SectionModelBinding
-  section="<section-name>"
-  modelXPath="<model-xpath>"
-  placeholderName="<placeholder-name>"
+  section="..."
+  modelXPath="..."
+  placeholderName="..."
 >
-  [<Placeholders>
+  <Placeholders>
     <Placeholder ... />
+   </Placeholders>
+  <SectionModelBinding ... >
     ...
-   </Placeholders>]
-  [<SectionModelBinding ... >
-    ...
-   </SectionModelBinding>]
+  </SectionModelBinding>
 </SectionModelBinding>
 ```
 ### Parameters
@@ -53,8 +52,8 @@ A SectionModelBinding defines how the model should be mapped to the template.
 ### Syntax
 ``` xml
 <Placeholder
-  name="<placeholder-name>"
-  modelXPath="<model-xpath>"
+  name="..."
+  modelXPath="..."
 />
 ```
 

@@ -1,5 +1,5 @@
 # Project information
-site_name: 'CrossGenerate v2.0.0'
+site_name: 'CrossGenerate v2.1.0'
 
 # Copyright
 copyright: 'Copyright &copy; 2018 - CrossBreeze'
@@ -29,15 +29,18 @@ pages:
     - 'Text template'   : 'Template/TextTemplate/index.md'
     - 'XML template'    : 'Template/XMLTemplate/index.md'
     - 'Annotation':
-            - 'Overview'                : 'Template/Annotation/index.md'
-            - 'Section'                 : 'Template/Annotation/Section.md'
-            - 'Comment'                 : 'Template/Annotation/Comment.md'
+        - 'Overview'                : 'Template/Annotation/index.md'
+        - 'Section'                 : 'Template/Annotation/Section.md'
+        - 'Comment'                 : 'Template/Annotation/Comment.md'
 - Binding:
     - 'Introduction'    : 'Binding/index.md'
 - Config:
     - 'Configuration'   : 'Config/index.md'
     - 'Model'           : 'Config/Model.md'
-    - 'Template'        : 'Config/Template.md'       
+    - 'Template':
+        - 'XMLTemplate'           : 'Config/Template/XMLTemplate.md'
+        - 'TextTemplate'          : 'Config/Template/TextTemplate.md'
+        - 'Generic options'   : 'Config/Template/GenericTemplate.md'
     - 'Binding'         : 'Config/Binding.md'
 - Examples:
     - 'Overview'        : 'Examples/index.md'

@@ -20,10 +20,10 @@
 ### Syntax
 ``` xml
 <ModelAttributeInjection
-  modelXPath="<model-xpath>"
-  targetAttribute="<target-attribute>"
-  targetValue="<target-value>"
-  targetXPath="<target-xpath>"
+  modelXPath="..."
+  targetAttribute="..."
+  targetValue="..."
+  targetXPath="..."
 />
 ```
 
