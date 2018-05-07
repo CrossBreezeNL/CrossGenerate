@@ -1,8 +1,8 @@
 @Unit
 Feature: Unit_Config_XmlTemplate_TextTemplate_Element
   In this feature we will describe the TextTemplate config feature in an element in a XML template
-  
-  Background:
+
+  Background: 
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -12,6 +12,52 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
           <entity name="Customer"/>
         </system>
       </modeldefinition>
+      """
+
+  Scenario: TextTemplate without section in XMLTemplate
+    Given the following template named "ExampleTemplate.xml":
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="system_id" name="system_name">
+        system_name
+      </Database>
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <XmlTemplate rootSectionName="Database">
+          <FileFormat currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="output_per_element" />
+          <TextTemplates>
+            <TextTemplate node="/Database">
+              <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+            </TextTemplate>
+          </TextTemplates>
+        </XmlTemplate>
+        <Binding>
+          <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="system" />
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "ExampleTemplate.xml" with content:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
+        ExampleSource
+      </Database>
+      """
+
+  Scenario Outline: TextTemplate with single annotated section in XMLTemplate
+    Given the following template named "ExampleTemplate.xml":
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="system_id" name="system_name">
+        -- @XGenSection(name=<QuoteStyle>Tables<QuoteStyle>)
+        entity_name
+      </Database>
       """
     And the following config:
       """
@@ -33,33 +79,53 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
         </Binding>
       </XGenConfig>
       """
-      
-  Scenario: TextTemplate without section in XMLTemplate
-    Given the following template named "ExampleTemplate.xml":
-      """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <Database id="system_id" name="system_name">
-        system_name
-      </Database>
-      """
     When I run the generator
     Then I expect 1 generation result
     And an output named "ExampleTemplate.xml" with content:
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
-        ExampleSource
+        Order
+        Customer
       </Database>
       """
 
-  Scenario: TextTemplate with single annotated section in XMLTemplate
+    Examples: 
+      | Scenario    | QuoteStyle |
+      | not escaped | "          |
+      | escaped     | &quot;     |
+      
+  Scenario: TextTemplate with single configured section in XMLTemplate
     Given the following template named "ExampleTemplate.xml":
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
-        -- @XGenSection(name="Tables")
+        -- Some comment in the template
         entity_name
       </Database>
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <XmlTemplate rootSectionName="Database">
+          <FileFormat currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="output_per_element" />
+          <TextTemplates>
+            <TextTemplate node="/Database">
+              <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+              <Sections>
+                <Section name="Tables" literalOnFirstLine="entity_name" />
+              </Sections>
+            </TextTemplate>
+          </TextTemplates>
+        </XmlTemplate>
+        <Binding>
+          <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="system">
+            <SectionModelBinding section="Tables" modelXPath="entity" placeholderName="entity"/>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
       """
     When I run the generator
     Then I expect 1 generation result
@@ -67,6 +133,7 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
+        -- Some comment in the template
         Order
         Customer
       </Database>
