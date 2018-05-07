@@ -9,6 +9,8 @@ Examples of XML templates are:
 - IBM DataStage Job (XML Export)
 - XHTML
 
+XML templates can in itself contain text templates, for example in an ETL package where a SQL SELECT statement is written. For documentation on text templates in a XML template, see [TextTemplate](../../Config/Template/XMLTemplate/#texttemplate)
+
 ## Annotation
 CrossGenerate supports creating annotations in a XML template.
 For documentation on the specific annotation syntax, see [Annotation](../Annotation).

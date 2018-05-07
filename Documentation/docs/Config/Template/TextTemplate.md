@@ -1,8 +1,8 @@
 # TextTemplate
 
 ## TextTemplate
-### Syntax
 
+### Syntax
 ```xml
 <TextTemplate rootSectionName="...">
   <FileFormat ... />
