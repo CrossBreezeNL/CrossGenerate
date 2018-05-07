@@ -1,7 +1,14 @@
 package com.xbreeze.xgenerate.config.template;
 
+import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlSeeAlso;
+
+import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
+import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation;
 
 /**
  * The XMLNodeTextTemplateConfig configuration within a RootTemplateConfig.
@@ -21,7 +28,7 @@ public class XMLNodeTextTemplateConfig extends AbstractTemplateConfig {
 	 * The XPath pointing to the node(s) which contain the text template.
 	 */
 	private String _node;
-
+	
 	/**
 	 * @return the node
 	 */
@@ -35,5 +42,12 @@ public class XMLNodeTextTemplateConfig extends AbstractTemplateConfig {
 	 */
 	public void setNode(String node) {
 		this._node = node;
+	}
+
+	@Override
+	@XmlElementWrapper(name="TextSections")
+	@XmlElement(name="TextSection", type=TemplateTextSectionAnnotation.class)
+	public ArrayList<? extends TemplateSectionAnnotation> getSectionAnnotations() {
+		return super.getSectionAnnotations();
 	}
 }

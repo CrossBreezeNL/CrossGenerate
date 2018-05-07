@@ -12,8 +12,8 @@ import com.xbreeze.xgenerate.template.RawTemplate;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.annotation.TemplateAnnotation;
-import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionBoundsAnnotation;
+import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation;
 import com.xbreeze.xgenerate.template.scanner.AnnotationScanner;
 
 public class TextTemplatePreprocessor extends TemplatePreprocessor {
@@ -30,7 +30,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	 * @throws TemplatePreprocessorException 
 	 */
 	@Override
-	protected PreprocessedTemplate getPreprocessedTemplate(RawTemplate rawTemplate) throws TemplatePreprocessorException {
+	protected PreprocessedTemplate getPreprocessedTemplate(RawTemplate rawTemplate, String rootSectionName) throws TemplatePreprocessorException {
 		logger.fine(String.format("Creating pre-processed template for '%s'.", rawTemplate.getRawTemplateFileName()));
 
 		// Store the raw template content into a local variable.
@@ -48,8 +48,15 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		// Get the template annotations.
 		ArrayList<TemplateAnnotation> templateAnnotations = getTemplateAnnotations(rawTemplateContent, _config.getTemplateConfig(), 0, rawTemplateContent.length());
 		
+		// Create a Text Template section annotation for the root section (implicit).
+		TemplateTextSectionAnnotation ttsa = new TemplateTextSectionAnnotation(rootSectionName);
+		// Create the root template section bounds.
+		TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(ttsa, 0);
+		// Set the end of the template.
+		tsba.setAnnotationEndIndex(rawTemplateContent.length());
+		
 		// Return the pre-processed template.
-		return new PreprocessedTemplate(rawTemplateContent, templateAnnotations);
+		return new PreprocessedTemplate(rawTemplateContent, tsba, templateAnnotations);
 	}
 	
 	/**
@@ -71,40 +78,40 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				&& templateConfig.getSectionAnnotations().size() > 0)
 			templateAnnotations.addAll(templateConfig.getSectionAnnotations());
 		
-		// Loop through the section annotations to find the section begin index.
-		for (TemplateSectionAnnotation sectionAnnotation : templateAnnotations.stream().filter(sa -> sa instanceof TemplateSectionAnnotation).toArray(TemplateSectionAnnotation[]::new)) {
+		// Loop through the text section annotations to find the section begin index.
+		for (TemplateTextSectionAnnotation textSectionAnnotation : templateAnnotations.stream().filter(sa -> sa instanceof TemplateTextSectionAnnotation).toArray(TemplateTextSectionAnnotation[]::new)) {
 
 			// Initialize an int for storing the begin index.
 			int sectionBeginCharIndex;
 			// Store whether the annotation was found in the template.
-			boolean annotationInTemplate = (sectionAnnotation.getAnnotationEndIndex() != -1);
+			boolean annotationInTemplate = (textSectionAnnotation.getAnnotationEndIndex() != -1);
 			
 			// If the begin is specified, we use begin.
-			if (sectionAnnotation.getBegin() != null && sectionAnnotation.getBegin().length() > 0) {
+			if (textSectionAnnotation.getBegin() != null && textSectionAnnotation.getBegin().length() > 0) {
 				// If the annotation was found in the template we start scanning from the position the annotation ends.
 				if (annotationInTemplate)
-					sectionBeginCharIndex = templateContent.indexOf(sectionAnnotation.getBegin(), sectionAnnotation.getAnnotationEndIndex());
+					sectionBeginCharIndex = templateContent.indexOf(textSectionAnnotation.getBegin(), textSectionAnnotation.getAnnotationEndIndex());
 				// Otherwise we scan from the beginning of the template.
 				else
-					sectionBeginCharIndex = templateContent.indexOf(sectionAnnotation.getBegin());
+					sectionBeginCharIndex = templateContent.indexOf(textSectionAnnotation.getBegin());
 				
 				// If the result is -1 or larger then the endIndex, then the begin wasn't found.
 				if (sectionBeginCharIndex == -1 || sectionBeginCharIndex > endIndex)
-					throw new TemplatePreprocessorException(String.format("The begin part of the section can't be found (%s)", sectionAnnotation.getName()));
+					throw new TemplatePreprocessorException(String.format("The begin part of the section can't be found (%s)", textSectionAnnotation.getName()));
 
 				// If the section does not need to include the begin, than add the length of the begin to remove begin characters from section.
-				if (!sectionAnnotation.isIncludeBegin())
-					sectionBeginCharIndex += sectionAnnotation.getBegin().length();
+				if (!textSectionAnnotation.isIncludeBegin())
+					sectionBeginCharIndex += textSectionAnnotation.getBegin().length();
 			}
 			// If literalOnFirstLine is specified, we use literalOnFirstLine
-			else if (sectionAnnotation.getLiteralOnFirstLine() != null && sectionAnnotation.getLiteralOnFirstLine().length() > 0) {
+			else if (textSectionAnnotation.getLiteralOnFirstLine() != null && textSectionAnnotation.getLiteralOnFirstLine().length() > 0) {
 				// Construct a regex for entire line containing the literal (* matches everything but line terminator)
-				 Pattern pattern = Pattern.compile(String.format(".*%s.*", Pattern.quote(sectionAnnotation.getLiteralOnFirstLine())));
+				 Pattern pattern = Pattern.compile(String.format(".*%s.*", Pattern.quote(textSectionAnnotation.getLiteralOnFirstLine())));
 				 Matcher matcher = pattern.matcher(templateContent);
 						 
 				 // If annotation is in template, apply regex on raw template, after annotation, otherwise apply on complete raw template
 				 if (annotationInTemplate) {
-					 matcher.region(sectionAnnotation.getAnnotationEndIndex(), endIndex);
+					 matcher.region(textSectionAnnotation.getAnnotationEndIndex(), endIndex);
 				 }
 				 else {
 					 matcher.region(beginIndex, endIndex);
@@ -115,22 +122,22 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 					sectionBeginCharIndex = matcher.start();
 				 } 
 				 else {
-					throw new TemplatePreprocessorException(String.format("The begin part of the section can't be found (%s)", sectionAnnotation.getName()));
+					throw new TemplatePreprocessorException(String.format("The begin part of the section can't be found (%s)", textSectionAnnotation.getName()));
 				}
 			}
 			// If begin is not specified and the annotation was specified in the template, we use the end position of the annotation.
 			else if (annotationInTemplate) {
 				// Set the section begin index to the end index of the annotation.
-				sectionBeginCharIndex = sectionAnnotation.getAnnotationEndIndex();
+				sectionBeginCharIndex = textSectionAnnotation.getAnnotationEndIndex();
 			}
 			// Otherwise, we can't get the begin location.
 			else {
-				throw new TemplatePreprocessorException(String.format("No begin of section defined (%s)", sectionAnnotation.getName()));
+				throw new TemplatePreprocessorException(String.format("No begin of section defined (%s)", textSectionAnnotation.getName()));
 			}
 			
 			// Store the begin index in a new template bounds annotation object.
-			logger.info(String.format("Found section bounds for '%s', begin index: %d", sectionAnnotation.getName(), sectionBeginCharIndex));
-			templateAnnotations.add(new TemplateSectionBoundsAnnotation(sectionAnnotation, sectionBeginCharIndex));
+			logger.info(String.format("Found section bounds for '%s', begin index: %d", textSectionAnnotation.getName(), sectionBeginCharIndex));
+			templateAnnotations.add(new TemplateSectionBoundsAnnotation(textSectionAnnotation, sectionBeginCharIndex));
 		}
 
 		// Return the list of template annotations.

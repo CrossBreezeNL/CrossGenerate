@@ -13,4 +13,13 @@ public class UnhandledException extends CrossGenerateException {
 	public UnhandledException(Throwable throwable) {
 		super(throwable);
 	}
+	
+	/**
+	 * Constructor.
+	 * @param message The message of the exception.
+	 * @param throwable The throwable.
+	 */
+	public UnhandledException(String message, Throwable throwable) {
+		super(message, throwable);
+	}
 }

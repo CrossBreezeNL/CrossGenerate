@@ -38,10 +38,10 @@
     <xs:sequence>
       <xs:element name="FileFormat" type="fileFormatConfig" minOccurs="0"/>
       <xs:element name="Output" type="outputConfig"/>
-      <xs:element name="Sections" minOccurs="0">
+      <xs:element name="TextSections" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="Section" type="templateSectionAnnotation" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="TextSection" type="templateTextSectionAnnotation" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -69,7 +69,7 @@
     <xs:attribute name="type" type="outputType" use="required"/>
   </xs:complexType>
 
-  <xs:complexType name="templateSectionAnnotation">
+  <xs:complexType name="templateTextSectionAnnotation">
     <xs:complexContent>
       <xs:extension base="templateAnnotation">
         <xs:sequence/>
@@ -79,7 +79,7 @@
         <xs:attribute name="includeEnd" type="xs:boolean"/>
         <xs:attribute name="literalOnFirstLine" type="xs:string"/>
         <xs:attribute name="literalOnLastLine" type="xs:string"/>
-        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="name" type="xs:string"/>
         <xs:attribute name="nrOfLines" type="xs:int"/>
         <xs:attribute name="prefix" type="xs:string"/>
         <xs:attribute name="prefixAction" type="repetitionAction"/>
@@ -87,7 +87,6 @@
         <xs:attribute name="suffix" type="xs:string"/>
         <xs:attribute name="suffixAction" type="repetitionAction"/>
         <xs:attribute name="suffixStyle" type="repetitionStyle"/>
-        <xs:attribute name="templateXPath" type="xs:string"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -100,10 +99,10 @@
     <xs:sequence>
       <xs:element name="FileFormat" type="fileFormatConfig" minOccurs="0"/>
       <xs:element name="Output" type="outputConfig"/>
-      <xs:element name="Sections" minOccurs="0">
+      <xs:element name="XmlSections" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="Section" type="templateSectionAnnotation" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="XmlSection" type="templateXmlSectionAnnotation" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -132,6 +131,16 @@
     <xs:attribute name="rootSectionName" type="xs:string"/>
   </xs:complexType>
 
+  <xs:complexType name="templateXmlSectionAnnotation">
+    <xs:complexContent>
+      <xs:extension base="templateAnnotation">
+        <xs:sequence/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="templateXPath" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
   <xs:complexType name="xmlTemplateAttributeInjection">
     <xs:sequence/>
     <xs:attribute name="attributeName" type="xs:string"/>
@@ -149,10 +158,10 @@
   <xs:complexType name="xmlNodeTextTemplateConfig">
     <xs:sequence>
       <xs:element name="FileFormat" type="fileFormatConfig" minOccurs="0"/>
-      <xs:element name="Sections" minOccurs="0">
+      <xs:element name="TextSections" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="Section" type="templateSectionAnnotation" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="TextSection" type="templateTextSectionAnnotation" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>

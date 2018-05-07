@@ -6,22 +6,17 @@ import java.util.regex.Pattern;
 
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
-import com.xbreeze.xgenerate.template.XsltTemplate;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
+import com.xbreeze.xgenerate.template.XsltTemplate;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
-import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation.RepetitionAction;
-import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation.RepetitionStyle;
+import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation.RepetitionAction;
+import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation.RepetitionStyle;
 
 public class NamedTemplateSection extends TemplateSection {
 	// The logger for this class.
 	private static final Logger logger = Logger.getLogger(NamedTemplateSection.class.getName());
 	
 	public static final String PLACEHOLDER_PLACEHOLDER_NAME = "{{PLACEHOLDER_NAME}}";
-	
-	/**
-	 * The name of the section.
-	 */
-	private String _sectionName;
 	
 	/**
 	 * The template section annotation.
@@ -40,10 +35,8 @@ public class NamedTemplateSection extends TemplateSection {
 	 * @param sectionBeginIndex The section begin index.
 	 * @param sectionEndIndex The section end index.
 	 */
-	public NamedTemplateSection(String sectionName, int sectionBeginIndex, TemplateSectionAnnotation templateSectionAnnotation) {
+	public NamedTemplateSection(TemplateSectionAnnotation templateSectionAnnotation, int sectionBeginIndex) {
 		super(sectionBeginIndex, -1);
-		// Set the sectio name.
-		this._sectionName = sectionName;
 		// Set the template section annotation.
 		this._templateSectionAnnotation = templateSectionAnnotation;
 		// Initialize the _templateSections list.
@@ -54,16 +47,9 @@ public class NamedTemplateSection extends TemplateSection {
 	 * @return the section name
 	 */
 	public String getSectionName() {
-		return _sectionName;
+		return _templateSectionAnnotation.getName();
 	}
 
-	/**
-	 * @param sectionName the section name to set
-	 */
-	public void setSectionName(String sectionName) {
-		this._sectionName = sectionName;
-	}
-	
 	/**
 	 * Add a template section to the list of sections.
 	 * @param templateSection The template section to add.
@@ -83,7 +69,7 @@ public class NamedTemplateSection extends TemplateSection {
 	public void appendTemplateXslt(XsltTemplate xsltTemplate, XGenConfig config, SectionModelBindingConfig parentBindingConfig) throws TemplatePreprocessorException {
 		
 		// Add a comment in the XSLT marking the section start.
-		xsltTemplate.append("<!-- Section begin: %s -->", this._sectionName);
+		xsltTemplate.append("<!-- Section begin: %s -->", this.getSectionName());
 		
 		// Loop through the template sections and add the needed parts to the pre-processed template (XSLT).
 		for (TemplateSection templateSection : this.getTemplateSections()) {
@@ -101,7 +87,7 @@ public class NamedTemplateSection extends TemplateSection {
 				NamedTemplateSection namedTemplateSection = (NamedTemplateSection) templateSection;
 				// Transform NamedTemplateSection into <xsl:foreach ...>
 				// Using SectionModelBinding info: <SectionModelBinding name="SomeSection" modelXPath="/System/MappableObjects/Entity" placeholderName="Entity" />
-				// '-- @XGenSection(name="SomeSection")\n Element_Name\n' => '<xsl:for-each select="/System/MappableObjects/Entity"> Element_Name\n</xsl:for-each>'
+				// '-- @XGenTextSection(name="SomeSection")\n Element_Name\n' => '<xsl:for-each select="/System/MappableObjects/Entity"> Element_Name\n</xsl:for-each>'
 				// The placeholder replacement is done in the next phase.
 				
 				// Get the local section model bindings for the section.
@@ -224,7 +210,7 @@ public class NamedTemplateSection extends TemplateSection {
 		}
 		
 		// Add a comment in the XSLT marking the section end.
-		xsltTemplate.append("<!-- Section end: %s -->", this._sectionName);
+		xsltTemplate.append("<!-- Section end: %s -->", this.getSectionName());
 		
 	}
 	

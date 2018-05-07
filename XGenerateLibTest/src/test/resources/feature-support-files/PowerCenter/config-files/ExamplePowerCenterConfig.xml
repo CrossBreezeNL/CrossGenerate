@@ -29,15 +29,15 @@
   <XmlTemplate rootSectionName="System">
     <FileFormat type="Informatica_PowerCenter" commentNodeXPath="@DESCRIPTION" currentAccessor="_" childAccessor="$" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <Output type="single_output" />
-    <Sections>
+    <XmlSections>
       <!--
         A section name can be specified multiple times. This way the binded model elements will be bound for all sections with the same name.
         In this example the 'Attribute' section is specified multiple times in the template, it here it is again specified from the config.
         For explanation on the XPath syntax see:
           - https://www.w3schools.com/xml/xpath_syntax.asp
        -->
-      <Section templateXPath="//MAPPING/CONNECTOR[@FROMFIELD='attribute_name']" name="Attribute"/>
-    </Sections>
+      <XmlSection templateXPath="//MAPPING/CONNECTOR[@FROMFIELD='attribute_name']" name="Attribute"/>
+    </XmlSections>
     <TemplatePlaceholderInjections>
       <!--
         The scope in the placeholder injection defines at what level placeholder will be resolved.

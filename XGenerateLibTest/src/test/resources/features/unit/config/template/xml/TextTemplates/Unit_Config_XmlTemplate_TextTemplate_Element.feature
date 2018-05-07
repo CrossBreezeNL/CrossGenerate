@@ -55,7 +55,7 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
-        -- @XGenSection(name=<QuoteStyle>Tables<QuoteStyle>)
+        -- @XGenTextSection(name=<QuoteStyle>Tables<QuoteStyle>)
         entity_name
       </Database>
       """
@@ -114,9 +114,9 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
           <TextTemplates>
             <TextTemplate node="/Database">
               <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
-              <Sections>
-                <Section name="Tables" literalOnFirstLine="entity_name" />
-              </Sections>
+              <TextSections>
+                <TextSection name="Tables" literalOnFirstLine="entity_name" />
+              </TextSections>
             </TextTemplate>
           </TextTemplates>
         </XmlTemplate>

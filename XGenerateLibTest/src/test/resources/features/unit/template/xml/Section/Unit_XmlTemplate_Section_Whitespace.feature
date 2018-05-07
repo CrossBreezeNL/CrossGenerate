@@ -45,7 +45,7 @@ Feature: Unit_XmlTemplate_Section_Whitespace
       <Database id="system_id" name="system_name">
         <Tables>
         
-          <Table name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)"/>
+          <Table name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)"/>
         </Tables>
       </Database>
       """
@@ -69,7 +69,7 @@ Feature: Unit_XmlTemplate_Section_Whitespace
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
         <Tables>
-          <Table name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)"/>
+          <Table name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)"/>
           
         </Tables>
       </Database>
@@ -94,10 +94,10 @@ Feature: Unit_XmlTemplate_Section_Whitespace
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
         <Tables>
-          <Table name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)">
+          <Table name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)">
             <Columns>
             
-              <Column name="attribute_name" description="@XGenSection(name=&quot;Attributes&quot;)"/>
+              <Column name="attribute_name" description="@XGenXmlSection(name=&quot;Attributes&quot;)"/>
             </Columns>
           </Table>
         </Tables>
@@ -135,9 +135,9 @@ Feature: Unit_XmlTemplate_Section_Whitespace
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
         <Tables>
-          <Table name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)">
+          <Table name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)">
             <Columns>
-              <Column name="attribute_name" description="@XGenSection(name=&quot;Attributes&quot;)"/>
+              <Column name="attribute_name" description="@XGenXmlSection(name=&quot;Attributes&quot;)"/>
               
             </Columns>
           </Table>
@@ -176,9 +176,9 @@ Feature: Unit_XmlTemplate_Section_Whitespace
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
         <Tables>
-          <Table name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)"/>
+          <Table name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)"/>
           
-          <AnotherTable name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)"/>
+          <AnotherTable name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)"/>
         </Tables>
       </Database>
       """

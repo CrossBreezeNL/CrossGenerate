@@ -169,7 +169,7 @@
                       refId="Package\Load entity_name\Read entity_name.Outputs[OLE DB Source Output].Columns[attribute_name]"
                       codePage="1252"
                       dataType="str"
-                      description="@XGenSection(name=&quot;Attribute&quot;)"
+                      description="@XGenXmlSection(name=&quot;Attribute&quot;)"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       externalMetadataColumnId="Package\Load entity_name\Read entity_name.Outputs[OLE DB Source Output].ExternalColumns[attribute_name]"
@@ -184,7 +184,7 @@
                       refId="Package\Load entity_name\Read entity_name.Outputs[OLE DB Source Output].ExternalColumns[attribute_name]"
                       codePage="1252"
                       dataType="str"
-                      description="@XGenSection(name=&quot;Attribute&quot;)"
+                      description="@XGenXmlSection(name=&quot;Attribute&quot;)"
                       length="10"
                       name="attribute_name" />
                   </externalMetadataColumns>
@@ -198,7 +198,7 @@
                       refId="Package\Load entity_name\Read entity_name.Outputs[OLE DB Source Error Output].Columns[attribute_name]"
                       codePage="1252"
                       dataType="str"
-                      description="@XGenSection(name=&quot;Attribute&quot;)"
+                      description="@XGenXmlSection(name=&quot;Attribute&quot;)"
                       length="10"
                       lineageId="Package\Load entity_name\Read entity_name.Outputs[OLE DB Source Error Output].Columns[attribute_name]"
                       name="attribute_name" />
@@ -312,7 +312,7 @@
                       refId="Package\Load entity_name\Write to system_name entity_name.Inputs[OLE DB Destination Input].ExternalColumns[attribute_name]"
                       codePage="1252"
                       dataType="str"
-                      description="@XGenSection(name=&quot;Attribute&quot;)"
+                      description="@XGenXmlSection(name=&quot;Attribute&quot;)"
                       length="10"
                       name="attribute_name" />
                     <externalMetadataColumn

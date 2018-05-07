@@ -78,7 +78,7 @@ public class FileFormatConfig {
 	
 	/**
 	 * The prefix in the template file which defines the start of an annotation.
-	 * For example in SQL we advise to use '@XGen'. So when specifying a section the annotation would be '@XGenSection'.
+	 * For example in SQL we advise to use '@XGen'. So when specifying a comment the annotation would be '@XGenComment'.
 	 */
 	private String _annotationPrefix = "@XGen";
 	

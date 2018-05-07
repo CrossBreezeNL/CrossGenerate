@@ -30,9 +30,9 @@ Feature: Unit_Config_XmlTemplate_Section
         <XmlTemplate rootSectionName="Database">
           <FileFormat currentAccessor="_" />
           <Output type="output_per_element" />
-          <Sections>
-            <Section name="Tables" templateXPath="<templateXPath>" />
-          </Sections>
+          <XmlSections>
+            <XmlSection name="Tables" templateXPath="<templateXPath>" />
+          </XmlSections>
         </XmlTemplate>
         <Binding>
           <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="system">

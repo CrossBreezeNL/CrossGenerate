@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
+import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation;
+import com.xbreeze.xgenerate.template.annotation.TemplateXmlSectionAnnotation;
 
 /**
  * The RootTemplateConfig part of CrossBreeze configuration.
@@ -35,10 +38,10 @@ public abstract class AbstractTemplateConfig {
 	private FileFormatConfig _fileFormatConfig = new FileFormatConfig();
 	
 	/**
-	 * The XGenSection annotations specified in the configuration file.
-	 * @see TemplateSectionAnnotation
+	 * The text section annotations.
+	 * @see TemplateTextSectionAnnotation
 	 */
-	private ArrayList<TemplateSectionAnnotation> _sectionAnnotations;
+	private ArrayList<? extends TemplateSectionAnnotation> _sectionAnnotations;
 	
 	/**
 	 * @return the rootSectionName
@@ -73,17 +76,20 @@ public abstract class AbstractTemplateConfig {
 	/**
 	 * @return the sections
 	 */
-	@XmlElement(name="Section")
+	@XmlElements({
+		@XmlElement(name="TextSection", type=TemplateTextSectionAnnotation.class),
+		@XmlElement(name="XmlSection", type=TemplateXmlSectionAnnotation.class)
+	})
 	@XmlElementWrapper(name="Sections")
-	public ArrayList<TemplateSectionAnnotation> getSectionAnnotations() {
+	public ArrayList<? extends TemplateSectionAnnotation> getSectionAnnotations() {
 		return _sectionAnnotations;
 	}
-
+	
 	/**
-	 * @param sectionAnnotations the sections to set
+	 * Set the section annotations. 
+	 * @param sectionAnnotations The section annotations.
 	 */
-	public void setSectionAnnotations(ArrayList<TemplateSectionAnnotation> sectionAnnotations) {
+	public void setSectionAnnotations(ArrayList<? extends TemplateSectionAnnotation> sectionAnnotations) {
 		this._sectionAnnotations = sectionAnnotations;
 	}
-
 }

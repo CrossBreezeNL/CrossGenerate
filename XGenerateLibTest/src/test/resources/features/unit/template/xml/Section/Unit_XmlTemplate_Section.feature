@@ -52,7 +52,7 @@ Feature: Unit_XmlTemplate_Section
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
         <Tables>
-          <Table name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)"/>
+          <Table name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)"/>
         </Tables>
       </Database>
       """
@@ -100,7 +100,7 @@ Feature: Unit_XmlTemplate_Section
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
         <Tables>
-          <Table name="entity_name"><description someAttr="someValue">@XGenSection(name=&quot;Tables&quot;)</description></Table>
+          <Table name="entity_name"><description someAttr="someValue">@XGenXmlSection(name=&quot;Tables&quot;)</description></Table>
         </Tables>
       </Database>
       """
@@ -153,10 +153,10 @@ Feature: Unit_XmlTemplate_Section
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
         <Tables>
-          <Table name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)"/>
+          <Table name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)"/>
         </Tables>
         <MoreTables>
-          <AnotherTable name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)"/>
+          <AnotherTable name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)"/>
         </MoreTables>
       </Database>
       """
@@ -207,8 +207,8 @@ Feature: Unit_XmlTemplate_Section
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
-        <Table name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)"/>
-        <AnotherTable name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)"/>
+        <Table name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)"/>
+        <AnotherTable name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)"/>
       </Database>
       """
     And the following config:
@@ -255,8 +255,8 @@ Feature: Unit_XmlTemplate_Section
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
         <Tables>
-          <Table name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)">
-            <AnotherTable name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)"/>
+          <Table name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)">
+            <AnotherTable name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)"/>
           </Table>
         </Tables>
       </Database>
@@ -324,9 +324,9 @@ Feature: Unit_XmlTemplate_Section
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
         <Tables>
-          <Table name="entity_name" description="@XGenSection(name=&quot;Tables&quot;)">
+          <Table name="entity_name" description="@XGenXmlSection(name=&quot;Tables&quot;)">
             <Columns>
-              <Column name="attribute_name" description="@XGenSection(name=&quot;Columns&quot;)"/>
+              <Column name="attribute_name" description="@XGenXmlSection(name=&quot;Columns&quot;)"/>
             </Columns>
           </Table>
         </Tables>

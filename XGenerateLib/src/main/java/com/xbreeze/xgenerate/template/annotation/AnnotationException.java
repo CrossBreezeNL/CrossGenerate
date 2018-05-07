@@ -23,4 +23,13 @@ public class AnnotationException extends CrossGenerateException {
 	public AnnotationException(Throwable throwable) {
 		super(throwable);
 	}
+	
+	/**
+	 * Constructor.
+	 * @param message The message of the exception.
+	 * @param throwable The throwable.
+	 */
+	public AnnotationException(String message, Throwable throwable) {
+		super(message, throwable);
+	}
 }

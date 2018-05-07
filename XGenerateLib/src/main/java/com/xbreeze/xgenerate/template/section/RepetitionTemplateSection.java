@@ -1,8 +1,8 @@
 package com.xbreeze.xgenerate.template.section;
 
-import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation.RepetitionAction;
-import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation.RepetitionStyle;
-import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation.RepetitionType;
+import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation.RepetitionAction;
+import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation.RepetitionStyle;
+import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation.RepetitionType;
 
 public class RepetitionTemplateSection extends RawTemplateSection {
 	

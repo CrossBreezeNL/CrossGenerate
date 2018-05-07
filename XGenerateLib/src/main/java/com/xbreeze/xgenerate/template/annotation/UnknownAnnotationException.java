@@ -10,7 +10,7 @@ public class UnknownAnnotationException extends AnnotationException {
 	 * Constructor.
 	 * @param annotationName The annotation name used.
 	 */
-	public UnknownAnnotationException(String annotationName) {
-		super(String.format("An unknown annotation was used (%s)", annotationName));
+	public UnknownAnnotationException(String annotationName, Throwable throwable) {
+		super(String.format("An unknown annotation was used (%s)", annotationName), throwable);
 	}
 }

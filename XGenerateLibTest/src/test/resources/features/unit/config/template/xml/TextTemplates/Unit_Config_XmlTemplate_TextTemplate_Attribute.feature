@@ -50,7 +50,7 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Attribute
     Given the following template named "ExampleTemplate.xml":
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <Database id="system_id" name="system_name" description="-- @XGenSection(name=&quot;Tables&quot; begin=&quot;entity&quot; end=&quot;name&quot; suffix=&quot;,&quot;) entity_name" />
+      <Database id="system_id" name="system_name" description="-- @XGenTextSection(name=&quot;Tables&quot; begin=&quot;entity&quot; end=&quot;name&quot; suffix=&quot;,&quot;) entity_name" />
       """
     And the following config:
       """
@@ -84,7 +84,7 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Attribute
     Given the following template named "ExampleTemplate.xml":
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <Database id="system_id" name="system_name" description="-- @XGenSection(name=&quot;Tables&quot;)
+      <Database id="system_id" name="system_name" description="-- @XGenTextSection(name=&quot;Tables&quot;)
       entity_name
       " />
       """
@@ -136,9 +136,9 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Attribute
           <TextTemplates>
             <TextTemplate node="/Database/@description">
               <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
-              <Sections>
-                <Section name="Tables" literalOnFirstLine="entity_name" />
-              </Sections>
+              <TextSections>
+                <TextSection name="Tables" literalOnFirstLine="entity_name" />
+              </TextSections>
             </TextTemplate>
           </TextTemplates>
         </XmlTemplate>

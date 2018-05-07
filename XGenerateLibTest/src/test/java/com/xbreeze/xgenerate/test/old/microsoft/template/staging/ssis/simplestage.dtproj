@@ -227,7 +227,7 @@
                 </SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionGUID">{9DF4838F-CCD2-4E31-856D-A5298739CDE6}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
-                <SSIS:Property SSIS:Name="Description">@XGenSection(name="stgPackage")</SSIS:Property>
+                <SSIS:Property SSIS:Name="Description">@XGenXmlSection(name="stgPackage")</SSIS:Property>
                 <SSIS:Property SSIS:Name="ProtectionLevel">1</SSIS:Property>
               </SSIS:Properties>
               <SSIS:Parameters />

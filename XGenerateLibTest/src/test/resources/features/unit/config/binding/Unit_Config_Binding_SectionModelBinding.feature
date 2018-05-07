@@ -89,7 +89,7 @@ Feature: Unit_Config_Binding_SectionModelBinding
       """
     And the following template named "Unit_Config_Binding_SectionModelBinding.txt":
       """
-      -- @XGenSection(name="Section" end="_name")
+      -- @XGenTextSection(name="Section" end="_name")
       <childPlaceholderName>_name
       """
     When I run the generator

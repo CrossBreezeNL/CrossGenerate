@@ -38,7 +38,7 @@ Feature: Unit_TextTemplate_Section_Suffix
   Scenario Outline: Section with suffix single line <suffixStyle>
     And the following template named "Section_Suffix_single_line_<suffixStyle>.txt":
       """
-      -- @XGenSection(name="Column" end="column_name" suffix="<suffix>" suffixStyle="<suffixStyle>")
+      -- @XGenTextSection(name="Column" end="column_name" suffix="<suffix>" suffixStyle="<suffixStyle>")
       column_name
       """
     When I run the generator
@@ -58,7 +58,7 @@ Feature: Unit_TextTemplate_Section_Suffix
   Scenario Outline: Section with suffix multi line <suffixStyle>
     And the following template named "Section_Suffix_multi_line_<suffixStyle>.txt":
       """
-      -- @XGenSection(name="Column" suffix="<suffix>" suffixStyle="<suffixStyle>")
+      -- @XGenTextSection(name="Column" suffix="<suffix>" suffixStyle="<suffixStyle>")
       column_name
 
       """

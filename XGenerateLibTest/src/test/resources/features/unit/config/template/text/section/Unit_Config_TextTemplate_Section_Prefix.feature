@@ -34,9 +34,9 @@ Feature: Unit_Config_TextTemplate_Section_Prefix
             annotationArgsSuffix=")"
           />
           <Output type="single_output" />
-          <Sections>
-            <Section name="Column" literalOnFirstLine="column" end="name" includeEnd="true" prefix="<prefix>" prefixStyle="<prefixStyle>"/> 
-          </Sections>
+          <TextSections>
+            <TextSection name="Column" literalOnFirstLine="column" end="name" includeEnd="true" prefix="<prefix>" prefixStyle="<prefixStyle>"/> 
+          </TextSections>
         </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/modeldefinition" placeholderName="model"> 
@@ -75,9 +75,9 @@ Feature: Unit_Config_TextTemplate_Section_Prefix
             annotationArgsSuffix=")"
           />
           <Output type="single_output" />
-          <Sections>
-            <Section name="Column" literalOnFirstLine="column" prefix="<prefix>" prefixStyle="<prefixStyle>"/> 
-          </Sections>
+          <TextSections>
+            <TextSection name="Column" literalOnFirstLine="column" prefix="<prefix>" prefixStyle="<prefixStyle>"/> 
+          </TextSections>
         </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/modeldefinition" placeholderName="model"> 

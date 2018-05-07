@@ -14,8 +14,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 import com.xbreeze.xgenerate.UnhandledException;
-import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation.RepetitionAction;
-import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation.RepetitionStyle;
+import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation.RepetitionAction;
+import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation.RepetitionStyle;
 
 /**
  * The abstract TemplateAnnotation class which should be extends by all annotations supported by CrossGenerate.
@@ -71,6 +71,7 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 		// Construct the class name for the annotation (Template<Name>Annotation).
 		// It expects the class to be in the same package as TemplateAnnotation.
 		String annotationTypeClassName = String.format("%s.Template%sAnnotation", TemplateAnnotation.class.getPackage().getName(), annotationName);
+		logger.fine(String.format("Trying to initialize object from class '%s'", annotationTypeClassName));
 		
 		// Now try to find the class and initiate one.
 		try {
@@ -152,9 +153,11 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 			// Return the template annotation.
 			return templateAnnotation;
 		} catch (ClassNotFoundException e) {
-			// When we get into this catch, the user specified a unspecified annotation.
-			throw new UnknownAnnotationException(annotationName);
-		} catch (InstantiationException | IllegalAccessException | ClassCastException e) {
+			// When we get into this catch, the user specified an unspecified annotation.
+			throw new UnknownAnnotationException(annotationName, e);
+		} catch (InstantiationException e) {
+			throw new UnhandledException(String.format("Error while initializing class for '%s', maybe default constructor missing?", annotationName), e);
+		} catch (IllegalAccessException | ClassCastException e) {
 			// ClassCastException can only occur when the annotation class is not a subclass of TemplateAnnotation, which shouldn't occur.
 			throw new UnhandledException(e);
 		}

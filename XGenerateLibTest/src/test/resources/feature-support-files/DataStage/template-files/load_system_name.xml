@@ -240,7 +240,7 @@
          <Collection Name="Columns" Type="OutputColumn">
             <SubRecord>
                <Property Name="Name">attribute_name</Property>
-               <Property Name="Description">@XGenSection(name=&quot;Attribute&quot;)</Property>
+               <Property Name="Description">@XGenXmlSection(name=&quot;Attribute&quot;)</Property>
                <Property Name="SqlType">12</Property>
                <Property Name="Precision">20</Property>
                <Property Name="Scale">0</Property>
@@ -422,7 +422,7 @@
          <Collection Name="Columns" Type="OutputColumn">
             <SubRecord>
                <Property Name="Name">attribute_name</Property>
-               <Property Name="Description">@XGenSection(name=&quot;Attribute&quot;)</Property>
+               <Property Name="Description">@XGenXmlSection(name=&quot;Attribute&quot;)</Property>
                <Property Name="SqlType">12</Property>
                <Property Name="Precision">20</Property>
                <Property Name="Scale">0</Property>

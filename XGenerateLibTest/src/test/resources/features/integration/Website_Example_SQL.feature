@@ -25,9 +25,9 @@ Feature: Integration_Website_Example_SQL
       """
       CREATE SCHEMA [schema_name];
       GO
-      -- @XGenSection(name="CreateTable" literalOnLastLine="GO")
+      -- @XGenTextSection(name="CreateTable" literalOnLastLine="GO")
       CREATE TABLE [schema_name].[table_name] (
-        -- @XGenSection(name="TableColumn" suffix="," suffixStyle="allButLast")
+        -- @XGenTextSection(name="TableColumn" suffix="," suffixStyle="allButLast")
         [column_name]            column_fulldatatype        NULL
       );
       GO
@@ -101,9 +101,9 @@ Feature: Integration_Website_Example_SQL
       """
       CREATE SCHEMA [schema_name];
       GO
-      -- @XGenSection(name="CreateTable" literalOnLastLine="GO")
+      -- @XGenTextSection(name="CreateTable" literalOnLastLine="GO")
       CREATE TABLE [schema_name].[table_name] (
-        -- @XGenSection(name="TableColumn")
+        -- @XGenTextSection(name="TableColumn")
         [column_name]            column_fulldatatype        NULL,
         [StageDateTime]          datetime2(2)           NOT NULL
       );

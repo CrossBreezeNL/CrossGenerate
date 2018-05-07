@@ -38,7 +38,7 @@ Feature: Unit_TextTemplate_Section_Prefix
   Scenario Outline: Section with prefix single line <prefixStyle>
     And the following template named "Section_Prefix_single_line_<prefixStyle>.txt":
       """
-      -- @XGenSection(name="Column" end="column_name" prefix="<prefix>" prefixStyle="<prefixStyle>")
+      -- @XGenTextSection(name="Column" end="column_name" prefix="<prefix>" prefixStyle="<prefixStyle>")
       column_name
       """
     When I run the generator
@@ -58,7 +58,7 @@ Feature: Unit_TextTemplate_Section_Prefix
   Scenario Outline: Section with prefix multi line <prefixStyle>
     And the following template named "Section_Prefix_multi_line_<prefixStyle>.txt":
       """
-      -- @XGenSection(name="Column" prefix="<prefix>" prefixStyle="<prefixStyle>")
+      -- @XGenTextSection(name="Column" prefix="<prefix>" prefixStyle="<prefixStyle>")
       column_name
 
       """

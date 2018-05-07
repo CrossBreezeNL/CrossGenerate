@@ -43,7 +43,7 @@ Feature: Unit_TextTemplate_Section_Bounds
     Given I have the following model file: "general/model.xml"
     And the following template named "DropTables.sql":
       """
-      -- @XGenSection(name="Entity")
+      -- @XGenTextSection(name="Entity")
       DROP TABLE entity_name;
       GO;
       """
@@ -77,7 +77,7 @@ Feature: Unit_TextTemplate_Section_Bounds
     Given I have the following model file: "general/model.xml"
     And the following template named "DropTables.sql":
       """
-      -- @XGenSection(name="Entity" literalOnLastLine="GO;")
+      -- @XGenTextSection(name="Entity" literalOnLastLine="GO;")
       DROP TABLE entity_name;
       GO;
       -- End of template
@@ -114,7 +114,7 @@ Feature: Unit_TextTemplate_Section_Bounds
     Given I have the following model file: "general/model.xml"
     And the following template named "DropTables.sql":
       """
-      -- @XGenSection(name="Entity" nrOfLines="2")
+      -- @XGenTextSection(name="Entity" nrOfLines="2")
       DROP TABLE entity_name;
       GO;
       -- End of template
@@ -151,7 +151,7 @@ Feature: Unit_TextTemplate_Section_Bounds
     Given I have the following model file: "general/model.xml"
     And the following template named "DropTables.sql":
       """
-      -- @XGenSection(name="Entity" end="GO;" includeEnd="true")
+      -- @XGenTextSection(name="Entity" end="GO;" includeEnd="true")
       
       DROP TABLE entity_name;
       GO;
@@ -190,7 +190,7 @@ Feature: Unit_TextTemplate_Section_Bounds
     Given I have the following model file: "general/model.xml"
     And the following template named "DropTables.sql":
       """
-      -- @XGenSection(name="Entity" end="GO;" includeEnd="false")
+      -- @XGenTextSection(name="Entity" end="GO;" includeEnd="false")
       DROP TABLE entity_name;
       GO;
       -- End of template
@@ -226,7 +226,7 @@ Feature: Unit_TextTemplate_Section_Bounds
     Given I have the following model file: "general/model.xml"
     And the following template named "DropTables.sql":
       """
-      -- @XGenSection(name="Entity" literalOnFirstLine="DROP")
+      -- @XGenTextSection(name="Entity" literalOnFirstLine="DROP")
       -- section starts on the next line
       DROP TABLE entity_name;
       GO;
@@ -264,7 +264,7 @@ Feature: Unit_TextTemplate_Section_Bounds
     Given I have the following model file: "general/model.xml"
     And the following template named "DropTables.sql":
       """
-      -- @XGenSection(name="Entity" begin="DROP TABLE" includeBegin="true")
+      -- @XGenTextSection(name="Entity" begin="DROP TABLE" includeBegin="true")
       -- section starts on the next line
       DROP TABLE entity_name;
       GO;
@@ -304,7 +304,7 @@ Feature: Unit_TextTemplate_Section_Bounds
     Given I have the following model file: "general/model.xml"
     And the following template named "DropTables.sql":
       """
-      -- @XGenSection(name="Entity" begin="-- begin drop statement" includeBegin="false" literalOnLastLine="GO")
+      -- @XGenTextSection(name="Entity" begin="-- begin drop statement" includeBegin="false" literalOnLastLine="GO")
       -- section starts on the next line
       -- begin drop statement
       DROP TABLE entity_name;

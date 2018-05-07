@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
+import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
+import com.xbreeze.xgenerate.template.annotation.TemplateXmlSectionAnnotation;
 import com.xbreeze.xgenerate.template.xml.XMLTemplatePreprocessor;
 
 /**
@@ -45,6 +47,13 @@ public class XMLTemplateConfig extends RootTemplateConfig {
 	 */
 	public XMLTemplateConfig() {
 		super();
+	}
+	
+	@Override
+	@XmlElementWrapper(name="XmlSections")
+	@XmlElement(name="XmlSection", type=TemplateXmlSectionAnnotation.class)
+	public ArrayList<? extends TemplateSectionAnnotation> getSectionAnnotations() {
+		return super.getSectionAnnotations();
 	}
 	
 	/**

@@ -34,9 +34,9 @@ Feature: Unit_Config_TextTemplate_Section_Suffix
             annotationArgsSuffix=")"
           />
           <Output type="single_output" />
-          <Sections>
-            <Section name="Column" begin="column" includeBegin="true" end="name" includeEnd="true" suffix="<suffix>" suffixStyle="<suffixStyle>"/>
-          </Sections>
+          <TextSections>
+            <TextSection name="Column" begin="column" includeBegin="true" end="name" includeEnd="true" suffix="<suffix>" suffixStyle="<suffixStyle>"/>
+          </TextSections>
         </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/modeldefinition" placeholderName="model"> 
@@ -75,9 +75,9 @@ Feature: Unit_Config_TextTemplate_Section_Suffix
             annotationArgsSuffix=")"
           />
           <Output type="single_output" />
-          <Sections>
-            <Section name="Column" begin="column" includeBegin="true" suffix="<suffix>" suffixStyle="<suffixStyle>"/>
-          </Sections>
+          <TextSections>
+            <TextSection name="Column" begin="column" includeBegin="true" suffix="<suffix>" suffixStyle="<suffixStyle>"/>
+          </TextSections>
         </TextTemplate>
         <Binding>
           <SectionModelBinding section="Template" modelXPath="/modeldefinition" placeholderName="model"> 

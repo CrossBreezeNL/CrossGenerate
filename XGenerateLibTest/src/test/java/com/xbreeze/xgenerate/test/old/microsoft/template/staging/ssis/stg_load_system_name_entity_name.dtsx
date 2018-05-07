@@ -5,7 +5,7 @@
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="DESKTOP-EC40127"
   DTS:CreatorName="DESKTOP-EC40127\Willem"
-  DTS:Description="@XGenSection(name=&quot;stgPackage&quot;)"
+  DTS:Description="@XGenXmlSection(name=&quot;stgPackage&quot;)"
   DTS:DTSID="{FEE0C51A-D375-41C3-8DFB-BAACEB3D0087}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="13.0.4001.0"
@@ -169,7 +169,7 @@
                       refId="Package\Load entity_name\Read entity_name.Outputs[OLE DB Source Output].Columns[attribute_name]"
                       codePage="1252"
                       dataType="str"
-                      description="@XGenSection(name=&quot;Attribute&quot;)"
+                      description="@XGenXmlSection(name=&quot;Attribute&quot;)"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       externalMetadataColumnId="Package\Load entity_name\Read entity_name.Outputs[OLE DB Source Output].ExternalColumns[attribute_name]"
@@ -184,7 +184,7 @@
                       refId="Package\Load entity_name\Read entity_name.Outputs[OLE DB Source Output].ExternalColumns[attribute_name]"
                       codePage="1252"
                       dataType="str"
-                      description="@XGenSection(name=&quot;Attribute&quot;)"
+                      description="@XGenXmlSection(name=&quot;Attribute&quot;)"
                       length="10"
                       name="attribute_name" />
                   </externalMetadataColumns>
@@ -198,7 +198,7 @@
                       refId="Package\Load entity_name\Read entity_name.Outputs[OLE DB Source Error Output].Columns[attribute_name]"
                       codePage="1252"
                       dataType="str"
-                      description="@XGenSection(name=&quot;Attribute&quot;)"
+                      description="@XGenXmlSection(name=&quot;Attribute&quot;)"
                       length="10"
                       lineageId="Package\Load entity_name\Read entity_name.Outputs[OLE DB Source Error Output].Columns[attribute_name]"
                       name="attribute_name" />
@@ -312,7 +312,7 @@
                       refId="Package\Load entity_name\Write to system_name entity_name.Inputs[OLE DB Destination Input].ExternalColumns[attribute_name]"
                       codePage="1252"
                       dataType="str"
-                      description="@XGenSection(name=&quot;Attribute&quot;)"
+                      description="@XGenXmlSection(name=&quot;Attribute&quot;)"
                       length="10"
                       name="attribute_name" />
                     <externalMetadataColumn

@@ -18,6 +18,7 @@ import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.annotation.TemplateAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionBoundsAnnotation;
+import com.xbreeze.xgenerate.template.annotation.TemplateXmlSectionAnnotation;
 import com.xbreeze.xgenerate.template.scanner.AnnotationScanner;
 import com.xbreeze.xgenerate.template.section.NamedTemplateSection;
 import com.xbreeze.xgenerate.template.text.TextTemplatePreprocessor;
@@ -46,7 +47,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	 * @throws TemplatePreprocessorException 
 	 */
 	@Override
-	protected PreprocessedTemplate getPreprocessedTemplate(RawTemplate rawTemplate) throws TemplatePreprocessorException {
+	protected PreprocessedTemplate getPreprocessedTemplate(RawTemplate rawTemplate, String rootSectionName) throws TemplatePreprocessorException {
 		logger.info(String.format("Creating pre-processed template for '%s'.", rawTemplate.getRawTemplateFileName()));
 		
 		// Check whether the template is a XML template.
@@ -105,34 +106,42 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			
 			// Loop through the template attribute injections and apply them.
 			for (TemplateSectionAnnotation sa : _config.getTemplateConfig().getSectionAnnotations()) {
-				logger.info(String.format("Processing section '%s' defined in the config.", sa.getName()));
-				// Create an AutoPilot for querying the document.
-				AutoPilot ap = new AutoPilot(nv);
-				int sectionNodesFound = 0;
-				// Search for the node the section represents.
-				try {
-					// Set the XPath expression from the config.
-					ap.selectXPath(sa.getTemplateXPath());
-					// Execute the XPath expression and loop through the results.
-			        while ((ap.evalXPath()) != -1) {
-			        	// Increase the section nodes found.
-			        	++sectionNodesFound;
-			        	
-			        	// Get the TemplateSectionBoundsAnnotation of the current element, correcting for whitespace around the element.
-			        	TemplateSectionBoundsAnnotation tsba = getTemplateSectionBoundsWithWhitespace(preprocessedTemplate, nv, sa);
-
-			        	// Add the bounds to the collection.
-			        	templateAnnotations.add(tsba);
-			        	logger.info(String.format("Section '%s' bounds found (%d:%d)", sa.getName(), tsba.getAnnotationBeginIndex(), tsba.getAnnotationEndIndex()));
-			        }
+				if (sa instanceof TemplateXmlSectionAnnotation) {
+					TemplateXmlSectionAnnotation xmlSectionAnnotation = (TemplateXmlSectionAnnotation)sa;
+					
+					logger.info(String.format("Processing section '%s' defined in the config.", xmlSectionAnnotation.getName()));
+					// Create an AutoPilot for querying the document.
+					AutoPilot ap = new AutoPilot(nv);
+					int sectionNodesFound = 0;
+					// Search for the node the section represents.
+					try {
+						// Set the XPath expression from the config.
+						ap.selectXPath(xmlSectionAnnotation.getTemplateXPath());
+						// Execute the XPath expression and loop through the results.
+				        while ((ap.evalXPath()) != -1) {
+				        	// Increase the section nodes found.
+				        	++sectionNodesFound;
+				        	
+				        	// Get the TemplateSectionBoundsAnnotation of the current element, correcting for whitespace around the element.
+				        	TemplateSectionBoundsAnnotation tsba = getTemplateSectionBoundsWithWhitespace(preprocessedTemplate, nv, xmlSectionAnnotation);
+	
+				        	// Add the bounds to the collection.
+				        	templateAnnotations.add(tsba);
+				        	logger.info(String.format("Section '%s' bounds found (%d:%d)", xmlSectionAnnotation.getName(), tsba.getAnnotationBeginIndex(), tsba.getAnnotationEndIndex()));
+				        }
+					}
+					catch (XPathParseException | XPathEvalException | NavException e) {
+						throw new TemplatePreprocessorException(String.format("Error while processing template section annotation for XPath %s: %s", xmlSectionAnnotation.getTemplateXPath(),  e.getMessage()));
+					}
+					
+					// If there are no nodes found for this section, log a severe error.
+					if (sectionNodesFound == 0)
+						logger.warning(String.format("No template nodes found for section '%s' using XPath '%s'", xmlSectionAnnotation.getName(), xmlSectionAnnotation.getTemplateXPath()));
 				}
-				catch (XPathParseException | XPathEvalException | NavException e) {
-					throw new TemplatePreprocessorException(String.format("Error while processing template section annotation for XPath %s: %s", sa.getTemplateXPath(),  e.getMessage()));
+				// If the section annotation is of a different type, throw an exception.
+				else {
+					
 				}
-				
-				// If there are no nodes found for this section, log a severe error.
-				if (sectionNodesFound == 0)
-					logger.warning(String.format("No template nodes found for section '%s' using XPath '%s'", sa.getName(), sa.getTemplateXPath()));
 			}
 		}
 		
@@ -170,9 +179,11 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 					int annotationValueEndIndex = annotationValueStartIndex + annotationNav.getTokenLength(annotationValueIndex);
 					logger.fine(String.format("Found annotation node value (start=%d; end=%d): '%s'", annotationValueStartIndex, annotationValueEndIndex, annotationAttributeValue));
 					
+					// Collect the annotations defined in the template.
 					ArrayList<TemplateAnnotation> foundInlineAnnotations = AnnotationScanner.collectInlineAnnotations(preprocessedTemplate, fileFormatConfig, annotationValueStartIndex, annotationValueEndIndex);
 		        	
-					for (TemplateSectionAnnotation tsa : foundInlineAnnotations.stream().filter(sa -> sa instanceof TemplateSectionAnnotation).toArray(TemplateSectionAnnotation[]::new)) {
+					// Loop through the XMLTemplateSectionAnnotation's.
+					for (TemplateXmlSectionAnnotation tsa : foundInlineAnnotations.stream().filter(sa -> sa instanceof TemplateXmlSectionAnnotation).toArray(TemplateXmlSectionAnnotation[]::new)) {
 						
 			        	// Get the TemplateSectionBoundsAnnotation of the current element, correcting for whitespace around the element.
 			        	TemplateSectionBoundsAnnotation tsba = getTemplateSectionBoundsWithWhitespace(preprocessedTemplate, nv, tsa);
@@ -220,7 +231,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 							logger.fine(String.format("Found text template node value (start=%d; end=%d): '%s'", textTemplateStartIndex, textTemplateEndIndex, textTemplateContent));
 							
 							// Create a template section annotation for the root section of the template.
-							TemplateSectionAnnotation tsa = new TemplateSectionAnnotation(textTemplateConfig.getRootSectionName());
+							TemplateXmlSectionAnnotation tsa = new TemplateXmlSectionAnnotation(textTemplateConfig.getRootSectionName());
 					    	// Create a new TemplateSectionBoundsAnnotation using the section-annotation and start index.
 					    	TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(tsa, textTemplateStartIndex);
 					    	// Set the end index.
@@ -245,8 +256,15 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 				}
 		}
 		
+		// Create a Text Template section annotation for the root section (implicit).
+		TemplateXmlSectionAnnotation xtsa = new TemplateXmlSectionAnnotation(rootSectionName);
+		// Create the root template section bounds.
+		TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(xtsa, 0);
+		// Set the end of the template.
+		tsba.setAnnotationEndIndex(preprocessedTemplate.length());
+		
 		// Return the pre-processed template.
-		return new PreprocessedTemplate(preprocessedTemplate, templateAnnotations);
+		return new PreprocessedTemplate(preprocessedTemplate, tsba, templateAnnotations);
 	}
 	
 	/**
@@ -258,7 +276,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 	 * @return The new TemplateSectionBoundsAnnotation
 	 * @throws NavException
 	 */
-	private TemplateSectionBoundsAnnotation getTemplateSectionBoundsWithWhitespace(String preprocessedTemplate, VTDNav nv, TemplateSectionAnnotation tsa) throws NavException {
+	private TemplateSectionBoundsAnnotation getTemplateSectionBoundsWithWhitespace(String preprocessedTemplate, VTDNav nv, TemplateXmlSectionAnnotation tsa) throws NavException {
     	// Get the element offset and length (including whitespaces).
     	long elementOffset = nv.getElementFragment();
     	int contentStartIndex = (int)elementOffset;

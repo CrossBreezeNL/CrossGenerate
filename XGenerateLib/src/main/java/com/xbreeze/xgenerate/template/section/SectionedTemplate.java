@@ -40,8 +40,8 @@ public class SectionedTemplate extends NamedTemplateSection {
 	 * Constructor.
 	 * @param rootSectionName The name of the root section.
 	 */
-	public SectionedTemplate(String rootSectionName) {
+	public SectionedTemplate(TemplateSectionAnnotation rootTemplateSectionAnnotation) {
 		// Create an implicit TemplateSectionAnnotation for the root of the template.
-		super(rootSectionName, 0, new TemplateSectionAnnotation(rootSectionName));
+		super(rootTemplateSectionAnnotation, 0);
 	}
 }
