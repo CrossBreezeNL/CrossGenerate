@@ -3,7 +3,7 @@
 
 @Integration
 
-Feature: Integration_PowerCenter
+Feature: Integration_PowerCenter_Simple_staging
   This feature file contains the features when using PowerCenter in CrossGenerate templates
   
   Scenario: Simple staging mapping

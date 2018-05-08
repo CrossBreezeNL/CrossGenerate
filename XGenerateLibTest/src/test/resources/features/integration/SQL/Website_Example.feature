@@ -1,7 +1,7 @@
 #Author: info@x-breeze.com
 #Keywords Summary : CrossGenerate SQL
 @Integration
-Feature: Integration_Website_Example_SQL
+Feature: Integration_SQL_Website_Example
 
   Scenario: Re-create original code
     Given I have the following model:

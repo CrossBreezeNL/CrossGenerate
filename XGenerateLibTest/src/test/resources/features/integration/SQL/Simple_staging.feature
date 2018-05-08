@@ -3,7 +3,7 @@
 
 @Integration
 
-Feature: Integration_SQL
+Feature: Integration_SQL_Simple_staging
   This feature file contains the features when using SQL in your template.
 
 

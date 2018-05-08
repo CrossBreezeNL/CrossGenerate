@@ -3,7 +3,7 @@
 
 @Integration
 
-Feature: Integration_DataStage
+Feature: Integration_DataStage_Simple_staging
   This feature file contains the features when using DataStage in CrossGenerate templates
   
   Scenario: Simple staging job

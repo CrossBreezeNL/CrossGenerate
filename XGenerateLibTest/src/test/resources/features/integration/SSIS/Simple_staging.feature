@@ -3,7 +3,7 @@
 
 @Integration
 
-Feature: Integration_SSIS
+Feature: Integration_SSIS_Simple_staging
   This feature file contains the features when using SSIS in CrossGenerate templates
   
   Scenario: Simple staging package
