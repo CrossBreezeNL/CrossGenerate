@@ -8,7 +8,7 @@ Feature: Integration_PowerCenter_Simple_staging
   
   Scenario: Simple staging mapping
   
-    Given I have the following model file: "../../../common/model.xml"
+    Given I have the following model file: "../../../common/source_model.xml"
     And the following template file: "template-files/stg_load_system_name.XML"
     And the following config file: "config-files/ExamplePowerCenterConfig.xml" 
     

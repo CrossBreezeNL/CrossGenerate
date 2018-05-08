@@ -8,7 +8,7 @@ Feature: Integration_SSIS_Simple_staging
   
   Scenario: Simple staging package
   
-	  Given I have the following model file: "../../../common/model.xml"
+	  Given I have the following model file: "../../../common/source_model.xml"
 	  And the following template file: "template-files/stg_load_system_name_entity_name.dtsx"
 	  And the following config file: "config-files/ExampleSSISConfig.xml" 
 	  

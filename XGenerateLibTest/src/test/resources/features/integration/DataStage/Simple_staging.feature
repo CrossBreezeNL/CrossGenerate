@@ -8,7 +8,7 @@ Feature: Integration_DataStage_Simple_staging
   
   Scenario: Simple staging job
   
-    Given I have the following model file: "../../../common/modelOracle.xml"
+    Given I have the following model file: "../../../common/source_model_oracle.xml"
     And the following template file: "template-files/load_system_name.xml"
     And the following config file: "config-files/ExampleDataStageConfig.xml" 
     
