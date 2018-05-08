@@ -8,12 +8,12 @@ Feature: Integration_SSIS_Simple_staging
   
   Scenario: Simple staging package
   
-	  Given I have the following model file: "general/model.xml"
-	  And the following template file: "SSIS/template-files/stg_load_system_name_entity_name.dtsx"
-	  And the following config file: "SSIS/config-files/ExampleSSISConfig.xml" 
+	  Given I have the following model file: "../../../common/model.xml"
+	  And the following template file: "template-files/stg_load_system_name_entity_name.dtsx"
+	  And the following config file: "config-files/ExampleSSISConfig.xml" 
 	  
 	  When I run the generator
 	    
 	  Then I expect 2 generation results
-    And an output named "stg_load_ExampleSource_Order.dtsx" with contents equal to file: "SSIS/expected-output-files/stg_load_ExampleSource_Order.dtsx"
-    And an output named "stg_load_ExampleSource_Customer.dtsx" with contents equal to file: "SSIS/expected-output-files/stg_load_ExampleSource_Customer.dtsx"
+    And an output named "stg_load_ExampleSource_Order.dtsx" with contents equal to file: "expected-output-files/stg_load_ExampleSource_Order.dtsx"
+    And an output named "stg_load_ExampleSource_Customer.dtsx" with contents equal to file: "expected-output-files/stg_load_ExampleSource_Customer.dtsx"

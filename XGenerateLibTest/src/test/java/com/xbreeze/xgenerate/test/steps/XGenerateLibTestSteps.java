@@ -42,7 +42,9 @@ import cucumber.api.java.en.When;
 
 public class XGenerateLibTestSteps {
 	private final URI _outputFolderUri = URI.create("file:///C:/CrossGenerate/Output/");
-	private final URI _featureSupportFilesLocation = URI.create("file:///C:/GIT/Repos/CrossBreeze/CrossGenerate/CrossGenerate/XGenerateLibTest/src/test/resources/feature-support-files/");
+	// Location of the feature support files.
+	private URI _featureSupportFilesLocation;
+	
 	
 	XGenConfig _xGenConfig;
 	RawTemplate _rawTemplate;
@@ -89,6 +91,12 @@ public class XGenerateLibTestSteps {
 			}
 		});
 		logger.addHandler(outputConsoleHandler);
+		
+		// Set the feature support file location using the scenario location.
+		// The support file location is the same as the feature file location, but without the .feature extention and the directory 'features' is replaced with 'feature-support-files'.
+		String derivedFeatureSupportFileLocation = scenario.getUri().replaceFirst("features", "feature-support-files").replace(".feature", "");
+		logger.info(String.format("The feature-support-file location will be set to '%s'.", derivedFeatureSupportFileLocation));
+		_featureSupportFilesLocation = Paths.get(derivedFeatureSupportFileLocation).toUri();
 		
 		// Initialize the generator.
 		this._generator = new Generator();
