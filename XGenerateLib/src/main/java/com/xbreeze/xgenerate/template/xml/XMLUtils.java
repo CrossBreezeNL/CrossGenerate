@@ -88,9 +88,9 @@ public class XMLUtils {
 		// Set the document.
 		vg.setDoc(xmlDocument.getBytes());
 		
-		// Parse with namespace.
+		// Parse without namespace.
 		try {
-			vg.parse(true);
+			vg.parse(false);
 		} catch (ParseException e) {
 			throw new GeneratorException("Error while reading file as XML document.", e);
 		}
