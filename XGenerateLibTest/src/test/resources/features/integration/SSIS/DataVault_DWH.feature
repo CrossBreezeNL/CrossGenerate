@@ -19,3 +19,13 @@ Feature: Integration_SSIS_DataVault_DWH
       | LNK Tables          | tables       | LNK_Table.sql          |
       | LNK SAT Tables      | tables       | LNK_SAT_Table.sql      |
       | BR Lookup Functions | functions    | BR_Lookup_Function.sql |
+
+  Scenario: Generate Load HUB Package
+    Given I have the following model file: "../../../common/dwh_model.xml"
+    And the following template file: "template-files/ssis/Load_Entity_owner_H_Entity_name.dtsx"
+    And the following config file: "config-files/DataVault_DWH_SSIS.xml"
+    When I run the generator
+    Then I expect 3 generation results
+    And an output named "Load_BusinessVault_H_Customer.dtsx" with contents equal to file: "expected-output-files/ssis/Load_BusinessVault_H_Customer.dtsx"
+    And an output named "Load_BusinessVault_H_Order.dtsx" with contents equal to file: "expected-output-files/ssis/Load_BusinessVault_H_Order.dtsx"
+    And an output named "Load_BusinessVault_H_Country.dtsx" with contents equal to file: "expected-output-files/ssis/Load_BusinessVault_H_Country.dtsx"

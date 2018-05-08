@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig>
+  <Model>    
+    <ModelAttributeInjections>
+      <!-- Translate the SQL data type into the SSIS data type and store it in the 'etldatatype' attribute on the attribute elements in the model. -->
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="etldatatype" targetValue="str"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="codePage" targetValue="1252"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="etldatatype" targetValue="wstr"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="codePage" targetValue="1252"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='tinyint']" targetAttribute="etldatatype" targetValue="i2"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='smallint']" targetAttribute="etldatatype" targetValue="i2"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='bigint']" targetAttribute="etldatatype" targetValue="i8"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='int']" targetAttribute="etldatatype" targetValue="i4"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='timestamp']" targetAttribute="etldatatype" targetValue="bytes"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="etldatatype" targetValue="dbTimeStamp"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime2']" targetAttribute="etldatatype" targetValue="dbTimeStamp"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='decimal']" targetAttribute="etldatatype" targetValue="numeric"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='bit']" targetAttribute="etldatatype" targetValue="bool"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='uniqueidentifier']" targetAttribute="etldatatype" targetValue="guid"/>
+    </ModelAttributeInjections>
+  </Model>
+  <XmlTemplate rootSectionName="Entity">
+    <FileFormat currentAccessor="_" commentNodeXPath="@*[lower-case(local-name())='description']" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <Output type="output_per_element" />
+    <TemplateAttributeInjections>
+      <!-- Inject an attribute for the scale, precision, cachedScale & cachedPrecision on elements where the name is 'attribute_name'. -->
+      <TemplateAttributeInjection templateXPath="//*[@name='attribute_name']" attributeName="scale" attributeValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[@name='attribute_name']" attributeName="precision" attributeValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[@name='attribute_name']" attributeName="cachedScale" attributeValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[@name='attribute_name']" attributeName="cachedPrecision" attributeValue=""/>
+    </TemplateAttributeInjections>
+    <TemplatePlaceholderInjections>
+      <!-- Inject a placeholder for the dataType, length, precision, scale, codePage attributes for the columns. -->
+      <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@dataType"  modelNode="etldatatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@length"  modelNode="length" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@precision"  modelNode="precision" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@scale"  modelNode="scale" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@codePage"  modelNode="codePage" scope="current" />
+      <!-- Inject a placeholder for the cachedDataType, cachedLength, cachedPrecision, cachedScale, cachedCodePage attributes for the columns. -->
+      <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@cachedDataType" modelNode="etldatatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@cachedLength"  modelNode="length" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@cachedPrecision"  modelNode="precision" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@cachedScale"  modelNode="scale" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@cachedCodePage"  modelNode="codePage" scope="current" />
+    </TemplatePlaceholderInjections>
+    <TextTemplates>
+      <TextTemplate node="//component[@componentClassID='Microsoft.OLEDBSource']/properties/property[@name='SqlCommand']">
+        <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+      </TextTemplate>
+    </TextTemplates>
+  </XmlTemplate>
+  <Binding>
+    <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="Entity">
+      <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="Attribute" />
+      <SectionModelBinding section="NonKeyAttribute" modelXPath="attributes/attribute[not(boolean(@primary))]" placeholderName="NonKeyAttribute" />
+      <SectionModelBinding section="KeyAttribute" modelXPath="attributes/attribute[boolean(@primary)]" placeholderName="KeyAttribute" />
+      <SectionModelBinding section="MappedKeyAttribute" modelXPath="mappableObjectMappings/mappableObjectMapping/attributeMappings/attributeMapping[boolean(@targetAttributePrimary)]" placeholderName="MappedKeyAttribute" />
+      <SectionModelBinding section="MappedNonKeyAttribute" modelXPath="mappableObjectMappings/mappableObjectMapping/attributeMappings/attributeMapping[not(boolean(@targetAttributePrimary))]" placeholderName="MappedNonKeyAttribute" />
+      <SectionModelBinding section="ObjectMapping" modelXPath="mappableObjectMappings/mappableObjectMapping" placeholderName="ObjectMapping" />
+    </SectionModelBinding>
+  </Binding>
+</XGenConfig>

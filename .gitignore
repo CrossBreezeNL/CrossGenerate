@@ -5,6 +5,7 @@
 *.user
 *.dbmdl
 *.database
+*.jfm
 /**/**/.vs
 /**/**/obj
 

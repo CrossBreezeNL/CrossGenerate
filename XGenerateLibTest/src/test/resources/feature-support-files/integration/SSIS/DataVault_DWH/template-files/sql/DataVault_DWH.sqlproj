@@ -71,15 +71,15 @@
     <Build Include="tables\LNK_SAT_Table.sql" />
     <Build Include="tables\LNK_Table.sql" />
     <Build Include="functions\BR_Lookup_Function.sql" />
-    <Build Include="support-objects\schemas\Entity_owner.sql" />
     <Build Include="support-objects\schemas\MappedObject_mappedObjectSystemName.sql" />
-    <Build Include="support-objects\schemas\Relation_owner.sql" />
     <Build Include="support-objects\user-defined-types\KeyAttribute_fulldatatype.sql" />
     <Build Include="support-objects\user-defined-types\NonKeyAttribute_fulldatatype.sql" />
     <Build Include="support-objects\tables\MappedObject_mappedObjectName.sql" />
     <Build Include="support-objects\user-defined-types\Parameter_fulldatatype.sql" />
-    <Build Include="support-objects\schemas\LookupRule_owner.sql" />
     <Build Include="support-objects\views\ObjectMapping_mappedObjectJoiner.sql" />
+    <Build Include="support-objects\schemas\Entity_owner.sql" />
+    <Build Include="support-objects\schemas\LookupRule_owner.sql" />
+    <Build Include="support-objects\schemas\Relation_owner.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Local.publish.xml" />
