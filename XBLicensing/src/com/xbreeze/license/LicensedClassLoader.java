@@ -281,7 +281,9 @@ public class LicensedClassLoader extends ClassLoader {
 			try {
 				return Files.readAllBytes(localClassPath);
 			} catch (IOException e) {
-				logger.severe(String.format("Couldn't load using local path: %s: %s", localClassPath, e.getMessage()));
+				// Don't log a warning when trying to load package-info.class.
+				if (!localClassPath.getFileName().endsWith("package-info.class"))
+					logger.info(String.format("Couldn't load using local path: %s: %s", localClassPath, e.getMessage()));
 				// Return null, so its clear the class or resource couldn't be found.
 				return null;
 			}
@@ -294,7 +296,9 @@ public class LicensedClassLoader extends ClassLoader {
 			try {
 				return getClassOrResourceFromNetwork(resourceLocation);
 			} catch (LicenseException e) {
-				logger.fine(String.format("Couldn't load using remote path: %s: %s", resourceLocation, e.getMessage()));
+				// Don't log a warning when trying to load package-info.class.
+				if (!resourceLocation.endsWith("package-info.class"))
+					logger.fine(String.format("Couldn't load using remote path: %s: %s", resourceLocation, e.getMessage()));
 				// Return null, so its clear the class or resource couldn't be found.
 				return null;
 			}
