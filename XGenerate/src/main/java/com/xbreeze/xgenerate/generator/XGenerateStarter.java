@@ -195,7 +195,8 @@ public class XGenerateStarter {
 				URI modelFileLocation = Paths.get(appConfig.getAppConfig().getModelFolder(), modelTemplateConfigCombination.getModelFileLocation()).toUri();
 				URI templateFileLocation = Paths.get(appConfig.getAppConfig().getTemplateFolder(), modelTemplateConfigCombination.getTemplateFileLocation()).toUri();
 				URI configFileLocation = Paths.get(appConfig.getAppConfig().getConfigFolder(), modelTemplateConfigCombination.getConfigFileLocation()).toUri();
-				URI outputFileLocation = Paths.get(appConfig.getAppConfig().getOutputFolder()).toUri();
+				// Write the output to the output folder and the relative folder the template is in.
+				URI outputFileLocation = Paths.get(appConfig.getAppConfig().getOutputFolder(), modelTemplateConfigCombination.getTemplateFileLocation()).getParent().toUri();
 				
 				logger.info("Starting CrossGenerate with the following arguments:");
 				logger.info(String.format(" - ModelFileLocation: %s", modelFileLocation));
