@@ -69,6 +69,7 @@
     <Build Include="functions\BR_Lookup_Function.sql" />
     <Build Include="schemas\BusinessRule.sql" />
     <Build Include="schemas\BusinessVault.sql" />
+    <Build Include="functions\BR_Derive_Function.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Local.publish.xml" />

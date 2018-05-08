@@ -2,7 +2,7 @@
 <XGenConfig>
   <Model/>
   <TextTemplate rootSectionName="System">
-    <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <FileFormat currentAccessor="_" childAccessor="$" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <Output type="single_output" />
   </TextTemplate>
   <Binding>
@@ -24,6 +24,10 @@
 	      <SectionModelBinding section="MappedObject" modelXPath="mappableObjectMappings/mappableObjectMapping/mappedObjects/mappedObject" placeholderName="MappedObject" />
 	      <SectionModelBinding section="MappedParameter" modelXPath="mappableObjectMappings/mappableObjectMapping/attributeMappings/attributeMapping[@targetAttributeStereotype='parameter']" placeholderName="MappedParameter" />
 	      <SectionModelBinding section="MappedAttribute" modelXPath="mappableObjectMappings/mappableObjectMapping/attributeMappings/attributeMapping[@targetAttributeStereotype='attribute']" placeholderName="MappedAttribute" />
+	    </SectionModelBinding>
+	    <SectionModelBinding section="DeriveRule" modelXPath="mappableObjects/businessRule[@stereotype='derive']" placeholderName="DeriveRule">
+	      <SectionModelBinding section="Parameter" modelXPath="attributes/parameter" placeholderName="Parameter" />
+	      <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="Attribute" />
 	    </SectionModelBinding>
     </SectionModelBinding>
   </Binding>

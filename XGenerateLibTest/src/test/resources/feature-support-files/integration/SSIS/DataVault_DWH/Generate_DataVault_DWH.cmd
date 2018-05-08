@@ -20,6 +20,7 @@ java -jar %XG% ^
     -mtc dwh_model.xml::sql\tables\LNK_Table.sql::DataVault_DWH_SQL.xml ^
     -mtc dwh_model.xml::sql\tables\LNK_SAT_Table.sql::DataVault_DWH_SQL.xml ^
     -mtc dwh_model.xml::sql\functions\BR_Lookup_Function.sql::DataVault_DWH_SQL.xml ^
+    -mtc dwh_model.xml::sql\functions\BR_Derive_Function.sql::DataVault_DWH_SQL.xml ^
     -mtc dwh_model.xml::ssis\Load_Entity_owner_H_Entity_name.dtsx::DataVault_DWH_SSIS.xml ^
     -mtc dwh_model.xml::ssis\DataVault_DWH.dtproj::DataVault_DWH_DTProj.xml ^
     -fld "%OutputDir%\%LogFile%"

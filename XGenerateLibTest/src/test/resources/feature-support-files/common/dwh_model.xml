@@ -128,7 +128,7 @@
           <keyAttribute attributeId="Code" attributeName="Code" />
         </keyAttributes>
         <mappableObjectMappings>
-          <mappableObjectMapping id="Mapping_Country_Reference_Country" internalId="3E3AB9A2-22B7-4008-ABCD-C6657AE69392" name="Mapping_Country_Reference_Country" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "Reference_Country">
+          <mappableObjectMapping id="Mapping_Country_Reference_Country" internalId="3E3AB9A2-22B7-4008-ABCD-C6657AE69392" name="Mapping_Country_Reference_Country" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "Reference_Country" mappedObjectJoiner="[Reference].[Country] AS [Reference_Country]">
             <mappedObjects>
               <mappedObject mappedObjectId="Country" mappedObjectSystemName="Reference" mappedObjectName="Country" expression="Reference_Country" />
             </mappedObjects>
@@ -141,9 +141,7 @@
         </mappableObjectMappings>
       </entity>
       <businessRule id="Derive_Customer_FullName" internalId="88A1C5A2-0A9A-43BA-8CBB-DD6BAD143549" name="Derive_Customer_FullName" pdObjectType="Table" owner="BusinessRule" stereotype="derive">
-        <expression>
-          select @firstname as firstname, @lastname as lastname, @firstname + &#39; &#39; + @lastname as fullname
-        </expression>
+        <expression>(SELECT @FirstName + &#39; &#39; + @LastName AS [FullName])</expression>
         <attributes>
           <parameter id="FirstName" internalId="CAEF6965-0AA1-4BE5-A7BD-48188C70BC41" name="FirstName" pdObjectType="Column" datatype="nvarchar" length="50" fulldatatype="nvarchar(50)" stereotype="parameter" ordinal="1" />
           <parameter id="LastName" internalId="8590808F-282F-410A-B48C-01FE3E30AC2D" name="LastName" pdObjectType="Column" datatype="nvarchar" length="100" fulldatatype="nvarchar(100)" stereotype="parameter" ordinal="2" />

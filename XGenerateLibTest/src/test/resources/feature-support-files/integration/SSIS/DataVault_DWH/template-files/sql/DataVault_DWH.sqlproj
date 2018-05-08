@@ -80,6 +80,9 @@
     <Build Include="support-objects\schemas\Entity_owner.sql" />
     <Build Include="support-objects\schemas\LookupRule_owner.sql" />
     <Build Include="support-objects\schemas\Relation_owner.sql" />
+    <Build Include="functions\BR_Derive_Function.sql" />
+    <Build Include="support-objects\schemas\DeriveRule_owner.sql" />
+    <Build Include="support-objects\tables\DeriveRule_expression.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Local.publish.xml" />
