@@ -38,8 +38,8 @@
         </keyAttributes>
         <mappableObjectMappings>
           <mappableObjectMapping id="Mapping_Customer_ExampleSource_Customer_WithEnrichment" internalId="6E7D220F-3B7C-4EE2-A689-F09B7ED44973" name="Mapping_Customer_ExampleSource_Customer_WithEnrichment" pdObjectType="TableMapping" mappingType="source" mappedObjectJoiner="[ExampleSource].[Customer] AS [ExampleSource_ExampleSchema_Customer]
-          OUTER APPLY [BusinessVault].[udf_BR_Lookup_Country]([Customer].[Country_Code], null) AS [BusinessRule_Lookup_Country]
-          OUTER APPLY [BusinessVault].[udf_BR_Derive_Customer_FullName]([Customer].[FirstName], [Customer].[LastName], null) AS [BusinessRule_Derive_Customer_FullName]"   mainMappedObject= "ExampleSource_ExampleSchema_Customer">
+          OUTER APPLY [BusinessRule].[udf_BR_Lookup_Country]([Customer].[Country_Code], null) AS [BusinessRule_Lookup_Country]
+          OUTER APPLY [BusinessRule].[udf_BR_Derive_Customer_FullName]([Customer].[FirstName], [Customer].[LastName], null) AS [BusinessRule_Derive_Customer_FullName]"   mainMappedObject= "ExampleSource_ExampleSchema_Customer">
             <mappedObjects>
               <mappedObject mappedObjectId="Customer" mappedObjectSystemName="ExampleSource" mappedObjectOwner="ExampleSchema" mappedObjectName="Customer" expression="ExampleSource_ExampleSchema_Customer" stereotype="ExampleTableType" />
               <mappedObject mappedObjectId="Lookup_Country" mappedObjectSystemName="ExampleDWH" mappedObjectOwner="BusinessRule" mappedObjectName="Lookup_Country" expression="ExampleDWH_BusinessRule_Lookup_Country" stereotype="lookup" />
