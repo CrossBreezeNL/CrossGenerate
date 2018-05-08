@@ -1,6 +1,13 @@
 # Compiled class file
 *.class
 
+# Visual studio user files.
+*.user
+*.dbmdl
+*.database
+/**/**/.vs
+/**/**/obj
+
 # Log file
 *.log
 

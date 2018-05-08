@@ -1,0 +1,1 @@
+﻿CREATE SCHEMA [Relation_owner]
