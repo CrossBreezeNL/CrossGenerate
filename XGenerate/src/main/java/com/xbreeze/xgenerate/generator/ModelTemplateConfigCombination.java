@@ -17,10 +17,10 @@ public class ModelTemplateConfigCombination {
 		this.setConfigFileLocation(configFileLocation);
 	}
 	
-	public static ModelTemplateConfigCombination fromString(String mtmString) throws GeneratorException {
-		String[] mtmParams = mtmString.split("::");
+	public static ModelTemplateConfigCombination fromString(String mtcString) throws GeneratorException {
+		String[] mtmParams = mtcString.split("::");
 		if (mtmParams.length != 3)
-			throw new GeneratorException(String.format("The specified mtm combination is not of the expected format '%s'", mtmString));
+			throw new GeneratorException(String.format("The specified Model-Template-Config combination is not of the expected format '%s'", mtcString));
 		
 		return new ModelTemplateConfigCombination(mtmParams[0], mtmParams[1], mtmParams[2]);
 	}
