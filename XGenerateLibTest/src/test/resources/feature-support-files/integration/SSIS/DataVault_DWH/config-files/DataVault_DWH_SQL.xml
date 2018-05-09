@@ -8,6 +8,9 @@
   <Binding>
     <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="System">
 	    <SectionModelBinding section="Entity" modelXPath="mappableObjects/entity" placeholderName="Entity">
+				<Placeholders>
+				  <Placeholder name="System" modelXPath="../.." />
+				</Placeholders>
 	      <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="Attribute" />
 	      <SectionModelBinding section="NonKeyAttribute" modelXPath="attributes/attribute[not(boolean(@primary))]" placeholderName="NonKeyAttribute" />
 	      <SectionModelBinding section="KeyAttribute" modelXPath="attributes/attribute[boolean(@primary)]" placeholderName="KeyAttribute" />

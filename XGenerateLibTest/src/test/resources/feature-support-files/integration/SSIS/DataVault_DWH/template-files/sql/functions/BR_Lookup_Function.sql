@@ -13,9 +13,9 @@ RETURN
   ) AS (
     SELECT
       -- @XGenTextSection(name="MappedParameter")
-      [MappedParameter_expression] AS [MappedParameter_targetAttributeName],
+      MappedParameter_expression AS [MappedParameter_targetAttributeName],
       -- @XGenTextSection(name="MappedAttribute" suffix=",")
-      [MappedAttribute_expression] AS [MappedAttribute_targetAttributeName]
+      MappedAttribute_expression AS [MappedAttribute_targetAttributeName]
     -- @XGenTextSection(name="MappedObject")
     FROM [MappedObject_mappedObjectSystemName].[MappedObject_mappedObjectName] AS [MappedObject_expression]
   )

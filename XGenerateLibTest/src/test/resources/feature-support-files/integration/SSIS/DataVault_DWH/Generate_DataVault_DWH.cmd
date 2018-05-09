@@ -12,8 +12,15 @@ SET LogFile=Generate_DataVault_DWH_%datetime%.log
 echo Copying template output folder...
 xcopy /E /Y /Q "template-output-folder" "%OutputDir%"
 
-echo Generating DDL and ETL...
+echo Generating Staging DDL and ETL...
 java -jar %XG% ^
+    -c XGenAppConfig.xml ^
+    -mtc source_model.xml::sql\tables\Staging_Table_System_name.sql::DataVault_DWH_SQL.xml ^
+    -mtc reference_model.xml::sql\tables\Staging_Table_System_name.sql::DataVault_DWH_SQL.xml ^
+    -fld "%OutputDir%\%LogFile%"
+
+echo Generating DWH DDL and ETL...
+java -jar %XG% -d true -fll Fine ^
     -c XGenAppConfig.xml ^
     -mtc dwh_model.xml::sql\tables\HUB_Table.sql::DataVault_DWH_SQL.xml ^
     -mtc dwh_model.xml::sql\tables\HUB_SAT_Table.sql::DataVault_DWH_SQL.xml ^

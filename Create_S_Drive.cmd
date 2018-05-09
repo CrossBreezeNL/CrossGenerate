@@ -1,0 +1,1 @@
+subst S: C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate

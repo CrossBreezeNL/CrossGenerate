@@ -70,6 +70,10 @@
     <Build Include="schemas\BusinessRule.sql" />
     <Build Include="schemas\BusinessVault.sql" />
     <Build Include="functions\BR_Derive_Function.sql" />
+    <Build Include="schemas\ExampleSource.sql" />
+    <Build Include="tables\Staging_Table_ExampleSource.sql" />
+    <Build Include="tables\Staging_Table_Reference.sql" />
+    <Build Include="schemas\Reference.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Local.publish.xml" />
