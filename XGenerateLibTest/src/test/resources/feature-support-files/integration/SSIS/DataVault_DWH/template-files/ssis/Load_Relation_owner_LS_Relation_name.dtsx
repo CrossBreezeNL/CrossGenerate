@@ -1,58 +1,57 @@
 ﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="5/8/2018 4:20:33 PM"
+  DTS:CreationDate="5/12/2018 11:27:13 PM"
   DTS:CreationName="Microsoft.Package"
-  DTS:CreatorComputerName="HARMEN-LAPTOP"
-  DTS:CreatorName="HARMEN-LAPTOP\Harmen"
-  DTS:DTSID="{0F3A7780-C121-40D6-BB05-F9CC4EF8DCB8}"
+  DTS:CreatorComputerName="DESKTOP-EC40127"
+  DTS:CreatorName="DESKTOP-EC40127\Willem"
+  DTS:DTSID="{664427BF-9D65-4C24-9AF8-A75076136056}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="13.0.4451.0"
-  DTS:LocaleID="1043"
-  DTS:ObjectName="Load_Entity_owner_HS_Entity_name"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Load_Relation_owner_L_Relation_name"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
   DTS:VersionBuild="37"
-  DTS:VersionGUID="{5A20F0AC-224F-4D0C-BCA7-AAC9E00FD32A}">
+  DTS:VersionGUID="{4B9AA1F5-40AA-429D-9BB4-B375BF5E04D8}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:PackageParameters>
     <DTS:PackageParameter
       DTS:CreationName=""
       DTS:DataType="7"
-      DTS:DTSID="{2DA476D2-E1D0-4F97-A099-AC39B1871770}"
+      DTS:DTSID="{AFEDABB8-8A3D-4E1C-BA9A-57B0C6DB1823}"
       DTS:ObjectName="LoadDateTime">
       <DTS:Property
         DTS:DataType="7"
-        DTS:Name="ParameterValue">1/1/2000</DTS:Property>
+        DTS:Name="ParameterValue">1/1/2001</DTS:Property>
     </DTS:PackageParameter>
   </DTS:PackageParameters>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\DFT Load Entity_owner HS_Entity_name"
+      DTS:refId="Package\Load Relation_owner LS Relation_name"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
-      DTS:DTSID="{DE3D3FB4-0E16-42B6-880D-7A05FD8B4C9A}"
+      DTS:DTSID="{4658392D-FF2A-4B39-92BF-803BDFAD6B1B}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
-      DTS:ObjectName="DFT Load Entity_owner HS_Entity_name"
-      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      DTS:ObjectName="Load Relation_owner LS Relation_name">
       <DTS:Variables />
       <DTS:ObjectData>
         <pipeline
           version="1">
           <components>
             <component
-              refId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime"
+              refId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime"
               componentClassID="Microsoft.DerivedColumn"
               contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
-              name="DER Add LoadDateTime end EndDateTime"
+              name="Add loadDateTime and EndDateTime"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Inputs[Derived Column Input]"
+                  refId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Inputs[Derived Column Input]"
                   description="Input to the Derived Column Transformation"
                   name="Derived Column Input">
                   <externalMetadataColumns />
@@ -60,18 +59,18 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Output]"
+                  refId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Output]"
                   description="Default Output of the Derived Column Transformation"
                   exclusionGroup="1"
                   name="Derived Column Output"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Inputs[Derived Column Input]">
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Inputs[Derived Column Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]"
                       dataType="date"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]"
                       name="LoadDateTime"
                       truncationRowDisposition="FailComponent">
                       <properties>
@@ -89,11 +88,11 @@
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Output].Columns[EndDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Output].Columns[EndDateTime]"
                       dataType="date"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Output].Columns[EndDateTime]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Output].Columns[EndDateTime]"
                       name="EndDateTime"
                       truncationRowDisposition="FailComponent">
                       <properties>
@@ -114,23 +113,23 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Error Output]"
+                  refId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Error Output]"
                   description="Error Output of the Derived Column Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Derived Column Error Output"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Inputs[Derived Column Input]">
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Inputs[Derived Column Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      refId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      refId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -139,7 +138,7 @@
               </outputs>
             </component>
             <component
-              refId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged"
+              refId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -147,48 +146,48 @@
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Inputs[Conditional Split Input]"
+                  refId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Inputs[Conditional Split Input].Columns[RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Inputs[Conditional Split Input].Columns[RecordHash]"
                       cachedDataType="bytes"
                       cachedLength="16"
                       cachedName="RecordHash"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[RecordHash]" />
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[RecordHash]" />
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Inputs[Conditional Split Input].Columns[HS_RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Inputs[Conditional Split Input].Columns[LS_RecordHash]"
                       cachedDataType="bytes"
                       cachedLength="16"
-                      cachedName="HS_RecordHash"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output].Columns[HS_RecordHash]" />
+                      cachedName="LS_RecordHash"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output].Columns[LS_RecordHash]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Outputs[New]"
+                  refId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Outputs[New]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="New"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output].Columns[HS_RecordHash]})</property>
+                      name="Expression">[ISNULL](#{Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output].Columns[LS_RecordHash]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">ISNULL(HS_RecordHash)</property>
+                      name="FriendlyExpression">ISNULL(LS_RecordHash)</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -197,26 +196,26 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Outputs[Modified]"
+                  refId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Outputs[Modified]"
                   description="Output 2 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="Modified"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">(DT_WSTR,32)#{Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output].Columns[HS_RecordHash]} != (DT_WSTR,32)#{Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[RecordHash]}</property>
+                      name="Expression">(DT_WSTR,32)#{Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output].Columns[LS_RecordHash]} != (DT_WSTR,32)#{Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[RecordHash]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">(DT_WSTR,32)HS_RecordHash != (DT_WSTR,32)RecordHash</property>
+                      name="FriendlyExpression">(DT_WSTR,32)LS_RecordHash != (DT_WSTR,32)RecordHash</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -225,11 +224,11 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Outputs[Unmodified]"
+                  refId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Outputs[Unmodified]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Unmodified"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -238,23 +237,23 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Outputs[Conditional Split Error Output]"
+                  refId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -263,11 +262,11 @@
               </outputs>
             </component>
             <component
-              refId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name"
+              refId="Package\Load Relation_owner LS Relation_name\End date existing LS"
               componentClassID="Microsoft.OLEDBCommand"
               contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
               description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
-              name="Enddate Entity_owner HS_Entity_name"
+              name="End date existing LS"
               usesDispositions="true"
               version="2">
               <properties>
@@ -280,8 +279,10 @@
                   description="The SQL command to be executed."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">UPDATE Entity_owner.HS_Entity_name SET EndDateTime = ? WHERE H_Entity_name_SQN = ? AND LoadDateTime = ?
-</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">UPDATE [Relation_owner].[LS_Relation_name]
+SET EndDateTime = ?
+WHERE L_Relation_name_SQN = ?
+AND LoadDateTime = ?</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -289,7 +290,7 @@
               </properties>
               <connections>
                 <connection
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Connections[OleDbConnection]"
+                  refId="Package\Load Relation_owner LS Relation_name\End date existing LS.Connections[OleDbConnection]"
                   connectionManagerID="{DE720B0B-6E71-47BC-A568-E13087404EBE}:external"
                   connectionManagerRefId="Project.ConnectionManagers[DataVault_DWH]"
                   description="The OLE DB runtime connection used to access the database."
@@ -297,36 +298,36 @@
               </connections>
               <inputs>
                 <input
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Inputs[OLE DB Command Input]"
+                  refId="Package\Load Relation_owner LS Relation_name\End date existing LS.Inputs[OLE DB Command Input]"
                   errorOrTruncationOperation="Command Execution"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Command Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Inputs[OLE DB Command Input].Columns[LoadDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\End date existing LS.Inputs[OLE DB Command Input].Columns[LoadDateTime]"
                       cachedDataType="date"
                       cachedName="LoadDateTime"
-                      externalMetadataColumnId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]" />
+                      externalMetadataColumnId="Package\Load Relation_owner LS Relation_name\End date existing LS.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]" />
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Inputs[OLE DB Command Input].Columns[H_Entity_name_SQN]"
+                      refId="Package\Load Relation_owner LS Relation_name\End date existing LS.Inputs[OLE DB Command Input].Columns[L_Relation_name_SQN]"
                       cachedDataType="i8"
-                      cachedName="H_Entity_name_SQN"
-                      externalMetadataColumnId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Match Output].Columns[H_Entity_name_SQN]" />
+                      cachedName="L_Relation_name_SQN"
+                      externalMetadataColumnId="Package\Load Relation_owner LS Relation_name\End date existing LS.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Match Output].Columns[L_Relation_name_SQN]" />
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Inputs[OLE DB Command Input].Columns[HS_LoadDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\End date existing LS.Inputs[OLE DB Command Input].Columns[LS_LoadDateTime]"
                       cachedDataType="dbTimeStamp2"
-                      cachedName="HS_LoadDateTime"
+                      cachedName="LS_LoadDateTime"
                       cachedScale="2"
-                      externalMetadataColumnId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output].Columns[HS_LoadDateTime]" />
+                      externalMetadataColumnId="Package\Load Relation_owner LS Relation_name\End date existing LS.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output].Columns[LS_LoadDateTime]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      refId="Package\Load Relation_owner LS Relation_name\End date existing LS.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
                       dataType="dbTimeStamp2"
                       name="Param_0"
                       scale="2">
@@ -338,7 +339,7 @@
                       </properties>
                     </externalMetadataColumn>
                     <externalMetadataColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      refId="Package\Load Relation_owner LS Relation_name\End date existing LS.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
                       dataType="i8"
                       name="Param_1">
                       <properties>
@@ -349,7 +350,7 @@
                       </properties>
                     </externalMetadataColumn>
                     <externalMetadataColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      refId="Package\Load Relation_owner LS Relation_name\End date existing LS.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
                       dataType="dbTimeStamp2"
                       name="Param_2"
                       scale="2">
@@ -365,29 +366,29 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Outputs[OLE DB Command Output]"
+                  refId="Package\Load Relation_owner LS Relation_name\End date existing LS.Outputs[OLE DB Command Output]"
                   exclusionGroup="1"
                   name="OLE DB Command Output"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Inputs[OLE DB Command Input]">
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\End date existing LS.Inputs[OLE DB Command Input]">
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Outputs[OLE DB Command Error Output]"
+                  refId="Package\Load Relation_owner LS Relation_name\End date existing LS.Outputs[OLE DB Command Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Command Error Output"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Inputs[OLE DB Command Input]">
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\End date existing LS.Inputs[OLE DB Command Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      refId="Package\Load Relation_owner LS Relation_name\End date existing LS.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\End date existing LS.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      refId="Package\Load Relation_owner LS Relation_name\End date existing LS.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\End date existing LS.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -396,11 +397,11 @@
               </outputs>
             </component>
             <component
-              refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name"
+              refId="Package\Load Relation_owner LS Relation_name\LKP Existing relation"
               componentClassID="Microsoft.Lookup"
               contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
               description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
-              name="LKP Entity_owner HS_Entity_name"
+              name="LKP Existing relation"
               usesDispositions="true"
               version="6">
               <properties>
@@ -409,24 +410,14 @@
                   description="Specifies the SQL statement that generates the lookup table."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
-	H_Entity_name_SQN,
-	LoadDateTime,
-	RecordHash
-FROM Entity_owner.HS_Entity_name
-WHERE EndDateTime = '9999-12-31'</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [Relation_owner].[L_Relation_name]</property>
                 <property
                   dataType="System.String"
                   description="Specifies a SQL statement that uses parameters to generate the lookup table."
                   expressionType="Notify"
                   name="SqlCommandParam"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT 
-	H_Entity_name_SQN,
-	LoadDateTime,
-	RecordHash
-FROM Entity_owner.HS_Entity_name
-WHERE EndDateTime = '9999-12-31') [refTable]
-where [refTable].[H_Entity_name_SQN] = ?</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [Relation_owner].[L_Relation_name]) [refTable]
+where [refTable].[H_RelatedEntity_parentReferenceName_SQN] = ?</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the type of connection used to access the reference dataset."
@@ -457,12 +448,12 @@ where [refTable].[H_Entity_name_SQN] = ?</property>
                 <property
                   dataType="System.String"
                   description="Indicates whether to reference metadata in an XML format."
-                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="H_Entity_name_SQN" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="LoadDateTime" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="2" codePage="0"/&gt;&lt;referenceColumn name="RecordHash" dataType="DT_BYTES" length="16" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="L_Relation_name_SQN" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="H_RelatedEntity_parentReferenceName_SQN" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="LoadDateTime" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="2" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
                 <property
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Match Output].Columns[H_Entity_name_SQN]};</property>
+                  name="ParameterMap">#{Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_RelatedEntity_parentReferenceName_SQN]};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -474,7 +465,7 @@ where [refTable].[H_Entity_name_SQN] = ?</property>
               </properties>
               <connections>
                 <connection
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Connections[OleDbConnection]"
+                  refId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Connections[OleDbConnection]"
                   connectionManagerID="{DE720B0B-6E71-47BC-A568-E13087404EBE}:external"
                   connectionManagerRefId="Project.ConnectionManagers[DataVault_DWH]"
                   description="Connection manager used to access lookup data."
@@ -482,19 +473,19 @@ where [refTable].[H_Entity_name_SQN] = ?</property>
               </connections>
               <inputs>
                 <input
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Inputs[Lookup Input]"
+                  refId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Inputs[Lookup Input]"
                   name="Lookup Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Inputs[Lookup Input].Columns[H_Entity_name_SQN]"
+                      refId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Inputs[Lookup Input].Columns[H_RelatedEntity_parentReferenceName_SQN]"
                       cachedDataType="i8"
-                      cachedName="H_Entity_name_SQN"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Match Output].Columns[H_Entity_name_SQN]">
+                      cachedName="H_RelatedEntity_parentReferenceName_SQN"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_RelatedEntity_parentReferenceName_SQN]">
                       <properties>
                         <property
                           dataType="System.String"
                           description="Specifies the column in the reference table that a column joins."
-                          name="JoinToReferenceColumn">H_Entity_name_SQN</property>
+                          name="JoinToReferenceColumn">H_RelatedEntity_parentReferenceName_SQN</property>
                         <property
                           dataType="System.Null"
                           description="Specifies the column in the reference table from which a column is copied."
@@ -507,19 +498,187 @@ where [refTable].[H_Entity_name_SQN] = ?</property>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output]"
+                  refId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Match Output].Columns[L_Relation_name_SQN]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Match Output].Columns[L_Relation_name_SQN]"
+                      name="L_Relation_name_SQN"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">L_Relation_name_SQN</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="LKP LNK Sat"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+	L_Relation_name_SQN,
+	LoadDateTime,
+	RecordHash
+FROM [Relation_owner].[LS_Relation_name]
+WHERE EndDateTime = '9999-12-31'</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT 
+	L_Relation_name_SQN,
+	LoadDateTime,
+	RecordHash
+FROM [Relation_owner].[LS_Relation_name]
+WHERE EndDateTime = '9999-12-31') [refTable]
+where [refTable].[L_Relation_name_SQN] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="L_Relation_name_SQN" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="LoadDateTime" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="2" codePage="0"/&gt;&lt;referenceColumn name="RecordHash" dataType="DT_BYTES" length="16" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Match Output].Columns[L_Relation_name_SQN]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Connections[OleDbConnection]"
+                  connectionManagerID="{DE720B0B-6E71-47BC-A568-E13087404EBE}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[DataVault_DWH]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Inputs[Lookup Input].Columns[L_Relation_name_SQN]"
+                      cachedDataType="i8"
+                      cachedName="L_Relation_name_SQN"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Match Output].Columns[L_Relation_name_SQN]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">L_Relation_name_SQN</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output]"
                   errorOrTruncationOperation="Lookup"
                   errorRowDisposition="IgnoreFailure"
                   exclusionGroup="1"
                   name="Lookup Match Output"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Inputs[Lookup Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output].Columns[HS_LoadDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output].Columns[LS_LoadDateTime]"
                       dataType="dbTimeStamp2"
                       errorOrTruncationOperation="Copy Column"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output].Columns[HS_LoadDateTime]"
-                      name="HS_LoadDateTime"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output].Columns[LS_LoadDateTime]"
+                      name="LS_LoadDateTime"
                       scale="2"
                       truncationRowDisposition="FailComponent">
                       <properties>
@@ -530,12 +689,12 @@ where [refTable].[H_Entity_name_SQN] = ?</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output].Columns[HS_RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output].Columns[LS_RecordHash]"
                       dataType="bytes"
                       errorOrTruncationOperation="Copy Column"
                       length="16"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output].Columns[HS_RecordHash]"
-                      name="HS_RecordHash"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output].Columns[LS_RecordHash]"
+                      name="LS_RecordHash"
                       truncationRowDisposition="FailComponent">
                       <properties>
                         <property
@@ -548,30 +707,30 @@ where [refTable].[H_Entity_name_SQN] = ?</property>
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup No Match Output]"
+                  refId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup No Match Output]"
                   description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
                   exclusionGroup="1"
                   name="Lookup No Match Output"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Inputs[Lookup Input]">
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Error Output]"
+                  refId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Lookup Error Output"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Inputs[Lookup Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      refId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      refId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -580,209 +739,49 @@ where [refTable].[H_Entity_name_SQN] = ?</property>
               </outputs>
             </component>
             <component
-              refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name"
-              componentClassID="Microsoft.Lookup"
-              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
-              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
-              name="LKP Entity_owner H_Entity_name"
-              usesDispositions="true"
-              version="6">
-              <properties>
-                <property
-                  dataType="System.String"
-                  description="Specifies the SQL statement that generates the lookup table."
-                  expressionType="Notify"
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [Entity_owner].[H_Entity_name]</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
-                  expressionType="Notify"
-                  name="SqlCommandParam"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [Entity_owner].[H_Entity_name]) [refTable]
-where [refTable].[KeyAttribute_name] = ?</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the type of connection used to access the reference dataset."
-                  name="ConnectionType"
-                  typeConverter="LookupConnectionType">0</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the cache type of the lookup table."
-                  name="CacheType"
-                  typeConverter="CacheType">0</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
-                  name="NoMatchBehavior"
-                  typeConverter="LookupNoMatchBehavior">0</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
-                  name="NoMatchCachePercentage">0</property>
-                <property
-                  dataType="System.Int32"
-                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
-                  name="MaxMemoryUsage">25</property>
-                <property
-                  dataType="System.Int64"
-                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
-                  name="MaxMemoryUsage64">25</property>
-                <property
-                  dataType="System.String"
-                  description="Indicates whether to reference metadata in an XML format."
-                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="H_Entity_name_SQN" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="KeyAttribute_name" dataType="DT_STR" length="10" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="LoadDateTime" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="2" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
-                <property
-                  containsID="true"
-                  dataType="System.String"
-                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[KeyAttribute_name]};</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
-                  name="TreatDuplicateKeysAsError">false</property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Connections[OleDbConnection]"
-                  connectionManagerID="{DE720B0B-6E71-47BC-A568-E13087404EBE}:external"
-                  connectionManagerRefId="Project.ConnectionManagers[DataVault_DWH]"
-                  description="Connection manager used to access lookup data."
-                  name="OleDbConnection" />
-              </connections>
-              <inputs>
-                <input
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Inputs[Lookup Input]"
-                  name="Lookup Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Inputs[Lookup Input].Columns[KeyAttribute_name]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="10"
-                      cachedName="KeyAttribute_name"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[KeyAttribute_name]">
-                      <properties>
-                        <property
-                          dataType="System.String"
-                          description="Specifies the column in the reference table that a column joins."
-                          name="JoinToReferenceColumn">KeyAttribute_name</property>
-                        <property
-                          dataType="System.Null"
-                          description="Specifies the column in the reference table from which a column is copied."
-                          name="CopyFromReferenceColumn" />
-                      </properties>
-                    </inputColumn>
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Match Output]"
-                  errorOrTruncationOperation="Lookup"
-                  errorRowDisposition="FailComponent"
-                  exclusionGroup="1"
-                  name="Lookup Match Output"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Inputs[Lookup Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Match Output].Columns[H_Entity_name_SQN]"
-                      dataType="i8"
-                      errorOrTruncationOperation="Copy Column"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Match Output].Columns[H_Entity_name_SQN]"
-                      name="H_Entity_name_SQN"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          dataType="System.String"
-                          description="Specifies the column in the reference table from which a column is copied."
-                          name="CopyFromReferenceColumn">H_Entity_name_SQN</property>
-                      </properties>
-                    </outputColumn>
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup No Match Output]"
-                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
-                  exclusionGroup="1"
-                  name="Lookup No Match Output"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Inputs[Lookup Input]">
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Lookup Error Output"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Inputs[Lookup Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\DFT Load Entity_owner HS_Entity_name\Multicast modified for insert and update existing"
+              refId="Package\Load Relation_owner LS Relation_name\Multicast modified for insert and update"
               componentClassID="Microsoft.Multicast"
               contactInfo="Multicast;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Distributes every input row to every row in one or more outputs. For example, branch your data flow to make a copy of data so that some values can be masked before sharing with external partners."
-              name="Multicast modified for insert and update existing">
+              name="Multicast modified for insert and update">
               <inputs>
                 <input
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Multicast modified for insert and update existing.Inputs[Multicast Input 1]"
+                  refId="Package\Load Relation_owner LS Relation_name\Multicast modified for insert and update.Inputs[Multicast Input 1]"
                   name="Multicast Input 1">
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Multicast modified for insert and update existing.Outputs[Multicast Output 3]"
-                  deleteOutputOnPathDetached="true"
-                  name="Multicast Output 3"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\Multicast modified for insert and update existing.Inputs[Multicast Input 1]">
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Multicast modified for insert and update existing.Outputs[Multicast Output 2]"
-                  deleteOutputOnPathDetached="true"
-                  name="Multicast Output 2"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\Multicast modified for insert and update existing.Inputs[Multicast Input 1]">
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Multicast modified for insert and update existing.Outputs[Multicast Output 1]"
-                  dangling="true"
+                  refId="Package\Load Relation_owner LS Relation_name\Multicast modified for insert and update.Outputs[Multicast Output 1]"
                   deleteOutputOnPathDetached="true"
                   name="Multicast Output 1"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\Multicast modified for insert and update existing.Inputs[Multicast Input 1]">
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\Multicast modified for insert and update.Inputs[Multicast Input 1]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Load Relation_owner LS Relation_name\Multicast modified for insert and update.Outputs[Multicast Output 2]"
+                  deleteOutputOnPathDetached="true"
+                  name="Multicast Output 2"
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\Multicast modified for insert and update.Inputs[Multicast Input 1]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Load Relation_owner LS Relation_name\Multicast modified for insert and update.Outputs[Multicast Output 3]"
+                  dangling="true"
+                  deleteOutputOnPathDetached="true"
+                  name="Multicast Output 3"
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\Multicast modified for insert and update.Inputs[Multicast Input 1]">
                   <externalMetadataColumns />
                 </output>
               </outputs>
             </component>
             <component
-              refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name"
+              refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
-              name="OLE DST Entity_owner HS_Entity_name"
+              name="OLE DB Destination"
               usesDispositions="true"
               version="4">
               <properties>
@@ -793,7 +792,7 @@ where [refTable].[KeyAttribute_name] = ?</property>
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[Entity_owner].[HS_Entity_name]</property>
+                  name="OpenRowset">[Relation_owner].[LS_Relation_name]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -835,7 +834,7 @@ where [refTable].[KeyAttribute_name] = ?</property>
               </properties>
               <connections>
                 <connection
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Connections[OleDbConnection]"
+                  refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Connections[OleDbConnection]"
                   connectionManagerID="{DE720B0B-6E71-47BC-A568-E13087404EBE}:external"
                   connectionManagerRefId="Project.ConnectionManagers[DataVault_DWH]"
                   description="The OLE DB runtime connection used to access the database."
@@ -843,72 +842,71 @@ where [refTable].[KeyAttribute_name] = ?</property>
               </connections>
               <inputs>
                 <input
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input]"
+                  refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].Columns[LoadDateTime]"
-                      cachedDataType="date"
-                      cachedName="LoadDateTime"
-                      externalMetadataColumnId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].ExternalColumns[LoadDateTime]"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[LoadDateTime]" />
-                    <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].Columns[NonKeyAttribute_name]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="10"
-                      cachedName="NonKeyAttribute_name"
-                      description="@XGenXmlSection(name=&quot;NonKeyAttribute&quot;)"
-                      externalMetadataColumnId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].ExternalColumns[NonKeyAttribute_name]"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[NonKeyAttribute_name]" />
-                    <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].Columns[H_Entity_name_SQN]"
-                      cachedDataType="i8"
-                      cachedName="H_Entity_name_SQN"
-                      externalMetadataColumnId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].ExternalColumns[H_Entity_name_SQN]"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[H_Entity_name_SQN]" />
-                    <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].Columns[EndDateTime]"
-                      cachedDataType="date"
-                      cachedName="EndDateTime"
-                      externalMetadataColumnId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].ExternalColumns[EndDateTime]"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[EndDateTime]" />
-                    <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].Columns[RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RecordHash]"
                       cachedDataType="bytes"
                       cachedLength="16"
                       cachedName="RecordHash"
-                      externalMetadataColumnId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].ExternalColumns[RecordHash]"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[RecordHash]" />
+                      externalMetadataColumnId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RecordHash]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[RecordHash]" />
+                    <inputColumn
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[LoadDateTime]"
+                      cachedDataType="date"
+                      cachedName="LoadDateTime"
+                      externalMetadataColumnId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LoadDateTime]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[LoadDateTime]" />
+                    <inputColumn
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[EndDateTime]"
+                      cachedDataType="date"
+                      cachedName="EndDateTime"
+                      externalMetadataColumnId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EndDateTime]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[EndDateTime]" />
+                    <inputColumn
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Attribute_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="Attribute_name"
+                      externalMetadataColumnId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[NonKeyAttribute_name]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[Attribute_name]" />
+                    <inputColumn
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[L_Relation_name_SQN]"
+                      cachedDataType="i8"
+                      cachedName="L_Relation_name_SQN"
+                      externalMetadataColumnId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[L_Relation_name_SQN]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[L_Relation_name_SQN]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].ExternalColumns[H_Entity_name_SQN]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[L_Relation_name_SQN]"
                       dataType="i8"
-                      name="H_Entity_name_SQN" />
+                      name="L_Relation_name_SQN" />
                     <externalMetadataColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].ExternalColumns[LoadDateTime]"
-                      dataType="dbTimeStamp2"
-                      name="LoadDateTime"
-                      scale="2" />
-                    <externalMetadataColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].ExternalColumns[NonKeyAttribute_name]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[NonKeyAttribute_name]"
                       codePage="1252"
                       dataType="str"
                       description="@XGenXmlSection(name=&quot;NonKeyAttribute&quot;)"
                       length="10"
                       name="NonKeyAttribute_name" />
                     <externalMetadataColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].ExternalColumns[EndDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LoadDateTime]"
+                      dataType="dbTimeStamp2"
+                      name="LoadDateTime"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EndDateTime]"
                       dataType="dbTimeStamp2"
                       name="EndDateTime"
                       scale="2" />
                     <externalMetadataColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input].ExternalColumns[RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RecordHash]"
                       dataType="bytes"
                       length="16"
                       name="RecordHash" />
@@ -917,22 +915,22 @@ where [refTable].[KeyAttribute_name] = ?</property>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -941,11 +939,11 @@ where [refTable].[KeyAttribute_name] = ?</property>
               </outputs>
             </component>
             <component
-              refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name"
+              refId="Package\Load Relation_owner LS Relation_name\OLE DB Source"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
-              name="OLE SRC Entity_owner HS_Entity_name"
+              name="OLE DB Source"
               usesDispositions="true"
               version="7">
               <properties>
@@ -965,30 +963,34 @@ where [refTable].[KeyAttribute_name] = ?</property>
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">WITH [Source_CTE] (
-  -- @XGenTextSection(name="KeyAttribute")
-  [KeyAttribute_name],
-  -- @XGenTextSection(name="NonKeyAttribute" suffix=",")
-  [NonKeyAttribute_name]
-) AS (
-  SELECT
-    -- @XGenTextSection(name="MappedKeyAttribute")
-    MappedKeyAttribute_expression AS [MappedKeyAttribute_targetAttributeName],
-    -- @XGenTextSection(name="MappedNonKeyAttribute" suffix=",")
-    MappedNonKeyAttribute_expression AS [MappedNonKeyAttribute_targetAttributeName]
-  -- @XGenTextSection(name="ObjectMapping")
-  FROM ObjectMapping_mappedObjectJoiner
-)
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">WITH Source_CTE
+(
+-- @XGenTextSection(name="Attribute" suffix=",")
+  Attribute_name
+)	
+AS 
+(
 SELECT 
-  -- @XGenTextSection(name="KeyAttribute")
-  [KeyAttribute_name],
+-- @XGenTextSection(name="MappedAttribute" suffix=",")
+		MappedAttribute_expression as [MappedAttribute_targetAttributeName]
+ -- @XGenTextSection(name="ObjectMapping")
+FROM ObjectMapping_mappedObjectJoiner
+)	
+SELECT 
+-- @XGenTextSection(name="ReferencedEntity")
+	[H_RelatedEntity_parentReferenceName_SQN],
+-- @XGenTextSection(name="NonKeyAttribute")
+  [Source_CTE].[Attribute_name],
+  CAST(HASHBYTES('MD5', N'|~|'
   -- @XGenTextSection(name="NonKeyAttribute")
-  [NonKeyAttribute_name],
-CAST(HASHBYTES('MD5', N'|~|'
-  -- @XGenTextSection(name="NonKeyAttribute")
-+ IIF( [NonKeyAttribute_name] IS NOT NULL, CONCAT(NULL, [NonKeyAttribute_name]), N'&lt;&lt;NULL&gt;&gt;') + N'|~|'
++ IIF(  [Source_CTE].[Attribute_name] IS NOT NULL, CONCAT(NULL,  [Source_CTE].[Attribute_name]), N'&lt;&lt;NULL&gt;&gt;') + N'|~|'
 ) AS VARBINARY(16)) as RecordHash
-FROM [Source_CTE];</property>
+from [Source_CTE]
+-- @XGenTextSection(name="ReferencedEntity" literalOnFirstLine="JOIN " literalOnLastLine="/* end of join */")
+JOIN [RelatedEntity_parentOwner].[H_RelatedEntity_parentReferenceName] [RelatedEntity_parentReferenceName]
+-- @XGenTextSection(name="ReferencedAttribute" begin="ON" includeBegin="false" suffix=" AND")
+	ON [Source_CTE].[Attribute_name] = [RelatedEntity_parentReferenceName].[Attribute_parentObjectAttributeId]
+/* end of join */</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -1013,7 +1015,7 @@ FROM [Source_CTE];</property>
               </properties>
               <connections>
                 <connection
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Connections[OleDbConnection]"
+                  refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Connections[OleDbConnection]"
                   connectionManagerID="{DE720B0B-6E71-47BC-A568-E13087404EBE}:external"
                   connectionManagerRefId="Project.ConnectionManagers[DataVault_DWH]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1021,104 +1023,98 @@ FROM [Source_CTE];</property>
               </connections>
               <outputs>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output]"
+                  refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output]"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[KeyAttribute_name]"
-                      codePage="1252"
-                      dataType="str"
-                      description="@XGenXmlSection(name=&quot;KeyAttribute&quot;)"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_RelatedEntity_parentReferenceName_SQN]"
+                      dataType="i8"
+                      description="@XGenXmlSection(name=&quot;ReferencedEntity&quot;)"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].ExternalColumns[KeyAttribute_name]"
-                      length="10"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[KeyAttribute_name]"
-                      name="KeyAttribute_name"
+                      externalMetadataColumnId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[H_RelatedEntity_parentReferenceName_SQN]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_RelatedEntity_parentReferenceName_SQN]"
+                      name="H_RelatedEntity_parentReferenceName_SQN"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[NonKeyAttribute_name]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[Attribute_name]"
                       codePage="1252"
                       dataType="str"
                       description="@XGenXmlSection(name=&quot;NonKeyAttribute&quot;)"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].ExternalColumns[NonKeyAttribute_name]"
+                      externalMetadataColumnId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Attribute_name]"
                       length="10"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[NonKeyAttribute_name]"
-                      name="NonKeyAttribute_name"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[Attribute_name]"
+                      name="Attribute_name"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[RecordHash]"
                       dataType="bytes"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].ExternalColumns[RecordHash]"
+                      externalMetadataColumnId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[RecordHash]"
                       length="16"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[RecordHash]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[RecordHash]"
                       name="RecordHash"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].ExternalColumns[KeyAttribute_name]"
-                      codePage="1252"
-                      dataType="str"
-                      description="@XGenXmlSection(name=&quot;KeyAttribute&quot;)"
-                      length="10"
-                      name="KeyAttribute_name" />
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[H_RelatedEntity_parentReferenceName_SQN]"
+                      dataType="i8"
+                      description="@XGenXmlSection(name=&quot;ReferencedEntity&quot;)"
+                      name="H_RelatedEntity_parentReferenceName_SQN" />
                     <externalMetadataColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].ExternalColumns[NonKeyAttribute_name]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Attribute_name]"
                       codePage="1252"
                       dataType="str"
                       description="@XGenXmlSection(name=&quot;NonKeyAttribute&quot;)"
                       length="10"
-                      name="NonKeyAttribute_name" />
+                      name="Attribute_name" />
                     <externalMetadataColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].ExternalColumns[RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[RecordHash]"
                       dataType="bytes"
                       length="16"
                       name="RecordHash" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Error Output]"
+                  refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Error Output].Columns[KeyAttribute_name]"
-                      codePage="1252"
-                      dataType="str"
-                      description="@XGenXmlSection(name=&quot;KeyAttribute&quot;)"
-                      length="10"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Error Output].Columns[KeyAttribute_name]"
-                      name="KeyAttribute_name" />
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[H_RelatedEntity_parentReferenceName_SQN]"
+                      dataType="i8"
+                      description="@XGenXmlSection(name=&quot;ReferencedEntity&quot;)"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[H_RelatedEntity_parentReferenceName_SQN]"
+                      name="H_RelatedEntity_parentReferenceName_SQN" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Error Output].Columns[NonKeyAttribute_name]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Attribute_name]"
                       codePage="1252"
                       dataType="str"
                       description="@XGenXmlSection(name=&quot;NonKeyAttribute&quot;)"
                       length="10"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Error Output].Columns[NonKeyAttribute_name]"
-                      name="NonKeyAttribute_name" />
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Attribute_name]"
+                      name="Attribute_name" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Error Output].Columns[RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[RecordHash]"
                       dataType="bytes"
                       length="16"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Error Output].Columns[RecordHash]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[RecordHash]"
                       name="RecordHash" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1127,7 +1123,7 @@ FROM [Source_CTE];</property>
               </outputs>
             </component>
             <component
-              refId="Package\DFT Load Entity_owner HS_Entity_name\Union All"
+              refId="Package\Load Relation_owner LS Relation_name\Union All"
               componentClassID="Microsoft.UnionAll"
               contactInfo="Union All;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
               description="Combines rows from multiple data flows without sorting. For example, add rows back to a data flow after correction of errors. If sorting is important, we recommend using the Merge transformation."
@@ -1135,244 +1131,240 @@ FROM [Source_CTE];</property>
               version="1">
               <inputs>
                 <input
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 1]"
+                  refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 1]"
                   name="Union All Input 1">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 1].Columns[KeyAttribute_name]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="10"
-                      cachedName="KeyAttribute_name"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[KeyAttribute_name]">
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 1].Columns[H_RelatedEntity_parentReferenceName_SQN]"
+                      cachedDataType="i8"
+                      cachedName="H_RelatedEntity_parentReferenceName_SQN"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_RelatedEntity_parentReferenceName_SQN]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[KeyAttribute_name]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[H_RelatedEntity_parentReferenceName_SQN]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 1].Columns[NonKeyAttribute_name]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 1].Columns[Attribute_name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="10"
-                      cachedName="NonKeyAttribute_name"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[NonKeyAttribute_name]">
+                      cachedName="Attribute_name"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[Attribute_name]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[NonKeyAttribute_name]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[Attribute_name]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 1].Columns[RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 1].Columns[RecordHash]"
                       cachedDataType="bytes"
                       cachedLength="16"
                       cachedName="RecordHash"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[RecordHash]">
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[RecordHash]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[RecordHash]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[RecordHash]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 1].Columns[H_Entity_name_SQN]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 1].Columns[L_Relation_name_SQN]"
                       cachedDataType="i8"
-                      cachedName="H_Entity_name_SQN"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Match Output].Columns[H_Entity_name_SQN]">
+                      cachedName="L_Relation_name_SQN"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Match Output].Columns[L_Relation_name_SQN]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[H_Entity_name_SQN]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[L_Relation_name_SQN]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 1].Columns[HS_LoadDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 1].Columns[LS_LoadDateTime]"
                       cachedDataType="dbTimeStamp2"
-                      cachedName="HS_LoadDateTime"
+                      cachedName="LS_LoadDateTime"
                       cachedScale="2"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output].Columns[HS_LoadDateTime]">
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output].Columns[LS_LoadDateTime]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[HS_LoadDateTime]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[LS_LoadDateTime]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 1].Columns[HS_RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 1].Columns[LS_RecordHash]"
                       cachedDataType="bytes"
                       cachedLength="16"
-                      cachedName="HS_RecordHash"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output].Columns[HS_RecordHash]">
+                      cachedName="LS_RecordHash"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output].Columns[LS_RecordHash]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[HS_RecordHash]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[LS_RecordHash]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 1].Columns[LoadDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 1].Columns[LoadDateTime]"
                       cachedDataType="date"
                       cachedName="LoadDateTime"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]">
+                      lineageId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[LoadDateTime]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[LoadDateTime]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 1].Columns[EndDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 1].Columns[EndDateTime]"
                       cachedDataType="date"
                       cachedName="EndDateTime"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Output].Columns[EndDateTime]">
+                      lineageId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Output].Columns[EndDateTime]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[EndDateTime]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[EndDateTime]}</property>
                       </properties>
                     </inputColumn>
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
                 <input
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 2]"
+                  refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 2]"
                   hasSideEffects="true"
                   name="Union All Input 2">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 2].Columns[KeyAttribute_name]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="10"
-                      cachedName="KeyAttribute_name"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[KeyAttribute_name]">
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 2].Columns[H_RelatedEntity_parentReferenceName_SQN]"
+                      cachedDataType="i8"
+                      cachedName="H_RelatedEntity_parentReferenceName_SQN"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_RelatedEntity_parentReferenceName_SQN]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[KeyAttribute_name]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[H_RelatedEntity_parentReferenceName_SQN]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 2].Columns[NonKeyAttribute_name]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 2].Columns[Attribute_name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="10"
-                      cachedName="NonKeyAttribute_name"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[NonKeyAttribute_name]">
+                      cachedName="Attribute_name"
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[Attribute_name]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[NonKeyAttribute_name]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[Attribute_name]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 2].Columns[RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 2].Columns[RecordHash]"
                       cachedDataType="bytes"
                       cachedLength="16"
                       cachedName="RecordHash"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output].Columns[RecordHash]">
+                      lineageId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[RecordHash]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[RecordHash]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[RecordHash]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 2].Columns[H_Entity_name_SQN]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 2].Columns[L_Relation_name_SQN]"
                       cachedDataType="i8"
-                      cachedName="H_Entity_name_SQN"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Match Output].Columns[H_Entity_name_SQN]">
+                      cachedName="L_Relation_name_SQN"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Match Output].Columns[L_Relation_name_SQN]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[H_Entity_name_SQN]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[L_Relation_name_SQN]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 2].Columns[HS_LoadDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 2].Columns[LS_LoadDateTime]"
                       cachedDataType="dbTimeStamp2"
-                      cachedName="HS_LoadDateTime"
+                      cachedName="LS_LoadDateTime"
                       cachedScale="2"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output].Columns[HS_LoadDateTime]">
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output].Columns[LS_LoadDateTime]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[HS_LoadDateTime]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[LS_LoadDateTime]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 2].Columns[HS_RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 2].Columns[LS_RecordHash]"
                       cachedDataType="bytes"
                       cachedLength="16"
-                      cachedName="HS_RecordHash"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output].Columns[HS_RecordHash]">
+                      cachedName="LS_RecordHash"
+                      lineageId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output].Columns[LS_RecordHash]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[HS_RecordHash]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[LS_RecordHash]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 2].Columns[LoadDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 2].Columns[LoadDateTime]"
                       cachedDataType="date"
                       cachedName="LoadDateTime"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]">
+                      lineageId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[LoadDateTime]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[LoadDateTime]}</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 2].Columns[EndDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 2].Columns[EndDateTime]"
                       cachedDataType="date"
                       cachedName="EndDateTime"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Output].Columns[EndDateTime]">
+                      lineageId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Output].Columns[EndDateTime]">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Output column lineage ID"
-                          name="OutputColumnLineageID">#{Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[EndDateTime]}</property>
+                          name="OutputColumnLineageID">#{Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[EndDateTime]}</property>
                       </properties>
                     </inputColumn>
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
                 <input
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 3]"
+                  refId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 3]"
                   dangling="true"
                   hasSideEffects="true"
                   name="Union All Input 3">
@@ -1381,57 +1373,55 @@ FROM [Source_CTE];</property>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1]"
+                  refId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1]"
                   name="Union All Output 1">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[KeyAttribute_name]"
-                      codePage="1252"
-                      dataType="str"
-                      description="@XGenXmlSection(name=&quot;KeyAttribute&quot;)"
-                      length="10"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[KeyAttribute_name]"
-                      name="KeyAttribute_name" />
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[H_RelatedEntity_parentReferenceName_SQN]"
+                      dataType="i8"
+                      description="@XGenXmlSection(name=&quot;ReferencedEntity&quot;)"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[H_RelatedEntity_parentReferenceName_SQN]"
+                      name="H_RelatedEntity_parentReferenceName_SQN" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[NonKeyAttribute_name]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[Attribute_name]"
                       codePage="1252"
                       dataType="str"
                       description="@XGenXmlSection(name=&quot;NonKeyAttribute&quot;)"
                       length="10"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[NonKeyAttribute_name]"
-                      name="NonKeyAttribute_name" />
+                      lineageId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[Attribute_name]"
+                      name="Attribute_name" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[RecordHash]"
                       dataType="bytes"
                       length="16"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[RecordHash]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[RecordHash]"
                       name="RecordHash" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[H_Entity_name_SQN]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[L_Relation_name_SQN]"
                       dataType="i8"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[H_Entity_name_SQN]"
-                      name="H_Entity_name_SQN" />
+                      lineageId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[L_Relation_name_SQN]"
+                      name="L_Relation_name_SQN" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[HS_LoadDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[LS_LoadDateTime]"
                       dataType="dbTimeStamp2"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[HS_LoadDateTime]"
-                      name="HS_LoadDateTime"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[LS_LoadDateTime]"
+                      name="LS_LoadDateTime"
                       scale="2" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[HS_RecordHash]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[LS_RecordHash]"
                       dataType="bytes"
                       length="16"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[HS_RecordHash]"
-                      name="HS_RecordHash" />
+                      lineageId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[LS_RecordHash]"
+                      name="LS_RecordHash" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[LoadDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[LoadDateTime]"
                       dataType="date"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[LoadDateTime]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[LoadDateTime]"
                       name="LoadDateTime" />
                     <outputColumn
-                      refId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[EndDateTime]"
+                      refId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[EndDateTime]"
                       dataType="date"
-                      lineageId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1].Columns[EndDateTime]"
+                      lineageId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1].Columns[EndDateTime]"
                       name="EndDateTime" />
                   </outputColumns>
                   <externalMetadataColumns />
@@ -1441,50 +1431,50 @@ FROM [Source_CTE];</property>
           </components>
           <paths>
             <path
-              refId="Package\DFT Load Entity_owner HS_Entity_name.Paths[Derived Column Output]"
-              endId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Inputs[Conditional Split Input]"
+              refId="Package\Load Relation_owner LS Relation_name.Paths[Derived Column Output]"
+              endId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Inputs[Conditional Split Input]"
               name="Derived Column Output"
-              startId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Outputs[Derived Column Output]" />
+              startId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT Load Entity_owner HS_Entity_name.Paths[Lookup Match Output]"
-              endId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Inputs[Lookup Input]"
+              refId="Package\Load Relation_owner LS Relation_name.Paths[Lookup Match Output]"
+              endId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Inputs[Lookup Input]"
               name="Lookup Match Output"
-              startId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Outputs[Lookup Match Output]" />
+              startId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Outputs[Lookup Match Output]" />
             <path
-              refId="Package\DFT Load Entity_owner HS_Entity_name.Paths[Lookup Match Output1]"
-              endId="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime.Inputs[Derived Column Input]"
+              refId="Package\Load Relation_owner LS Relation_name.Paths[Lookup Match Output1]"
+              endId="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime.Inputs[Derived Column Input]"
               name="Lookup Match Output"
-              startId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name.Outputs[Lookup Match Output]" />
+              startId="Package\Load Relation_owner LS Relation_name\LKP LNK Sat.Outputs[Lookup Match Output]" />
             <path
-              refId="Package\DFT Load Entity_owner HS_Entity_name.Paths[Modified]"
-              endId="Package\DFT Load Entity_owner HS_Entity_name\Multicast modified for insert and update existing.Inputs[Multicast Input 1]"
+              refId="Package\Load Relation_owner LS Relation_name.Paths[Modified]"
+              endId="Package\Load Relation_owner LS Relation_name\Multicast modified for insert and update.Inputs[Multicast Input 1]"
               name="Modified"
-              startId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Outputs[Modified]" />
+              startId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Outputs[Modified]" />
             <path
-              refId="Package\DFT Load Entity_owner HS_Entity_name.Paths[Multicast Output 2]"
-              endId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 2]"
+              refId="Package\Load Relation_owner LS Relation_name.Paths[Multicast Output 1]"
+              endId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 2]"
+              name="Multicast Output 1"
+              startId="Package\Load Relation_owner LS Relation_name\Multicast modified for insert and update.Outputs[Multicast Output 1]" />
+            <path
+              refId="Package\Load Relation_owner LS Relation_name.Paths[Multicast Output 2]"
+              endId="Package\Load Relation_owner LS Relation_name\End date existing LS.Inputs[OLE DB Command Input]"
               name="Multicast Output 2"
-              startId="Package\DFT Load Entity_owner HS_Entity_name\Multicast modified for insert and update existing.Outputs[Multicast Output 2]" />
+              startId="Package\Load Relation_owner LS Relation_name\Multicast modified for insert and update.Outputs[Multicast Output 2]" />
             <path
-              refId="Package\DFT Load Entity_owner HS_Entity_name.Paths[Multicast Output 3]"
-              endId="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name.Inputs[OLE DB Command Input]"
-              name="Multicast Output 3"
-              startId="Package\DFT Load Entity_owner HS_Entity_name\Multicast modified for insert and update existing.Outputs[Multicast Output 3]" />
-            <path
-              refId="Package\DFT Load Entity_owner HS_Entity_name.Paths[New]"
-              endId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Inputs[Union All Input 1]"
+              refId="Package\Load Relation_owner LS Relation_name.Paths[New]"
+              endId="Package\Load Relation_owner LS Relation_name\Union All.Inputs[Union All Input 1]"
               name="New"
-              startId="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged.Outputs[New]" />
+              startId="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged.Outputs[New]" />
             <path
-              refId="Package\DFT Load Entity_owner HS_Entity_name.Paths[OLE DB Source Output]"
-              endId="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name.Inputs[Lookup Input]"
+              refId="Package\Load Relation_owner LS Relation_name.Paths[OLE DB Source Output]"
+              endId="Package\Load Relation_owner LS Relation_name\LKP Existing relation.Inputs[Lookup Input]"
               name="OLE DB Source Output"
-              startId="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name.Outputs[OLE DB Source Output]" />
+              startId="Package\Load Relation_owner LS Relation_name\OLE DB Source.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\DFT Load Entity_owner HS_Entity_name.Paths[Union All Output 1]"
-              endId="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name.Inputs[OLE DB Destination Input]"
+              refId="Package\Load Relation_owner LS Relation_name.Paths[Union All Output 1]"
+              endId="Package\Load Relation_owner LS Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input]"
               name="Union All Output 1"
-              startId="Package\DFT Load Entity_owner HS_Entity_name\Union All.Outputs[Union All Output 1]" />
+              startId="Package\Load Relation_owner LS Relation_name\Union All.Outputs[Union All Output 1]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -1503,67 +1493,67 @@ FROM [Source_CTE];</property>
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
         <NodeLayout
-          Size="270,42"
-          Id="Package\DFT Load Entity_owner HS_Entity_name"
-          TopLeft="154,89" />
+          Size="266,42"
+          Id="Package\Load Relation_owner LS Relation_name"
+          TopLeft="231.5,207.5" />
       </GraphLayout>
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\DFT Load Entity_owner HS_Entity_name">
+    design-time-name="Package\Load Relation_owner LS Relation_name">
     <LayoutInfo>
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="243,42"
-          Id="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name"
-          TopLeft="37,224" />
+          Size="175,42"
+          Id="Package\Load Relation_owner LS Relation_name\LKP Existing relation"
+          TopLeft="219,242" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Load Relation_owner LS Relation_name\OLE DB Source"
+          TopLeft="197,80" />
         <NodeLayout
           Size="266,42"
-          Id="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name"
-          TopLeft="22,5.5" />
-        <NodeLayout
-          Size="266,42"
-          Id="Package\DFT Load Entity_owner HS_Entity_name\Determine new, modified or unchanged"
-          TopLeft="33,400" />
+          Id="Package\Load Relation_owner LS Relation_name\Determine new, modified or unchanged"
+          TopLeft="163,593" />
         <NodeLayout
           Size="121,42"
-          Id="Package\DFT Load Entity_owner HS_Entity_name\Union All"
-          TopLeft="220,566" />
+          Id="Package\Load Relation_owner LS Relation_name\Union All"
+          TopLeft="430,807" />
         <NodeLayout
-          Size="237,42"
-          Id="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name"
-          TopLeft="33.75,107.5" />
+          Size="175,42"
+          Id="Package\Load Relation_owner LS Relation_name\End date existing LS"
+          TopLeft="722,906" />
         <NodeLayout
-          Size="264,42"
-          Id="Package\DFT Load Entity_owner HS_Entity_name\Enddate Entity_owner HS_Entity_name"
-          TopLeft="496,644" />
+          Size="137,42"
+          Id="Package\Load Relation_owner LS Relation_name\LKP LNK Sat"
+          TopLeft="215,376" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Load Relation_owner LS Relation_name\OLE DB Destination"
+          TopLeft="338,946" />
+        <NodeLayout
+          Size="253,42"
+          Id="Package\Load Relation_owner LS Relation_name\Add loadDateTime and EndDateTime"
+          TopLeft="166,489" />
         <NodeLayout
           Size="267,42"
-          Id="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name"
-          TopLeft="44.5,651.5" />
-        <NodeLayout
-          Size="279,42"
-          Id="Package\DFT Load Entity_owner HS_Entity_name\DER Add LoadDateTime end EndDateTime"
-          TopLeft="26.25,307.5" />
-        <NodeLayout
-          Size="306,42"
-          Id="Package\DFT Load Entity_owner HS_Entity_name\Multicast modified for insert and update existing"
-          TopLeft="396,469" />
+          Id="Package\Load Relation_owner LS Relation_name\Multicast modified for insert and update"
+          TopLeft="586,717" />
         <EdgeLayout
-          Id="Package\DFT Load Entity_owner HS_Entity_name.Paths[Derived Column Output]"
-          TopLeft="165.875,349.5">
+          Id="Package\Load Relation_owner LS Relation_name.Paths[Derived Column Output]"
+          TopLeft="294.25,531">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,50.5"
+              EndConnector="0,62"
               Start="0,0"
-              End="0,43">
+              End="0,54.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,43" />
+                    End="0,54.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1573,31 +1563,31 @@ FROM [Source_CTE];</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT Load Entity_owner HS_Entity_name.Paths[Union All Output 1]"
-          TopLeft="280.5,608">
+          Id="Package\Load Relation_owner LS Relation_name.Paths[Union All Output 1]"
+          TopLeft="490.5,849">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-102.5,43.5"
+              EndConnector="-67,97"
               Start="0,0"
-              End="-102.5,36">
+              End="-67,89.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,17.75" />
+                    End="0,44.5" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,17.75"
-                    Point2="0,21.75"
-                    Point3="-4,21.75" />
+                    Point1="0,44.5"
+                    Point2="0,48.5"
+                    Point3="-4,48.5" />
                   <mssgle:LineSegment
-                    End="-98.5,21.75" />
+                    End="-63,48.5" />
                   <mssgle:CubicBezierSegment
-                    Point1="-98.5,21.75"
-                    Point2="-102.5,21.75"
-                    Point3="-102.5,25.75" />
+                    Point1="-63,48.5"
+                    Point2="-67,48.5"
+                    Point3="-67,52.5" />
                   <mssgle:LineSegment
-                    End="-102.5,36" />
+                    End="-67,89.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1607,19 +1597,31 @@ FROM [Source_CTE];</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT Load Entity_owner HS_Entity_name.Paths[OLE DB Source Output]"
-          TopLeft="153.625,47.5">
+          Id="Package\Load Relation_owner LS Relation_name.Paths[OLE DB Source Output]"
+          TopLeft="272,122">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,60"
+              EndConnector="34.5,120"
               Start="0,0"
-              End="0,52.5">
+              End="34.5,112.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,52.5" />
+                    End="0,56" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,56"
+                    Point2="0,60"
+                    Point3="4,60" />
+                  <mssgle:LineSegment
+                    End="30.5,60" />
+                  <mssgle:CubicBezierSegment
+                    Point1="30.5,60"
+                    Point2="34.5,60"
+                    Point3="34.5,64" />
+                  <mssgle:LineSegment
+                    End="34.5,112.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1629,67 +1631,67 @@ FROM [Source_CTE];</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT Load Entity_owner HS_Entity_name.Paths[New]"
-          TopLeft="123,442">
+          Id="Package\Load Relation_owner LS Relation_name.Paths[New]"
+          TopLeft="253,635">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="157.5,124"
+              EndConnector="237.5,172"
               Start="0,0"
-              End="157.5,116.5">
+              End="237.5,164.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,46.0448430493274" />
+                    End="0,65.4170403587444" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,46.0448430493274"
-                    Point2="0,50.0448430493274"
-                    Point3="4,50.0448430493274" />
+                    Point1="0,65.4170403587444"
+                    Point2="0,69.4170403587444"
+                    Point3="4,69.4170403587444" />
                   <mssgle:LineSegment
-                    End="153.5,50.0448430493274" />
+                    End="233.5,69.4170403587444" />
                   <mssgle:CubicBezierSegment
-                    Point1="153.5,50.0448430493274"
-                    Point2="157.5,50.0448430493274"
-                    Point3="157.5,54.0448430493274" />
+                    Point1="233.5,69.4170403587444"
+                    Point2="237.5,69.4170403587444"
+                    Point3="237.5,73.4170403587444" />
                   <mssgle:LineSegment
-                    End="157.5,116.5" />
+                    End="237.5,164.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="68.51595703125,55.0448430493274,20.4680859375,9.3974609375"
+              BoundingBox="108.51595703125,74.4170403587444,20.4680859375,9.3974609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT Load Entity_owner HS_Entity_name.Paths[Multicast Output 3]"
-          TopLeft="598.666666666667,511">
+          Id="Package\Load Relation_owner LS Relation_name.Paths[Multicast Output 2]"
+          TopLeft="762.666666666667,759">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="29.3333333333334,133"
+              EndConnector="46.8333333333334,147"
               Start="0,0"
-              End="29.3333333333334,125.5">
+              End="46.8333333333334,139.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,49.6150845253576" />
+                    End="0,55.32539091586" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,49.6150845253576"
-                    Point2="0,53.6150845253576"
-                    Point3="4,53.6150845253576" />
+                    Point1="0,55.32539091586"
+                    Point2="0,59.32539091586"
+                    Point3="4,59.32539091586" />
                   <mssgle:LineSegment
-                    End="25.3333333333334,53.6150845253576" />
+                    End="42.8333333333334,59.32539091586" />
                   <mssgle:CubicBezierSegment
-                    Point1="25.3333333333334,53.6150845253576"
-                    Point2="29.3333333333334,53.6150845253576"
-                    Point3="29.3333333333334,57.6150845253576" />
+                    Point1="42.8333333333334,59.32539091586"
+                    Point2="46.8333333333334,59.32539091586"
+                    Point3="46.8333333333334,63.32539091586" />
                   <mssgle:LineSegment
-                    End="29.3333333333334,125.5" />
+                    End="46.8333333333334,139.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1699,31 +1701,31 @@ FROM [Source_CTE];</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT Load Entity_owner HS_Entity_name.Paths[Multicast Output 2]"
-          TopLeft="499.333333333333,511">
+          Id="Package\Load Relation_owner LS Relation_name.Paths[Multicast Output 1]"
+          TopLeft="719.5,759">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-200,55"
+              EndConnector="-210.166666666667,48"
               Start="0,0"
-              End="-200,47.5">
+              End="-210.166666666667,40.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,23.2313885955649" />
+                    End="0,24.4241435562806" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,23.2313885955649"
-                    Point2="0,27.2313885955649"
-                    Point3="-4,27.2313885955649" />
+                    Point1="0,24.4241435562806"
+                    Point2="0,28.4241435562806"
+                    Point3="-4,28.4241435562806" />
                   <mssgle:LineSegment
-                    End="-196,27.2313885955649" />
+                    End="-206.166666666667,28.4241435562806" />
                   <mssgle:CubicBezierSegment
-                    Point1="-196,27.2313885955649"
-                    Point2="-200,27.2313885955649"
-                    Point3="-200,31.2313885955649" />
+                    Point1="-206.166666666667,28.4241435562806"
+                    Point2="-210.166666666667,28.4241435562806"
+                    Point3="-210.166666666667,32.4241435562806" />
                   <mssgle:LineSegment
-                    End="-200,47.5" />
+                    End="-210.166666666667,40.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1733,86 +1735,110 @@ FROM [Source_CTE];</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT Load Entity_owner HS_Entity_name.Paths[Modified]"
-          TopLeft="209,442">
+          Id="Package\Load Relation_owner LS Relation_name.Paths[Modified]"
+          TopLeft="296,635">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="340,27"
+              EndConnector="423.5,82"
               Start="0,0"
-              End="340,19.5">
+              End="423.5,74.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,6.89686098654709" />
+                    End="0,37" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,6.89686098654709"
-                    Point2="0,10.8968609865471"
-                    Point3="4,10.8968609865471" />
+                    Point1="0,37"
+                    Point2="0,41"
+                    Point3="4,41" />
                   <mssgle:LineSegment
-                    End="336,10.8968609865471" />
+                    End="419.5,41" />
                   <mssgle:CubicBezierSegment
-                    Point1="336,10.8968609865471"
-                    Point2="340,10.8968609865471"
-                    Point3="340,14.8968609865471" />
+                    Point1="419.5,41"
+                    Point2="423.5,41"
+                    Point3="423.5,45" />
                   <mssgle:LineSegment
-                    End="340,19.5" />
+                    End="423.5,74.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="151.09201171875,15.8968609865471,37.8159765625,9.7978515625"
+              BoundingBox="192.84201171875,46,37.8159765625,9.7978515625"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT Load Entity_owner HS_Entity_name.Paths[Lookup Match Output1]"
-          TopLeft="162.125,266">
+          Id="Package\Load Relation_owner LS Relation_name.Paths[Lookup Match Output1]"
+          TopLeft="283.5,418">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,41.5"
+              EndConnector="9,71"
               Start="0,0"
-              End="0,34">
+              End="9,63.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,34" />
+                    End="0,31.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,31.5"
+                    Point2="0,35.5"
+                    Point3="4,35.5" />
+                  <mssgle:LineSegment
+                    End="5,35.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="5,35.5"
+                    Point2="9,35.5"
+                    Point3="9,39.5" />
+                  <mssgle:LineSegment
+                    End="9,63.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,11.1953125,96.3827734375,11.609375"
+              BoundingBox="-43.69138671875,40.5,96.3827734375,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT Load Entity_owner HS_Entity_name.Paths[Lookup Match Output]"
-          TopLeft="155.375,149.5">
+          Id="Package\Load Relation_owner LS Relation_name.Paths[Lookup Match Output]"
+          TopLeft="306.5,284">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,74.5"
+              EndConnector="-23,92"
               Start="0,0"
-              End="0,67">
+              End="-23,84.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,67" />
+                    End="0,42" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,42"
+                    Point2="0,46"
+                    Point3="-4,46" />
+                  <mssgle:LineSegment
+                    End="-19,46" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-19,46"
+                    Point2="-23,46"
+                    Point3="-23,50" />
+                  <mssgle:LineSegment
+                    End="-23,84.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,27.6953125,96.3827734375,11.609375"
+              BoundingBox="-59.69138671875,51,96.3827734375,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -1820,48 +1846,17 @@ FROM [Source_CTE];</property>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner HS_Entity_name">
+    design-time-name="Package\Load Relation_owner LS Relation_name\LKP Existing relation">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:boolean">false</Value>
+          type="q2:string">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
         <Value
-          type="q3:string"></Value>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q4:int">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT Load Entity_owner HS_Entity_name\OLE SRC Entity_owner HS_Entity_name">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT Load Entity_owner HS_Entity_name\LKP Entity_owner H_Entity_name">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:boolean">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string">[Entity_owner].[H_Entity_name]</Value>
+          type="q3:string">[Relation_owner].[L_Relation_name]</Value>
       </Property>
       <Property>
         <Name>TableInfoObjectType</Name>
@@ -1874,7 +1869,38 @@ FROM [Source_CTE];</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT Load Entity_owner HS_Entity_name\OLE DST Entity_owner HS_Entity_name">
+    design-time-name="Package\Load Relation_owner LS Relation_name\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Relation_owner LS Relation_name\LKP LNK Sat">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Relation_owner LS Relation_name\OLE DB Destination">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>

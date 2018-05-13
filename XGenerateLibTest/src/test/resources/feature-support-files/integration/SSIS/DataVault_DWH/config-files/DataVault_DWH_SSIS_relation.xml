@@ -27,7 +27,30 @@
       <!-- This also applies to input columns for a union all -->
       <XmlSection name="ReferencedEntity" templateXPath="//input[@name='Lookup Input']/inputColumns/inputColumn[@cachedName='H_RelatedEntity_parentReferenceName_SQN']"/>
       <XmlSection name="ReferencedEntity" templateXPath="//component[@componentClassID='Microsoft.UnionAll']/inputs/input/inputColumns/inputColumn[@cachedName='H_RelatedEntity_parentReferenceName_SQN']"/>
-    </XmlSections>    
+      <XmlSection name="NonKeyAttribute" templateXPath="//component[@componentClassID='Microsoft.UnionAll']/inputs/input/inputColumns/inputColumn[@cachedName='Attribute_name']"/>      
+      <XmlSection name="NonKeyAttribute" templateXPath="//component[@componentClassID='Microsoft.OLEDBDestination']/inputs/input/inputColumns/inputColumn[@cachedName='Attribute_name']"/>      
+    </XmlSections>   
+     <TemplateAttributeInjections>
+      <!-- Inject an attribute for the scale, precision, cachedScale & cachedPrecision on elements where the name is 'Attribute_name'. -->
+      <TemplateAttributeInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]" attributeName="scale" attributeValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]" attributeName="precision" attributeValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]" attributeName="cachedScale" attributeValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]" attributeName="cachedPrecision" attributeValue=""/>
+    </TemplateAttributeInjections>
+    <TemplatePlaceholderInjections>
+      <!-- Inject a placeholder for the dataType, length, precision, scale, codePage attributes for the columns. -->
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@dataType"  modelNode="etldatatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@length"  modelNode="length" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@precision"  modelNode="precision" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@scale"  modelNode="scale" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@codePage"  modelNode="codePage" scope="current" />
+      <!-- Inject a placeholder for the cachedDataType, cachedLength, cachedPrecision, cachedScale, cachedCodePage attributes for the columns. -->
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@cachedDataType" modelNode="etldatatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@cachedLength"  modelNode="length" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@cachedPrecision"  modelNode="precision" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@cachedScale"  modelNode="scale" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@cachedCodepage"  modelNode="codePage" scope="current" />
+    </TemplatePlaceholderInjections> 
     <TextTemplates>
       <TextTemplate node="//component[@componentClassID='Microsoft.OLEDBSource']/properties/property[@name='SqlCommand']">
         <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
@@ -57,6 +80,11 @@
       </SectionModelBinding>
       <SectionModelBinding section="MappedAttribute" modelXPath="mappableObjectMappings/mappableObjectMapping/attributeMappings/attributeMapping" placeholderName="MappedAttribute" />      
       <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="Attribute" />      
+      <SectionModelBinding section="NonKeyAttribute" modelXPath="attributes/attribute[not(boolean(@primary))]" placeholderName="Attribute">
+          <Placeholders>
+              <Placeholder name="NonKeyAttribute" modelXPath="." />
+          </Placeholders>
+      </SectionModelBinding>      
       <SectionModelBinding section="ObjectMapping" modelXPath="mappableObjectMappings/mappableObjectMapping" placeholderName="ObjectMapping" />
     </SectionModelBinding>
   </Binding>

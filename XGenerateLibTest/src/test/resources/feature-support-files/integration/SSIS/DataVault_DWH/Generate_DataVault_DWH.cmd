@@ -31,6 +31,7 @@ echo Generating DWH DDL and ETL...
     -mtc dwh_model.xml::ssis\Load_Entity_owner_H_Entity_name.dtsx::DataVault_DWH_SSIS.xml ^
     -mtc dwh_model.xml::ssis\Load_Entity_owner_HS_Entity_name.dtsx::DataVault_DWH_SSIS.xml ^
     -mtc dwh_model.xml::ssis\Load_Relation_owner_L_Relation_name.dtsx::DataVault_DWH_SSIS_relation.xml ^
+    -mtc dwh_model.xml::ssis\Load_Relation_owner_LS_Relation_name.dtsx::DataVault_DWH_SSIS_relation.xml ^
     -mtc dwh_model.xml::ssis\DataVault_DWH.dtproj::DataVault_DWH_DTProj.xml ^
     -fld "%OutputDir%\%LogFile%" 
 

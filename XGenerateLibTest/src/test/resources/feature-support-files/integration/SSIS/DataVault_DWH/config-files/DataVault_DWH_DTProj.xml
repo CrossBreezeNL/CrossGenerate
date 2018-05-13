@@ -16,6 +16,8 @@
       <XmlSection name="Entity" templateXPath="//PackageMetaData[@Name='Load_Entity_owner_HS_Entity_name.dtsx']" />
       <XmlSection name="Relation" templateXPath="//Packages/Package[@Name='Load_Relation_owner_L_Relation_name.dtsx']" />
       <XmlSection name="Relation" templateXPath="//PackageMetaData[@Name='Load_Relation_owner_L_Relation_name.dtsx']" />
+      <XmlSection name="Relation" templateXPath="//Packages/Package[@Name='Load_Relation_owner_LS_Relation_name.dtsx']" />
+      <XmlSection name="Relation" templateXPath="//PackageMetaData[@Name='Load_Relation_owner_LS_Relation_name.dtsx']" />
     </XmlSections>
     <TemplatePlaceholderInjections>
       <!-- Inject a placeholder for the ID property for the packages. -->

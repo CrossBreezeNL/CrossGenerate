@@ -32,6 +32,7 @@
           <SSIS:Package SSIS:Name="Load_Entity_owner_H_Entity_name.dtsx" SSIS:EntryPoint="1" />
           <SSIS:Package SSIS:Name="Load_Entity_owner_HS_Entity_name.dtsx" SSIS:EntryPoint="1" />
           <SSIS:Package SSIS:Name="Load_Relation_owner_L_Relation_name.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="Load_Relation_owner_LS_Relation_name.dtsx" SSIS:EntryPoint="1" />
         </SSIS:Packages>
         <SSIS:ConnectionManagers>
           <SSIS:ConnectionManager SSIS:Name="DataVault_DWH.conmgr" />
@@ -198,10 +199,10 @@
                 <SSIS:Property SSIS:Name="Name">Load_Relation_owner_L_Relation_name</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">9</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">24</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{6EC6286F-2B58-4A3D-9880-CCD18B83FB43}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{6D8D464C-5A86-4746-AC56-E31D2DD92B6E}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -211,6 +212,38 @@
                 <SSIS:Parameter SSIS:Name="LoadDateTime">
                   <SSIS:Properties>
                     <SSIS:Property SSIS:Name="ID">{0B12B381-1F3C-4DE3-A70E-C02A1CB2E06C}</SSIS:Property>
+                    <SSIS:Property SSIS:Name="CreationName">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="Description">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Required">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">2001-01-01T00:00:00</SSIS:Property>
+                    <SSIS:Property SSIS:Name="DataType">16</SSIS:Property>
+                  </SSIS:Properties>
+                </SSIS:Parameter>
+              </SSIS:Parameters>
+            </SSIS:PackageMetaData>
+            <SSIS:PackageMetaData SSIS:Name="Load_Relation_owner_LS_Relation_name.dtsx">
+              <SSIS:Properties>
+                <SSIS:Property SSIS:Name="ID">{664427BF-9D65-4C24-9AF8-A75076136056}</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">Load_Relation_owner_L_Relation_name</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">24</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionComments">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{43E8148B-2DCE-4A87-9237-4E3321B4257A}</SSIS:Property>
+                <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
+                <SSIS:Property SSIS:Name="Description">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="ProtectionLevel">0</SSIS:Property>
+              </SSIS:Properties>
+              <SSIS:Parameters>
+                <SSIS:Parameter SSIS:Name="LoadDateTime">
+                  <SSIS:Properties>
+                    <SSIS:Property SSIS:Name="ID">{AFEDABB8-8A3D-4E1C-BA9A-57B0C6DB1823}</SSIS:Property>
                     <SSIS:Property SSIS:Name="CreationName">
                     </SSIS:Property>
                     <SSIS:Property SSIS:Name="Description">
