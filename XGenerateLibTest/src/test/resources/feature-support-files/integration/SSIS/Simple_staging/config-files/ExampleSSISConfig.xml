@@ -21,7 +21,7 @@
   </Model>
   <XmlTemplate rootSectionName="StgPackage">
     <!-- Define the FileFormat, here all attributes with the name 'description' are scanned for annotations. -->
-    <FileFormat currentAccessor="_" commentNodeXPath="@*[lower-case(local-name())='description']" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <FileFormat currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <!-- Output a SSIS package per element of the root section, so 1 package per entity. -->
     <Output type="output_per_element" />
     <XmlSections>

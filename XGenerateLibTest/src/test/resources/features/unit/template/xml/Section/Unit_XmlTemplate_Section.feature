@@ -266,7 +266,7 @@ Feature: Unit_XmlTemplate_Section
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <XmlTemplate rootSectionName="Database">
-          <FileFormat currentAccessor="_" commentNodeXPath="@*[lower-case(local-name())='description']" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <FileFormat currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="output_per_element" />
         </XmlTemplate>
         <Binding>
@@ -337,7 +337,7 @@ Feature: Unit_XmlTemplate_Section
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <XmlTemplate rootSectionName="Database">
-          <FileFormat currentAccessor="_" commentNodeXPath="@*[lower-case(local-name())='description']" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <FileFormat currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
           <Output type="output_per_element" />
         </XmlTemplate>
         <Binding>
