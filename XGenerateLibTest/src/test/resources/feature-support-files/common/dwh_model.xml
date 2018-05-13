@@ -24,14 +24,14 @@
       <entity id="Customer" internalId="39C5194D-382C-4746-B146-1E62AAE7114C" name="Customer" pdObjectType="Table" owner="BusinessVault" stereotype="entity">
         <attributes>
           <attribute id="Id" internalId="B2E3091A-0B2D-45CD-916F-A8A4E6C804C9" name="Id" pdObjectType="Column" datatype="int" fulldatatype="int" stereotype="attribute" ordinal="1" primary="true" required="true" userDefinedType="9029C1F9-19C6-42BF-8D88-1E3BC808BC26" />
-          <attribute id="FirstName" internalId="A18FE8DD-A057-4FCB-AF3E-6129E4ED1880" name="FirstName" pdObjectType="Column" datatype="nvarchar" length="50" fulldatatype="nvarchar(50)" stereotype="attribute" ordinal="2" userDefinedType="BA314752-B151-4E29-A53E-94B1FD771CD2" />
-          <attribute id="LastName" internalId="3C205946-C8EC-48DA-9E97-26C2D9E3DD9B" name="LastName" pdObjectType="Column" datatype="nvarchar" length="100" fulldatatype="nvarchar(100)" stereotype="attribute" ordinal="3" userDefinedType="4A1E500A-5916-4D6B-A42A-51D440834127" />
-          <attribute id="City" internalId="7F94DA0F-C700-4497-ABA8-1F0DE7548831" name="City" pdObjectType="Column" datatype="nvarchar" length="50" fulldatatype="nvarchar(50)" stereotype="attribute" ordinal="4" userDefinedType="BA314752-B151-4E29-A53E-94B1FD771CD2" />
-          <attribute id="Country_Code" internalId="0AF3C69F-1AD4-4263-A91C-10FC45918824" name="Country_Code" pdObjectType="Column" datatype="nvarchar" length="3" fulldatatype="nvarchar(3)" stereotype="attribute" ordinal="5" userDefinedType="3C1FF716-ED44-410D-80E2-59DB496135C6" />
+          <attribute id="FirstName" internalId="A18FE8DD-A057-4FCB-AF3E-6129E4ED1880" name="FirstName" pdObjectType="Column" datatype="varchar" length="50" fulldatatype="varchar(50)" stereotype="attribute" ordinal="2" userDefinedType="BA314752-B151-4E29-A53E-94B1FD771CD2" />
+          <attribute id="LastName" internalId="3C205946-C8EC-48DA-9E97-26C2D9E3DD9B" name="LastName" pdObjectType="Column" datatype="varchar" length="100" fulldatatype="varchar(100)" stereotype="attribute" ordinal="3" userDefinedType="4A1E500A-5916-4D6B-A42A-51D440834127" />
+          <attribute id="City" internalId="7F94DA0F-C700-4497-ABA8-1F0DE7548831" name="City" pdObjectType="Column" datatype="varchar" length="50" fulldatatype="varchar(50)" stereotype="attribute" ordinal="4" userDefinedType="BA314752-B151-4E29-A53E-94B1FD771CD2" />
+          <attribute id="Country_Code" internalId="0AF3C69F-1AD4-4263-A91C-10FC45918824" name="Country_Code" pdObjectType="Column" datatype="varchar" length="3" fulldatatype="varchar(3)" stereotype="attribute" ordinal="5" userDefinedType="3C1FF716-ED44-410D-80E2-59DB496135C6" />
           <attribute id="Country_Description" internalId="008CE9FC-F1B1-441D-B6EC-1598217073F5" name="Country_Description" pdObjectType="Column" datatype="nvarchar" length="100" fulldatatype="nvarchar(100)" stereotype="attribute" ordinal="6" userDefinedType="4A1E500A-5916-4D6B-A42A-51D440834127" />
           <attribute id="Country_Continent" internalId="BED50CAC-8E7D-4F50-B1F6-1ABE7B5A618A" name="Country_Continent" pdObjectType="Column" datatype="nvarchar" length="100" fulldatatype="nvarchar(100)" stereotype="attribute" ordinal="7" userDefinedType="4A1E500A-5916-4D6B-A42A-51D440834127" />
-          <attribute id="Phone" internalId="BEFD68BE-6FEA-4FFB-A7A2-845B2479371D" name="Phone" pdObjectType="Column" datatype="nvarchar" length="20" fulldatatype="nvarchar(20)" stereotype="attribute" ordinal="8" userDefinedType="C21D6B7B-B763-406A-B775-CD7D3D65CF85" />
-          <attribute id="FullName" internalId="8743FD52-17E2-4708-9D96-7B9041B89FD1" name="FullName" pdObjectType="Column" datatype="nvarchar" length="151" fulldatatype="nvarchar(151)" stereotype="attribute" ordinal="9" />
+          <attribute id="Phone" internalId="BEFD68BE-6FEA-4FFB-A7A2-845B2479371D" name="Phone" pdObjectType="Column" datatype="varchar" length="20" fulldatatype="varchar(20)" stereotype="attribute" ordinal="8" userDefinedType="C21D6B7B-B763-406A-B775-CD7D3D65CF85" />
+          <attribute id="FullName" internalId="8743FD52-17E2-4708-9D96-7B9041B89FD1" name="FullName" pdObjectType="Column" datatype="varchar" length="151" fulldatatype="varchar(151)" stereotype="attribute" ordinal="9" />
         </attributes>  
         <keyAttributes>
           <keyAttribute attributeId="Id" attributeName="Id" />
@@ -62,8 +62,8 @@
       <entity id="Order" internalId="E98E63CE-4662-45D9-BA48-7B56A5A83D1E" name="Order" pdObjectType="Table" owner="BusinessVault" stereotype="entity">
         <attributes>
           <attribute id="Id" internalId="31DAFCF0-A33A-4CE4-8985-E1A371B1E798" name="Id" pdObjectType="Column" datatype="int" fulldatatype="int" stereotype="attribute" ordinal="1" primary="true" required="true" userDefinedType="9029C1F9-19C6-42BF-8D88-1E3BC808BC26" />
-          <attribute id="OrderDate" internalId="3AF09AB3-9076-4410-BAB6-28378223987D" name="OrderDate" pdObjectType="Column" datatype="datetime2" length="3" fulldatatype="datetime2(3)" stereotype="attribute" ordinal="2" userDefinedType="536FDCA6-C809-48CF-BA15-CC3FE6AB2D9F" />
-          <attribute id="OrderNumber" internalId="512F0304-5023-4B6A-B854-6B195D244B43" name="OrderNumber" pdObjectType="Column" datatype="nvarchar" length="50" fulldatatype="nvarchar(50)" stereotype="attribute" ordinal="3" userDefinedType="BA314752-B151-4E29-A53E-94B1FD771CD2" />
+          <attribute id="OrderDate" internalId="3AF09AB3-9076-4410-BAB6-28378223987D" name="OrderDate" pdObjectType="Column" datatype="datetime" fulldatatype="datetime" stereotype="attribute" ordinal="2" userDefinedType="536FDCA6-C809-48CF-BA15-CC3FE6AB2D9F" />
+          <attribute id="OrderNumber" internalId="512F0304-5023-4B6A-B854-6B195D244B43" name="OrderNumber" pdObjectType="Column" datatype="varchar" length="50" fulldatatype="varchar(50)" stereotype="attribute" ordinal="3" userDefinedType="BA314752-B151-4E29-A53E-94B1FD771CD2" />
           <attribute id="CustomerId" internalId="D4AA200C-16C2-4626-89AC-C25840C13174" name="CustomerId" pdObjectType="Column" datatype="int" fulldatatype="int" stereotype="attribute" ordinal="4" userDefinedType="9029C1F9-19C6-42BF-8D88-1E3BC808BC26" />
           <attribute id="TotalAmount" internalId="5D85AC0E-A189-49F9-8691-BFC1799C661C" name="TotalAmount" pdObjectType="Column" datatype="decimal" precision="12" scale="2" fulldatatype="decimal(12,2)" stereotype="attribute" ordinal="5" userDefinedType="73AC10D5-A7EA-4B95-80BF-5EBB22CDFE30" />
         </attributes>  
@@ -143,9 +143,9 @@
       <businessRule id="Derive_Customer_FullName" internalId="88A1C5A2-0A9A-43BA-8CBB-DD6BAD143549" name="Derive_Customer_FullName" pdObjectType="Table" owner="BusinessRule" stereotype="derive">
         <expression>(SELECT @FirstName + &#39; &#39; + @LastName AS [FullName])</expression>
         <attributes>
-          <parameter id="FirstName" internalId="CAEF6965-0AA1-4BE5-A7BD-48188C70BC41" name="FirstName" pdObjectType="Column" datatype="nvarchar" length="50" fulldatatype="nvarchar(50)" stereotype="parameter" ordinal="1" />
-          <parameter id="LastName" internalId="8590808F-282F-410A-B48C-01FE3E30AC2D" name="LastName" pdObjectType="Column" datatype="nvarchar" length="100" fulldatatype="nvarchar(100)" stereotype="parameter" ordinal="2" />
-          <attribute id="FullName" internalId="DE0D6D17-9850-4797-9C7C-081A4A00D82B" name="FullName" pdObjectType="Column" datatype="nvarchar" length="151" fulldatatype="nvarchar(151)" stereotype="attribute" ordinal="3" />
+          <parameter id="FirstName" internalId="CAEF6965-0AA1-4BE5-A7BD-48188C70BC41" name="FirstName" pdObjectType="Column" datatype="varchar" length="50" fulldatatype="varchar(50)" stereotype="parameter" ordinal="1" />
+          <parameter id="LastName" internalId="8590808F-282F-410A-B48C-01FE3E30AC2D" name="LastName" pdObjectType="Column" datatype="varchar" length="100" fulldatatype="varchar(100)" stereotype="parameter" ordinal="2" />
+          <attribute id="FullName" internalId="DE0D6D17-9850-4797-9C7C-081A4A00D82B" name="FullName" pdObjectType="Column" datatype="varchar" length="151" fulldatatype="varchar(151)" stereotype="attribute" ordinal="3" />
         </attributes>  
       </businessRule>
     </mappableObjects>
