@@ -12,8 +12,8 @@
   DTS:ObjectName="Load_System_name_Entity_name"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="11"
-  DTS:VersionGUID="{2B202429-977D-44E2-A1FC-D9EDE6A585B0}">
+  DTS:VersionBuild="12"
+  DTS:VersionGUID="{3FF44BBB-3476-4898-9C9C-62A0B32232B0}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:PackageParameters>
@@ -32,7 +32,6 @@
     <DTS:Executable
       DTS:refId="Package\DFT Load System_name Entity_name"
       DTS:CreationName="Microsoft.Pipeline"
-      DTS:Description="@XGenXmlSection(name='Entity')"
       DTS:DTSID="{4037BBB3-6950-4A29-8EF7-7D87B81CCD4F}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
