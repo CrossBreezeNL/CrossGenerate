@@ -17,7 +17,11 @@ xcopy /E /Y /Q "template-output-folder" "%OutputDir%"
 echo Generating DWH DDL and ETL...
  java -jar %XG% -d true -fll Fine ^
     -c XGenAppConfig.xml ^
+<<<<<<< HEAD
     -mtc dwh_model.xml::ssis\DataVault_DWH\Load_Datavault.dtsx::DataVault_DWH_SSIS_master.xml ^
+=======
+    -mtc source_model.xml::ssis\DataVault_Staging_System_name\Load_System_name_Entity_name.dtsx::DataVault_DWH_SSIS.xml ^
+>>>>>>> 8385ddef8dde497182d63cbea3ffbcb20920e771
     -fld "%OutputDir%\%LogFile%" 
 
 echo Done.
