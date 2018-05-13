@@ -11,16 +11,16 @@ public class CrossGenerateTest {
 	public static void main(String[] args) {
 		
 		// Execute the Microsoft SQL test.
-		doMicrosoftSQLTest();
+		//doMicrosoftSQLTest();
 		
 		// Execute the Microsoft SSIS test.
 		doMicrosoftSSISTest();
 		
 		// Execute the PowerCenter test.
-		doPowerCenterTest();
+		//doPowerCenterTest();
 		
 		// Execute the IBM DataStage test.
-		doDataStageTest();
+		//doDataStageTest();
 		
 	}
 	
@@ -51,9 +51,9 @@ public class CrossGenerateTest {
 	private static void doMicrosoftSSISTest() {
 		Generator generator = new Generator();
 		
-		String modelFileName = "common/model/ExampleModel.xml";
-		String templateFileName = "microsoft/template/staging/ssis/stg_load_system_name_entity_name.dtsx";
-		String configFileName = "microsoft/config/ExampleSSISConfig.xml";
+		String modelFileName = "common/model/dwh_model.xml";
+		String templateFileName = "microsoft/template/test/testtemplate.xml";
+		String configFileName = "microsoft/config/DataVault_DWH_SSIS_relationtest.xml";
 		
 		try {
 			URI modelFileUri = CrossGenerateTest.class.getResource(modelFileName).toURI();

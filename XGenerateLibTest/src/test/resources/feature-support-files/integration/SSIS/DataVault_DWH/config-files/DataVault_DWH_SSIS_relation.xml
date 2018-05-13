@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig>
+  <Model>    
+    <ModelAttributeInjections>
+      <!-- Translate the SQL data type into the SSIS data type and store it in the 'etldatatype' attribute on the attribute elements in the model. -->
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="etldatatype" targetValue="str"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='varchar']" targetAttribute="codePage" targetValue="1252"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='nvarchar']" targetAttribute="etldatatype" targetValue="wstr"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='tinyint']" targetAttribute="etldatatype" targetValue="i2"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='smallint']" targetAttribute="etldatatype" targetValue="i2"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='bigint']" targetAttribute="etldatatype" targetValue="i8"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='int']" targetAttribute="etldatatype" targetValue="i4"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='timestamp']" targetAttribute="etldatatype" targetValue="bytes"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="etldatatype" targetValue="dbTimeStamp"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime2']" targetAttribute="etldatatype" targetValue="dbTimeStamp"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='decimal']" targetAttribute="etldatatype" targetValue="numeric"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='bit']" targetAttribute="etldatatype" targetValue="bool"/>
+      <ModelAttributeInjection modelXPath="//attribute[@datatype='uniqueidentifier']" targetAttribute="etldatatype" targetValue="guid"/>
+    </ModelAttributeInjections>
+  </Model>
+  <XmlTemplate rootSectionName="Relation">
+    <FileFormat currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <Output type="output_per_element" />
+    <XmlSections>
+      <!-- The input columns of the 'OLE DB Destination Input' need to be repeated for every attribute. -->
+      <!-- This element doesn't have a 'Description' attribute, so we need to create this section in this config file. -->
+      <!-- This also applies to input columns for a union all -->
+      <XmlSection name="ReferencedEntity" templateXPath="//input[@name='Lookup Input']/inputColumns/inputColumn[@cachedName='H_RelatedEntity_parentReferenceName_SQN']"/>
+      <XmlSection name="ReferencedEntity" templateXPath="//component[@componentClassID='Microsoft.UnionAll']/inputs/input/inputColumns/inputColumn[@cachedName='H_RelatedEntity_parentReferenceName_SQN']"/>
+    </XmlSections>    
+    <TextTemplates>
+      <TextTemplate node="//component[@componentClassID='Microsoft.OLEDBSource']/properties/property[@name='SqlCommand']">
+        <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+      </TextTemplate>
+      <TextTemplate node="//component[@name='LKP Existing relation']/properties/property[@name='SqlCommandParam']">
+        <FileFormat currentAccessor="_" />
+        <TextSections>
+          <TextSection name="ReferencedEntity" begin="[refTable].[H_RelatedEntity_parentReferenceName_SQN]" end="?" prefix="AND " />
+        </TextSections>
+      </TextTemplate>
+      <TextTemplate node="//component[@name='LKP Existing relation']/properties/property[@name='ParameterMap']">
+        <FileFormat currentAccessor="_" />
+        <TextSections>
+          <TextSection name="ReferencedEntity" begin="#{" end="};" />
+        </TextSections>
+      </TextTemplate>
+    </TextTemplates>
+  </XmlTemplate>
+  <Binding>
+    <SectionModelBinding section="Relation" modelXPath="/modeldefinition/system/mappableObjects/relation" placeholderName="Relation">
+      <SectionModelBinding section="ReferencedEntity" modelXPath="references/reference" placeholderName="RelatedEntity">
+        <SectionModelBinding section="ReferencedAttribute" modelXPath="referencedAttributes/referencedAttribute" placeholderName="Attribute">
+          <Placeholders>
+              <Placeholder name="RelatedEntity" modelXPath="../.." />
+          </Placeholders>
+        </SectionModelBinding>
+      </SectionModelBinding>
+      <SectionModelBinding section="MappedAttribute" modelXPath="mappableObjectMappings/mappableObjectMapping/attributeMappings/attributeMapping" placeholderName="MappedAttribute" />      
+      <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="Attribute" />      
+      <SectionModelBinding section="ObjectMapping" modelXPath="mappableObjectMappings/mappableObjectMapping" placeholderName="ObjectMapping" />
+    </SectionModelBinding>
+  </Binding>
+</XGenConfig>

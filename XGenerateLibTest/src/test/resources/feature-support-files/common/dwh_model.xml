@@ -71,7 +71,7 @@
           <keyAttribute attributeId="Id" attributeName="Id" />
         </keyAttributes>
         <mappableObjectMappings>
-          <mappableObjectMapping id="Mapping_Order_ExampleSource_Order" internalId="A92B7B45-F0C5-416E-9DC2-6CEBC71D900B" name="Mapping_Order_ExampleSource_Order" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "ExampleSource_Order"  mappedObjectJoiner="[ExampleSource].[ExampleSource_Order] AS [ExampleSource_Order]">
+          <mappableObjectMapping id="Mapping_Order_ExampleSource_Order" internalId="A92B7B45-F0C5-416E-9DC2-6CEBC71D900B" name="Mapping_Order_ExampleSource_Order" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "ExampleSource_Order"  mappedObjectJoiner="[ExampleSource].[Order] AS [ExampleSource_Order]">
             <mappedObjects>
               <mappedObject mappedObjectId="Order" mappedObjectSystemName="ExampleSource" mappedObjectName="Order" expression="ExampleSource_Order" />
             </mappedObjects>
@@ -95,7 +95,7 @@
           <keyAttribute attributeId="CustomerId" attributeName="CustomerId" />
         </keyAttributes>
         <mappableObjectMappings>
-          <mappableObjectMapping id="Mapping_Order_Customer_ExampleSource_Order" internalId="B46BF85F-D0C1-440F-BBC9-3FA5A5892F72" name="Mapping_Order_Customer_ExampleSource_Order" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "ExampleSource_Order" mappedObjectJoiner="[ExampleSource].[ExampleSource_Order] AS [ExampleSource_Order]">
+          <mappableObjectMapping id="Mapping_Order_Customer_ExampleSource_Order" internalId="B46BF85F-D0C1-440F-BBC9-3FA5A5892F72" name="Mapping_Order_Customer_ExampleSource_Order" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "ExampleSource_Order" mappedObjectJoiner="[ExampleSource].[Order] AS [ExampleSource_Order]">
             <mappedObjects>
               <mappedObject mappedObjectId="Order" mappedObjectSystemName="ExampleSource" mappedObjectName="Order" expression="ExampleSource_Order" />
             </mappedObjects>
@@ -108,12 +108,12 @@
         <references>
           <reference id="Order_Customer_Customer" internalId="7D8B6FD7-4C52-44D5-A9D3-66AD97891432" name="Order_Customer_Customer" pdObjectType="Reference" parentObjectId="Customer" parentOwner="BusinessVault" parentReferenceName="Customer" childObjectId="Order_Customer" childOwner="BusinessVault" childReferenceName="Order_Customer">
             <referencedAttributes>
-              <referencedAttribute parentObjectAttributeId="Id" childObjectAttributeId="CustomerId"  />
+              <referencedAttribute parentObjectAttributeId="Id" childObjectAttributeId="CustomerId" name="CustomerId"  />
             </referencedAttributes>
           </reference>
           <reference id="Order_Customer_Order" internalId="4C1C6518-1F8B-4EC8-9178-0004B6612B1E" name="Order_Customer_Order" pdObjectType="Reference" parentObjectId="Order" parentOwner="BusinessVault" parentReferenceName="Order" childObjectId="Order_Customer" childOwner="BusinessVault" childReferenceName="Order_Customer">
             <referencedAttributes>
-              <referencedAttribute parentObjectAttributeId="Id" childObjectAttributeId="OrderId"  />
+              <referencedAttribute parentObjectAttributeId="Id" childObjectAttributeId="OrderId" name="OrderId" />
             </referencedAttributes>
           </reference>
         </references>

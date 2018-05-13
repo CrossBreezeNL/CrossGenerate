@@ -86,6 +86,8 @@
     <Build Include="tables\Staging_Table_System_name.sql" />
     <Build Include="support-objects\user-defined-types\Attribute_fulldatatype.sql" />
     <Build Include="support-objects\schemas\System_name.sql" />
+    <Build Include="support-objects\views\Reference_parentObject.sql" />
+    <Build Include="support-objects\schemas\RelatedEntity_parentOwner.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Local.publish.xml" />

@@ -12,6 +12,10 @@
     <XmlSections>
       <XmlSection name="Entity" templateXPath="//Packages/Package[@Name='Load_Entity_owner_H_Entity_name.dtsx']" />
       <XmlSection name="Entity" templateXPath="//PackageMetaData[@Name='Load_Entity_owner_H_Entity_name.dtsx']" />
+      <XmlSection name="Entity" templateXPath="//Packages/Package[@Name='Load_Entity_owner_HS_Entity_name.dtsx']" />
+      <XmlSection name="Entity" templateXPath="//PackageMetaData[@Name='Load_Entity_owner_HS_Entity_name.dtsx']" />
+      <XmlSection name="Relation" templateXPath="//Packages/Package[@Name='Load_Relation_owner_L_Relation_name.dtsx']" />
+      <XmlSection name="Relation" templateXPath="//PackageMetaData[@Name='Load_Relation_owner_L_Relation_name.dtsx']" />
     </XmlSections>
     <TemplatePlaceholderInjections>
       <!-- Inject a placeholder for the ID property for the packages. -->
@@ -21,6 +25,7 @@
   <Binding>
     <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="System">
       <SectionModelBinding section="Entity" modelXPath="mappableObjects/entity" placeholderName="Entity" />
+      <SectionModelBinding section="Relation" modelXPath="mappableObjects/relation" placeholderName="Relation" />
     </SectionModelBinding>
   </Binding>
 </XGenConfig>

@@ -24,28 +24,32 @@
     <XmlSections>
       <!-- The input columns of the 'OLE DB Destination Input' need to be repeated for every attribute. -->
       <!-- This element doesn't have a 'Description' attribute, so we need to create this section in this config file. -->
+      <!-- This also applies to input columns for a union all -->
       <XmlSection name="KeyAttribute" templateXPath="//input[@name='Lookup Input']/inputColumns/inputColumn[@cachedName='KeyAttribute_name']"/>
+      <XmlSection name="NonKeyAttribute" templateXPath="//input[@name='Lookup Input']/inputColumns/inputColumn[@cachedName='NonKeyAttribute_name']"/>
+      <XmlSection name="KeyAttribute" templateXPath="//component[@componentClassID='Microsoft.UnionAll']/inputs/input/inputColumns/inputColumn[@cachedName='KeyAttribute_name']"/>
+      <XmlSection name="NonKeyAttribute" templateXPath="//component[@componentClassID='Microsoft.UnionAll']/inputs/input/inputColumns/inputColumn[@cachedName='NonKeyAttribute_name']"/>      
     </XmlSections>
     <TemplateAttributeInjections>
       <!-- Inject an attribute for the scale, precision, cachedScale & cachedPrecision on elements where the name is 'KeyAttribute_name'. -->
-      <TemplateAttributeInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]" attributeName="scale" attributeValue=""/>
-      <TemplateAttributeInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]" attributeName="precision" attributeValue=""/>
-      <TemplateAttributeInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]" attributeName="cachedScale" attributeValue=""/>
-      <TemplateAttributeInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]" attributeName="cachedPrecision" attributeValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]" attributeName="scale" attributeValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]" attributeName="precision" attributeValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]" attributeName="cachedScale" attributeValue=""/>
+      <TemplateAttributeInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]" attributeName="cachedPrecision" attributeValue=""/>
     </TemplateAttributeInjections>
     <TemplatePlaceholderInjections>
       <!-- Inject a placeholder for the dataType, length, precision, scale, codePage attributes for the columns. -->
-      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]/@dataType"  modelNode="etldatatype" scope="current" />
-      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]/@length"  modelNode="length" scope="current" />
-      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]/@precision"  modelNode="precision" scope="current" />
-      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]/@scale"  modelNode="scale" scope="current" />
-      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]/@codePage"  modelNode="codePage" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@dataType"  modelNode="etldatatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@length"  modelNode="length" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@precision"  modelNode="precision" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@scale"  modelNode="scale" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@codePage"  modelNode="codePage" scope="current" />
       <!-- Inject a placeholder for the cachedDataType, cachedLength, cachedPrecision, cachedScale, cachedCodePage attributes for the columns. -->
-      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]/@cachedDataType" modelNode="etldatatype" scope="current" />
-      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]/@cachedLength"  modelNode="length" scope="current" />
-      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]/@cachedPrecision"  modelNode="precision" scope="current" />
-      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]/@cachedScale"  modelNode="scale" scope="current" />
-      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name')]/@cachedCodepage"  modelNode="codePage" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@cachedDataType" modelNode="etldatatype" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@cachedLength"  modelNode="length" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@cachedPrecision"  modelNode="precision" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@cachedScale"  modelNode="scale" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//*[(@name='KeyAttribute_name' or @cachedName='KeyAttribute_name' or @name='NonKeyAttribute_name' or @cachedName='NonKeyAttribute_name')]/@cachedCodepage"  modelNode="codePage" scope="current" />
     </TemplatePlaceholderInjections>
     <TextTemplates>
       <TextTemplate node="//component[@componentClassID='Microsoft.OLEDBSource']/properties/property[@name='SqlCommand']">
