@@ -15,24 +15,24 @@ xcopy /E /Y /Q "template-output-folder" "%OutputDir%"
 echo Generating Staging DDL and ETL...
  java -jar %XG% ^
     -c XGenAppConfig.xml ^
-    -mtc source_model.xml::sql\tables\Staging_Table_System_name.sql::DataVault_DWH_SQL.xml ^
-    -mtc reference_model.xml::sql\tables\Staging_Table_System_name.sql::DataVault_DWH_SQL.xml ^
+    -mtc source_model.xml::sql\DataVault_DWH\tables\Staging_Table_System_name.sql::DataVault_DWH_SQL.xml ^
+    -mtc reference_model.xml::sql\DataVault_DWH\tables\Staging_Table_System_name.sql::DataVault_DWH_SQL.xml ^
     -fld "%OutputDir%\%LogFile%"
 
 echo Generating DWH DDL and ETL...
  java -jar %XG% -d true -fll Fine ^
     -c XGenAppConfig.xml ^
-    -mtc dwh_model.xml::sql\tables\HUB_Table.sql::DataVault_DWH_SQL.xml ^
-    -mtc dwh_model.xml::sql\tables\HUB_SAT_Table.sql::DataVault_DWH_SQL.xml ^
-    -mtc dwh_model.xml::sql\tables\LNK_Table.sql::DataVault_DWH_SQL.xml ^
-    -mtc dwh_model.xml::sql\tables\LNK_SAT_Table.sql::DataVault_DWH_SQL.xml ^
-    -mtc dwh_model.xml::sql\functions\BR_Lookup_Function.sql::DataVault_DWH_SQL.xml ^
-    -mtc dwh_model.xml::sql\functions\BR_Derive_Function.sql::DataVault_DWH_SQL.xml ^
-    -mtc dwh_model.xml::ssis\Load_Entity_owner_H_Entity_name.dtsx::DataVault_DWH_SSIS.xml ^
-    -mtc dwh_model.xml::ssis\Load_Entity_owner_HS_Entity_name.dtsx::DataVault_DWH_SSIS.xml ^
-    -mtc dwh_model.xml::ssis\Load_Relation_owner_L_Relation_name.dtsx::DataVault_DWH_SSIS_relation.xml ^
-    -mtc dwh_model.xml::ssis\Load_Relation_owner_LS_Relation_name.dtsx::DataVault_DWH_SSIS_relation.xml ^
-    -mtc dwh_model.xml::ssis\DataVault_DWH.dtproj::DataVault_DWH_DTProj.xml ^
+    -mtc dwh_model.xml::sql\DataVault_DWH\tables\HUB_Table.sql::DataVault_DWH_SQL.xml ^
+    -mtc dwh_model.xml::sql\DataVault_DWH\tables\HUB_SAT_Table.sql::DataVault_DWH_SQL.xml ^
+    -mtc dwh_model.xml::sql\DataVault_DWH\tables\LNK_Table.sql::DataVault_DWH_SQL.xml ^
+    -mtc dwh_model.xml::sql\DataVault_DWH\tables\LNK_SAT_Table.sql::DataVault_DWH_SQL.xml ^
+    -mtc dwh_model.xml::sql\DataVault_DWH\functions\BR_Lookup_Function.sql::DataVault_DWH_SQL.xml ^
+    -mtc dwh_model.xml::sql\DataVault_DWH\functions\BR_Derive_Function.sql::DataVault_DWH_SQL.xml ^
+    -mtc dwh_model.xml::ssis\DataVault_DWH\Load_Entity_owner_H_Entity_name.dtsx::DataVault_DWH_SSIS.xml ^
+    -mtc dwh_model.xml::ssis\DataVault_DWH\Load_Entity_owner_HS_Entity_name.dtsx::DataVault_DWH_SSIS.xml ^
+    -mtc dwh_model.xml::ssis\DataVault_DWH\Load_Relation_owner_L_Relation_name.dtsx::DataVault_DWH_SSIS_relation.xml ^
+    -mtc dwh_model.xml::ssis\DataVault_DWH\Load_Relation_owner_LS_Relation_name.dtsx::DataVault_DWH_SSIS_relation.xml ^
+    -mtc dwh_model.xml::ssis\DataVault_DWH\DataVault_DWH.dtproj::DataVault_DWH_DTProj.xml ^
     -fld "%OutputDir%\%LogFile%" 
 
 echo Done.
