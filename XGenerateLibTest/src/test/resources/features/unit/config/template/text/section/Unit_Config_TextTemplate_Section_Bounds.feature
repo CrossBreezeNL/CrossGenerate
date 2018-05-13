@@ -3,7 +3,17 @@ Feature: Unit_Config_TextTemplate_Section_Bounds
   In this feature we will describe the section bounds feature for text templates specified in config.
 
   Background: 
-    Given I have the following model file: "general/model.xml"
+    Given I have the following model:
+      """
+			<modeldefinition>
+			  <system name="ExampleSource">
+			    <mappableObjects>
+			      <entity name="Order" />
+			      <entity name="Customer" />
+			    </mappableObjects>
+			  </system>
+			</modeldefinition>
+      """
     And the following template named "DropTables.sql":
       """
       -- Begin of template
