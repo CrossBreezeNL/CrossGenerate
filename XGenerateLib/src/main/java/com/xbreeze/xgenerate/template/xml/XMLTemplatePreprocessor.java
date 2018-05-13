@@ -95,7 +95,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		try {
 			nv = XMLUtils.getVTDNav(preprocessedTemplate);
 		} catch (GeneratorException e) {
-			throw new TemplatePreprocessorException(e);
+			throw new TemplatePreprocessorException(String.format("Error while reading pre-processed template after attribute and placeholder injection: %s", e.getMessage()), e);
 		}
 		
 		// Create the xml sections using the sections from the config.
@@ -355,7 +355,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		try {
 			nv = XMLUtils.getVTDNav(template);
 		} catch (GeneratorException e) {
-			throw new TemplatePreprocessorException(e);
+			throw new TemplatePreprocessorException(String.format("Error while reading raw template before attribute injection: %s", e.getMessage()), e);
 		}
 		
 		// Create the XMLModifier for modifying the document.
@@ -363,7 +363,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		try {
 			xm = new XMLModifier(nv);
 		} catch (ModifyException e) {
-			throw new TemplatePreprocessorException("Error while initializing XMLModifier.", e);
+			throw new TemplatePreprocessorException(e);
 		}
 		
 		// Loop through the template attribute injections and apply them.
@@ -415,7 +415,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		try {
 			nv = XMLUtils.getVTDNav(template);
 		} catch (GeneratorException e) {
-			throw new TemplatePreprocessorException(e);
+			throw new TemplatePreprocessorException(String.format("Error while reading preprocessed template after attribute injection and before placeholder injection: %s", e.getMessage()), e);
 		}
 		
 		// Create the XMLModifier for modifying the document.
@@ -423,7 +423,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		try {
 			xm = new XMLModifier(nv);
 		} catch (ModifyException e) {
-			throw new TemplatePreprocessorException("Error while initializing XMLModifier.", e);
+			throw new TemplatePreprocessorException(e);
 		}
 		
 		// Loop through the template placeholder injections and apply them.

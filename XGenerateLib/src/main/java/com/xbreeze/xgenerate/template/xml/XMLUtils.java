@@ -2,6 +2,7 @@ package com.xbreeze.xgenerate.template.xml;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -85,14 +86,14 @@ public class XMLUtils {
 		// Enable collecting all whitespaces.
 		vg.enableIgnoredWhiteSpace(true);
 		
-		// Set the document.
-		vg.setDoc(xmlDocument.getBytes());
+		// Set the document (in UTF-8 encoding).
+		vg.setDoc(xmlDocument.getBytes(StandardCharsets.UTF_8));
 		
 		// Parse without namespace.
 		try {
 			vg.parse(false);
 		} catch (ParseException e) {
-			throw new GeneratorException("Error while reading file as XML document.", e);
+			throw new GeneratorException(String.format("Error while reading file as XML document: %s.", e.getMessage()), e);
 		}
 		
 		// Create a VTDNav for navigating the document.
