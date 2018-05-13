@@ -91,9 +91,9 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				// If the annotation was found in the template we start scanning from the position the annotation ends.
 				if (annotationInTemplate)
 					sectionBeginCharIndex = templateContent.indexOf(textSectionAnnotation.getBegin(), textSectionAnnotation.getAnnotationEndIndex());
-				// Otherwise we scan from the beginning of the template.
+				// Otherwise we scan from the beginning of the template, specified by beginIndex
 				else
-					sectionBeginCharIndex = templateContent.indexOf(textSectionAnnotation.getBegin());
+					sectionBeginCharIndex = templateContent.indexOf(textSectionAnnotation.getBegin(), beginIndex);
 				
 				// If the result is -1 or larger then the endIndex, then the begin wasn't found.
 				if (sectionBeginCharIndex == -1 || sectionBeginCharIndex > endIndex)
