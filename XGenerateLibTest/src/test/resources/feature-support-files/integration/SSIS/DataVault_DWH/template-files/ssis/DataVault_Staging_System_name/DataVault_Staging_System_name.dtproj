@@ -12,11 +12,11 @@
   <DataSourceViews />
   <DeploymentModelSpecificContent>
     <Manifest>
-      <SSIS:Project SSIS:ProtectionLevel="EncryptSensitiveWithUserKey" xmlns:SSIS="www.microsoft.com/SqlServer/SSIS">
+      <SSIS:Project SSIS:ProtectionLevel="DontSaveSensitive" xmlns:SSIS="www.microsoft.com/SqlServer/SSIS">
         <SSIS:Properties>
           <SSIS:Property SSIS:Name="ID">{b4b41006-4a0e-4221-875e-6d8d726a0cdf}</SSIS:Property>
-          <SSIS:Property SSIS:Name="Name">DataVault_Staging</SSIS:Property>
-          <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
+          <SSIS:Property SSIS:Name="Name">DataVault_Staging_System_name</SSIS:Property>
+          <SSIS:Property SSIS:Name="VersionMajor">0</SSIS:Property>
           <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
           <SSIS:Property SSIS:Name="VersionBuild">0</SSIS:Property>
           <SSIS:Property SSIS:Name="VersionComments">
@@ -26,7 +26,6 @@
           <SSIS:Property SSIS:Name="CreatorComputerName">HARMEN-LAPTOP</SSIS:Property>
           <SSIS:Property SSIS:Name="Description">
           </SSIS:Property>
-          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAATeGTjEeLJ0amedluLzPWPQAAAAACAAAAAAAQZgAAAAEAACAAAADR35l6VuykeNn/11V3fFDo5wz4iwUZwlLbsztCVv9V4QAAAAAOgAAAAAIAACAAAADWizIxegiG4iuEc5ZHd9EotvLOjcFe6UiIy/A7n59hbZAAAACyBmMMiPJ3/ZtkeXTkj915j0FUgnaPqJQtHfqtG38mcdGw3yta2guEk6ezZdBRs4x/JCXQu3CWPum2lX3mU5MxHWBX9ueQ52v5t4qtEkzQGIoKHlsiHDZerm59chHxnJFEefbchrIHWOhxO6eT646v/NduBCkPF3cZ4ydot+h1Kni0Kdd/y4sHBYnrWZmthylAAAAAxTYOjs36QK2ercqzwgJIlhIYIOVLETZf+P+lNnWPeLkwLh3eVQG9+bXfYDmelaKil9ERruBuAWN+1BWcj9JIhQ==</SSIS:Property>
           <SSIS:Property SSIS:Name="FormatVersion">1</SSIS:Property>
         </SSIS:Properties>
         <SSIS:Packages>
@@ -222,14 +221,14 @@
                 <SSIS:Property SSIS:Name="Name">Load_System_name_Entity_name</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">10</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">11</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{23E7774F-CE82-4AA4-9214-0E87CD39A586}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{2B202429-977D-44E2-A1FC-D9EDE6A585B0}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="ProtectionLevel">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="ProtectionLevel">0</SSIS:Property>
               </SSIS:Properties>
               <SSIS:Parameters>
                 <SSIS:Parameter SSIS:Name="StageDateTime">

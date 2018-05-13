@@ -9,11 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ETL", "ETL", "{E46C32DF-68F
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Source_Template", "sql\Source_Template\Source_Template.sqlproj", "{7600B7FB-6B32-4818-9679-72382DDED144}"
 EndProject
-Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "DataVault_Staging", "ssis\DataVault_Staging\DataVault_Staging.dtproj", "{4AE391E9-B6BC-4278-AAB0-B3C89C9D35D4}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DataVault_DWH", "sql\DataVault_DWH\DataVault_DWH.sqlproj", "{908BC9FC-B63A-4A26-8498-49C18607CE3E}"
 EndProject
 Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "DataVault_DWH", "ssis\DataVault_DWH\DataVault_DWH.dtproj", "{19552BD4-B96E-4B40-93EA-23660A86D65B}"
+EndProject
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "DataVault_Staging_System_name", "ssis\DataVault_Staging_System_name\DataVault_Staging_System_name.dtproj", "{AE012A54-C6EA-4D3C-9422-991FF7405DB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,12 +31,6 @@ Global
 		{7600B7FB-6B32-4818-9679-72382DDED144}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7600B7FB-6B32-4818-9679-72382DDED144}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7600B7FB-6B32-4818-9679-72382DDED144}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{4AE391E9-B6BC-4278-AAB0-B3C89C9D35D4}.Debug|Any CPU.ActiveCfg = Development
-		{4AE391E9-B6BC-4278-AAB0-B3C89C9D35D4}.Debug|Any CPU.Build.0 = Development
-		{4AE391E9-B6BC-4278-AAB0-B3C89C9D35D4}.Development|Any CPU.ActiveCfg = Development
-		{4AE391E9-B6BC-4278-AAB0-B3C89C9D35D4}.Development|Any CPU.Build.0 = Development
-		{4AE391E9-B6BC-4278-AAB0-B3C89C9D35D4}.Release|Any CPU.ActiveCfg = Development
-		{4AE391E9-B6BC-4278-AAB0-B3C89C9D35D4}.Release|Any CPU.Build.0 = Development
 		{908BC9FC-B63A-4A26-8498-49C18607CE3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{908BC9FC-B63A-4A26-8498-49C18607CE3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{908BC9FC-B63A-4A26-8498-49C18607CE3E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -52,14 +46,20 @@ Global
 		{19552BD4-B96E-4B40-93EA-23660A86D65B}.Development|Any CPU.Build.0 = Development
 		{19552BD4-B96E-4B40-93EA-23660A86D65B}.Release|Any CPU.ActiveCfg = Development
 		{19552BD4-B96E-4B40-93EA-23660A86D65B}.Release|Any CPU.Build.0 = Development
+		{AE012A54-C6EA-4D3C-9422-991FF7405DB8}.Debug|Any CPU.ActiveCfg = Development
+		{AE012A54-C6EA-4D3C-9422-991FF7405DB8}.Debug|Any CPU.Build.0 = Development
+		{AE012A54-C6EA-4D3C-9422-991FF7405DB8}.Development|Any CPU.ActiveCfg = Development
+		{AE012A54-C6EA-4D3C-9422-991FF7405DB8}.Development|Any CPU.Build.0 = Development
+		{AE012A54-C6EA-4D3C-9422-991FF7405DB8}.Release|Any CPU.ActiveCfg = Development
+		{AE012A54-C6EA-4D3C-9422-991FF7405DB8}.Release|Any CPU.Build.0 = Development
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7600B7FB-6B32-4818-9679-72382DDED144} = {BE6BF4F9-B7C7-4DC4-A91E-C25245332E94}
-		{4AE391E9-B6BC-4278-AAB0-B3C89C9D35D4} = {E46C32DF-68F6-4B0D-B923-8623183B3C1E}
 		{908BC9FC-B63A-4A26-8498-49C18607CE3E} = {BE6BF4F9-B7C7-4DC4-A91E-C25245332E94}
 		{19552BD4-B96E-4B40-93EA-23660A86D65B} = {E46C32DF-68F6-4B0D-B923-8623183B3C1E}
+		{AE012A54-C6EA-4D3C-9422-991FF7405DB8} = {E46C32DF-68F6-4B0D-B923-8623183B3C1E}
 	EndGlobalSection
 EndGlobal

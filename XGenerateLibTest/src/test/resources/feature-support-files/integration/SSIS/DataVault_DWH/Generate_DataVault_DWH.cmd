@@ -16,7 +16,11 @@ echo Generating Staging DDL and ETL...
  java -jar %XG% ^
     -c XGenAppConfig.xml ^
     -mtc source_model.xml::sql\DataVault_DWH\tables\Staging_Table_System_name.sql::DataVault_DWH_SQL.xml ^
+    -mtc source_model.xml::ssis\DataVault_Staging_System_name\Load_System_name_Entity_name.dtsx::DataVault_DWH_SSIS.xml ^
+    -mtc source_model.xml::ssis\DataVault_Staging_System_name\DataVault_Staging_System_name.dtproj::DataVault_Staging_DTProj.xml ^
     -mtc reference_model.xml::sql\DataVault_DWH\tables\Staging_Table_System_name.sql::DataVault_DWH_SQL.xml ^
+    -mtc reference_model.xml::ssis\DataVault_Staging_System_name\Load_System_name_Entity_name.dtsx::DataVault_DWH_SSIS.xml ^
+    -mtc reference_model.xml::ssis\DataVault_Staging_System_name\DataVault_Staging_System_name.dtproj::DataVault_Staging_DTProj.xml ^
     -fld "%OutputDir%\%LogFile%"
 
 echo Generating DWH DDL and ETL...

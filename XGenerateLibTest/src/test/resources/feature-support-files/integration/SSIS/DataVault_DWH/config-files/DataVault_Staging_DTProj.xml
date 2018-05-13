@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig>
+  <Model>
+    <ModelAttributeInjections>
+      <!-- Translate the SQL data type into the SSIS data type and store it in the 'etldatatype' attribute on the attribute elements in the model. -->
+      <ModelAttributeInjection modelXPath="//mappableObjects/*[@internalId]" targetAttribute="packageId" targetXPath="concat('{', @internalId, '}')"/>
+    </ModelAttributeInjections>
+  </Model>
+  <XmlTemplate rootSectionName="System">
+    <FileFormat currentAccessor="_" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <Output type="single_output" />
+    <XmlSections>
+      <XmlSection name="Entity" templateXPath="//Packages/Package[@Name='Load_System_name_Entity_name.dtsx']" />
+      <XmlSection name="Entity" templateXPath="//PackageMetaData[@Name='Load_System_name_Entity_name.dtsx']" />
+    </XmlSections>
+    <TemplatePlaceholderInjections>
+      <!-- Inject a placeholder for the ID property for the packages. -->
+      <TemplatePlaceholderInjection templateXPath="//PackageMetaData/Properties/Property[@Name='ID']" modelNode="packageId" scope="current" />
+    </TemplatePlaceholderInjections>
+  </XmlTemplate>
+  <Binding>
+    <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="System">
+      <SectionModelBinding section="Entity" modelXPath="mappableObjects/entity" placeholderName="Entity">
+        <Placeholders>
+          <Placeholder name="System" modelXPath="../.." />
+        </Placeholders>
+      </SectionModelBinding>
+    </SectionModelBinding>
+  </Binding>
+</XGenConfig>

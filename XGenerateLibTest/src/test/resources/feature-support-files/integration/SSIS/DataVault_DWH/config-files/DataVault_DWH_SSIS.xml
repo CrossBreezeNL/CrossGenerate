@@ -19,7 +19,7 @@
     </ModelAttributeInjections>
   </Model>
   <XmlTemplate rootSectionName="Entity">
-    <FileFormat currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <FileFormat currentAccessor="_" commentNodeXPath="@Description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <Output type="output_per_element" />
     <XmlSections>
       <!-- The input columns of the 'OLE DB Destination Input' need to be repeated for every attribute. -->
@@ -71,6 +71,9 @@
   </XmlTemplate>
   <Binding>
     <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="Entity">
+      <Placeholders>
+        <Placeholder name="System" modelXPath="../.." />
+      </Placeholders>
       <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="Attribute" />
       <SectionModelBinding section="NonKeyAttribute" modelXPath="attributes/attribute[not(boolean(@primary))]" placeholderName="NonKeyAttribute" />
       <SectionModelBinding section="KeyAttribute" modelXPath="attributes/attribute[boolean(@primary)]" placeholderName="KeyAttribute">

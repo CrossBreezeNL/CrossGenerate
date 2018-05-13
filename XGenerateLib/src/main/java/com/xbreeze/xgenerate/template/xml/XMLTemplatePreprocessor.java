@@ -221,7 +221,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 				        	int annotationValueIndex = XMLUtils.getNodeValueIndex(nv, textTemplateNodeIndex);
 				        	// If the annotation value index isn't found, throw an exception.
 				        	if (annotationValueIndex == -1)
-				        		throw new TemplatePreprocessorException(String.format("Coulnd't find text template content for XPath '%s' at %d.", textTemplateConfig.getNode(), textTemplateNodeIndex));
+				        		throw new TemplatePreprocessorException(String.format("Couldn't find text template content for XPath '%s' at %d.", textTemplateConfig.getNode(), textTemplateNodeIndex));
 				        	
 				        	// We are at the point now were the annotationValueIndex points to the text template content.
 				        	// Get the annotation value.
@@ -244,9 +244,9 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 							// Add the found template annotations to the list of annotations of the parent template.
 							templateAnnotations.addAll(textTemplateAnnotations);
 						}
-						// If not, throw an exception.
+						// If not, log a warning.
 						else {
-							throw new TemplatePreprocessorException(String.format("Couldn't find TextTemplate node '%s'.", textTemplateConfig.getNode()));
+							logger.warning(String.format("Couldn't find TextTemplate node '%s'.", textTemplateConfig.getNode()));
 						}
 					}
 					// If some exception occurs while performing the XML Xpath stuff, rethrow the exception in a TemplatePreprocessorException.
