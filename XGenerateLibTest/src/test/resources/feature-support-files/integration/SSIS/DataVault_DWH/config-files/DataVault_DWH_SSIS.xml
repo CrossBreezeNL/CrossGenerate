@@ -29,6 +29,7 @@
       <XmlSection name="NonKeyAttribute" templateXPath="//input[@name='Lookup Input']/inputColumns/inputColumn[@cachedName='NonKeyAttribute_name']"/>
       <XmlSection name="KeyAttribute" templateXPath="//component[@componentClassID='Microsoft.UnionAll']/inputs/input/inputColumns/inputColumn[@cachedName='KeyAttribute_name']"/>
       <XmlSection name="NonKeyAttribute" templateXPath="//component[@componentClassID='Microsoft.UnionAll']/inputs/input/inputColumns/inputColumn[@cachedName='NonKeyAttribute_name']"/>
+      <XmlSection name="Attribute" templateXPath="//input[@name='OLE DB Destination Input']/inputColumns/inputColumn[@cachedName='Attribute_name']"/>
     </XmlSections>
     <TemplateAttributeInjections>
       <!-- Inject an attribute for the scale, precision, cachedScale & cachedPrecision on elements where the name is 'KeyAttribute_name'. -->

@@ -4,7 +4,7 @@
     <mappableObjects>
       <entity name="Country" internalId="3A8B3BF1-B56B-48A8-A566-0C01515D48AC">
         <attributes>
-          <attribute name="Country_Code" datatype="nvarchar" length="30" fulldatatype="nvarchar(3)" ordinal="1" primary="true" required="true" />
+          <attribute name="Country_Code" datatype="nvarchar" length="3" fulldatatype="nvarchar(3)" ordinal="1" primary="true" required="true" />
           <attribute name="Country_Description" datatype="nvarchar" length="100" fulldatatype="nvarchar(100)" ordinal="2" />
           <attribute name="Country_Continent" datatype="nvarchar" length="100" fulldatatype="nvarchar(100)" ordinal="3" />
         </attributes>
