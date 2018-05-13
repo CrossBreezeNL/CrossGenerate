@@ -3,7 +3,8 @@
   <Model>
     <ModelAttributeInjections>
       <!-- Translate the SQL data type into the SSIS data type and store it in the 'etldatatype' attribute on the attribute elements in the model. -->
-      <ModelAttributeInjection modelXPath="//mappableObjects/*[@internalId]" targetAttribute="packageId" targetXPath="concat('{', @internalId, '}')"/>
+      <ModelAttributeInjection modelXPath="//mappableObjects/*[@internalId]" targetAttribute="KeypackageId" targetXPath="concat('{H-', @internalId, '}')"/>
+      <ModelAttributeInjection modelXPath="//mappableObjects/*[@internalId]" targetAttribute="NonKeypackageId" targetXPath="concat('{S-', @internalId, '}')"/>
     </ModelAttributeInjections>
   </Model>
   <XmlTemplate rootSectionName="System">
