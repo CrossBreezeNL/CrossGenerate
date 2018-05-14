@@ -9,15 +9,10 @@ SET datetime=%datetime:~0,8%_%datetime:~8,6%
 REM Set the log file location.
 SET LogFile=Generate_DataVault_DWH_%datetime%.log
 
-echo Copying template output folder...
-xcopy /E /Y /Q "template-output-folder" "%OutputDir%"
-
-
-
 echo Generating DWH DDL and ETL...
- java -jar %XG% -d true -fll Fine ^
+ java -jar %XG% ^
     -c XGenAppConfig.xml ^
-    -mtc source_model.xml::ssis\DataVault_Staging_System_name\Load_DataVault_Staging_System_name.dtsx::DataVault_Staging_master.xml ^
+    -mtc source_model.xml::sql\DataVault_DWH\tables\Staging_Table_System_name.sql::DataVault_Staging_SQL.xml ^
     -fld "%OutputDir%\%LogFile%" 
 
 echo Done.

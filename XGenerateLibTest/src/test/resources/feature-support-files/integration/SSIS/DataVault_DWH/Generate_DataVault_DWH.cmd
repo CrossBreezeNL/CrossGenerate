@@ -26,7 +26,7 @@ echo Generating Staging DDL and ETL...
     -fld "%OutputDir%\%LogFile%"
 
 echo Generating DWH DDL and ETL...
- java -jar %XG% -d true -fll Fine ^
+ java -jar %XG% ^
     -c XGenAppConfig.xml ^
     -mtc dwh_model.xml::sql\DataVault_DWH\tables\HUB_Table.sql::DataVault_DWH_SQL.xml ^
     -mtc dwh_model.xml::sql\DataVault_DWH\tables\HUB_SAT_Table.sql::DataVault_DWH_SQL.xml ^
