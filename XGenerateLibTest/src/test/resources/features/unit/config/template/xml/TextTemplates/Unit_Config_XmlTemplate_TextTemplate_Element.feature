@@ -157,7 +157,7 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
         -- Some comment in the template
-        -- @XGenTextSection(name="Tables" nrOfLines=3)
+        -- @XGenTextSection(name="Tables" literalOnLastLine="Field:")
         Table: entity_name
         -- @XGenTextSection(name="Columns")
             Field: attribute_name
