@@ -160,7 +160,7 @@ As can be seen in the config below, there is a section defined named `Attribute`
 This is done through the config since connectors cannot be annotated with a section annotation using PowerCenter Designer.
 
 ```xml
-<Section
+<XmlSection
   templateXPath="//MAPPING/CONNECTOR[@FROMFIELD='attribute_name']" 
   name="Attribute"
 />
