@@ -7,12 +7,10 @@ For this stage package the [Source model](../Model/Source_model) is used.
 
 ### stg_load_system_name_entity_name.dtsx
 
-A SSIS package is created with the following components (note the @XGenSection annotations in the description fields of various components):
+A SSIS package is created with the following components (note the @XGenXmlSection annotations in the description fields of various components):
 
 #### Control Flow
-We have a staging package which needs to be created for every entity in our model. Because of this we want the create a section using the Control Flow of the SSIS package. So we click on the grey area of the package and add the annotation `@XGenSection(name="stgPackage")` in the `Description` property.
-
-On the Control Flow we have a Data Flow Task with the name 'Load entity_name'. In the configuration for CrossGenerate we will bind the `entity` elements on the `stgPackage` section so the `entity_name` is resolved correctly.
+On the Control Flow we have a Data Flow Task with the name 'Load System_name Entity_name'. During generation this will be resolved to the proper system and entity names.
 
 [![Template Control Flow](img/control_flow.png)](img/control_flow.png)
 
@@ -22,7 +20,7 @@ In the DataFlow task of this template we have:
 - A Derive Column component to add the StageDateTime as a column to the output
 - A OLE DB Destination component to write the data to the Destination table.
 
-Here the `system_name` and `entity_name` placeholders will be resolved automatically, since these component are withing the `stgPackage` section.
+Again the `system_name` and `entity_name` placeholders are used.
 
 ![Template Data Flow](img/dataflow.png)
 
@@ -40,8 +38,8 @@ In the 'Columns' tab here we also don't need to set anything specific for CrossG
 ![Template Source Columns](img/source_columns.png)
 
 ###### Input and Output Properties - External Columns
-When opening the Advanced Editor for the source component we can go to the 'Input and Output Properties' tab to find the 'attribute_name' column in the 'External Columns' list.
-The defined output column needs to be repeated for every attribute in our model, so we set the section named 'Attribute' on the [External Columns/attribute_name] element. This way CrossGenerate knows which part in the template to repeat (in this case the [attribute_name] column).
+When opening the Advanced Editor for the source component we can go to the 'Input and Output Properties' tab to find the 'Attribute_name' column in the 'External Columns' list.
+The defined output column needs to be repeated for every attribute in our model, so we set the section named 'Attribute' on the [External Columns/attribute_name] element. This way CrossGenerate knows which part in the template to repeat (in this case the [Attribute_name] column).
 
 ![Template Source Input and Output Properties - External Columns](img/source_adv_external_columns.png)
 
@@ -54,6 +52,11 @@ We do the same for the 'Output Columns', since this column also needs to be repe
 And again the same of the 'OLDE DB Source Error Output' output columns.
 
 ![Template Source Input and Output Properties - Error Output Columns](img/source_adv_error_columns.png)
+
+##### Derived column
+The derived colum transformation does not need any specific configuration for Crossgenerate.
+
+![Template Source Columns](img/derived_column.png)
 
 ##### Destination
 ###### Connection Manager
@@ -153,12 +156,29 @@ As can be seen in the config below, there is a section defined named `Attribute`
 This section is defined in the config since the input columns on the OLE DB Destination input cannot be given a section annotation in the IDE.
 
 ```xml
-<Section
+<XmlSection
   name="Attribute" 
   templateXPath="//input[@name='OLE DB Destination Input']/inputColumns/inputColumn[@cachedName='attribute_name']"
 />
 ```
+#### Configure binding
+The sections in the template need to be bound to parts in the model. Since the complete ssis package needs to be generated for each entity in the model. The templates `rootSectionName` is named `Entity`. The section(s) named Entity are mapped to entity in the model. The section(s) named Attribute are mapped to attribute. Mapping template sections to parts of the model is done using `SectionBinding`.
+For each SectionModelBinding, additional placeholders can be specified to access other parts of the model from within that section scope.
 
+```xml
+<Binding>
+    <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="Entity">
+      <Placeholders>
+        <Placeholder name="System" modelXPath="../.." />
+      </Placeholders>
+      <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="Attribute">
+        <Placeholders>
+          <Placeholder name="Entity" modelXPath="../.." />
+        </Placeholders>
+      </SectionModelBinding>      
+    </SectionModelBinding>
+  </Binding>
+```
 ### Full config example
 
 ```xml
@@ -183,16 +203,16 @@ This section is defined in the config since the input columns on the OLE DB Dest
       <ModelAttributeInjection modelXPath="//attribute[@datatype='uniqueidentifier']" targetAttribute="etldatatype" targetValue="guid"/>
     </ModelAttributeInjections>
   </Model>
-  <Template rootSectionName="StgPackage">
+  <XmlTemplate rootSectionName="StgPackage">
     <!-- Define the FileFormat, here all attributes with the name 'description' are scanned for annotations. -->
-    <FileFormat templateType="xml" currentAccessor="_" commentNodeXPath="@*[lower-case(local-name())='description']" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <FileFormat currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <!-- Output a SSIS package per element of the root section, so 1 package per entity. -->
     <Output type="output_per_element" />
-    <Sections>
+    <XmlSections>
       <!-- The input columns of the 'OLE DB Destination Input' need to be repeated for every attribute. -->
       <!-- This element doesn't have a 'Description' attribute, so we need to create this section in this config file. -->
-      <Section name="Attribute" templateXPath="//input[@name='OLE DB Destination Input']/inputColumns/inputColumn[@cachedName='attribute_name']"/>
-    </Sections>
+      <XmlSection name="Attribute" templateXPath="//input[@name='OLE DB Destination Input']/inputColumns/inputColumn[@cachedName='attribute_name']"/>
+    </XmlSections>
     <TemplateAttributeInjections>
       <!-- Inject an attribute for the scale, precision, cachedScale & cachedPrecision on elements where the name is 'attribute_name'. -->
       <TemplateAttributeInjection templateXPath="//*[@name='attribute_name']" attributeName="scale" attributeValue=""/>
@@ -214,7 +234,7 @@ This section is defined in the config since the input columns on the OLE DB Dest
       <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@cachedScale"  modelNode="scale" scope="current" />
       <TemplatePlaceholderInjection templateXPath="//*[@name='attribute_name']/@cachedCodePage"  modelNode="codePage" scope="current" />
     </TemplatePlaceholderInjections>
-  </Template>
+  </XmlTemplate>
  <Binding>
    <!-- Create a binding between the 'StgPackage' sections in the template and the 'entity' elements in the model. -->
    <SectionModelBinding section="StgPackage" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity">

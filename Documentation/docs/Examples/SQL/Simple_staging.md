@@ -5,15 +5,15 @@ In this example we will be generating staging tables for each entity defined in 
 
 ## Template
 We create a template for creating a staging table, in the file name we use the 'system_name' placeholder to have the system name in the resulting output file.
-We define the `@XGenSection` annotation to define the 'CreateTable' section to repeat for each table.
+We define the `@XGenTextSection` annotation to define the 'CreateTable' section to repeat for each table.
 We also define the section named 'TableColumn' to repeat for each column in the table.
 
 ### Staging_Tables_system_name.sql
 
 ``` sql
--- @XGenSection(name="CreateTable" literalOnLastLine="GO")
+-- @XGenTextSection(name="CreateTable" literalOnLastLine="GO")
 CREATE TABLE [system_name].[entity_name] (
-  -- @XGenSection(name="TableColumn")
+  -- @XGenTextSection(name="TableColumn")
   [attribute_name]           attribute_fulldatatype        NULL,
   [StageDateTime]            datetime2(2)              NOT NULL  
 );
