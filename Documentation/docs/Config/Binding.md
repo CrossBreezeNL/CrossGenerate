@@ -37,7 +37,7 @@ A SectionModelBinding defines how the model should be mapped to the template.
 ### Parameters
 | Parameter                          | Description | Default | Remark |
 |:---                                |:--- |:--- |:--- |
-| section[^1]                        | The name of the section as defined in the template. | | |
+| section[^1]                        | The name of the section as defined in the template or in the config. For each section name there can only be one binding specified. | | |
 | modelXPath[^1]                     | The XPath expression which can be applied on the model to get to the XML element to bind to the section. | | |
 | placeholderName                    | The name of the placeholder of the current element. | The same as `section` | |
 

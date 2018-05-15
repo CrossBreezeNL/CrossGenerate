@@ -68,7 +68,7 @@ The XmlSection configuration defines a section in a XML template. This can eithe
 
 | Parameter                  | Description | Default | Remark |
 |:---                        |:--- |:--- |:--- |
-| name[^1]                   | The name of the section. Must be unique within one template. | | This can only contain a-z, A-Z, 0-9, _ and - characters. |
+| name[^1]                   | The name of the section. | | This can only contain a-z, A-Z, 0-9, _ and - characters. |
 | templateXPath[^1]          | The XPath which needs to be executed on the template document to get the element which resembles the section element. | | |
 
 

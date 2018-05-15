@@ -79,14 +79,14 @@ The TextSection configuration defines a section in a text template. This can eit
 
 | Parameter                  | Description | Default | Remark |
 |:---                        |:--- |:--- |:--- |
-| name[^1]                   | The name of the section. Must be unique within one template. | | This can only contain a-z, A-Z, 0-9, _ and - characters. |
+| name[^1]                   | The name of the section. | | This can only contain a-z, A-Z, 0-9, _ and - characters. |
 | begin[^3]                  | Character sequence which defines the beginning of the section. | | If begin is not specified, it will automatically start on the first line after the annotation. This can thus only be done with an inline annotation. |
 | includeBegin               | Whether to include the characters specified in `begin` in the output | true |
 | end[^3]                    | Character sequence which defines the beginning of the section. | | Cannot be used in conjunction with `nrOfLines`. |
 | includeEnd                 | Whether to include the characters specified in `end` in the output | true |
 | literalOnFirstLine[^3]     | Literal which exists on the first line of the section, the whole line will be taken into the section. | | Cannot be used in conjunction with `begin`. |
 | literalOnLastLine[^3]      | Literal which exists on the last line of the section, the whole line will be taken into the section. | | Cannot be used in conjunction with `end` or `nrOfLines`. |
-| nrOfLines[^3]              | Defined the number of lines of the section after the `@XGenSection` annotation. | 1 | Cannot be used in conjunction with `end` or `literalOnLastLine`. |
+| nrOfLines[^3]              | Defines the number of lines of the section starting after the line containing the `@XGenSection` annotation. Any lines containing another (section) annotation should also be included. | 1 | Cannot be used in conjunction with `end` or `literalOnLastLine`. |
 | prefix                     | The prefix to prepend using the `prefixStyle`. |
 | prefixStyle                | The style of the prefix, see [Prefix & suffix styles](#prefix-suffix-styles) | allButFirst | Only interpreted when `prefix` is given. |
 | prefixAction               | The action to be performed with the prefix, either add or remove. | add | Only interpreted when `prefix` is given. _Only add is supported at the moment._ |
