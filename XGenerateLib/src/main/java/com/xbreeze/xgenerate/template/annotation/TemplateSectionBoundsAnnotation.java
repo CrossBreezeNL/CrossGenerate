@@ -3,9 +3,10 @@ package com.xbreeze.xgenerate.template.annotation;
 public class TemplateSectionBoundsAnnotation extends TemplateAnnotation {
 	private TemplateSectionAnnotation _templateSectionAnnotation;
 	
-	public TemplateSectionBoundsAnnotation(TemplateSectionAnnotation templateSectionAnnotation, int annotationBeginIndex) {
+	public TemplateSectionBoundsAnnotation(TemplateSectionAnnotation templateSectionAnnotation, int annotationBeginIndex, int annotationEndIndex) {
 		this._templateSectionAnnotation = templateSectionAnnotation;
 		setAnnotationBeginIndex(annotationBeginIndex);
+		setAnnotationEndIndex(annotationEndIndex);
 	}
 	
 	public String getName() {

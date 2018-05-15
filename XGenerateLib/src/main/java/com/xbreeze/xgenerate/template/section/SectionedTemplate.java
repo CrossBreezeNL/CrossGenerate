@@ -42,6 +42,6 @@ public class SectionedTemplate extends NamedTemplateSection {
 	 */
 	public SectionedTemplate(TemplateSectionAnnotation rootTemplateSectionAnnotation) {
 		// Create an implicit TemplateSectionAnnotation for the root of the template.
-		super(rootTemplateSectionAnnotation, 0);
+		super(rootTemplateSectionAnnotation, rootTemplateSectionAnnotation.getAnnotationBeginIndex(), rootTemplateSectionAnnotation.getAnnotationEndIndex());
 	}
 }

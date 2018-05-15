@@ -171,7 +171,7 @@ public abstract class TemplatePreprocessor {
 			}
 		}
 		
-		// Loop till we reached the end of the template./
+		// Loop till we reached the end of the template.
 		// If we reach the end of a section in between its handled within the loop.
 		while (previousSectionEndIndex < rawTemplateContent.length()) {
 			
@@ -206,33 +206,17 @@ public abstract class TemplatePreprocessor {
 				
 				// If the templateAnnotation start index is not the next number after the previous section end, we add a RawTemplateSection to the parent NamedTemplateSection.
 				// Let's check whether there is some template section which is after the last section and before the next (a raw template section).
-				if (nextSectionBeginIndex > previousSectionEndIndex) {
+				if (nextSectionBeginIndex >= previousSectionEndIndex) {
 					
 					// Let's check whether the current parent section ends before the next annotation.
 					int parentSectionEndIndex = parentSectionBounds.getAnnotationEndIndex();
 					
-					// Only check for end of section when it is not set yet (for the root its always set).
-					if (parentSectionEndIndex == -1) {
-						if (parentSectionBounds.getTemplateSectionAnnotation() instanceof TemplateTextSectionAnnotation) {
-							TemplateTextSectionAnnotation textSectionAnnotation = (TemplateTextSectionAnnotation)parentSectionBounds.getTemplateSectionAnnotation();
-							// Before we add the raw template, we first check whether the end of the section is in this part of raw template.
-							// If so we set the end index of this section, add the template up till that part as raw template, set the iterator one back and return the end index (so the parent will pickup the remaining annotations).
-							logger.fine(String.format("Searching for section end index for '%s' between index %d and %d", parentTemplateSection.getSectionName(), previousSectionEndIndex, nextSectionBeginIndex));
-							parentSectionEndIndex = findSectionEndIndex(textSectionAnnotation, rawTemplateContent, previousSectionEndIndex, nextSectionBeginIndex);
-							if (parentSectionEndIndex != -1) {
-								// Store the section end index on the parent annotation.
-								parentSectionBounds.setAnnotationEndIndex(parentSectionEndIndex);
-								// Store the end index on the parent template section.
-								parentTemplateSection.setSectionEndIndex(parentSectionEndIndex);
-								logger.info(String.format("Successfully found begin and end position of section '%s' (%d:%d)", parentTemplateSection.getSectionName(), parentTemplateSection.getSectionBeginIndex(), parentTemplateSection.getSectionEndIndex()));
-							}
-						} else {
-							throw new TemplatePreprocessorException(String.format("The end index of the XML section '%s' is not set, this shouldn't happen!", parentTemplateSection.getSectionName()));
-						}
-					}
+					// If the end index isn't set, something is wrong.
+					if (parentSectionEndIndex == -1)
+						throw new TemplatePreprocessorException(String.format("The end index of the section '%s' is not set, this shouldn't happen!", parentTemplateSection.getSectionName()));
 					
 					// Check whether the end index is found (-1 means not found), and whether the end index is before the next annotation.
-					if (parentSectionEndIndex != -1 && parentSectionEndIndex <= nextSectionBeginIndex) {
+					if (parentSectionEndIndex <= nextSectionBeginIndex) {
 						
 						// If the parent section end index is later then the expected beginning of the next section we create a raw template with the part between.
 						if (parentSectionEndIndex > previousSectionEndIndex) {
@@ -302,7 +286,7 @@ public abstract class TemplatePreprocessor {
 			{
 				// When the templateAnnotation is null here we have a problem. This shouldn't occur.
 				if (templateAnnotation == null)
-					throw new TemplatePreprocessorException("An illegal state has been reached while pre-processing the template, trying to process an annotation in the last loop.");
+					throw new TemplatePreprocessorException(String.format("An illegal state has been reached while pre-processing the template, trying to process an annotation in the last loop (parentSection='%s'; previousSectionEndIndex=%d).", parentTemplateSection.getSectionName(), previousSectionEndIndex));
 				
 				// Based on the type of annotation we can have different actions.
 				// For example when it is a TemplateCommentAnnotation, we just add it to the current NamedTemplate.
@@ -327,21 +311,14 @@ public abstract class TemplatePreprocessor {
 					TemplateSectionBoundsAnnotation templateSectionBoundsAnnotation = (TemplateSectionBoundsAnnotation) templateAnnotation;
 					logger.info(String.format("Start of processing section '%s'", templateSectionBoundsAnnotation.getName()));
 					// Create the named template section.
-					NamedTemplateSection namedTemplateSection = new NamedTemplateSection(templateSectionBoundsAnnotation.getTemplateSectionAnnotation(), templateSectionBoundsAnnotation.getAnnotationBeginIndex());
-					// If the end index is already known, also set it.
-					if (templateSectionBoundsAnnotation.getAnnotationEndIndex() != -1)
-						namedTemplateSection.setSectionEndIndex(templateSectionBoundsAnnotation.getAnnotationEndIndex());
+					NamedTemplateSection namedTemplateSection = new NamedTemplateSection(templateSectionBoundsAnnotation.getTemplateSectionAnnotation(), templateSectionBoundsAnnotation.getAnnotationBeginIndex(), templateSectionBoundsAnnotation.getAnnotationEndIndex());
 					
 					// Process the content of the named template (recursively).
 					// This process will return the end index of the section (or throw an exception if not found).
 					processNamedTemplateSection(templateSectionBoundsAnnotation, namedTemplateSection, rawTemplateContent, taIterator, previousSectionEndIndex, false, parentTemplateSection.getSectionEndIndex());
 					
-					// If the end of the section isn't set, throw an exception.
-					if (namedTemplateSection.getSectionEndIndex() == -1)
-						throw new TemplatePreprocessorException(String.format("The end of section '%s' wasn't found.", namedTemplateSection.getSectionName()));
-					
 					// Check the end index of the section, this should exceed the parent bounds, if set already.
-					if (parentTemplateSection.getSectionEndIndex() != -1 && namedTemplateSection.getSectionEndIndex() > parentTemplateSection.getSectionEndIndex())
+					if (namedTemplateSection.getSectionEndIndex() > parentTemplateSection.getSectionEndIndex())
 						throw new TemplatePreprocessorException(String.format("The found end-index of section '%s' is after the parent section '%s' end index.", namedTemplateSection.getSectionEndIndex(), parentTemplateSection.getSectionEndIndex()));
 					
 					// Add the named template section to the sectionized template.
@@ -354,9 +331,8 @@ public abstract class TemplatePreprocessor {
 					throw new TemplatePreprocessorException(String.format("Unhandled annotation found: %s", templateAnnotation.getAnnotationName()));
 				}
 				
-				// Set the ending index of the current section for the next cycle. only if current annotation is not a templateSectionAnnotation
-				// Do not set ending index if the current section is a templateSectionAnnotation specified in a config.
-				if ((templateAnnotation.isDefinedInTemplate()) || !(templateAnnotation instanceof TemplateSectionAnnotation)) {
+				// Set the ending index of the current section for the next cycle, only if current annotation is not a TemplateSectionAnnotation defined in the config.
+				if (!(templateAnnotation instanceof TemplateSectionAnnotation && !templateAnnotation.isDefinedInTemplate())) {
 					previousSectionEndIndex = templateAnnotation.getAnnotationEndIndex();
 				}
 			}
@@ -369,76 +345,6 @@ public abstract class TemplatePreprocessor {
 		// If we reach the code here we haven't found the end of a section for some reason.
 		// So we throw an exception.
 		throw new TemplatePreprocessorException(String.format("The end of section '%s' can't be found!", parentTemplateSection.getSectionName()));
-	}
-	
-	/**
-	 * Find the section end index.
-	 * @param textSectionAnnotation The TextTemplateSectionAnnotation
-	 * @param rawTemplateContent The raw template content.
-	 * @param sectionEndSearchBeginIndex The index to start searching for the end from.
-	 * @return The position of the end if found, otherwise -1.
-	 * @throws TemplatePreprocessorException
-	 */
-	private int findSectionEndIndex(TemplateTextSectionAnnotation textSectionAnnotation, String rawTemplateContent, int sectionEndSearchBeginIndex, int sectionEndSearchEndIndex) throws TemplatePreprocessorException {
-		// The variable to return at the end, if the end is not found this function will return -1.
-		int sectionEndCharIndex = -1;
-		
-		// If the end is specified, we use end.
-		if (textSectionAnnotation.getEnd() != null && textSectionAnnotation.getEnd().length() > 0) {
-			// Get the position of the end tag of the section.
-			sectionEndCharIndex = rawTemplateContent.indexOf(textSectionAnnotation.getEnd(), sectionEndSearchBeginIndex);
-			
-			// Check whether the end was found in the range, if not return -1.
-			if (sectionEndCharIndex == -1)
-				return sectionEndCharIndex;
-			
-			// If the section includes the end, we add the length of the end to the index.
-			if (textSectionAnnotation.isIncludeEnd())
-				sectionEndCharIndex += textSectionAnnotation.getEnd().length();
-		}
-		// literalOnLastLine
-		else if (textSectionAnnotation.getLiteralOnLastLine() != null && textSectionAnnotation.getLiteralOnLastLine().length() > 0) {
-		    Pattern pattern = Pattern.compile(String.format("%s.*\\r?\\n?", Pattern.quote(textSectionAnnotation.getLiteralOnLastLine())));
-		    Matcher matcher = pattern.matcher(rawTemplateContent);
-		    // Set the region to search in.
-		    matcher.region(sectionEndSearchBeginIndex, sectionEndSearchEndIndex);
-			if (matcher.find()) {
-				return matcher.end();
-			} else {
-				return -1;
-			}
-		}
-		// If end was not specified, check nrOfLines, this has a default value of 1 if not explicitly set.	
-		else  {
-			// Get the nrOfLines from the annotation.
-			Integer sectionNrOfLines = textSectionAnnotation.getNrOfLines();
-			
-			// Loop through the newlines as of the start of the section.
-			for (int currentNrOfLines = 0; currentNrOfLines < sectionNrOfLines; currentNrOfLines++) {
-				// The end of the section is the first newline we encounter after the begin of the section. We include the newline in the section.
-				sectionEndCharIndex = rawTemplateContent.indexOf('\n', (sectionEndCharIndex == -1) ? sectionEndSearchBeginIndex : sectionEndCharIndex + 1);
-				
-				// If the end of line wasn't found, break out of the loop.
-				if (sectionEndCharIndex == -1)
-					break;
-			}
-			
-			// Add the 1 to the length to compensate for the \n character.
-			if (sectionEndCharIndex != -1)
-				sectionEndCharIndex += 1;
-		}
-		// Otherwise, we can't get the end location, leave the return value at the initial -1.
-		
-		// If the found index is out of range, return -1.
-		if (sectionEndCharIndex > sectionEndSearchEndIndex)
-			return -1;
-		
-		// If the find index is before the start index, throw an exception since this shouldn't happen.
-		if (sectionEndCharIndex != -1 && sectionEndCharIndex < sectionEndSearchBeginIndex)
-			throw new TemplatePreprocessorException(String.format("The found section end index %d is lower than the starting index %d, this shouldn't happen!", sectionEndCharIndex, sectionEndSearchBeginIndex));
-		
-		// Otherwise return the found index.
-		return sectionEndCharIndex;
 	}
 	
 	/**

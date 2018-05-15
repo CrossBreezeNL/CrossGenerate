@@ -51,9 +51,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		// Create a Text Template section annotation for the root section (implicit).
 		TemplateTextSectionAnnotation ttsa = new TemplateTextSectionAnnotation(rootSectionName);
 		// Create the root template section bounds.
-		TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(ttsa, 0);
-		// Set the end of the template.
-		tsba.setAnnotationEndIndex(rawTemplateContent.length());
+		TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(ttsa, 0, rawTemplateContent.length());
 		
 		// Return the pre-processed template.
 		return new PreprocessedTemplate(rawTemplateContent, tsba, templateAnnotations);
@@ -61,17 +59,17 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	
 	/**
 	 * Get the template annotations found in templateContent between beginIndex and endIndex.
-	 * @param templateContent The template content.
+	 * @param rawTemplateContent The template content.
 	 * @param templateConfig The template config.
 	 * @param beginIndex The begin index to start searching in the templateContent.
 	 * @param endIndex The end index to stop searching in the templateContent.
 	 * @return The list with found annotations.
 	 * @throws TemplatePreprocessorException
 	 */
-	public static ArrayList<TemplateAnnotation> getTemplateAnnotations(String templateContent, AbstractTemplateConfig templateConfig, int beginIndex, int endIndex) throws TemplatePreprocessorException {
+	public static ArrayList<TemplateAnnotation> getTemplateAnnotations(String rawTemplateContent, AbstractTemplateConfig templateConfig, int beginIndex, int endIndex) throws TemplatePreprocessorException {
 	
 		// Find the annotations in the template and add them to the templateAnnotations set.
-		ArrayList<TemplateAnnotation> templateAnnotations = AnnotationScanner.collectTextAnnotations(templateContent, templateConfig.getFileFormatConfig(), beginIndex, endIndex);
+		ArrayList<TemplateAnnotation> templateAnnotations = AnnotationScanner.collectTextAnnotations(rawTemplateContent, templateConfig.getFileFormatConfig(), beginIndex, endIndex);
 	
 		// Add all template section annotations from the config file.
 		if (templateConfig.getSectionAnnotations() != null
@@ -81,66 +79,157 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		// Loop through the text section annotations to find the section begin index.
 		for (TemplateTextSectionAnnotation textSectionAnnotation : templateAnnotations.stream().filter(sa -> sa instanceof TemplateTextSectionAnnotation).toArray(TemplateTextSectionAnnotation[]::new)) {
 
-			// Initialize an int for storing the begin index.
-			int sectionBeginCharIndex;
-			// Store whether the annotation was found in the template.
-			boolean annotationInTemplate = (textSectionAnnotation.getAnnotationEndIndex() != -1);
+			// Get the section begin index.
+			int sectionBeginCharIndex = findSectionBeginIndex(textSectionAnnotation, rawTemplateContent, beginIndex, endIndex);
+			// If the begin index isn't found yet, throw a exception.
+			if (sectionBeginCharIndex == -1)
+				throw new TemplatePreprocessorException(String.format("The begin of the section '%s' can't be found", textSectionAnnotation.getName()));
 			
-			// If the begin is specified, we use begin.
-			if (textSectionAnnotation.getBegin() != null && textSectionAnnotation.getBegin().length() > 0) {
-				// If the annotation was found in the template we start scanning from the position the annotation ends.
-				if (annotationInTemplate)
-					sectionBeginCharIndex = templateContent.indexOf(textSectionAnnotation.getBegin(), textSectionAnnotation.getAnnotationEndIndex());
-				// Otherwise we scan from the beginning of the template, specified by beginIndex
-				else
-					sectionBeginCharIndex = templateContent.indexOf(textSectionAnnotation.getBegin(), beginIndex);
-				
-				// If the result is -1 or larger then the endIndex, then the begin wasn't found.
-				if (sectionBeginCharIndex == -1 || sectionBeginCharIndex > endIndex)
-					throw new TemplatePreprocessorException(String.format("The begin part of the section can't be found (%s)", textSectionAnnotation.getName()));
-
-				// If the section does not need to include the begin, than add the length of the begin to remove begin characters from section.
-				if (!textSectionAnnotation.isIncludeBegin())
-					sectionBeginCharIndex += textSectionAnnotation.getBegin().length();
-			}
-			// If literalOnFirstLine is specified, we use literalOnFirstLine
-			else if (textSectionAnnotation.getLiteralOnFirstLine() != null && textSectionAnnotation.getLiteralOnFirstLine().length() > 0) {
-				// Construct a regex for entire line containing the literal (* matches everything but line terminator)
-				 Pattern pattern = Pattern.compile(String.format(".*%s.*", Pattern.quote(textSectionAnnotation.getLiteralOnFirstLine())));
-				 Matcher matcher = pattern.matcher(templateContent);
-						 
-				 // If annotation is in template, apply regex on raw template, after annotation, otherwise apply on complete raw template
-				 if (annotationInTemplate) {
-					 matcher.region(textSectionAnnotation.getAnnotationEndIndex(), endIndex);
-				 }
-				 else {
-					 matcher.region(beginIndex, endIndex);
-				 }
-				 
-				 // If pattern is found, section begin charindex is the start of the matching line.
-				 if (matcher.find()) {
-					sectionBeginCharIndex = matcher.start();
-				 } 
-				 else {
-					throw new TemplatePreprocessorException(String.format("The begin part of the section can't be found (%s)", textSectionAnnotation.getName()));
-				}
-			}
-			// If begin is not specified and the annotation was specified in the template, we use the end position of the annotation.
-			else if (annotationInTemplate) {
-				// Set the section begin index to the end index of the annotation.
-				sectionBeginCharIndex = textSectionAnnotation.getAnnotationEndIndex();
-			}
-			// Otherwise, we can't get the begin location.
-			else {
-				throw new TemplatePreprocessorException(String.format("No begin of section defined (%s)", textSectionAnnotation.getName()));
-			}
+			int sectionEndCharIndex = findSectionEndIndex(textSectionAnnotation, rawTemplateContent, sectionBeginCharIndex, endIndex);
+			// If the end index isn't found yet, throw a exception.
+			if (sectionEndCharIndex == -1)
+				throw new TemplatePreprocessorException(String.format("The end of the section '%s' can't be found", textSectionAnnotation.getName()));
 			
 			// Store the begin index in a new template bounds annotation object.
-			logger.info(String.format("Found section bounds for '%s', begin index: %d", textSectionAnnotation.getName(), sectionBeginCharIndex));
-			templateAnnotations.add(new TemplateSectionBoundsAnnotation(textSectionAnnotation, sectionBeginCharIndex));
+			logger.info(String.format("Found section bounds for '%s' (begin: %d; end: %d", textSectionAnnotation.getName(), sectionBeginCharIndex, sectionEndCharIndex));
+			templateAnnotations.add(new TemplateSectionBoundsAnnotation(textSectionAnnotation, sectionBeginCharIndex, sectionEndCharIndex));
 		}
 
 		// Return the list of template annotations.
 		return templateAnnotations;
+	}
+	
+	/**
+	 * Get the section begin index.
+	 * @param textSectionAnnotation The section annotation to search the begin for.
+	 * @param rawTemplateContent The template content.
+	 * @param searchBeginIndex The begin index the search from.
+	 * @param searchEndIndex The end index to search till.
+	 * @return The section begin index if found, otherwise -1.
+	 * @throws TemplatePreprocessorException
+	 */
+	private static int findSectionBeginIndex(TemplateTextSectionAnnotation textSectionAnnotation, String rawTemplateContent, int searchBeginIndex, int searchEndIndex) throws TemplatePreprocessorException {
+		// Initialize an int for storing the begin index.
+		int sectionBeginCharIndex = -1;
+		// Store whether the annotation was found in the template.
+		boolean annotationInTemplate = (textSectionAnnotation.getAnnotationEndIndex() != -1);
+		
+		// If the begin is specified, we use begin.
+		if (textSectionAnnotation.getBegin() != null && textSectionAnnotation.getBegin().length() > 0) {
+			// If the annotation was found in the template we start scanning from the position the annotation ends.
+			if (annotationInTemplate)
+				sectionBeginCharIndex = rawTemplateContent.indexOf(textSectionAnnotation.getBegin(), textSectionAnnotation.getAnnotationEndIndex());
+			// Otherwise we scan from the beginning of the template, specified by beginIndex
+			else
+				sectionBeginCharIndex = rawTemplateContent.indexOf(textSectionAnnotation.getBegin(), searchBeginIndex);
+			
+			// If the result is -1 or larger then the endIndex, then the begin wasn't found.
+			if (sectionBeginCharIndex == -1 || sectionBeginCharIndex > searchEndIndex)
+				throw new TemplatePreprocessorException(String.format("The begin part of the section '%s' can't be found (begin: '%s')", textSectionAnnotation.getName(), textSectionAnnotation.getBegin()));
+
+			// If the section does not need to include the begin, than add the length of the begin to remove begin characters from section.
+			if (!textSectionAnnotation.isIncludeBegin())
+				sectionBeginCharIndex += textSectionAnnotation.getBegin().length();
+		}
+		// If literalOnFirstLine is specified, we use literalOnFirstLine
+		else if (textSectionAnnotation.getLiteralOnFirstLine() != null && textSectionAnnotation.getLiteralOnFirstLine().length() > 0) {
+			// Construct a regex for entire line containing the literal (* matches everything but line terminator)
+			 Pattern pattern = Pattern.compile(String.format(".*%s.*", Pattern.quote(textSectionAnnotation.getLiteralOnFirstLine())));
+			 Matcher matcher = pattern.matcher(rawTemplateContent);
+					 
+			 // If annotation is in template, apply regex on raw template, after annotation, otherwise apply on complete raw template
+			 if (annotationInTemplate) {
+				 matcher.region(textSectionAnnotation.getAnnotationEndIndex(), searchEndIndex);
+			 }
+			 else {
+				 matcher.region(searchBeginIndex, searchEndIndex);
+			 }
+			 
+			 // If pattern is found, section begin charindex is the start of the matching line.
+			 if (matcher.find()) {
+				sectionBeginCharIndex = matcher.start();
+			 } 
+			 else {
+				throw new TemplatePreprocessorException(String.format("The literal on first line of the section '%s' can't be found (literalOnFirstLine: '%s')", textSectionAnnotation.getName(), textSectionAnnotation.getLiteralOnFirstLine()));
+			}
+		}
+		// If begin is not specified and the annotation was specified in the template, we use the end position of the annotation.
+		else if (annotationInTemplate) {
+			// Set the section begin index to the end index of the annotation.
+			sectionBeginCharIndex = textSectionAnnotation.getAnnotationEndIndex();
+		}
+		
+		// Return the sectionBeginCharIndex.
+		return sectionBeginCharIndex;
+	}
+	
+	/**
+	 * Find the section end index.
+	 * @param textSectionAnnotation The TextTemplateSectionAnnotation
+	 * @param rawTemplateContent The raw template content.
+	 * @param searchBeginIndex The index to start searching for the end from.
+	 * @return The position of the end if found, otherwise -1.
+	 * @throws TemplatePreprocessorException
+	 */
+	private static int findSectionEndIndex(TemplateTextSectionAnnotation textSectionAnnotation, String rawTemplateContent, int searchBeginIndex, int searchEndIndex) throws TemplatePreprocessorException {
+		// The variable to return at the end, if the end is not found this function will return -1.
+		int sectionEndCharIndex = -1;
+		
+		// If the end is specified, we use end.
+		if (textSectionAnnotation.getEnd() != null && textSectionAnnotation.getEnd().length() > 0) {
+			// Get the position of the end tag of the section.
+			sectionEndCharIndex = rawTemplateContent.indexOf(textSectionAnnotation.getEnd(), searchBeginIndex);
+			
+			// Check whether the end was found in the range, if not return -1.
+			if (sectionEndCharIndex == -1)
+				return sectionEndCharIndex;
+			
+			// If the section includes the end, we add the length of the end to the index.
+			if (textSectionAnnotation.isIncludeEnd())
+				sectionEndCharIndex += textSectionAnnotation.getEnd().length();
+		}
+		// literalOnLastLine
+		else if (textSectionAnnotation.getLiteralOnLastLine() != null && textSectionAnnotation.getLiteralOnLastLine().length() > 0) {
+		    Pattern pattern = Pattern.compile(String.format("%s.*\\r?\\n?", Pattern.quote(textSectionAnnotation.getLiteralOnLastLine())));
+		    Matcher matcher = pattern.matcher(rawTemplateContent);
+		    // Set the region to search in.
+		    matcher.region(searchBeginIndex, searchEndIndex);
+			if (matcher.find()) {
+				return matcher.end();
+			} else {
+				return -1;
+			}
+		}
+		// If end was not specified, check nrOfLines, this has a default value of 1 if not explicitly set.	
+		else  {
+			// Get the nrOfLines from the annotation.
+			Integer sectionNrOfLines = textSectionAnnotation.getNrOfLines();
+			
+			// Loop through the newlines as of the start of the section.
+			for (int currentNrOfLines = 0; currentNrOfLines < sectionNrOfLines; currentNrOfLines++) {
+				// The end of the section is the first newline we encounter after the begin of the section. We include the newline in the section.
+				sectionEndCharIndex = rawTemplateContent.indexOf('\n', (sectionEndCharIndex == -1) ? searchBeginIndex : sectionEndCharIndex + 1);
+				
+				// If the end of line wasn't found, break out of the loop.
+				if (sectionEndCharIndex == -1)
+					break;
+			}
+			
+			// Add the 1 to the length to compensate for the \n character.
+			if (sectionEndCharIndex != -1)
+				sectionEndCharIndex += 1;
+		}
+		// Otherwise, we can't get the end location, leave the return value at the initial -1.
+		
+		// If the found index is out of range, return -1.
+		if (sectionEndCharIndex > searchEndIndex)
+			return -1;
+		
+		// If the find index is before the start index, throw an exception since this shouldn't happen.
+		if (sectionEndCharIndex != -1 && sectionEndCharIndex < searchBeginIndex)
+			throw new TemplatePreprocessorException(String.format("The found section end index %d is lower than the starting index %d, this shouldn't happen!", sectionEndCharIndex, searchBeginIndex));
+		
+		// Otherwise return the found index.
+		return sectionEndCharIndex;
 	}
 }

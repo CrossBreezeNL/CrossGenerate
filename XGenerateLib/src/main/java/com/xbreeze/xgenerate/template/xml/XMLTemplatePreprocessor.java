@@ -244,9 +244,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 							}
 							TemplateTextSectionAnnotation tsa = new TemplateTextSectionAnnotation(textTemplateSectionName, userDefinedSectionName);
 					    	// Create a new TemplateSectionBoundsAnnotation using the section-annotation and start index.
-					    	TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(tsa, textTemplateStartIndex);
-					    	// Set the end index.
-					    	tsba.setAnnotationEndIndex(textTemplateEndIndex);
+					    	TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(tsa, textTemplateStartIndex, textTemplateEndIndex);
 					    	// Add the template section bounds annotations to the list of annotations of the parent template.
 					    	templateAnnotations.add(tsba);
 							
@@ -270,9 +268,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		// Create a Text Template section annotation for the root section (implicit).
 		TemplateXmlSectionAnnotation xtsa = new TemplateXmlSectionAnnotation(rootSectionName);
 		// Create the root template section bounds.
-		TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(xtsa, 0);
-		// Set the end of the template.
-		tsba.setAnnotationEndIndex(preprocessedTemplate.length());
+		TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(xtsa, 0, preprocessedTemplate.length());
 		
 		// Return the pre-processed template.
 		return new PreprocessedTemplate(preprocessedTemplate, tsba, templateAnnotations);
@@ -345,9 +341,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		logger.fine(String.format(" -> '%s'", preprocessedTemplate.substring(contentStartIndex, contentEndIndex)));
     	
     	// Create a new TemplateSectionBoundsAnnotation using the annotation and offset.
-    	TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(tsa, contentStartIndex);
-    	// Set the end index.
-    	tsba.setAnnotationEndIndex(contentEndIndex);
+    	TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(tsa, contentStartIndex, contentEndIndex);
     	// Return the TemplateSectionBoundsAnnotation.
     	return tsba;
 	}
