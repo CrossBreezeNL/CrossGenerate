@@ -34,22 +34,22 @@ In the config we:
 <?xml version="1.0" encoding="UTF-8"?>
 <XGenConfig>
   <Model/>
-  <Template rootSectionName="System">
-    <FileFormat templateType="text" currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+  <TextTemplate rootSectionName="System">
+    <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <Output type="single_output" />
-  </Template>
+  </TextTemplate>
   <Binding>
     <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
     <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system">
-    	<!-- Bind the 'CreateTable' template section on the mappableObjects/entity elements in the model. -->
-	    <SectionModelBinding section="CreateTable" modelXPath="mappableObjects/entity" placeholderName="entity">
-	      <Placeholders>
-	        <!-- For the placeholder the modelXPath is relative to its section model XPath. -->
-	        <Placeholder name="system" modelXPath="../.." />
-	      </Placeholders>
-	      <!-- Bind the 'TableColumn' template section on the attributes/attribute elements in the model. -->
-	      <SectionModelBinding section="TableColumn" modelXPath="attributes/attribute" placeholderName="attribute" />
-	    </SectionModelBinding>
+        <!-- Bind the 'CreateTable' template section on the mappableObjects/entity elements in the model. -->
+        <SectionModelBinding section="CreateTable" modelXPath="mappableObjects/entity" placeholderName="entity">
+          <Placeholders>
+            <!-- For the placeholder the modelXPath is relative to its section model XPath. -->
+            <Placeholder name="system" modelXPath="../.." />
+          </Placeholders>
+          <!-- Bind the 'TableColumn' template section on the attributes/attribute elements in the model. -->
+          <SectionModelBinding section="TableColumn" modelXPath="attributes/attribute" placeholderName="attribute" />
+        </SectionModelBinding>
     </SectionModelBinding>
   </Binding>
 </XGenConfig>
