@@ -158,15 +158,15 @@ public abstract class TemplatePreprocessor {
 				int whitespaceStartIndex = previousSectionEndIndex + matcher.start();
 				int whitespaceEndIndex = previousSectionEndIndex + matcher.end();
 				logger.fine(String.format("Whitespace found between %d and %d, so creating seperate sections.", whitespaceStartIndex, whitespaceEndIndex));
-				// Add the template content before the suffix position as a raw template.
+				// Add the template content before the prefix position as a raw template.
 				addRawTemplate(parentTemplateSection, rawTemplateContent, whitespaceStartIndex, whitespaceEndIndex);
-				// Add the repetition template section for the suffix.
+				// Add the repetition template section for the prefix.
 				addRepetitionTemplate(parentTemplateSection, textSectionAnnotaton.getPrefix(), whitespaceEndIndex, RepetitionType.prefix, textSectionAnnotaton.getPrefixStyle(), textSectionAnnotaton.getPrefixAction());
 			}
-			// No whitespace found, so add the suffix to the start.
+			// No whitespace found, so add the prefix to the start.
 			else {
 				logger.fine("No whitespace found, so creating prefix repetition section at the start.");
-				// Add the repetition template section for the suffix.
+				// Add the repetition template section for the prefix.
 				addRepetitionTemplate(parentTemplateSection, textSectionAnnotaton.getPrefix(), previousSectionEndIndex, RepetitionType.prefix, textSectionAnnotaton.getPrefixStyle(), textSectionAnnotaton.getPrefixAction());
 			}
 		}
