@@ -49,6 +49,10 @@ public class NamedTemplateSection extends TemplateSection {
 	public String getSectionName() {
 		return _templateSectionAnnotation.getName();
 	}
+	
+	public boolean isUserDefinedSectionName() {
+		return _templateSectionAnnotation.isUserDefinedSectionName();
+	}
 
 	/**
 	 * Add a template section to the list of sections.
@@ -112,9 +116,10 @@ public class NamedTemplateSection extends TemplateSection {
 				
 				// If there is no section model binding, log a warning message.
 				else {
-					// If the section name is set, bit there is no binding, log a warning.
+					// If the section name is set, but there is no binding, log a warning.
 					// The section name can be empty for the root section of a text templates which resides in a XML template.
-					if (namedTemplateSection.getSectionName() != null) {
+					// For these sections (where the section name is not defined by the user) we don't log a warning.
+					if (namedTemplateSection.isUserDefinedSectionName()) {
 						// If there is no binding we log a warning and add the contents of the named template without a xsl:for-each.
 						logger.warning(String.format("There is no section model binding configured for section '%s'", namedTemplateSection.getSectionName()));
 					}

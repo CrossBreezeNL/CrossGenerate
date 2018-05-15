@@ -100,7 +100,7 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       | Scenario    | QuoteStyle |
       | not escaped | "          |
       | escaped     | &quot;     |
-      
+
   Scenario: TextTemplate with single configured section in XMLTemplate
     Given the following template named "ExampleTemplate.xml":
       """
@@ -146,9 +146,9 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       """
 
   Scenario: Texttemplate with multiple sections annotated in template
-  # Scenario based on task 220:
-  # https://x-breeze.visualstudio.com/CrossGenerate/_workitems/edit/220
-         Given the following template named "ExampleTemplate.xml":
+    # Scenario based on task 220:
+    # https://x-breeze.visualstudio.com/CrossGenerate/_workitems/edit/220
+    Given the following template named "ExampleTemplate.xml":
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
@@ -159,7 +159,7 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
             Field: attribute_name
       </Database>
       """
-And the following config:
+    And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
@@ -194,5 +194,69 @@ And the following config:
         Table: Customer
             Field: CustomerId
             Field: CustomerName   
+      </Database>
+      """
+
+  Scenario: Multiple TextTemplates with single configured section in XMLTemplate
+    Given the following template named "ExampleTemplate.xml":
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="system_id" name="system_name">
+        <Table name="entity_name" description="@XGenXmlSection(name='Tables')">
+          -- @XGenTextSection(name='Columns')
+          attribute_name
+        </Table>
+        <SomeOtherElement />
+        <AnotherTable name="entity_name" description="@XGenXmlSection(name='Tables')">
+          -- @XGenTextSection(name='Columns')
+          attribute_name
+        </AnotherTable>
+      </Database>
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <XmlTemplate rootSectionName="Database">
+          <FileFormat currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="output_per_element" />
+          <TextTemplates>
+            <TextTemplate node="/Database/*[@name='entity_name']">
+              <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+            </TextTemplate>
+          </TextTemplates>
+        </XmlTemplate>
+        <Binding>
+          <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="system">
+            <SectionModelBinding section="Tables" modelXPath="entity" placeholderName="entity">
+              <SectionModelBinding section="Columns" modelXPath="attribute" placeholderName="attribute"/>
+            </SectionModelBinding>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "ExampleTemplate.xml" with content:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
+        <Table name="Order" description="">
+          OrderId
+          OrderDate
+        </Table>
+        <Table name="Customer" description="">
+          CustomerId
+          CustomerName
+        </Table>
+        <SomeOtherElement />
+        <AnotherTable name="Order" description="">
+          OrderId
+          OrderDate
+        </AnotherTable>
+        <AnotherTable name="Customer" description="">
+          CustomerId
+          CustomerName
+        </AnotherTable>
       </Database>
       """
