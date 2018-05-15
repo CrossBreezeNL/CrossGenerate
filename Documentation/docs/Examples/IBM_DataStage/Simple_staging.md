@@ -117,18 +117,18 @@ As can be seen in the config below, there is a section defined named `Entity` th
       <ModelAttributeInjection modelXPath="//attribute[@datatype='decimal']" targetAttribute="length" targetXPath="./@precision"/>      
      </ModelAttributeInjections>
   </Model>
-  <Template rootSectionName="System">
-    <FileFormat type="IBM_DataStage" commentNodeXPath="Property[@Name=&quot;Description&quot;]" currentAccessor="_" childAccessor="$" templateType="xml" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+  <XmlTemplate rootSectionName="System">
+    <FileFormat type="IBM_DataStage" commentNodeXPath="Property[@Name=&quot;Description&quot;]" currentAccessor="_" childAccessor="$" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <Output type="output_per_element" />
-    <Sections>
-      <Section name="Entity" templateXPath="DSExport/Job" />
-    </Sections>
+    <XmlSections>
+      <XmlSection name="Entity" templateXPath="/DSExport/Job" />
+    </XmlSections>
     <TemplatePlaceholderInjections>
       <TemplatePlaceholderInjection templateXPath="//SubRecord[Property/text()='attribute_name']/Property[@Name='SqlType']" modelNode="etldatatype" scope="current" />
       <TemplatePlaceholderInjection templateXPath="//SubRecord[Property/text()='attribute_name']/Property[@Name='Precision']" modelNode="length" scope="current" />
       <TemplatePlaceholderInjection templateXPath="//SubRecord[Property/text()='attribute_name']/Property[@Name='Scale']" modelNode="scale" scope="current" />
     </TemplatePlaceholderInjections>
-  </Template>
+  </XmlTemplate>
   <Binding>
     <SectionModelBinding section="System" modelXPath = "/modeldefinition/system" placeholderName="system">
       <SectionModelBinding section="Entity" modelXPath="mappableObjects/entity" placeholderName="entity">
