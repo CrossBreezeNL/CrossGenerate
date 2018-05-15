@@ -41,11 +41,6 @@ public class TemplateTextSectionAnnotation extends TemplateSectionAnnotation {
 	}
 	
 	/**
-	 * The name of the section.
-	 */
-	protected String name;
-	
-	/**
 	 * Character sequence which defines the beginning of the section.
 	 */
 	private String begin;
@@ -127,12 +122,15 @@ public class TemplateTextSectionAnnotation extends TemplateSectionAnnotation {
 		this.name = name;
 	}
 	
-	@Override
-	@XmlAttribute
-	public String getName() {
-		return this.name;
+	/**
+	 * Constructor.
+	 * @param name The name of the section.
+	 */
+	public TemplateTextSectionAnnotation(String name, boolean userDefinedSectionName) {
+		this.name = name;
+		this.userDefinedSectionName = userDefinedSectionName;
 	}
-
+	
 	@Override
 	public void setName(String name) {
 		this.name = name;

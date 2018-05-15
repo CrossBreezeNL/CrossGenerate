@@ -18,6 +18,7 @@ import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.annotation.TemplateAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateSectionBoundsAnnotation;
+import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateXmlSectionAnnotation;
 import com.xbreeze.xgenerate.template.scanner.AnnotationScanner;
 import com.xbreeze.xgenerate.template.section.NamedTemplateSection;
@@ -215,7 +216,10 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 						annotatedElementAp.selectXPath(textTemplateConfig.getNode());
 						// Check whether the node can be found, if so handle it.
 						int textTemplateNodeIndex = -1;
-						if ((textTemplateNodeIndex = annotatedElementAp.evalXPath()) != -1) {
+						int textTemplateCount = 0;
+						while ((textTemplateNodeIndex = annotatedElementAp.evalXPath()) != -1) {
+							// Increase the text template counter.
+							++textTemplateCount;
 							// Get the index of the node value, the XPath points to an element for example, but we want the text part of the element in that case.
 							// Same for attribute, we want the attribute value.
 				        	int annotationValueIndex = XMLUtils.getNodeValueIndex(nv, textTemplateNodeIndex);
@@ -231,7 +235,14 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 							logger.fine(String.format("Found text template node value (start=%d; end=%d): '%s'", textTemplateStartIndex, textTemplateEndIndex, textTemplateContent));
 							
 							// Create a template section annotation for the root section of the template.
-							TemplateXmlSectionAnnotation tsa = new TemplateXmlSectionAnnotation(textTemplateConfig.getRootSectionName());
+							// If the root section name is not set, set it to a value to indicate the location of the TextTemplate.
+							String textTemplateSectionName = textTemplateConfig.getRootSectionName();
+							boolean userDefinedSectionName = true;
+							if (textTemplateSectionName == null) {
+								textTemplateSectionName = String.format("TextTemplate@%s[%d]", textTemplateConfig.getNode(), textTemplateCount);
+								userDefinedSectionName = false;
+							}
+							TemplateTextSectionAnnotation tsa = new TemplateTextSectionAnnotation(textTemplateSectionName, userDefinedSectionName);
 					    	// Create a new TemplateSectionBoundsAnnotation using the section-annotation and start index.
 					    	TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(tsa, textTemplateStartIndex);
 					    	// Set the end index.
@@ -245,7 +256,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 							templateAnnotations.addAll(textTemplateAnnotations);
 						}
 						// If not, log a warning.
-						else {
+						if (textTemplateCount == 0) {
 							logger.warning(String.format("Couldn't find TextTemplate node '%s'.", textTemplateConfig.getNode()));
 						}
 					}
