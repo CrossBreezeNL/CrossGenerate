@@ -9,9 +9,9 @@ RETURN
     [Country_Continent]
   ) AS (
     SELECT
-      [Reference_Country.Country_Code] AS [Country_Code],
-      [Reference_Country.Country_Description] AS [Country_Description],
-      [Reference_Country.Country_Continent] AS [Country_Continent]
+      Reference_Country.Country_Code AS [Country_Code],
+      Reference_Country.Country_Description AS [Country_Description],
+      Reference_Country.Country_Continent AS [Country_Continent]
     FROM [Reference].[Country] AS [Reference_Country]
   )
   SELECT
