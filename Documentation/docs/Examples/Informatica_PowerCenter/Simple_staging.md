@@ -46,16 +46,16 @@ Now the template mapping is created in PowerDesigner. In order to use it with Cr
 <POWERMART CREATION_DATE="02/16/2018 20:53:52" REPOSITORY_VERSION="186.95">
 <REPOSITORY NAME="REP_REFEC_DEV_01" VERSION="186" CODEPAGE="UTF-8" DATABASETYPE="Oracle">
 <FOLDER NAME="Sandbox" GROUP="" OWNER="ottenw" SHARED="NOTSHARED" DESCRIPTION="For testing/prototyping purposes" PERMISSIONS="rwx---r--" UUID="af3f5d20-55dd-47cd-aed9-b6523741ed17">
-    <SOURCE BUSINESSNAME="" DATABASETYPE="Oracle" DBDNAME="system_name" DESCRIPTION="@XGenSection(name=&quot;Entity&quot;)" NAME="entity_name" OBJECTVERSION="1" OWNERNAME="" VERSIONNUMBER="1">
-        <SOURCEFIELD BUSINESSNAME="" DATATYPE="varchar2" DESCRIPTION="@XGenSection(name=&quot;Attribute&quot;)" FIELDNUMBER="1" FIELDPROPERTY="0" FIELDTYPE="ELEMITEM" HIDDEN="NO" KEYTYPE="NOT A KEY" LENGTH="0" LEVEL="0" NAME="attribute_name" NULLABLE="NULL" OCCURS="0" OFFSET="0" PHYSICALLENGTH="10" PHYSICALOFFSET="0" PICTURETEXT="" PRECISION="10" SCALE="0" USAGE_FLAGS=""/>
+    <SOURCE BUSINESSNAME="" DATABASETYPE="Oracle" DBDNAME="system_name" DESCRIPTION="@XGenXmlSection(name=&quot;Entity&quot;)" NAME="entity_name" OBJECTVERSION="1" OWNERNAME="" VERSIONNUMBER="1">
+        <SOURCEFIELD BUSINESSNAME="" DATATYPE="varchar2" DESCRIPTION="@XGenXmlSection(name=&quot;Attribute&quot;)" FIELDNUMBER="1" FIELDPROPERTY="0" FIELDTYPE="ELEMITEM" HIDDEN="NO" KEYTYPE="NOT A KEY" LENGTH="0" LEVEL="0" NAME="attribute_name" NULLABLE="NULL" OCCURS="0" OFFSET="0" PHYSICALLENGTH="10" PHYSICALOFFSET="0" PICTURETEXT="" PRECISION="10" SCALE="0" USAGE_FLAGS=""/>
     </SOURCE>
-    <TARGET BUSINESSNAME="" CONSTRAINT="" DATABASETYPE="Oracle" DESCRIPTION="@XGenSection(name=&quot;Entity&quot;)" NAME="entity_name" OBJECTVERSION="1" TABLEOPTIONS="" VERSIONNUMBER="1">
-        <TARGETFIELD BUSINESSNAME="" DATATYPE="varchar2" DESCRIPTION="@XGenSection(name=&quot;Attribute&quot;)" FIELDNUMBER="1" KEYTYPE="NOT A KEY" NAME="attribute_name" NULLABLE="NULL" PICTURETEXT="" PRECISION="10" SCALE="0"/>
+    <TARGET BUSINESSNAME="" CONSTRAINT="" DATABASETYPE="Oracle" DESCRIPTION="@XGenXmlSection(name=&quot;Entity&quot;)" NAME="entity_name" OBJECTVERSION="1" TABLEOPTIONS="" VERSIONNUMBER="1">
+        <TARGETFIELD BUSINESSNAME="" DATATYPE="varchar2" DESCRIPTION="@XGenXmlSection(name=&quot;Attribute&quot;)" FIELDNUMBER="1" KEYTYPE="NOT A KEY" NAME="attribute_name" NULLABLE="NULL" PICTURETEXT="" PRECISION="10" SCALE="0"/>
         <TARGETFIELD BUSINESSNAME="" DATATYPE="timestamp" DESCRIPTION="" FIELDNUMBER="2" KEYTYPE="NOT A KEY" NAME="StageDateTime" NULLABLE="NULL" PICTURETEXT="" PRECISION="26" SCALE="6"/>
     </TARGET>
-    <MAPPING DESCRIPTION="@XGenSection(name=&quot;Entity&quot;)" ISVALID="YES" NAME="stg_load_system_name_entity_name" OBJECTVERSION="1" VERSIONNUMBER="1">
+    <MAPPING DESCRIPTION="@XGenXmlSection(name=&quot;Entity&quot;)" ISVALID="YES" NAME="stg_load_system_name_entity_name" OBJECTVERSION="1" VERSIONNUMBER="1">
         <TRANSFORMATION DESCRIPTION="" NAME="SQ_entity_name" OBJECTVERSION="1" REUSABLE="NO" TYPE="Source Qualifier" VERSIONNUMBER="1">
-            <TRANSFORMFIELD DATATYPE="string" DEFAULTVALUE="" DESCRIPTION="@XGenSection(name=&quot;Attribute&quot;)" NAME="attribute_name" PICTURETEXT="" PORTTYPE="INPUT/OUTPUT" PRECISION="10" SCALE="0"/>
+            <TRANSFORMFIELD DATATYPE="string" DEFAULTVALUE="" DESCRIPTION="@XGenXmlSection(name=&quot;Attribute&quot;)" NAME="attribute_name" PICTURETEXT="" PORTTYPE="INPUT/OUTPUT" PRECISION="10" SCALE="0"/>
             <TABLEATTRIBUTE NAME="Sql Query" VALUE=""/>
             <TABLEATTRIBUTE NAME="User Defined Join" VALUE=""/>
             <TABLEATTRIBUTE NAME="Source Filter" VALUE=""/>
@@ -69,7 +69,7 @@ Now the template mapping is created in PowerDesigner. In order to use it with Cr
             <TABLEATTRIBUTE NAME="Output is repeatable" VALUE="Never"/>
         </TRANSFORMATION>
         <TRANSFORMATION DESCRIPTION="" NAME="EXPTRANS" OBJECTVERSION="1" REUSABLE="NO" TYPE="Expression" VERSIONNUMBER="1">
-            <TRANSFORMFIELD DATATYPE="string" DEFAULTVALUE="" DESCRIPTION="@XGenSection(name=&quot;Attribute&quot;)" EXPRESSION="attribute_name" EXPRESSIONTYPE="GENERAL" NAME="attribute_name" PICTURETEXT="" PORTTYPE="INPUT/OUTPUT" PRECISION="10" SCALE="0"/>
+            <TRANSFORMFIELD DATATYPE="string" DEFAULTVALUE="" DESCRIPTION="@XGenXmlSection(name=&quot;Attribute&quot;)" EXPRESSION="attribute_name" EXPRESSIONTYPE="GENERAL" NAME="attribute_name" PICTURETEXT="" PORTTYPE="INPUT/OUTPUT" PRECISION="10" SCALE="0"/>
             <TRANSFORMFIELD DATATYPE="date/time" DEFAULTVALUE="ERROR(&apos;transformation error&apos;)" DESCRIPTION="" EXPRESSION="sessstarttime" EXPRESSIONTYPE="GENERAL" NAME="StageDateTime" PICTURETEXT="" PORTTYPE="OUTPUT" PRECISION="29" SCALE="9"/>
             <TABLEATTRIBUTE NAME="Tracing Level" VALUE="Normal"/>
         </TRANSFORMATION>
@@ -196,18 +196,18 @@ This is done through the config since connectors cannot be annotated with a sect
       <ModelAttributeInjection modelXPath="//attribute[@datatype='datetime']" targetAttribute="etlscale" targetValue="9"/>        
     </ModelAttributeInjections>
   </Model>
-  <Template rootSectionName="System">
-    <FileFormat type="Informatica_PowerCenter" commentNodeXPath="@DESCRIPTION" currentAccessor="_" childAccessor="$" templateType="xml" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+  <XmlTemplate rootSectionName="System">
+    <FileFormat type="Informatica_PowerCenter" commentNodeXPath="@DESCRIPTION" currentAccessor="_" childAccessor="$" singleLineCommentPrefix="--" multiLineCommentPrefix="/*" multiLineCommentSuffix="*/" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <Output type="single_output" />
-    <Sections>
+    <XmlSections>
       <!--
         A section name can be specified multiple times. This way the binded model elements will be bound for all sections with the same name.
         In this example the 'Attribute' section is specified multiple times in the template, it here it is again specified from the config.
         For explanation on the XPath syntax see:
           - https://www.w3schools.com/xml/xpath_syntax.asp
        -->
-      <Section templateXPath="//MAPPING/CONNECTOR[@FROMFIELD='attribute_name']" name="Attribute"/>
-    </Sections>
+      <XmlSection templateXPath="//MAPPING/CONNECTOR[@FROMFIELD='attribute_name']" name="Attribute"/>
+    </XmlSections>
     <TemplatePlaceholderInjections>
       <!--
         The scope in the placeholder injection defines at what level placeholder will be resolved.
@@ -229,10 +229,10 @@ This is done through the config since connectors cannot be annotated with a sect
       <TemplatePlaceholderInjection templateXPath="//TRANSFORMFIELD[@NAME='attribute_name']/@PRECISION"  modelNode="etlprecision" scope="current" />
       <TemplatePlaceholderInjection templateXPath="//TRANSFORMFIELD[@NAME='attribute_name']/@SCALE"  modelNode="etlscale" scope="current" />
     </TemplatePlaceholderInjections>
-  </Template>
+  </XmlTemplate>
   <Binding>
     <!-- Configure the bindings on which models elements are bound to a specific section. -->
-    <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system">
+    <SectionModelBinding section="System" modelXPath = "/modeldefinition/system" placeholderName="system">
       <!--
         Section bindings can be specified recursively.
         For example entities exists within a system to it makes sense the binding is also defined inside the System section binding.
