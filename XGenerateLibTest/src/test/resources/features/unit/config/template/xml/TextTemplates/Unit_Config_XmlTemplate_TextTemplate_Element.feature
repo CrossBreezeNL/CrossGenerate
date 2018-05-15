@@ -56,12 +56,13 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       </Database>
       """
 
-  Scenario Outline: TextTemplate with single annotated section in XMLTemplate
+  Scenario Outline: TextTemplate with single <Scenario> annotated section in XMLTemplate
     Given the following template named "ExampleTemplate.xml":
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
-        -- @XGenTextSection(name=<QuoteStyle>Tables<QuoteStyle>)
+        -- @XGenTextSection(name=<QuoteStyle>Tables<QuoteStyle> nrOfLines=<QuoteStyle>2<QuoteStyle>)
+        -- Some comment for entity_name
         entity_name
       </Database>
       """
@@ -91,7 +92,9 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
+        -- Some comment for Order
         Order
+        -- Some comment for Customer
         Customer
       </Database>
       """
@@ -100,6 +103,7 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       | Scenario    | QuoteStyle |
       | not escaped | "          |
       | escaped     | &quot;     |
+      | no quotes   |            |
 
   Scenario: TextTemplate with single configured section in XMLTemplate
     Given the following template named "ExampleTemplate.xml":
@@ -145,7 +149,7 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       </Database>
       """
 
-  Scenario: Texttemplate with multiple sections annotated in template
+  Scenario: TextTemplate with multiple sections annotated in template
     # Scenario based on task 220:
     # https://x-breeze.visualstudio.com/CrossGenerate/_workitems/edit/220
     Given the following template named "ExampleTemplate.xml":
@@ -153,7 +157,7 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
         -- Some comment in the template
-        -- @XGenTextSection(name="Tables", literalOnLastLine="Field:")
+        -- @XGenTextSection(name="Tables" nrOfLines="3")
         Table: entity_name
         -- @XGenTextSection(name="Columns")
             Field: attribute_name

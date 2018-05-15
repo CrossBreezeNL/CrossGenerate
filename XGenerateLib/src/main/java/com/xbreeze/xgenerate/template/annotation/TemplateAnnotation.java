@@ -110,7 +110,7 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 				 * =                              -> The equals sign
 				 * [ \t]*                         -> Again, any space or tab characters
 				 * (                              -> Start of parameter value (region 2)
-				 * (?<simpleParamValue>[a-z]+)    -> Value without quotes. (region 3: simpleParamValue)
+				 * (?<simpleParamValue>[0-9a-z]+) -> Value without quotes. (region 3: simpleParamValue)
 				 * |                              -> Choice between parameter value with or without quotes.
 				 * ('|"|\Q&quot;\E)               -> Single quote, Double quote, XML single quote, start of the param value (optional) (region 4)
 				 * (?<complexParamValue>.+?)      -> Any character except the one in region 4 (? so it does lazy matching). (region 5: complexParamValue)
@@ -118,7 +118,7 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 				 * )                              -> End of parameter value (end of region 2)
 				 */
 				Pattern compiledPattern = Pattern.compile(
-						"[ \\t]*,?[ \\t]*(?<paramName>[a-z]+)[ \\t]*=[ \\t]*((?<simpleParamValue>[a-z]+)|('|\"|\\Q&quot;\\E)(?<complexParamValue>.+?)\\4)",
+						"[ \\t]*,?[ \\t]*(?<paramName>[a-z]+)[ \\t]*=[ \\t]*((?<simpleParamValue>[0-9a-z]+)|('|\"|\\Q&quot;\\E)(?<complexParamValue>.+?)\\4)",
 						// Match case insensitive.
 						Pattern.CASE_INSENSITIVE
 				);
@@ -145,8 +145,8 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 					previousEndMatchIndex = matcher.end();
 				}
 				
-				if (annotationParams.length() > 0 && previousEndMatchIndex == 0)
-					throw new AnnotationException(String.format("Params part of annotation couldn't be parsed: '%s'", annotationParams));
+				if (annotationParams.length() > 0 && previousEndMatchIndex != annotationParams.length())
+					throw new AnnotationException(String.format("Params part of annotation couldn't be parsed: '%s'", annotationParams.substring(previousEndMatchIndex)));
 				
 			}
 			
