@@ -8,8 +8,14 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       <?xml version="1.0" encoding="UTF-8"?>
       <modeldefinition>
         <system name="ExampleSource" id="29e17cc2-efd2-4013-8f9a-5714081874b3">
-          <entity name="Order"/>
-          <entity name="Customer"/>
+          <entity name="Order">
+            <attribute name="OrderId"/>
+            <attribute name="OrderDate"/>
+          </entity>
+          <entity name="Customer">
+            <attribute name="CustomerId"/>
+            <attribute name="CustomerName"/>
+          </entity>
         </system>
       </modeldefinition>
       """
@@ -136,5 +142,57 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
         -- Some comment in the template
         Order
         Customer
+      </Database>
+      """
+
+  Scenario: Texttemplate with multiple sections annotated in template
+  # Scenario based on task 220:
+  # https://x-breeze.visualstudio.com/CrossGenerate/_workitems/edit/220
+         Given the following template named "ExampleTemplate.xml":
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="system_id" name="system_name">
+        -- Some comment in the template
+        -- @XGenTextSection(name="Tables", literalOnLastLine="Field:")
+        Table: entity_name
+        -- @XGenTextSection(name="Columns")
+            Field: attribute_name
+      </Database>
+      """
+And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <XmlTemplate rootSectionName="Database">
+          <FileFormat currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="output_per_element" />
+          <TextTemplates>
+            <TextTemplate node="/Database">
+              <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />             
+            </TextTemplate>
+          </TextTemplates>
+        </XmlTemplate>
+        <Binding>
+          <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="system">
+            <SectionModelBinding section="Tables" modelXPath="entity" placeholderName="entity">
+              <SectionModelBinding section="Columns" modelXPath="attribute" placeholderName="attribute"/>
+            </SectionModelBinding>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "ExampleTemplate.xml" with content:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
+          -- Some comment in the template        
+        Table: Order          
+            Field: OrderId
+            Field: OrderDate
+        Table: Customer
+            Field: CustomerId
+            Field: CustomerName   
       </Database>
       """
