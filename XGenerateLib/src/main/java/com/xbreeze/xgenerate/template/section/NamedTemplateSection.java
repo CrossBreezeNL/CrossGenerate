@@ -35,8 +35,8 @@ public class NamedTemplateSection extends TemplateSection {
 	 * @param sectionBeginIndex The section begin index.
 	 * @param sectionEndIndex The section end index.
 	 */
-	public NamedTemplateSection(TemplateSectionAnnotation templateSectionAnnotation, int sectionBeginIndex) {
-		super(sectionBeginIndex, -1);
+	public NamedTemplateSection(TemplateSectionAnnotation templateSectionAnnotation, int sectionBeginIndex, int sectionEndIndex) {
+		super(sectionBeginIndex, sectionEndIndex);
 		// Set the template section annotation.
 		this._templateSectionAnnotation = templateSectionAnnotation;
 		// Initialize the _templateSections list.
