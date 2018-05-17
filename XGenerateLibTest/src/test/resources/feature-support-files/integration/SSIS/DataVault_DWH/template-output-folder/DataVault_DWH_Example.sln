@@ -7,13 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{BE6BF4F9-B7C7-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ETL", "ETL", "{E46C32DF-68F6-4B0D-B923-8623183B3C1E}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DataVault_DWH", "sql\DataVault_DWH\DataVault_DWH.sqlproj", "{908BC9FC-B63A-4A26-8498-49C18607CE3E}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DWH_DataVault", "sql\DWH_DataVault\DWH_DataVault.sqlproj", "{908BC9FC-B63A-4A26-8498-49C18607CE3E}"
 EndProject
-Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "DataVault_DWH", "ssis\DataVault_DWH\DataVault_DWH.dtproj", "{A301FEA3-BCF9-4820-90E4-6438EEAD5059}"
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "DWH_DataVault", "ssis\DWH_DataVault\DWH_DataVault.dtproj", "{A301FEA3-BCF9-4820-90E4-6438EEAD5059}"
 EndProject
-Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "DataVault_Staging_ExampleSource", "ssis\DataVault_Staging_ExampleSource\DataVault_Staging_ExampleSource.dtproj", "{61B264DC-C26C-43FC-A394-CA513A62EE81}"
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "DWH_Staging_ExampleSource", "ssis\DWH_Staging_ExampleSource\DWH_Staging_ExampleSource.dtproj", "{61B264DC-C26C-43FC-A394-CA513A62EE81}"
 EndProject
-Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "DataVault_Staging_Reference", "ssis\DataVault_Staging_Reference\DataVault_Staging_Reference.dtproj", "{46E4F25F-0288-4428-AD55-D37F580A4CA7}"
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "DWH_Staging_Reference", "ssis\DWH_Staging_Reference\DWH_Staging_Reference.dtproj", "{46E4F25F-0288-4428-AD55-D37F580A4CA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

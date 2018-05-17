@@ -37,23 +37,23 @@
           <keyAttribute attributeId="Id" attributeName="Id" />
         </keyAttributes>
         <mappableObjectMappings>
-          <mappableObjectMapping id="Mapping_Customer_ExampleSource_Customer_WithEnrichment" internalId="6E7D220F-3B7C-4EE2-A689-F09B7ED44973" name="Mapping_Customer_ExampleSource_Customer_WithEnrichment" pdObjectType="TableMapping" mappingType="source" mappedObjectJoiner="[ExampleSource].[Customer] AS [ExampleSource_ExampleSchema_Customer]
-          OUTER APPLY [BusinessRule].[udf_BR_Lookup_Country]([ExampleSource_ExampleSchema_Customer].[Country]) AS [BusinessRule_Lookup_Country]
-          OUTER APPLY [BusinessRule].[udf_BR_Derive_Customer_FullName]([ExampleSource_ExampleSchema_Customer].[FirstName], [ExampleSource_ExampleSchema_Customer].[LastName]) AS [BusinessRule_Derive_Customer_FullName]"   mainMappedObject= "ExampleSource_ExampleSchema_Customer">
+          <mappableObjectMapping id="Mapping_Customer_ExampleSource_Customer_WithEnrichment" internalId="6E7D220F-3B7C-4EE2-A689-F09B7ED44973" name="Mapping_Customer_ExampleSource_Customer_WithEnrichment" pdObjectType="TableMapping" mappingType="source" mappedObjectJoiner="[DWH_Staging_ExampleSource].[dbo].[Customer] AS [ExampleSource_Customer]
+          OUTER APPLY [BusinessRule].[udf_BR_Lookup_Country]([ExampleSource_Customer].[Country]) AS [BusinessRule_Lookup_Country]
+          OUTER APPLY [BusinessRule].[udf_BR_Derive_Customer_FullName]([ExampleSource_Customer].[FirstName], [ExampleSource_Customer].[LastName]) AS [BusinessRule_Derive_Customer_FullName]"   mainMappedObject= "ExampleSource_Customer">
             <mappedObjects>
-              <mappedObject mappedObjectId="Customer" mappedObjectSystemName="ExampleSource" mappedObjectOwner="ExampleSchema" mappedObjectName="Customer" expression="ExampleSource_ExampleSchema_Customer" stereotype="ExampleTableType" />
+              <mappedObject mappedObjectId="Customer" mappedObjectSystemName="ExampleSource" mappedObjectOwner="dbo" mappedObjectName="Customer" expression="ExampleSource_Customer" stereotype="ExampleTableType" />
               <mappedObject mappedObjectId="Lookup_Country" mappedObjectSystemName="ExampleDWH" mappedObjectOwner="BusinessRule" mappedObjectName="Lookup_Country" expression="ExampleDWH_BusinessRule_Lookup_Country" stereotype="lookup" />
               <mappedObject mappedObjectId="Derive_Customer_FullName" mappedObjectSystemName="ExampleDWH" mappedObjectOwner="BusinessRule" mappedObjectName="Derive_Customer_FullName" expression="ExampleDWH_BusinessRule_Derive_Customer_FullName" stereotype="derive" />
             </mappedObjects>
             <attributeMappings>
-              <attributeMapping sourceAttributeId="Id" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="ExampleSchema" sourceAttributeName="Id" expression="ExampleSource_ExampleSchema_Customer.Id" targetAttributeId="Id" targetAttributeName="Id" targetAttributePrimary="true" />
-              <attributeMapping sourceAttributeId="FirstName" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="ExampleSchema" sourceAttributeName="FirstName" expression="ExampleSource_ExampleSchema_Customer.FirstName" targetAttributeId="FirstName" targetAttributeName="FirstName" />
-              <attributeMapping sourceAttributeId="LastName" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="ExampleSchema" sourceAttributeName="LastName" expression="ExampleSource_ExampleSchema_Customer.LastName" targetAttributeId="LastName" targetAttributeName="LastName" />
-              <attributeMapping sourceAttributeId="City" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="ExampleSchema" sourceAttributeName="City" expression="ExampleSource_ExampleSchema_Customer.City" targetAttributeId="City" targetAttributeName="City" />
-              <attributeMapping sourceAttributeId="Country" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="ExampleSchema" sourceAttributeName="Country" expression="ExampleSource_ExampleSchema_Customer.Country" targetAttributeId="Country_Code" targetAttributeName="Country_Code" />
+              <attributeMapping sourceAttributeId="Id" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="Id" expression="ExampleSource_Customer.Id" targetAttributeId="Id" targetAttributeName="Id" targetAttributePrimary="true" />
+              <attributeMapping sourceAttributeId="FirstName" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="FirstName" expression="ExampleSource_Customer.FirstName" targetAttributeId="FirstName" targetAttributeName="FirstName" />
+              <attributeMapping sourceAttributeId="LastName" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="LastName" expression="ExampleSource_Customer.LastName" targetAttributeId="LastName" targetAttributeName="LastName" />
+              <attributeMapping sourceAttributeId="City" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="City" expression="ExampleSource_Customer.City" targetAttributeId="City" targetAttributeName="City" />
+              <attributeMapping sourceAttributeId="Country" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="Country" expression="ExampleSource_Customer.Country" targetAttributeId="Country_Code" targetAttributeName="Country_Code" />
               <attributeMapping sourceAttributeId="Country_Description" sourceAttributeSystem="ExampleDWH" sourceAttributeOwner="BusinessRule" sourceAttributeName="Country_Description" expression="BusinessRule_Lookup_Country.Country_Description" targetAttributeId="Country_Description" targetAttributeName="Country_Description" />
               <attributeMapping sourceAttributeId="Country_Continent" sourceAttributeSystem="ExampleDWH" sourceAttributeOwner="BusinessRule" sourceAttributeName="Country_Continent" expression="BusinessRule_Lookup_Country.Country_Continent" targetAttributeId="Country_Continent" targetAttributeName="Country_Continent" />
-              <attributeMapping sourceAttributeId="Phone" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="ExampleSchema" sourceAttributeName="Phone" expression="ExampleSource_ExampleSchema_Customer.Phone" targetAttributeId="Phone" targetAttributeName="Phone" />
+              <attributeMapping sourceAttributeId="Phone" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="Phone" expression="ExampleSource_Customer.Phone" targetAttributeId="Phone" targetAttributeName="Phone" />
               <attributeMapping sourceAttributeId="FullName" sourceAttributeSystem="ExampleDWH" sourceAttributeOwner="BusinessRule" sourceAttributeName="FullName" expression="BusinessRule_Derive_Customer_FullName.FullName" targetAttributeId="FullName" targetAttributeName="FullName" />
             </attributeMappings>
           </mappableObjectMapping>
@@ -71,7 +71,7 @@
           <keyAttribute attributeId="Id" attributeName="Id" />
         </keyAttributes>
         <mappableObjectMappings>
-          <mappableObjectMapping id="Mapping_Order_ExampleSource_Order" internalId="A92B7B45-F0C5-416E-9DC2-6CEBC71D900B" name="Mapping_Order_ExampleSource_Order" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "ExampleSource_Order"  mappedObjectJoiner="[ExampleSource].[Order] AS [ExampleSource_Order]">
+          <mappableObjectMapping id="Mapping_Order_ExampleSource_Order" internalId="A92B7B45-F0C5-416E-9DC2-6CEBC71D900B" name="Mapping_Order_ExampleSource_Order" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "ExampleSource_Order"  mappedObjectJoiner="[DWH_Staging_ExampleSource].[dbo].[Order] AS [ExampleSource_Order]">
             <mappedObjects>
               <mappedObject mappedObjectId="Order" mappedObjectSystemName="ExampleSource" mappedObjectName="Order" expression="ExampleSource_Order" />
             </mappedObjects>
@@ -95,7 +95,7 @@
           <keyAttribute attributeId="CustomerId" attributeName="CustomerId" />
         </keyAttributes>
         <mappableObjectMappings>
-          <mappableObjectMapping id="Mapping_Order_Customer_ExampleSource_Order" internalId="B46BF85F-D0C1-440F-BBC9-3FA5A5892F72" name="Mapping_Order_Customer_ExampleSource_Order" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "ExampleSource_Order" mappedObjectJoiner="[ExampleSource].[Order] AS [ExampleSource_Order]">
+          <mappableObjectMapping id="Mapping_Order_Customer_ExampleSource_Order" internalId="B46BF85F-D0C1-440F-BBC9-3FA5A5892F72" name="Mapping_Order_Customer_ExampleSource_Order" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "ExampleSource_Order" mappedObjectJoiner="[DWH_Staging_ExampleSource].[dbo].[Order] AS [ExampleSource_Order]">
             <mappedObjects>
               <mappedObject mappedObjectId="Order" mappedObjectSystemName="ExampleSource" mappedObjectName="Order" expression="ExampleSource_Order" />
             </mappedObjects>
@@ -128,7 +128,7 @@
           <keyAttribute attributeId="Code" attributeName="Code" />
         </keyAttributes>
         <mappableObjectMappings>
-          <mappableObjectMapping id="Mapping_Country_Reference_Country" internalId="3E3AB9A2-22B7-4008-ABCD-C6657AE69392" name="Mapping_Country_Reference_Country" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "Reference_Country" mappedObjectJoiner="[Reference].[Country] AS [Reference_Country]">
+          <mappableObjectMapping id="Mapping_Country_Reference_Country" internalId="3E3AB9A2-22B7-4008-ABCD-C6657AE69392" name="Mapping_Country_Reference_Country" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "Reference_Country" mappedObjectJoiner="[DWH_Staging_Reference].[dbo].[Country] AS [Reference_Country]">
             <mappedObjects>
               <mappedObject mappedObjectId="Country" mappedObjectSystemName="Reference" mappedObjectName="Country" expression="Reference_Country" />
             </mappedObjects>

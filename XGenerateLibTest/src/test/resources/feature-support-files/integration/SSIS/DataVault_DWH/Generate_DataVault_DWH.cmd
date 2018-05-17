@@ -7,7 +7,7 @@ REM Get a locale independent date and time.
 FOR /f "tokens=2 delims==" %%I in ('wmic os get localdatetime /format:list') do SET datetime=%%I
 SET datetime=%datetime:~0,8%_%datetime:~8,6%
 REM Set the log file location.
-SET LogFile=Generate_DataVault_DWH_%datetime%.log
+SET LogFile=Generate_DWH_DataVault_%datetime%.log
 
 echo Copying template output folder...
 xcopy /E /Y /Q "template-output-folder" "%OutputDir%"
@@ -15,31 +15,34 @@ xcopy /E /Y /Q "template-output-folder" "%OutputDir%"
 echo Generating Staging DDL and ETL...
  java -jar %XG% ^
     -c XGenAppConfig.xml ^
-    -mtc source_model.xml::sql\DataVault_DWH\tables\Staging_Table_System_name.sql::DataVault_Staging_SQL.xml ^
-    -mtc source_model.xml::ssis\DataVault_Staging_System_name\Load_System_name_Entity_name.dtsx::DataVault_DWH_SSIS.xml ^
-    -mtc source_model.xml::ssis\DataVault_Staging_System_name\Load_DataVault_Staging_System_name.dtsx::DataVault_Staging_master.xml ^
-    -mtc source_model.xml::ssis\DataVault_Staging_System_name\DataVault_Staging_System_name.dtproj::DataVault_Staging_DTProj.xml ^
-    -mtc reference_model.xml::sql\DataVault_DWH\tables\Staging_Table_System_name.sql::DataVault_Staging_SQL.xml ^
-    -mtc reference_model.xml::ssis\DataVault_Staging_System_name\Load_System_name_Entity_name.dtsx::DataVault_Staging_SSIS.xml ^
-    -mtc reference_model.xml::ssis\DataVault_Staging_System_name\Load_DataVault_Staging_System_name.dtsx::DataVault_Staging_master.xml ^
-    -mtc reference_model.xml::ssis\DataVault_Staging_System_name\DataVault_Staging_System_name.dtproj::DataVault_Staging_DTProj.xml ^
+    -mtc source_model.xml::sql\DWH_Staging_System_name\schemas\Entity_owner.sql::DWH_Staging_SQL_Owner.xml ^
+    -mtc source_model.xml::sql\DWH_Staging_System_name\tables\Entity_owner.Entity_name.sql::DWH_Staging_SQL_Entity.xml ^
+    -mtc source_model.xml::ssis\DWH_Staging_System_name\Load_Entity_owner_Entity_name.dtsx::DWH_Staging_SSIS_Entity.xml ^
+    -mtc source_model.xml::ssis\DWH_Staging_System_name\Load_DWH_Staging_System_name.dtsx::DWH_Staging_SSIS_Master.xml ^
+    -mtc source_model.xml::ssis\DWH_Staging_System_name\DWH_Staging_System_name.dtproj::DWH_Staging_DTProj.xml ^
+    -mtc reference_model.xml::sql\DWH_Staging_System_name\schemas\Entity_owner.sql::DWH_Staging_SQL_Owner.xml ^
+    -mtc reference_model.xml::sql\DWH_Staging_System_name\tables\Entity_owner.Entity_name.sql::DWH_Staging_SQL_Entity.xml ^
+    -mtc reference_model.xml::ssis\DWH_Staging_System_name\Load_Entity_owner_Entity_name.dtsx::DWH_Staging_SSIS_Entity.xml ^
+    -mtc reference_model.xml::ssis\DWH_Staging_System_name\Load_DWH_Staging_System_name.dtsx::DWH_Staging_SSIS_Master.xml ^
+    -mtc reference_model.xml::ssis\DWH_Staging_System_name\DWH_Staging_System_name.dtproj::DWH_Staging_DTProj.xml ^
     -fld "%OutputDir%\%LogFile%"
 
 echo Generating DWH DDL and ETL...
  java -jar %XG% ^
     -c XGenAppConfig.xml ^
-    -mtc dwh_model.xml::sql\DataVault_DWH\tables\HUB_Table.sql::DataVault_DWH_SQL.xml ^
-    -mtc dwh_model.xml::sql\DataVault_DWH\tables\HUB_SAT_Table.sql::DataVault_DWH_SQL.xml ^
-    -mtc dwh_model.xml::sql\DataVault_DWH\tables\LNK_Table.sql::DataVault_DWH_SQL.xml ^
-    -mtc dwh_model.xml::sql\DataVault_DWH\tables\LNK_SAT_Table.sql::DataVault_DWH_SQL.xml ^
-    -mtc dwh_model.xml::sql\DataVault_DWH\functions\BR_Lookup_Function.sql::DataVault_DWH_SQL.xml ^
-    -mtc dwh_model.xml::sql\DataVault_DWH\functions\BR_Derive_Function.sql::DataVault_DWH_SQL.xml ^
-    -mtc dwh_model.xml::ssis\DataVault_DWH\Load_Entity_owner_H_Entity_name.dtsx::DataVault_DWH_SSIS.xml ^
-    -mtc dwh_model.xml::ssis\DataVault_DWH\Load_Entity_owner_HS_Entity_name.dtsx::DataVault_DWH_SSIS.xml ^
-    -mtc dwh_model.xml::ssis\DataVault_DWH\Load_Relation_owner_L_Relation_name.dtsx::DataVault_DWH_SSIS_relation.xml ^
-    -mtc dwh_model.xml::ssis\DataVault_DWH\Load_Relation_owner_LS_Relation_name.dtsx::DataVault_DWH_SSIS_relation.xml ^
-    -mtc dwh_model.xml::ssis\DataVault_DWH\Load_Datavault.dtsx::DataVault_DWH_SSIS_master.xml ^
-    -mtc dwh_model.xml::ssis\DataVault_DWH\DataVault_DWH.dtproj::DataVault_DWH_DTProj.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\schemas\MappableObject_owner.sql::DWH_DataVault_SQL_MappableObject.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\tables\Entity_owner.H_Entity_name.sql::DWH_DataVault_SQL.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\tables\Entity_owner.HS_Entity_name.sql::DWH_DataVault_SQL.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\tables\Relation_owner.L_Relation_name.sql::DWH_DataVault_SQL.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\tables\Relation_owner.LS_Relation_name.sql::DWH_DataVault_SQL.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\functions\LookupRule_owner.udf_BR_LookupRule_name.sql::DWH_DataVault_SQL.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\functions\DeriveRule_owner.udf_BR_DeriveRule_namen.sql::DWH_DataVault_SQL.xml ^
+    -mtc dwh_model.xml::ssis\DWH_DataVault\Load_Entity_owner_H_Entity_name.dtsx::DWH_DataVault_SSIS.xml ^
+    -mtc dwh_model.xml::ssis\DWH_DataVault\Load_Entity_owner_HS_Entity_name.dtsx::DWH_DataVault_SSIS.xml ^
+    -mtc dwh_model.xml::ssis\DWH_DataVault\Load_Relation_owner_L_Relation_name.dtsx::DWH_DataVault_SSIS_relation.xml ^
+    -mtc dwh_model.xml::ssis\DWH_DataVault\Load_Relation_owner_LS_Relation_name.dtsx::DWH_DataVault_SSIS_relation.xml ^
+    -mtc dwh_model.xml::ssis\DWH_DataVault\Load_DWH_DataVault.dtsx::DWH_DataVault_SSIS_Master.xml ^
+    -mtc dwh_model.xml::ssis\DWH_DataVault\DWH_DataVault.dtproj::DWH_DataVault_DTProj.xml ^
     -fld "%OutputDir%\%LogFile%" 
 
 echo Done.

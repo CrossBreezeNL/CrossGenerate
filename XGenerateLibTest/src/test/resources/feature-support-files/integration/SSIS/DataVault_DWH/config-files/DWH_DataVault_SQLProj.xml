@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig>
+  <Model>
+    <ModelAttributeInjections>
+      <!-- Translate the SQL data type into the SSIS data type and store it in the 'etldatatype' attribute on the attribute elements in the model. -->
+      <ModelAttributeInjection modelXPath="//mappableObjects/*[@internalId]" targetAttribute="KeypackageId" targetXPath="concat('{H-', @internalId, '}')"/>
+      <ModelAttributeInjection modelXPath="//mappableObjects/*[@internalId]" targetAttribute="NonKeypackageId" targetXPath="concat('{S-', @internalId, '}')"/>
+    </ModelAttributeInjections>
+  </Model>
+  <XmlTemplate rootSectionName="System">
+    <FileFormat currentAccessor="_" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <Output type="single_output" />
+    <XmlSections>
+      <XmlSection name="Entity" templateXPath="//Packages/Package[@Name='Load_Entity_owner_H_Entity_name.dtsx']" />
+      <XmlSection name="Entity" templateXPath="//PackageMetaData[@Name='Load_Entity_owner_H_Entity_name.dtsx']" />
+      <XmlSection name="Entity" templateXPath="//Packages/Package[@Name='Load_Entity_owner_HS_Entity_name.dtsx']" />
+      <XmlSection name="Entity" templateXPath="//PackageMetaData[@Name='Load_Entity_owner_HS_Entity_name.dtsx']" />
+      <XmlSection name="Relation" templateXPath="//Packages/Package[@Name='Load_Relation_owner_L_Relation_name.dtsx']" />
+      <XmlSection name="Relation" templateXPath="//PackageMetaData[@Name='Load_Relation_owner_L_Relation_name.dtsx']" />
+      <XmlSection name="Relation" templateXPath="//Packages/Package[@Name='Load_Relation_owner_LS_Relation_name.dtsx']" />
+      <XmlSection name="Relation" templateXPath="//PackageMetaData[@Name='Load_Relation_owner_LS_Relation_name.dtsx']" />
+    </XmlSections>
+    <TemplatePlaceholderInjections>
+      <!-- Inject a placeholder for the ID property for the packages. -->
+      <TemplatePlaceholderInjection templateXPath="//PackageMetaData/Properties/Property[@Name='ID']" modelNode="packageId" scope="current" />
+    </TemplatePlaceholderInjections>
+  </XmlTemplate>
+  <Binding>
+    <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="System">
+      <SectionModelBinding section="Entity" modelXPath="mappableObjects/entity" placeholderName="Entity" />
+      <SectionModelBinding section="Relation" modelXPath="mappableObjects/relation" placeholderName="Relation" />
+    </SectionModelBinding>
+  </Binding>
+</XGenConfig>

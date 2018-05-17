@@ -10,9 +10,9 @@ REM Set the log file location.
 SET LogFile=Generate_DataVault_DWH_%datetime%.log
 
 echo Generating DWH DDL and ETL...
- java -jar %XG% ^
+ java -jar %XG% -d true -fll fine ^
     -c XGenAppConfig.xml ^
-    -mtc source_model.xml::sql\DataVault_DWH\tables\Staging_Table_System_name.sql::DataVault_Staging_SQL.xml ^
+    -mtc source_model.xml::sql\DWH_Staging_System_name\schemas\Entity_owner.sql::DWH_Staging_SQL_Owner.xml ^
     -fld "%OutputDir%\%LogFile%" 
 
 echo Done.

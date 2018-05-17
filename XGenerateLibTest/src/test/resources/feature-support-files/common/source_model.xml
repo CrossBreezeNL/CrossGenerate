@@ -2,7 +2,7 @@
 <modeldefinition>
   <system name="ExampleSource">
     <mappableObjects>
-      <entity name="Order" internalId="380932B1-4152-4A1E-B649-93677B501977">
+      <entity name="Order" internalId="380932B1-4152-4A1E-B649-93677B501977" owner="dbo">
         <attributes>
           <attribute name="Id" datatype="int" fulldatatype="int" ordinal="1" primary="true" required="true" />
           <attribute name="OrderDate" datatype="datetime" fulldatatype="datetime" ordinal="2" />
@@ -14,7 +14,7 @@
           <keyAttribute attributeName="Id" />
         </keyAttributes>
       </entity>
-      <entity name="Customer" internalId="F9BEF922-7D60-4FB6-9023-169952AAAE32">
+      <entity name="Customer" internalId="F9BEF922-7D60-4FB6-9023-169952AAAE32" owner="dbo">
         <attributes>
           <attribute name="Id" datatype="int" fulldatatype="int" ordinal="1" primary="true" required="true" />
           <attribute name="FirstName" datatype="varchar" length="50" fulldatatype="varchar(50)" ordinal="2" />
