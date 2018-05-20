@@ -12,7 +12,7 @@ SET LogFile=Generate_DataVault_DWH_%datetime%.log
 echo Generating DWH DDL and ETL...
  java -jar %XG% -d true -fll fine ^
     -c XGenAppConfig.xml ^
-    -mtc source_model.xml::sql\DWH_Staging_System_name\schemas\Entity_owner.sql::DWH_Staging_SQL_Owner.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\tables\Entity_owner.H_Entity_name.sql::DWH_DataVault_SQL_Entity.xml ^
     -fld "%OutputDir%\%LogFile%" 
 
 echo Done.

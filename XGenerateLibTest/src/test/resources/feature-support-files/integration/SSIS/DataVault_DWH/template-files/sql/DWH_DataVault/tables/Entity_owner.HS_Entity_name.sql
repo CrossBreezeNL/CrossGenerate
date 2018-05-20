@@ -1,4 +1,3 @@
--- @XGenTextSection(name="Entity" literalOnLastLine="GO")
 CREATE TABLE [Entity_owner].[HS_Entity_name] (
   [H_Entity_name_SQN]        BIGINT NOT NULL,
   -- @XGenTextSection(name="NonKeyAttribute") 

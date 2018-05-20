@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig>
+  <Model/>
+  <TextTemplate rootSectionName="DeriveRule">
+    <FileFormat currentAccessor="_" childAccessor="$" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <Output type="output_per_element" />
+  </TextTemplate>
+  <Binding>
+		<SectionModelBinding section="DeriveRule" modelXPath="/modeldefinition/system/mappableObjects/businessRule[@stereotype='derive']" placeholderName="DeriveRule">
+			<SectionModelBinding section="Parameter" modelXPath="attributes/parameter" placeholderName="Parameter" />
+			<SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="Attribute" />
+		</SectionModelBinding>
+  </Binding>
+</XGenConfig>

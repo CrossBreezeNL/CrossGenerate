@@ -1,4 +1,3 @@
--- @XGenTextSection(name="Relation" literalOnLastLine="GO")
 CREATE TABLE [Relation_owner].[LS_Relation_name] (
   [L_Relation_name_SQN]      BIGINT NOT NULL,
   -- @XGenTextSection(name="NonKeyAttribute") 

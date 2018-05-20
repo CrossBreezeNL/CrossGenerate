@@ -31,12 +31,12 @@ echo Generating DWH DDL and ETL...
  java -jar %XG% ^
     -c XGenAppConfig.xml ^
     -mtc dwh_model.xml::sql\DWH_DataVault\schemas\MappableObject_owner.sql::DWH_DataVault_SQL_MappableObject.xml ^
-    -mtc dwh_model.xml::sql\DWH_DataVault\tables\Entity_owner.H_Entity_name.sql::DWH_DataVault_SQL.xml ^
-    -mtc dwh_model.xml::sql\DWH_DataVault\tables\Entity_owner.HS_Entity_name.sql::DWH_DataVault_SQL.xml ^
-    -mtc dwh_model.xml::sql\DWH_DataVault\tables\Relation_owner.L_Relation_name.sql::DWH_DataVault_SQL.xml ^
-    -mtc dwh_model.xml::sql\DWH_DataVault\tables\Relation_owner.LS_Relation_name.sql::DWH_DataVault_SQL.xml ^
-    -mtc dwh_model.xml::sql\DWH_DataVault\functions\LookupRule_owner.udf_BR_LookupRule_name.sql::DWH_DataVault_SQL.xml ^
-    -mtc dwh_model.xml::sql\DWH_DataVault\functions\DeriveRule_owner.udf_BR_DeriveRule_namen.sql::DWH_DataVault_SQL.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\tables\Entity_owner.H_Entity_name.sql::DWH_DataVault_SQL_Entity.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\tables\Entity_owner.HS_Entity_name.sql::DWH_DataVault_SQL_Entity.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\tables\Relation_owner.L_Relation_name.sql::DWH_DataVault_SQL_Relation.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\tables\Relation_owner.LS_Relation_name.sql::DWH_DataVault_SQL_Relation.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\functions\LookupRule_owner.udf_BR_LookupRule_name.sql::DWH_DataVault_SQL_LookupRule.xml ^
+    -mtc dwh_model.xml::sql\DWH_DataVault\functions\DeriveRule_owner.udf_BR_DeriveRule_name.sql::DWH_DataVault_SQL_DeriveRule.xml ^
     -mtc dwh_model.xml::ssis\DWH_DataVault\Load_Entity_owner_H_Entity_name.dtsx::DWH_DataVault_SSIS.xml ^
     -mtc dwh_model.xml::ssis\DWH_DataVault\Load_Entity_owner_HS_Entity_name.dtsx::DWH_DataVault_SSIS.xml ^
     -mtc dwh_model.xml::ssis\DWH_DataVault\Load_Relation_owner_L_Relation_name.dtsx::DWH_DataVault_SSIS_relation.xml ^

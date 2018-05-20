@@ -1,5 +1,4 @@
 -- @XGenComment(This is the function template for all lookup rules in the DWH).
--- @XGenTextSection(name="LookupRule" literalOnLastLine="GO")
 CREATE FUNCTION [LookupRule_owner].[udf_BR_LookupRule_name] (
   -- @XGenTextSection(name="Parameter" suffix=",")
   @Parameter_name Parameter_fulldatatype
