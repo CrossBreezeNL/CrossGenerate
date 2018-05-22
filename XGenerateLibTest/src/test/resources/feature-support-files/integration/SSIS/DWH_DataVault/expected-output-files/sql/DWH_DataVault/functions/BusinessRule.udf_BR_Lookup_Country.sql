@@ -12,7 +12,7 @@ RETURN
       Reference_Country.Country_Code AS [Country_Code],
       Reference_Country.Country_Description AS [Country_Description],
       Reference_Country.Country_Continent AS [Country_Continent]
-    FROM [Reference].[Country] AS [Reference_Country]
+    FROM [$(DWH_Staging_Reference)].[dbo].[Country] AS [Reference_Country]
   )
   SELECT
     [Country_Description],

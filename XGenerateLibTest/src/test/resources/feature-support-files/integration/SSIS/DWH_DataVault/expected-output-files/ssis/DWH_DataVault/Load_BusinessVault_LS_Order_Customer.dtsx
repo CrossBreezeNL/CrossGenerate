@@ -974,7 +974,7 @@ AS
 SELECT 
 		ExampleSource_Order.Id as [OrderId],
 		ExampleSource_Order.CustomerId as [CustomerId]
-FROM [ExampleSource].[Order] AS [ExampleSource_Order]
+FROM [DWH_Staging_ExampleSource].[dbo].[Order] AS [ExampleSource_Order]
 )	
 SELECT 
 	[H_Customer_SQN],

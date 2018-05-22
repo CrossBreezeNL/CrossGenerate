@@ -1083,16 +1083,16 @@ where [refTable].[Id] = ?</property>
   [FullName]
 ) AS (
   SELECT
-    ExampleSource_ExampleSchema_Customer.Id AS [Id],
-    ExampleSource_ExampleSchema_Customer.FirstName AS [FirstName],
-    ExampleSource_ExampleSchema_Customer.LastName AS [LastName],
-    ExampleSource_ExampleSchema_Customer.City AS [City],
-    ExampleSource_ExampleSchema_Customer.Country AS [Country_Code],
+    ExampleSource_Customer.Id AS [Id],
+    ExampleSource_Customer.FirstName AS [FirstName],
+    ExampleSource_Customer.LastName AS [LastName],
+    ExampleSource_Customer.City AS [City],
+    ExampleSource_Customer.Country AS [Country_Code],
     BusinessRule_Lookup_Country.Country_Description AS [Country_Description],
     BusinessRule_Lookup_Country.Country_Continent AS [Country_Continent],
-    ExampleSource_ExampleSchema_Customer.Phone AS [Phone],
+    ExampleSource_Customer.Phone AS [Phone],
     BusinessRule_Derive_Customer_FullName.FullName AS [FullName]
-  FROM [ExampleSource].[Customer] AS [ExampleSource_ExampleSchema_Customer]           OUTER APPLY [BusinessRule].[udf_BR_Lookup_Country]([ExampleSource_ExampleSchema_Customer].[Country]) AS [BusinessRule_Lookup_Country]           OUTER APPLY [BusinessRule].[udf_BR_Derive_Customer_FullName]([ExampleSource_ExampleSchema_Customer].[FirstName], [ExampleSource_ExampleSchema_Customer].[LastName]) AS [BusinessRule_Derive_Customer_FullName]
+  FROM [DWH_Staging_ExampleSource].[dbo].[Customer] AS [ExampleSource_Customer]           OUTER APPLY [BusinessRule].[udf_BR_Lookup_Country]([ExampleSource_Customer].[Country]) AS [BusinessRule_Lookup_Country]           OUTER APPLY [BusinessRule].[udf_BR_Derive_Customer_FullName]([ExampleSource_Customer].[FirstName], [ExampleSource_Customer].[LastName]) AS [BusinessRule_Derive_Customer_FullName]
 )
 SELECT 
   [Id],

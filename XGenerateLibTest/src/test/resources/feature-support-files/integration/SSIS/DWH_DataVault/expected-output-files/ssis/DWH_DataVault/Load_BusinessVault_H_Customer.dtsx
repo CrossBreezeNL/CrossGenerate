@@ -9,11 +9,11 @@
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="13.0.4472.7"
   DTS:LocaleID="1043"
-  DTS:ObjectName="Load_BusinessVault_H_Order"
+  DTS:ObjectName="Load_BusinessVault_H_Customer"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="21"
-  DTS:VersionGUID="{22A1FAE9-E30A-4D08-A910-33A9DE4FB6EE}">
+  DTS:VersionBuild="22"
+  DTS:VersionGUID="{F033A144-D66C-4C87-BA5F-C6E869A8DE1A}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:PackageParameters>
@@ -30,13 +30,13 @@
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\DFT Load BusinessVault H_Order"
+      DTS:refId="Package\DFT Load BusinessVault H_Customer"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
       DTS:DTSID="{1D280422-C234-4290-8E41-75D74106CACE}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
-      DTS:ObjectName="DFT Load BusinessVault H_Order"
+      DTS:ObjectName="DFT Load BusinessVault H_Customer"
       DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -44,7 +44,7 @@
           version="1">
           <components>
             <component
-              refId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime"
+              refId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime"
               componentClassID="Microsoft.DerivedColumn"
               contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
@@ -52,7 +52,7 @@
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Inputs[Derived Column Input]"
+                  refId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Inputs[Derived Column Input]"
                   description="Input to the Derived Column Transformation"
                   name="Derived Column Input">
                   <externalMetadataColumns />
@@ -60,18 +60,18 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Outputs[Derived Column Output]"
+                  refId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Outputs[Derived Column Output]"
                   description="Default Output of the Derived Column Transformation"
                   exclusionGroup="1"
                   name="Derived Column Output"
-                  synchronousInputId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Inputs[Derived Column Input]">
+                  synchronousInputId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Inputs[Derived Column Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]"
+                      refId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]"
                       dataType="date"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      lineageId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]"
                       name="LoadDateTime"
                       truncationRowDisposition="FailComponent">
                       <properties>
@@ -92,23 +92,23 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Outputs[Derived Column Error Output]"
+                  refId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Outputs[Derived Column Error Output]"
                   description="Error Output of the Derived Column Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Derived Column Error Output"
-                  synchronousInputId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Inputs[Derived Column Input]">
+                  synchronousInputId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Inputs[Derived Column Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Outputs[Derived Column Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Outputs[Derived Column Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -117,11 +117,11 @@
               </outputs>
             </component>
             <component
-              refId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order"
+              refId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer"
               componentClassID="Microsoft.Lookup"
               contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
               description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
-              name="LKP BusinessVault H_Order"
+              name="LKP BusinessVault H_Customer"
               usesDispositions="true"
               version="6">
               <properties>
@@ -130,13 +130,13 @@
                   description="Specifies the SQL statement that generates the lookup table."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [BusinessVault].[H_Order]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [BusinessVault].[H_Customer]</property>
                 <property
                   dataType="System.String"
                   description="Specifies a SQL statement that uses parameters to generate the lookup table."
                   expressionType="Notify"
                   name="SqlCommandParam"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [BusinessVault].[H_Order]) [refTable]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [BusinessVault].[H_Customer]) [refTable]
 where [refTable].[Id] = ?</property>
                 <property
                   dataType="System.Int32"
@@ -168,12 +168,12 @@ where [refTable].[Id] = ?</property>
                 <property
                   dataType="System.String"
                   description="Indicates whether to reference metadata in an XML format."
-                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="H_Order_SQN" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="KeyAttribute_name" dataType="DT_STR" length="10" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="LoadDateTime" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="2" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="H_Customer_SQN" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="KeyAttribute_name" dataType="DT_STR" length="10" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="LoadDateTime" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="2" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
                 <property
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Output].Columns[Id]};</property>
+                  name="ParameterMap">#{Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Output].Columns[Id]};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -185,22 +185,22 @@ where [refTable].[Id] = ?</property>
               </properties>
               <connections>
                 <connection
-                  refId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Connections[OleDbConnection]"
+                  refId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Connections[OleDbConnection]"
                   connectionManagerID="{DE720B0B-6E71-47BC-A568-E13087404EBE}:external"
-                  connectionManagerRefId="Project.ConnectionManagers[DataVault_DWH]"
+                  connectionManagerRefId="Project.ConnectionManagers[DWH_DataVault]"
                   description="Connection manager used to access lookup data."
                   name="OleDbConnection" />
               </connections>
               <inputs>
                 <input
-                  refId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Inputs[Lookup Input]"
+                  refId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Inputs[Lookup Input]"
                   name="Lookup Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Inputs[Lookup Input].Columns[Id]"
+                      refId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Inputs[Lookup Input].Columns[Id]"
                       cachedDataType="i4"
                       cachedName="Id"
-                      lineageId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Output].Columns[Id]">
+                      lineageId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Output].Columns[Id]">
                       <properties>
                         <property
                           dataType="System.String"
@@ -218,54 +218,54 @@ where [refTable].[Id] = ?</property>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Outputs[Lookup Match Output]"
+                  refId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Outputs[Lookup Match Output]"
                   errorOrTruncationOperation="Lookup"
                   exclusionGroup="1"
                   name="Lookup Match Output"
-                  synchronousInputId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Inputs[Lookup Input]">
+                  synchronousInputId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Inputs[Lookup Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Outputs[Lookup Match Output].Columns[H_Order_SQN]"
+                      refId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Outputs[Lookup Match Output].Columns[H_Customer_SQN]"
                       dataType="i8"
                       errorOrTruncationOperation="Copy Column"
-                      lineageId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Outputs[Lookup Match Output].Columns[H_Order_SQN]"
-                      name="H_Order_SQN"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Outputs[Lookup Match Output].Columns[H_Customer_SQN]"
+                      name="H_Customer_SQN"
                       truncationRowDisposition="FailComponent">
                       <properties>
                         <property
                           dataType="System.String"
                           description="Specifies the column in the reference table from which a column is copied."
-                          name="CopyFromReferenceColumn">H_Order_SQN</property>
+                          name="CopyFromReferenceColumn">H_Customer_SQN</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Outputs[Lookup No Match Output]"
+                  refId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Outputs[Lookup No Match Output]"
                   description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
                   exclusionGroup="1"
                   name="Lookup No Match Output"
-                  synchronousInputId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Inputs[Lookup Input]">
+                  synchronousInputId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Inputs[Lookup Input]">
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Outputs[Lookup Error Output]"
+                  refId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Outputs[Lookup Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Lookup Error Output"
-                  synchronousInputId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Inputs[Lookup Input]">
+                  synchronousInputId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Inputs[Lookup Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -274,11 +274,11 @@ where [refTable].[Id] = ?</property>
               </outputs>
             </component>
             <component
-              refId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order"
+              refId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
-              name="OLE DST BusinessVault H_Order"
+              name="OLE DST BusinessVault H_Customer"
               usesDispositions="true"
               version="4">
               <properties>
@@ -289,7 +289,7 @@ where [refTable].[Id] = ?</property>
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[BusinessVault].[H_Order]</property>
+                  name="OpenRowset">[BusinessVault].[H_Customer]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -331,47 +331,47 @@ where [refTable].[Id] = ?</property>
               </properties>
               <connections>
                 <connection
-                  refId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Connections[OleDbConnection]"
+                  refId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Connections[OleDbConnection]"
                   connectionManagerID="{DE720B0B-6E71-47BC-A568-E13087404EBE}:external"
-                  connectionManagerRefId="Project.ConnectionManagers[DataVault_DWH]"
+                  connectionManagerRefId="Project.ConnectionManagers[DWH_DataVault]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
               <inputs>
                 <input
-                  refId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Inputs[OLE DB Destination Input]"
+                  refId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Inputs[OLE DB Destination Input].Columns[LoadDateTime]"
+                      refId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Inputs[OLE DB Destination Input].Columns[LoadDateTime]"
                       cachedDataType="date"
                       cachedName="LoadDateTime"
-                      externalMetadataColumnId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Inputs[OLE DB Destination Input].ExternalColumns[LoadDateTime]"
-                      lineageId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]" />
+                      externalMetadataColumnId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Inputs[OLE DB Destination Input].ExternalColumns[LoadDateTime]"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]" />
                     <inputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Inputs[OLE DB Destination Input].Columns[Id]"
+                      refId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Inputs[OLE DB Destination Input].Columns[Id]"
                       cachedDataType="i4"
                       cachedName="Id"
                       description=""
-                      externalMetadataColumnId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Inputs[OLE DB Destination Input].ExternalColumns[Id]"
-                      lineageId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Output].Columns[Id]" />
+                      externalMetadataColumnId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Inputs[OLE DB Destination Input].ExternalColumns[Id]"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Output].Columns[Id]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Inputs[OLE DB Destination Input].ExternalColumns[H_Order_SQN]"
+                      refId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Inputs[OLE DB Destination Input].ExternalColumns[H_Customer_SQN]"
                       dataType="i8"
-                      name="H_Order_SQN" />
+                      name="H_Customer_SQN" />
                     <externalMetadataColumn
-                      refId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Inputs[OLE DB Destination Input].ExternalColumns[Id]"
+                      refId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Inputs[OLE DB Destination Input].ExternalColumns[Id]"
                       dataType="i4"
                       description=""
                       name="Id" />
                     <externalMetadataColumn
-                      refId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Inputs[OLE DB Destination Input].ExternalColumns[LoadDateTime]"
+                      refId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Inputs[OLE DB Destination Input].ExternalColumns[LoadDateTime]"
                       dataType="dbTimeStamp2"
                       name="LoadDateTime"
                       scale="2" />
@@ -380,22 +380,22 @@ where [refTable].[Id] = ?</property>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -404,11 +404,11 @@ where [refTable].[Id] = ?</property>
               </outputs>
             </component>
             <component
-              refId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order"
+              refId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
-              name="OLE SRC BusinessVault H_Order"
+              name="OLE SRC BusinessVault H_Customer"
               usesDispositions="true"
               version="7">
               <properties>
@@ -432,8 +432,8 @@ where [refTable].[Id] = ?</property>
   [Id]
 ) AS (
   SELECT
-    ExampleSource_Order.Id AS [Id]
-  FROM [ExampleSource].[Order] AS [ExampleSource_Order]
+    ExampleSource_Customer.Id AS [Id]
+  FROM [DWH_Staging_ExampleSource].[dbo].[Customer] AS [ExampleSource_Customer]           OUTER APPLY [BusinessRule].[udf_BR_Lookup_Country]([ExampleSource_Customer].[Country]) AS [BusinessRule_Lookup_Country]           OUTER APPLY [BusinessRule].[udf_BR_Derive_Customer_FullName]([ExampleSource_Customer].[FirstName], [ExampleSource_Customer].[LastName]) AS [BusinessRule_Derive_Customer_FullName]
 )
 SELECT DISTINCT
   [Id]
@@ -462,58 +462,58 @@ FROM [Source_CTE];</property>
               </properties>
               <connections>
                 <connection
-                  refId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Connections[OleDbConnection]"
+                  refId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Connections[OleDbConnection]"
                   connectionManagerID="{DE720B0B-6E71-47BC-A568-E13087404EBE}:external"
-                  connectionManagerRefId="Project.ConnectionManagers[DataVault_DWH]"
+                  connectionManagerRefId="Project.ConnectionManagers[DWH_DataVault]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
               <outputs>
                 <output
-                  refId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Output]"
+                  refId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Output]"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Output].Columns[Id]"
+                      refId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Output].Columns[Id]"
                       dataType="i4"
                       description=""
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Output].ExternalColumns[Id]"
-                      lineageId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Output].Columns[Id]"
+                      externalMetadataColumnId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Output].ExternalColumns[Id]"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Output].Columns[Id]"
                       name="Id"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Output].ExternalColumns[Id]"
+                      refId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Output].ExternalColumns[Id]"
                       dataType="i4"
                       description=""
                       name="Id" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Error Output]"
+                  refId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Error Output].Columns[Id]"
+                      refId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Error Output].Columns[Id]"
                       dataType="i4"
                       description=""
-                      lineageId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Error Output].Columns[Id]"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Error Output].Columns[Id]"
                       name="Id" />
                     <outputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -524,20 +524,20 @@ FROM [Source_CTE];</property>
           </components>
           <paths>
             <path
-              refId="Package\DFT Load BusinessVault H_Order.Paths[Derived Column Output]"
-              endId="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order.Inputs[OLE DB Destination Input]"
+              refId="Package\DFT Load BusinessVault H_Customer.Paths[Derived Column Output]"
+              endId="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
-              startId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Outputs[Derived Column Output]" />
+              startId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT Load BusinessVault H_Order.Paths[Lookup No Match Output]"
-              endId="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime.Inputs[Derived Column Input]"
+              refId="Package\DFT Load BusinessVault H_Customer.Paths[Lookup No Match Output]"
+              endId="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime.Inputs[Derived Column Input]"
               name="Lookup No Match Output"
-              startId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Outputs[Lookup No Match Output]" />
+              startId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Outputs[Lookup No Match Output]" />
             <path
-              refId="Package\DFT Load BusinessVault H_Order.Paths[OLE DB Source Output]"
-              endId="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order.Inputs[Lookup Input]"
+              refId="Package\DFT Load BusinessVault H_Customer.Paths[OLE DB Source Output]"
+              endId="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer.Inputs[Lookup Input]"
               name="OLE DB Source Output"
-              startId="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order.Outputs[OLE DB Source Output]" />
+              startId="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer.Outputs[OLE DB Source Output]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -557,30 +557,34 @@ FROM [Source_CTE];</property>
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
         <NodeLayout
           Size="264,42"
-          Id="Package\DFT Load BusinessVault H_Order"
+          Id="Package\DFT Load BusinessVault H_Customer"
           TopLeft="154,89" />
       </GraphLayout>
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\DFT Load BusinessVault H_Order">
+    design-time-name="Package\DFT Load BusinessVault H_Customer">
     <LayoutInfo>
       <GraphLayout
         Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="260,42"
-          Id="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order"
+          Id="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer"
           TopLeft="6,5.5" />
         <NodeLayout
-          Size="261,42"
-          Id="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order"
-          TopLeft="5.50000000000006,311.5" />
+          Size="236.5,42"
+          Id="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer"
+          TopLeft="17.75,107.5" />
         <NodeLayout
           Size="191.5,42"
-          Id="Package\DFT Load BusinessVault H_Order\DER Add LoadDateTime"
+          Id="Package\DFT Load BusinessVault H_Customer\DER Add LoadDateTime"
           TopLeft="40.25,209.5" />
+        <NodeLayout
+          Size="261,42"
+          Id="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer"
+          TopLeft="5.50000000000006,311.5" />
         <EdgeLayout
-          Id="Package\DFT Load BusinessVault H_Order.Paths[Derived Column Output]"
+          Id="Package\DFT Load BusinessVault H_Customer.Paths[Derived Column Output]"
           TopLeft="136,251.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -601,12 +605,8 @@ FROM [Source_CTE];</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="236.5,42"
-          Id="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order"
-          TopLeft="17.75,107.5" />
         <EdgeLayout
-          Id="Package\DFT Load BusinessVault H_Order.Paths[OLE DB Source Output]"
+          Id="Package\DFT Load BusinessVault H_Customer.Paths[OLE DB Source Output]"
           TopLeft="136,47.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -628,7 +628,7 @@ FROM [Source_CTE];</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT Load BusinessVault H_Order.Paths[Lookup No Match Output]"
+          Id="Package\DFT Load BusinessVault H_Customer.Paths[Lookup No Match Output]"
           TopLeft="136,149.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -655,7 +655,7 @@ FROM [Source_CTE];</property>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT Load BusinessVault H_Order\OLE SRC BusinessVault H_Order">
+    design-time-name="Package\DFT Load BusinessVault H_Customer\OLE SRC BusinessVault H_Customer">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -663,7 +663,30 @@ FROM [Source_CTE];</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT Load BusinessVault H_Order\OLE DST BusinessVault H_Order">
+    design-time-name="Package\DFT Load BusinessVault H_Customer\LKP BusinessVault H_Customer">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[BusinessVault].[H_Customer]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT Load BusinessVault H_Customer\OLE DST BusinessVault H_Customer">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -672,29 +695,6 @@ FROM [Source_CTE];</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT Load BusinessVault H_Order\LKP BusinessVault H_Order">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:boolean">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string">[BusinessVault].[H_Order]</Value>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q4:int">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>

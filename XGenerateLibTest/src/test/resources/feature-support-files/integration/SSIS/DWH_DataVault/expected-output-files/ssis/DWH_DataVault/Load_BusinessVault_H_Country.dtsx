@@ -1,57 +1,58 @@
 <?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="5/12/2018 11:27:13 PM"
+  DTS:CreationDate="5/8/2018 4:20:33 PM"
   DTS:CreationName="Microsoft.Package"
-  DTS:CreatorComputerName="DESKTOP-EC40127"
-  DTS:CreatorName="DESKTOP-EC40127\Willem"
-  DTS:DTSID="{129F33E6-BA4E-4E03-9DFE-FB1F7225FB72}"
+  DTS:CreatorComputerName="HARMEN-LAPTOP"
+  DTS:CreatorName="HARMEN-LAPTOP\Harmen"
+  DTS:DTSID="{2A082524-B0F7-4012-9154-F53B267FC380}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="13.0.4451.0"
-  DTS:LocaleID="1033"
-  DTS:ObjectName="Load_BusinessVault_L_Order_Customer"
+  DTS:LastModifiedProductVersion="13.0.4472.7"
+  DTS:LocaleID="1043"
+  DTS:ObjectName="Load_BusinessVault_H_Country"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="25"
-  DTS:VersionGUID="{889F7B6C-CA83-44B1-AC8E-0962F0F1CDF7}">
+  DTS:VersionBuild="22"
+  DTS:VersionGUID="{F033A144-D66C-4C87-BA5F-C6E869A8DE1A}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:PackageParameters>
     <DTS:PackageParameter
       DTS:CreationName=""
       DTS:DataType="7"
-      DTS:DTSID="{0B12B381-1F3C-4DE3-A70E-C02A1CB2E06C}"
+      DTS:DTSID="{1588663E-2120-45C3-9E95-0F8179ECA63B}"
       DTS:ObjectName="LoadDateTime">
       <DTS:Property
         DTS:DataType="7"
-        DTS:Name="ParameterValue">1/1/2001</DTS:Property>
+        DTS:Name="ParameterValue">1/1/2000</DTS:Property>
     </DTS:PackageParameter>
   </DTS:PackageParameters>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\Load BusinessVault L Order_Customer"
+      DTS:refId="Package\DFT Load BusinessVault H_Country"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
-      DTS:DTSID="{1F9EBB89-935A-452D-917A-764CDB8C7A83}"
+      DTS:DTSID="{1D280422-C234-4290-8E41-75D74106CACE}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Load BusinessVault L Order_Customer">
+      DTS:ObjectName="DFT Load BusinessVault H_Country"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
         <pipeline
           version="1">
           <components>
             <component
-              refId="Package\Load BusinessVault L Order_Customer\Add loadDateTime"
+              refId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime"
               componentClassID="Microsoft.DerivedColumn"
               contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
-              name="Add loadDateTime"
+              name="DER Add LoadDateTime"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Inputs[Derived Column Input]"
+                  refId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Inputs[Derived Column Input]"
                   description="Input to the Derived Column Transformation"
                   name="Derived Column Input">
                   <externalMetadataColumns />
@@ -59,18 +60,18 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Outputs[Derived Column Output]"
+                  refId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Outputs[Derived Column Output]"
                   description="Default Output of the Derived Column Transformation"
                   exclusionGroup="1"
                   name="Derived Column Output"
-                  synchronousInputId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Inputs[Derived Column Input]">
+                  synchronousInputId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Inputs[Derived Column Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]"
+                      refId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]"
                       dataType="date"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      lineageId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]"
+                      lineageId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]"
                       name="LoadDateTime"
                       truncationRowDisposition="FailComponent">
                       <properties>
@@ -91,23 +92,23 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Outputs[Derived Column Error Output]"
+                  refId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Outputs[Derived Column Error Output]"
                   description="Error Output of the Derived Column Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Derived Column Error Output"
-                  synchronousInputId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Inputs[Derived Column Input]">
+                  synchronousInputId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Inputs[Derived Column Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Outputs[Derived Column Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Outputs[Derived Column Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -116,11 +117,11 @@
               </outputs>
             </component>
             <component
-              refId="Package\Load BusinessVault L Order_Customer\LKP Existing relation"
+              refId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country"
               componentClassID="Microsoft.Lookup"
               contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
               description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
-              name="LKP Existing relation"
+              name="LKP BusinessVault H_Country"
               usesDispositions="true"
               version="6">
               <properties>
@@ -129,14 +130,14 @@
                   description="Specifies the SQL statement that generates the lookup table."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [BusinessVault].[L_Order_Customer]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [BusinessVault].[H_Country]</property>
                 <property
                   dataType="System.String"
                   description="Specifies a SQL statement that uses parameters to generate the lookup table."
                   expressionType="Notify"
                   name="SqlCommandParam"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [BusinessVault].[L_Order_Customer]) [refTable]
-where [refTable].[H_Customer_SQN] = ?AND [refTable].[H_Order_SQN] = ?</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [BusinessVault].[H_Country]) [refTable]
+where [refTable].[Code] = ?</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the type of connection used to access the reference dataset."
@@ -167,12 +168,12 @@ where [refTable].[H_Customer_SQN] = ?AND [refTable].[H_Order_SQN] = ?</property>
                 <property
                   dataType="System.String"
                   description="Indicates whether to reference metadata in an XML format."
-                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="L_Order_Customer_SQN" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="H_RelatedEntity_parentReferenceName_SQN" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="StageDateTime" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="2" codePage="0"/&gt;&lt;referenceColumn name="LoadDateTime" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="2" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="H_Country_SQN" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="KeyAttribute_name" dataType="DT_STR" length="10" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="LoadDateTime" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="2" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
                 <property
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_Customer_SQN]};#{Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_Order_SQN]};</property>
+                  name="ParameterMap">#{Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Output].Columns[Code]};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -184,43 +185,28 @@ where [refTable].[H_Customer_SQN] = ?AND [refTable].[H_Order_SQN] = ?</property>
               </properties>
               <connections>
                 <connection
-                  refId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Connections[OleDbConnection]"
+                  refId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Connections[OleDbConnection]"
                   connectionManagerID="{DE720B0B-6E71-47BC-A568-E13087404EBE}:external"
-                  connectionManagerRefId="Project.ConnectionManagers[DataVault_DWH]"
+                  connectionManagerRefId="Project.ConnectionManagers[DWH_DataVault]"
                   description="Connection manager used to access lookup data."
                   name="OleDbConnection" />
               </connections>
               <inputs>
                 <input
-                  refId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Inputs[Lookup Input]"
+                  refId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Inputs[Lookup Input]"
                   name="Lookup Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Load Relation_owner L Relation_name\LKP Existing relation.Inputs[Lookup Input].Columns[H_Customer_SQN]"
-                      cachedDataType="i8"
-                      cachedName="H_Customer_SQN"
-                      lineageId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_Customer_SQN]">
+                      refId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Inputs[Lookup Input].Columns[Code]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="Code"
+                      lineageId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Output].Columns[Code]">
                       <properties>
                         <property
                           dataType="System.String"
                           description="Specifies the column in the reference table that a column joins."
-                          name="JoinToReferenceColumn">H_Customer_SQN</property>
-                        <property
-                          dataType="System.Null"
-                          description="Specifies the column in the reference table from which a column is copied."
-                          name="CopyFromReferenceColumn" />
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\Load Relation_owner L Relation_name\LKP Existing relation.Inputs[Lookup Input].Columns[H_Order_SQN]"
-                      cachedDataType="i8"
-                      cachedName="H_Order_SQN"
-                      lineageId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_Order_SQN]">
-                      <properties>
-                        <property
-                          dataType="System.String"
-                          description="Specifies the column in the reference table that a column joins."
-                          name="JoinToReferenceColumn">H_Order_SQN</property>
+                          name="JoinToReferenceColumn">Code</property>
                         <property
                           dataType="System.Null"
                           description="Specifies the column in the reference table from which a column is copied."
@@ -233,70 +219,54 @@ where [refTable].[H_Customer_SQN] = ?AND [refTable].[H_Order_SQN] = ?</property>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Outputs[Lookup Match Output]"
+                  refId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Outputs[Lookup Match Output]"
                   errorOrTruncationOperation="Lookup"
                   exclusionGroup="1"
                   name="Lookup Match Output"
-                  synchronousInputId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Inputs[Lookup Input]">
+                  synchronousInputId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Inputs[Lookup Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Load Relation_owner L Relation_name\LKP Existing relation.Outputs[Lookup Match Output].Columns[TGT_H_Customer_SQN]"
+                      refId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Outputs[Lookup Match Output].Columns[H_Country_SQN]"
                       dataType="i8"
-                      description=""
                       errorOrTruncationOperation="Copy Column"
-                      lineageId="Package\Load Relation_owner L Relation_name\LKP Existing relation.Outputs[Lookup Match Output].Columns[TGT_H_Customer_SQN]"
-                      name="TGT_H_Customer_SQN"
+                      lineageId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Outputs[Lookup Match Output].Columns[H_Country_SQN]"
+                      name="H_Country_SQN"
                       truncationRowDisposition="FailComponent">
                       <properties>
                         <property
                           dataType="System.String"
                           description="Specifies the column in the reference table from which a column is copied."
-                          name="CopyFromReferenceColumn">H_Customer_SQN</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Load Relation_owner L Relation_name\LKP Existing relation.Outputs[Lookup Match Output].Columns[TGT_H_Order_SQN]"
-                      dataType="i8"
-                      description=""
-                      errorOrTruncationOperation="Copy Column"
-                      lineageId="Package\Load Relation_owner L Relation_name\LKP Existing relation.Outputs[Lookup Match Output].Columns[TGT_H_Order_SQN]"
-                      name="TGT_H_Order_SQN"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          dataType="System.String"
-                          description="Specifies the column in the reference table from which a column is copied."
-                          name="CopyFromReferenceColumn">H_Order_SQN</property>
+                          name="CopyFromReferenceColumn">H_Country_SQN</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Outputs[Lookup No Match Output]"
+                  refId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Outputs[Lookup No Match Output]"
                   description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
                   exclusionGroup="1"
                   name="Lookup No Match Output"
-                  synchronousInputId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Inputs[Lookup Input]">
+                  synchronousInputId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Inputs[Lookup Input]">
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Outputs[Lookup Error Output]"
+                  refId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Outputs[Lookup Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Lookup Error Output"
-                  synchronousInputId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Inputs[Lookup Input]">
+                  synchronousInputId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Inputs[Lookup Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -305,11 +275,11 @@ where [refTable].[H_Customer_SQN] = ?AND [refTable].[H_Order_SQN] = ?</property>
               </outputs>
             </component>
             <component
-              refId="Package\Load BusinessVault L Order_Customer\OLE DB Destination"
+              refId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
-              name="OLE DB Destination"
+              name="OLE DST BusinessVault H_Country"
               usesDispositions="true"
               version="4">
               <properties>
@@ -320,7 +290,7 @@ where [refTable].[H_Customer_SQN] = ?AND [refTable].[H_Order_SQN] = ?</property>
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[BusinessVault].[L_Order_Customer]</property>
+                  name="OpenRowset">[BusinessVault].[H_Country]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -362,59 +332,49 @@ where [refTable].[H_Customer_SQN] = ?AND [refTable].[H_Order_SQN] = ?</property>
               </properties>
               <connections>
                 <connection
-                  refId="Package\Load BusinessVault L Order_Customer\OLE DB Destination.Connections[OleDbConnection]"
+                  refId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Connections[OleDbConnection]"
                   connectionManagerID="{DE720B0B-6E71-47BC-A568-E13087404EBE}:external"
-                  connectionManagerRefId="Project.ConnectionManagers[DataVault_DWH]"
+                  connectionManagerRefId="Project.ConnectionManagers[DWH_DataVault]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
               <inputs>
                 <input
-                  refId="Package\Load BusinessVault L Order_Customer\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  refId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Load Relation_owner L Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[H_Customer_SQN]"
-                      cachedDataType="i8"
-                      cachedName="H_Customer_SQN"
-                      description=" "
-                      externalMetadataColumnId="Package\Load Relation_owner L Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[H_Customer_SQN]"
-                      lineageId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_Customer_SQN]" />
-                    <inputColumn
-                      refId="Package\Load Relation_owner L Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[H_Order_SQN]"
-                      cachedDataType="i8"
-                      cachedName="H_Order_SQN"
-                      description=" "
-                      externalMetadataColumnId="Package\Load Relation_owner L Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[H_Order_SQN]"
-                      lineageId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_Order_SQN]" />
-                    <inputColumn
-                      refId="Package\Load BusinessVault L Order_Customer\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[LoadDateTime]"
+                      refId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Inputs[OLE DB Destination Input].Columns[LoadDateTime]"
                       cachedDataType="date"
                       cachedName="LoadDateTime"
-                      externalMetadataColumnId="Package\Load BusinessVault L Order_Customer\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LoadDateTime]"
-                      lineageId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]" />
+                      externalMetadataColumnId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Inputs[OLE DB Destination Input].ExternalColumns[LoadDateTime]"
+                      lineageId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Outputs[Derived Column Output].Columns[LoadDateTime]" />
+                    <inputColumn
+                      refId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Inputs[OLE DB Destination Input].Columns[Code]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="Code"
+                      description=""
+                      externalMetadataColumnId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Inputs[OLE DB Destination Input].ExternalColumns[Code]"
+                      lineageId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Output].Columns[Code]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\Load BusinessVault L Order_Customer\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[L_Order_Customer_SQN]"
+                      refId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Inputs[OLE DB Destination Input].ExternalColumns[H_Country_SQN]"
                       dataType="i8"
-                      name="L_Order_Customer_SQN" />
+                      name="H_Country_SQN" />
                     <externalMetadataColumn
-                      refId="Package\Load Relation_owner L Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[H_Customer_SQN]"
-                      dataType="i8"
-                      description=" "
-                      name="H_Customer_SQN" />
+                      refId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Inputs[OLE DB Destination Input].ExternalColumns[Code]"
+                      dataType="wstr"
+                      description=""
+                      length="3"
+                      name="Code" />
                     <externalMetadataColumn
-                      refId="Package\Load Relation_owner L Relation_name\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[H_Order_SQN]"
-                      dataType="i8"
-                      description=" "
-                      name="H_Order_SQN" />
-                    <externalMetadataColumn
-                      refId="Package\Load BusinessVault L Order_Customer\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LoadDateTime]"
+                      refId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Inputs[OLE DB Destination Input].ExternalColumns[LoadDateTime]"
                       dataType="dbTimeStamp2"
                       name="LoadDateTime"
                       scale="2" />
@@ -423,22 +383,22 @@ where [refTable].[H_Customer_SQN] = ?AND [refTable].[H_Order_SQN] = ?</property>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\Load BusinessVault L Order_Customer\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\Load BusinessVault L Order_Customer\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Load BusinessVault L Order_Customer\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\Load BusinessVault L Order_Customer\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\Load BusinessVault L Order_Customer\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\Load BusinessVault L Order_Customer\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -447,11 +407,11 @@ where [refTable].[H_Customer_SQN] = ?AND [refTable].[H_Order_SQN] = ?</property>
               </outputs>
             </component>
             <component
-              refId="Package\Load BusinessVault L Order_Customer\OLE DB Source"
+              refId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
-              name="OLE DB Source"
+              name="OLE SRC BusinessVault H_Country"
               usesDispositions="true"
               version="7">
               <properties>
@@ -471,27 +431,16 @@ where [refTable].[H_Customer_SQN] = ?AND [refTable].[H_Order_SQN] = ?</property>
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">WITH Source_CTE
-(
-  OrderId,
-  CustomerId
-)	
-AS 
-(
-SELECT 
-		ExampleSource_Order.Id as OrderId,
-		ExampleSource_Order.CustomerId as CustomerId
-FROM [ExampleSource].[Order] AS [ExampleSource_Order]
-)	
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">WITH [Source_CTE] (
+  [Code]
+) AS (
+  SELECT
+    Reference_Country.Country_Code AS [Code]
+  FROM [$(DWH_Staging_Reference)].[dbo].[Country] AS [Reference_Country]
+)
 SELECT DISTINCT
-	H_Customer_SQN,
-	H_Order_SQN
-from Source_CTE
-JOIN [BusinessVault].[H_Customer] [Customer]
-	ON Source_CTE.CustomerId = [Customer].Id
-/* end of join */JOIN [BusinessVault].[H_Order] [Order]
-	ON Source_CTE.OrderId = [Order].Id
-/* end of join */</property>
+  [Code]
+FROM [Source_CTE];</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -516,79 +465,61 @@ JOIN [BusinessVault].[H_Customer] [Customer]
               </properties>
               <connections>
                 <connection
-                  refId="Package\Load BusinessVault L Order_Customer\OLE DB Source.Connections[OleDbConnection]"
+                  refId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Connections[OleDbConnection]"
                   connectionManagerID="{DE720B0B-6E71-47BC-A568-E13087404EBE}:external"
-                  connectionManagerRefId="Project.ConnectionManagers[DataVault_DWH]"
+                  connectionManagerRefId="Project.ConnectionManagers[DWH_DataVault]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
               <outputs>
                 <output
-                  refId="Package\Load BusinessVault L Order_Customer\OLE DB Source.Outputs[OLE DB Source Output]"
+                  refId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Output]"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_Customer_SQN]"
-                      dataType="i8"
+                      refId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Output].Columns[Code]"
+                      dataType="wstr"
                       description=""
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[H_Customer_SQN]"
-                      lineageId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_Customer_SQN]"
-                      name="H_Customer_SQN"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_Order_SQN]"
-                      dataType="i8"
-                      description=""
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[H_Order_SQN]"
-                      lineageId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].Columns[H_Order_SQN]"
-                      name="H_Order_SQN"
+                      externalMetadataColumnId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Output].ExternalColumns[Code]"
+                      length="3"
+                      lineageId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Output].Columns[Code]"
+                      name="Code"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[H_Customer_SQN]"
-                      dataType="i8"
+                      refId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Output].ExternalColumns[Code]"
+                      dataType="wstr"
                       description=""
-                      name="H_Customer_SQN" />
-                    <externalMetadataColumn
-                      refId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[H_Order_SQN]"
-                      dataType="i8"
-                      description=""
-                      name="H_Order_SQN" />
+                      length="3"
+                      name="Code" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\Load BusinessVault L Order_Customer\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                  refId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[H_Customer_SQN]"
-                      dataType="i8"
+                      refId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Error Output].Columns[Code]"
+                      dataType="wstr"
                       description=""
-                      lineageId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[H_Customer_SQN]"
-                      name="H_Customer_SQN" />
+                      length="3"
+                      lineageId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Error Output].Columns[Code]"
+                      name="Code" />
                     <outputColumn
-                      refId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[H_Order_SQN]"
-                      dataType="i8"
-                      description=""
-                      lineageId="Package\Load Relation_owner L Relation_name\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[H_Order_SQN]"
-                      name="H_Order_SQN" />
-                    <outputColumn
-                      refId="Package\Load BusinessVault L Order_Customer\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\Load BusinessVault L Order_Customer\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\Load BusinessVault L Order_Customer\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\Load BusinessVault L Order_Customer\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -599,20 +530,20 @@ JOIN [BusinessVault].[H_Customer] [Customer]
           </components>
           <paths>
             <path
-              refId="Package\Load BusinessVault L Order_Customer.Paths[Derived Column Output]"
-              endId="Package\Load BusinessVault L Order_Customer\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              refId="Package\DFT Load BusinessVault H_Country.Paths[Derived Column Output]"
+              endId="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
-              startId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Outputs[Derived Column Output]" />
+              startId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Outputs[Derived Column Output]" />
             <path
-              refId="Package\Load BusinessVault L Order_Customer.Paths[Lookup No Match Output]"
-              endId="Package\Load BusinessVault L Order_Customer\Add loadDateTime.Inputs[Derived Column Input]"
+              refId="Package\DFT Load BusinessVault H_Country.Paths[Lookup No Match Output]"
+              endId="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime.Inputs[Derived Column Input]"
               name="Lookup No Match Output"
-              startId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Outputs[Lookup No Match Output]" />
+              startId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Outputs[Lookup No Match Output]" />
             <path
-              refId="Package\Load BusinessVault L Order_Customer.Paths[OLE DB Source Output]"
-              endId="Package\Load BusinessVault L Order_Customer\LKP Existing relation.Inputs[Lookup Input]"
+              refId="Package\DFT Load BusinessVault H_Country.Paths[OLE DB Source Output]"
+              endId="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country.Inputs[Lookup Input]"
               name="OLE DB Source Output"
-              startId="Package\Load BusinessVault L Order_Customer\OLE DB Source.Outputs[OLE DB Source Output]" />
+              startId="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country.Outputs[OLE DB Source Output]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -631,47 +562,47 @@ JOIN [BusinessVault].[H_Customer] [Customer]
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
         <NodeLayout
-          Size="260,42"
-          Id="Package\Load BusinessVault L Order_Customer"
-          TopLeft="231.5,207.5" />
+          Size="264,42"
+          Id="Package\DFT Load BusinessVault H_Country"
+          TopLeft="154,89" />
       </GraphLayout>
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\Load BusinessVault L Order_Customer">
+    design-time-name="Package\DFT Load BusinessVault H_Country">
     <LayoutInfo>
       <GraphLayout
         Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="150,42"
-          Id="Package\Load BusinessVault L Order_Customer\OLE DB Source"
-          TopLeft="197,80" />
+          Size="260,42"
+          Id="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country"
+          TopLeft="6,5.5" />
         <NodeLayout
-          Size="175,42"
-          Id="Package\Load BusinessVault L Order_Customer\LKP Existing relation"
-          TopLeft="219,242" />
+          Size="236.5,42"
+          Id="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country"
+          TopLeft="17.75,107.5" />
         <NodeLayout
-          Size="166,42"
-          Id="Package\Load BusinessVault L Order_Customer\Add loadDateTime"
-          TopLeft="204,356" />
+          Size="191.5,42"
+          Id="Package\DFT Load BusinessVault H_Country\DER Add LoadDateTime"
+          TopLeft="40.25,209.5" />
         <NodeLayout
-          Size="171,42"
-          Id="Package\Load BusinessVault L Order_Customer\OLE DB Destination"
-          TopLeft="209,517" />
+          Size="261,42"
+          Id="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country"
+          TopLeft="5.50000000000006,311.5" />
         <EdgeLayout
-          Id="Package\Load BusinessVault L Order_Customer.Paths[Derived Column Output]"
-          TopLeft="290.75,398">
+          Id="Package\DFT Load BusinessVault H_Country.Paths[Derived Column Output]"
+          TopLeft="136,251.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,119"
+              EndConnector="0,60"
               Start="0,0"
-              End="0,111.5">
+              End="0,52.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,111.5" />
+                    End="0,52.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -681,31 +612,19 @@ JOIN [BusinessVault].[H_Customer] [Customer]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Load BusinessVault L Order_Customer.Paths[OLE DB Source Output]"
-          TopLeft="272,122">
+          Id="Package\DFT Load BusinessVault H_Country.Paths[OLE DB Source Output]"
+          TopLeft="136,47.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="34.5,120"
+              EndConnector="0,60"
               Start="0,0"
-              End="34.5,112.5">
+              End="0,52.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,56" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,56"
-                    Point2="0,60"
-                    Point3="4,60" />
-                  <mssgle:LineSegment
-                    End="30.5,60" />
-                  <mssgle:CubicBezierSegment
-                    Point1="30.5,60"
-                    Point2="34.5,60"
-                    Point3="34.5,64" />
-                  <mssgle:LineSegment
-                    End="34.5,112.5" />
+                    End="0,52.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -715,38 +634,26 @@ JOIN [BusinessVault].[H_Customer] [Customer]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Load BusinessVault L Order_Customer.Paths[Lookup No Match Output]"
-          TopLeft="306.5,284">
+          Id="Package\DFT Load BusinessVault H_Country.Paths[Lookup No Match Output]"
+          TopLeft="136,149.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-19.5,72"
+              EndConnector="0,60"
               Start="0,0"
-              End="-19.5,64.5">
+              End="0,52.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,32" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,32"
-                    Point2="0,36"
-                    Point3="-4,36" />
-                  <mssgle:LineSegment
-                    End="-15.5,36" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-15.5,36"
-                    Point2="-19.5,36"
-                    Point3="-19.5,40" />
-                  <mssgle:LineSegment
-                    End="-19.5,64.5" />
+                    End="0,52.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-65.55638671875,41,111.6127734375,11.609375"
+              BoundingBox="-55.80638671875,20.4453125,111.6127734375,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -754,7 +661,7 @@ JOIN [BusinessVault].[H_Customer] [Customer]
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Load BusinessVault L Order_Customer\OLE DB Source">
+    design-time-name="Package\DFT Load BusinessVault H_Country\OLE SRC BusinessVault H_Country">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -762,7 +669,7 @@ JOIN [BusinessVault].[H_Customer] [Customer]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Load BusinessVault L Order_Customer\LKP Existing relation">
+    design-time-name="Package\DFT Load BusinessVault H_Country\LKP BusinessVault H_Country">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
@@ -772,7 +679,7 @@ JOIN [BusinessVault].[H_Customer] [Customer]
       <Property>
         <Name>UsedTableName</Name>
         <Value
-          type="q3:string">[BusinessVault].[L_Order_Customer]</Value>
+          type="q3:string">[BusinessVault].[H_Country]</Value>
       </Property>
       <Property>
         <Name>TableInfoObjectType</Name>
@@ -785,7 +692,7 @@ JOIN [BusinessVault].[H_Customer] [Customer]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Load BusinessVault L Order_Customer\OLE DB Destination">
+    design-time-name="Package\DFT Load BusinessVault H_Country\OLE DST BusinessVault H_Country">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
