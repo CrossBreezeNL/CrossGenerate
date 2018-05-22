@@ -7,7 +7,7 @@
   </TextTemplate>
   <Binding>
     <!-- Select the last entity with a certain @owner value. This is automatically the distinct owners list. -->
-    <SectionModelBinding section="Owner" modelXPath="/modeldefinition/system/mappableObjects/entity[not(@owner = preceding-sibling::entity/@owner)]" placeholderName="Entity">
+    <SectionModelBinding section="Owner" modelXPath="/modeldefinition/system/mappableObjects/entity[@owner != 'dbo' and not(@owner = preceding-sibling::entity/@owner)]" placeholderName="Entity">
       <Placeholders>
         <Placeholder name="System" modelXPath="../.." />
       </Placeholders>

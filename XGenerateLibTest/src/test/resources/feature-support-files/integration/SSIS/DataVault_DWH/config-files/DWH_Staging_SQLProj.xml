@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig>
+  <Model>
+    <ModelAttributeInjections>
+      <!-- Translate the SQL data type into the SSIS data type and store it in the 'etldatatype' attribute on the attribute elements in the model. -->
+      <ModelAttributeInjection modelXPath="/modeldefinition/system" targetAttribute="projectGuid" targetXPath="concat('{', @internalId, '}')"/>
+    </ModelAttributeInjections>
+  </Model>
+  <XmlTemplate rootSectionName="System">
+    <FileFormat currentAccessor="_" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <Output type="single_output" />
+    <XmlSections>
+      <XmlSection name="UniqueEntityOwner" templateXPath="//Build[@Include='schemas\Entity_owner.sql']" />
+      <XmlSection name="Entity" templateXPath="//Build[@Include='tables\Entity_owner.Entity_name.sql']" />
+      <XmlSection name="SupportObject" templateXPath="//*[starts-with(@Include, '_support-objects')]" />
+    </XmlSections>
+    <TemplatePlaceholderInjections>
+      <!-- Inject a placeholder for the ID property for the packages. -->
+      <TemplatePlaceholderInjection templateXPath="/Project/PropertyGroup/ProjectGuid" modelNode="projectGuid" scope="current" />
+    </TemplatePlaceholderInjections>
+  </XmlTemplate>
+  <Binding>
+    <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="System">
+      <SectionModelBinding section="UniqueEntityOwner" modelXPath="mappableObjects/entity[@owner != 'dbo' and not(@owner = preceding-sibling::entity/@owner)]" placeholderName="Entity" />
+      <SectionModelBinding section="Entity" modelXPath="mappableObjects/entity" placeholderName="Entity" />
+      <SectionModelBinding section="SupportObject" modelXPath="mappableObjects[0=1]" placeholderName="SupportObject" />
+    </SectionModelBinding>
+  </Binding>
+</XGenConfig>

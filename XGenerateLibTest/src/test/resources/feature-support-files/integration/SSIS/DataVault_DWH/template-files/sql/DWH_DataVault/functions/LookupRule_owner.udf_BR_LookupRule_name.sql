@@ -1,4 +1,4 @@
--- @XGenComment(This is the function template for all lookup rules in the DWH).
+-- @XGenComment(This is the function template for all lookup rules in the DWH)
 CREATE FUNCTION [LookupRule_owner].[udf_BR_LookupRule_name] (
   -- @XGenTextSection(name="Parameter" suffix=",")
   @Parameter_name Parameter_fulldatatype
@@ -16,8 +16,8 @@ RETURN
       MappedParameter_expression AS [MappedParameter_targetAttributeName],
       -- @XGenTextSection(name="MappedAttribute" suffix=",")
       MappedAttribute_expression AS [MappedAttribute_targetAttributeName]
-    -- @XGenTextSection(name="MappedObject")
-    FROM [MappedObject_mappedObjectSystemName].[MappedObject_mappedObjectName] AS [MappedObject_expression]
+    -- @XGenTextSection(name="MappableObjectMapping")
+    FROM MappableObjectMapping_mappedObjectJoiner
   )
   SELECT
     -- @XGenTextSection(name="Attribute" suffix=",")

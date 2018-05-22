@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <modeldefinition>
   <system id="ExampleDWH" internalId="B1C935E0-9F47-41C0-BCED-4D5EA0C91A65" name="ExampleDWH" pdObjectType="Model">
+    <sourceSystems>
+      <system name="ExampleSource" internalId="380932B1-4152-4A1E-B649-93677B501977" />
+      <system name="Reference" internalId="3A8B3BF1-B56B-48A8-A566-0C01515D48AC" />
+    </sourceSystems>
     <mappableObjects>
       <businessRule id="Lookup_Country" internalId="DA13F4A5-65CA-4F63-A427-3B25FB328DC3" name="Lookup_Country" pdObjectType="Table" owner="BusinessRule" stereotype="lookup">
         <attributes>
@@ -9,7 +13,7 @@
           <attribute id="Country_Continent" internalId="5FE9B15F-C927-461C-BC78-4C72C1AA551B" name="Country_Continent" pdObjectType="Column" datatype="varchar" length="100" fulldatatype="varchar(100)" stereotype="attribute" ordinal="3" />
         </attributes>  
         <mappableObjectMappings>
-          <mappableObjectMapping id="Mapping_Lookup_Country_Reference_Country" internalId="4214BBCB-0566-47A6-9B93-F5A301668C38" name="Mapping_Lookup_Country_Reference_Country" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "Reference_Country">
+          <mappableObjectMapping id="Mapping_Lookup_Country_Reference_Country" internalId="4214BBCB-0566-47A6-9B93-F5A301668C38" name="Mapping_Lookup_Country_Reference_Country" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "Reference_Country"  mappedObjectJoiner="[$(DWH_Staging_Reference)].[dbo].[Country] AS [Reference_Country]">
             <mappedObjects>
               <mappedObject mappedObjectId="Country" mappedObjectSystemName="Reference" mappedObjectName="Country" expression="Reference_Country" />
             </mappedObjects>
@@ -128,9 +132,9 @@
           <keyAttribute attributeId="Code" attributeName="Code" />
         </keyAttributes>
         <mappableObjectMappings>
-          <mappableObjectMapping id="Mapping_Country_Reference_Country" internalId="3E3AB9A2-22B7-4008-ABCD-C6657AE69392" name="Mapping_Country_Reference_Country" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "Reference_Country" mappedObjectJoiner="[DWH_Staging_Reference].[dbo].[Country] AS [Reference_Country]">
+          <mappableObjectMapping id="Mapping_Country_Reference_Country" internalId="3E3AB9A2-22B7-4008-ABCD-C6657AE69392" name="Mapping_Country_Reference_Country" pdObjectType="TableMapping" mappingType="source"   mainMappedObject= "Reference_Country" mappedObjectJoiner="[$(DWH_Staging_Reference)].[dbo].[Country] AS [Reference_Country]">
             <mappedObjects>
-              <mappedObject mappedObjectId="Country" mappedObjectSystemName="Reference" mappedObjectName="Country" expression="Reference_Country" />
+              <mappedObject mappedObjectId="Country" mappedObjectSystemName="Reference" mappedObjectOwner="dbo" mappedObjectName="Country" expression="Reference_Country" />
             </mappedObjects>
             <attributeMappings>
               <attributeMapping sourceAttributeId="Country_Code" sourceAttributeSystem="Reference" sourceAttributeName="Country_Code" expression="Reference_Country.Country_Code" targetAttributeId="Code" targetAttributeName="Code" targetAttributePrimary="true" />

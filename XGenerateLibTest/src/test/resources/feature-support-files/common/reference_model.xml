@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <modeldefinition>
-  <system name="Reference">
+  <system name="Reference" internalId="A814633A-C74F-4CDE-B373-BF257367D079">
     <mappableObjects>
       <entity name="Country" internalId="3A8B3BF1-B56B-48A8-A566-0C01515D48AC" owner="dbo">
         <attributes>

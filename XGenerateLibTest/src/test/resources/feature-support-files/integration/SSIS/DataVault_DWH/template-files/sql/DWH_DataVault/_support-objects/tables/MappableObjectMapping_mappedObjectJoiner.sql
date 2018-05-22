@@ -1,4 +1,4 @@
-CREATE TABLE [MappedObject_mappedObjectSystemName].[MappedObject_mappedObjectName] (
+CREATE TABLE [MappableObjectMapping_mappedObjectJoiner] (
   [MappedParameter_expression] [NonKeyAttribute_fulldatatype],
   [MappedAttribute_expression] [NonKeyAttribute_fulldatatype]
 );

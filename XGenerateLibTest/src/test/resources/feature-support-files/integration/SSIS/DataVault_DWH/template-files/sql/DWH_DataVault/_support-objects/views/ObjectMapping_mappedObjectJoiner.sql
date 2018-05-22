@@ -4,4 +4,4 @@ SELECT
 	[MappedAttribute_expression] AS [MappedKeyAttribute_expression],
 	[MappedAttribute_expression] AS [MappedNonKeyAttribute_expression],
 	[MappedAttribute_expression] AS [MappedAttribute_expression]
-FROM [MappedObject_mappedObjectSystemName].[MappedObject_mappedObjectName];
+FROM [MappableObjectMapping_mappedObjectJoiner];

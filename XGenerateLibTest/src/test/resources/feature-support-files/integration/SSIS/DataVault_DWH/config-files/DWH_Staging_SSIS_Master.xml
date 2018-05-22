@@ -11,7 +11,7 @@
     <Output type="single_output" />
      <TemplatePlaceholderInjections>
       <!-- Inject a placeholder for the ID property for the packages. -->
-      <TemplatePlaceholderInjection templateXPath="//Executable[@refId='Package\SEQC Load Staging System_name\EPT Load System_name Entity_name']/@DTSID" modelNode="packageId" scope="current" />
+      <TemplatePlaceholderInjection templateXPath="//Executable[@refId='Package\SEQC Load Staging System_name\EPT Load Entity_owner Entity_name']/@DTSID" modelNode="packageId" scope="current" />
     </TemplatePlaceholderInjections>
   </XmlTemplate>
   <Binding>

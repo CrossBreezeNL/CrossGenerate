@@ -57,15 +57,15 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="schemas" />
     <Folder Include="tables" />
     <Folder Include="_support-objects" />
     <Folder Include="_support-objects\user-defined-types" />
-    <Folder Include="schemas" />
   </ItemGroup>
   <ItemGroup>
+    <Build Include="schemas\Entity_owner.sql" />
     <Build Include="tables\Entity_owner.Entity_name.sql" />
     <Build Include="_support-objects\user-defined-types\Attribute_fulldatatype.sql" />
-    <Build Include="schemas\Entity_owner.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Local.publish.xml" />

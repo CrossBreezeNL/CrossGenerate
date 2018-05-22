@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <modeldefinition>
-  <system name="ExampleSource">
+  <system name="ExampleSource" internalId="1A561EAA-0BE8-492C-9502-7BC93219A328">
     <mappableObjects>
       <entity name="Order" internalId="380932B1-4152-4A1E-B649-93677B501977" owner="dbo">
         <attributes>
