@@ -27,7 +27,7 @@
       <XmlSection name="Attribute" templateXPath="//input[@name='OLE DB Destination Input']/inputColumns/inputColumn[@cachedName='Attribute_name']"/>
     </XmlSections>
     <TemplateAttributeInjections>
-      <!-- Inject an attribute for the scale, precision, cachedScale & cachedPrecision on elements where the name is 'KeyAttribute_name'. -->
+      <!-- Inject an attribute for the scale, precision, cachedScale & cachedPrecision on elements where the name (or cachedName) is 'Attribute_name'. -->
       <TemplateAttributeInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name')]" attributeName="scale" attributeValue=""/>
       <TemplateAttributeInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name')]" attributeName="precision" attributeValue=""/>
       <TemplateAttributeInjection templateXPath="//*[(@name='Attribute_name' or @cachedName='Attribute_name')]" attributeName="cachedScale" attributeValue=""/>
@@ -49,12 +49,16 @@
     </TemplatePlaceholderInjections>    
   </XmlTemplate>
   <Binding>
+    <!-- Bind the root section, named Entity (see XmlTemplate node higher in this config), to the entity elements from the model -->
     <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="Entity">
       <Placeholders>
+        <!-- Adds a placeholder named System that references two levels above entity in the model (being the system element) -->
         <Placeholder name="System" modelXPath="../.." />
       </Placeholders>
+      <!-- Within the "Entity" section, bind the "Attribute" section to the entity's attributes -->
       <SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="Attribute">
         <Placeholders>
+        <!-- Define a placeholder named Entity so the parent entity can be referenced from the Attribute section -->
           <Placeholder name="Entity" modelXPath="../.." />
         </Placeholders>
       </SectionModelBinding>      

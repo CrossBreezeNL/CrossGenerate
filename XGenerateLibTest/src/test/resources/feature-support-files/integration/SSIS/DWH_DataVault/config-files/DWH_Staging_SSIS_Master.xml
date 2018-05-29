@@ -2,7 +2,7 @@
 <XGenConfig>
  <Model>
     <ModelAttributeInjections>
-      <!-- Translate the SQL data type into the SSIS data type and store it in the 'etldatatype' attribute on the attribute elements in the model. -->
+      <!-- Create a new model attribute named packageId and populate it with the internalId, enclosed in brackets. -->
       <ModelAttributeInjection modelXPath="//mappableObjects/*[@internalId]" targetAttribute="packageId" targetXPath="concat('{', @internalId, '}')"/>
     </ModelAttributeInjections>
   </Model>
