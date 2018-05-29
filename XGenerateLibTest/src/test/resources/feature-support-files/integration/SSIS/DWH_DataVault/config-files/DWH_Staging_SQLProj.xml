@@ -2,7 +2,7 @@
 <XGenConfig>
   <Model>
     <ModelAttributeInjections>
-      <!-- Create a new model attribute named packageId and populate it with the internalId, enclosed in brackets. -->
+      <!-- Create a new model attribute named projectGuid and populate it with the internalId, enclosed in brackets. -->
       <ModelAttributeInjection modelXPath="/modeldefinition/system" targetAttribute="projectGuid" targetXPath="concat('{', @internalId, '}')"/>
     </ModelAttributeInjections>
   </Model>
