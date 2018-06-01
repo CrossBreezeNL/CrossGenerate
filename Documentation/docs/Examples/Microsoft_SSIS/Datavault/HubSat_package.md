@@ -1,4 +1,7 @@
-# Microsoft SSIS - Datavault - Hub-Sat load package
+# Microsoft SSIS - DataVault - Hub-Sat load package
+
+In this example the Hub-Sat load package for the [DataVault](../DataVault) solution is described.
+
 ## Model
 See [DWH Model](../../model/DWH_Model)
 
@@ -10,18 +13,19 @@ A SSIS package is created with the following components (note the @XGenXmlSectio
 #### Control Flow
 On the Control Flow we have a Data Flow Task with the name 'DFT Load Entity_owner HS_Entity_name'. During generation this will be resolved to the proper entity owner and name.
 
-[![Template Control Flow](img/hubsat_control_flow.png)](img/hubsat_control_flow.png)
+![Template Control Flow](img/hubsat_control_flow.png)]
+
 #### Data Flow
 In the DataFlow task of this template we have:
 
 - A OLE DB Source component with a query implementing the source to target mapping
-- A lookup to the target hub table to obtain the technical hub key
-- A lookup to the target hub-sat table to obtain the current hash value (if any)
-- A Derive Column component to add the LoadDateTime and EndDateTime as a columns to the output
+- A lookup to the target Hub table to obtain the technical Hub key.
+- A lookup to the target Hub-Sat table to obtain the current hash value (if any).
+- A Derive Column component to add the LoadDateTime and EndDateTime as a columns to the output.
 - A Conditional Split to route records (new or modified) to the appropriate next component.
-- A Multicast for modified records to enable insert of new version and end-date the existing version
-- A union all combining the new and modified records for insertion
-- An SQL command updating existing records (setting enddate) if a new, changed version is introduced
+- A Multicast for modified records to enable insert of new version and end-date the existing version.
+- A union all combining the new and modified records for insertion.
+- An SQL command updating existing records (setting enddate) if a new, changed version is introduced.
 - A Destination for inserting new and modified records.
 
 Again the `Entity_owner` and `Entity_name` placeholders are used.
@@ -33,35 +37,35 @@ Since setting the appropriate section annotation on input/output and extended co
 ##### Source
 
 ###### Connection Manager
-Note that there is a similar but not equal SQL statement when compared to the Hub load template package. The SQL statement in this hub-sat template also exposes nonkey columns and creates a hash column for change detection. 
+Note that there is a similar but not equal SQL statement when compared to the Hub load template package. The SQL statement in this Hub-Sat template also exposes nonkey columns and creates a hash column for change detection.
 
 ![Template Source Connection Manager](img/hubsat_source_connection.png)
 
 ##### Input and Output Properties - External Columns, Input and Output columns
-Compared to the Hub package, the hub-sat packages has a NonKeyAttribute_name column next to the KeyAttribute_name column. For both these columns, the section annotation needs to be present in the External, Input and Output columns of each relevant component, as illustrated below for the External Columns of the Source component.
+Compared to the Hub package, the Hub-Sat packages has a NonKeyAttribute_name column next to the KeyAttribute_name column. For both these columns, the section annotation needs to be present in the External, Input and Output columns of each relevant component, as illustrated below for the External Columns of the Source component.
 
 ![Template Source Input and Output Properties - External Columns](img/hubsat_source_external_columns.png)
 
 ##### Hub Lookup 
 ###### General
-Fail on no match, (since hub key cannot be found)
+Fail on no match, (since Hub key cannot be found).
 ![Lookup General](img/hubsat_lookup_hub_general.png)
 
 ###### Connection
-Set the input to the template hub table
+Set the input to the template Hub table.
 ![Lookup Connection](img/hubsat_lookup_hub_connection.png)
 
 ###### Columns
 Map KeyAttribute_name for the lookup
 ![Lookup Connection](img/hubsat_lookup_hub_columns.png)
 
-##### Sat Lookup
+##### Hub-Sat Lookup
 ###### General
-Ignore failure, since the sat record does not have to exist.
+Ignore failure, since the Hub-Sat record does not have to exist.
 ![Lookup General](img/hubsat_lookup_sat_general.png)
 
 ###### Connection
-A Query is defined for getting the current (active) records from the sat table.
+A Query is defined for getting the current (active) records from the Hub-Sat table.
 ![Lookup Connection](img/hubsat_lookup_sat_connection.png)
 
 ###### Columns
@@ -72,7 +76,7 @@ A Query is defined for getting the current (active) records from the sat table.
 
 ##### Destination
 ###### Connection Manager
-The destination needs to be set to the template hub-sat table
+The destination needs to be set to the template Hub-Sat table.
 ![Destination connection manager](img/hubsat_destination_connection.png)
 
 ###### Mappings
@@ -82,7 +86,7 @@ The destination needs to be set to the template hub-sat table
 For documentation on templates, please see [Template](../../Template).
 
 ## Config
-See config section in [Datavault](./)
+See config section in [DataVault](./).
 
 ## Output
 When running CrossGenerate with the given Model, Template and Config, the following packages are created:
@@ -102,7 +106,7 @@ When running CrossGenerate with the given Model, Template and Config, the follow
 ##### Source
 
 ###### Connection Manager
-Note that the business rules are applied on the SQL statement
+Note that the business rules are applied on the SQL statement.
 ![Output Source Connection Manager](img/hubsat_output_source_connection.png)
 
 ###### Columns

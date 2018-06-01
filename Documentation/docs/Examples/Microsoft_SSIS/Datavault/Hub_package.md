@@ -1,4 +1,7 @@
-# Microsoft SSIS - Datavault - Hub load package
+# Microsoft SSIS - DataVault - Hub load package
+
+In this example the Hub load package for the [DataVault](../DataVault) solution is described.
+
 ## Model
 See [DWH Model](../../model/DWH_Model)
 
@@ -10,20 +13,20 @@ A SSIS package is created with the following components (note the @XGenXmlSectio
 #### Control Flow
 On the Control Flow we have a Data Flow Task with the name 'DFT Load Entity_owner H_Entity_name'. During generation this will be resolved to the proper entity owner and name.
 
-[![Template Control Flow](img/hub_control_flow.png)](img/hub_control_flow.png)
+![Template Control Flow](img/hub_control_flow.png)
 #### Data Flow
 In the DataFlow task of this template we have:
 
-- A OLE DB Source component with a query implementing the source to target mapping
-- A lookup to the target hub table to determine if the record already exists
-- A Derive Column component to add the LoadDateTime as a column to the output
+- A OLE DB Source component with a query implementing the source to target mapping.
+- A lookup to the target hub table to determine if the record already exists.
+- A Derive Column component to add the LoadDateTime as a column to the output.
 - A OLE DB Destination component to write the data to the Destination table.
 
 Again the `Entity_owner` and `Entity_name` placeholders are used.
 
 ![Template Data Flow](img/hub_dataflow.png)
 
-in this example all components are covered that require CrossGenerate specific settings.
+In this example all components are covered that require CrossGenerate specific settings.
 
 ##### Source
 
@@ -45,30 +48,30 @@ We do the same for the 'Output Columns' on the Source Output and Source Error Ou
 ![Template Source Input and Output Properties - Error Columns](img/hub_source_error_columns.png)
 
 ##### Lookup 
-The lookup is used to ignore records that already exist
+The lookup is used to ignore records that already exist.
 
 ###### General
-Redirect missing records to no match output
+Redirect missing records to no match output.
 ![Lookup General](img/hub_lookup_general.png)
 
 ###### Connection
-Set the input to the template hub table
+Set the input to the template Hub table.
 ![Lookup Connection](img/hub_lookup_connection.png)
 
 ###### Columns
-Map KeyAttribute_name for the lookup
+Map KeyAttribute_name for the lookup.
 ![Lookup Connection](img/hub_lookup_columns.png)
 
 ###### Input and Output Properties - Lookup Input - Input Columns
-Using advanced editor to set a section annotation in the input column KeyAttribute_name
+Using advanced editor to set a section annotation in the input column KeyAttribute_name.
 ![Input columns](img/hub_lookup_advanced_inputoutput.png)
 
 ##### Derived column
-The derived colum transformation does not need any specific configuration for Crossgenerate.
+The derived colum transformation does not need any specific configuration for CrossGenerate.
 
 ##### Destination
 ###### Connection Manager
-The destination needs to be set to the template hub table
+The destination needs to be set to the template Hub table
 ![Destination connection manager](img/hub_destination_connection.png)
 
 ###### Mappings
@@ -84,7 +87,7 @@ The destination needs to be set to the template hub table
 For documentation on templates, please see [Template](../../Template).
 
 ## Config
-See config section in [Datavault](./)
+See config section in [DataVault](./).
 
 ## Output
 When running CrossGenerate with the given Model, Template and Config, the following packages are created:

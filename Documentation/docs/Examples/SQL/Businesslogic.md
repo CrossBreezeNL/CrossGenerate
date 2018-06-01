@@ -1,6 +1,6 @@
 # SQL - Business logic
 
-In this example we create user defined functions implementing business logic. please read the [Simple staging](./Simple_staging) example first for a basic explanation of concepts used in the template and config. The functions implemented in this example are used in the [SSIS Datavault example](../Microsoft_SSIS/Datavault).
+In this example we create user defined functions implementing business logic. If you haven't done already, please read the [Simple staging example](./Simple_staging) first for a basic explanation of concepts used in the template and config. The functions implemented in this example are used in the [SSIS DataVault example](../Microsoft_SSIS/DataVault).
 
 ## Model
 In this example we will be generating the business logic (business rules) defined in the [DWH model](../Model/DWH_model).
@@ -9,10 +9,10 @@ In this example we will be generating the business logic (business rules) define
 We create a template for each type of business rule. The example model contains two types of rules: a derived field and a lookup.
 
 ### DeriveRule_owner.udf_BR_DeriveRule_name.sql
-The derived field template creates a function with the appropriate signature based on the parameters and attributes defined in the model. for the implementation the businessrule's child element `expression` is referenced. 
+The derived field template creates a function with the appropriate signature based on the parameters and attributes defined in the model. For the implementation the business rule child element `expression` is referenced. 
 
 !!! note
-      When a model's attribute is accessed an underscore is used as accessor (for instance Parameter_name) a child element is accessed using the dollar sign (DeriveRule$expression). The accessors can be configured in the config.
+      When a model attribute is accessed an underscore is used as accessor (for example Parameter_name) a child element is accessed using the dollar sign (for example DeriveRule$expression). The accessors can be configured in the config.
 
 ``` sql
 -- @XGenComment(This is the function template for all derive rules in the DWH)
@@ -30,7 +30,7 @@ GO
 ```
 
 ### LookupRule_owner.udf_BR_LookupRule_name.sql
-In the model a lookup businessrule has a mapped source entity. With the information in the model an implementation can be generated that performs a lookup query on the mapped source entity.
+In the model a lookup business rule has a mapped source entity. With the information in the model an implementation can be generated that performs a lookup query on the mapped source entity.
 
 ```sql
 -- @XGenComment(This is the function template for all lookup rules in the DWH)
@@ -156,3 +156,5 @@ RETURN
 GO
 ```
 
+## Attachments
+The entire DataVault example, including SQL and SSIS templates, can be found in the [SSIS DataVault example](../Microsoft_SSIS/DataVault#attachments).

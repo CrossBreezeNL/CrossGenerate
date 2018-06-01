@@ -5,9 +5,10 @@ Below a simple DWH model example is shown. The model shows two entities, custome
 [![DWH model diagram](img/dwh_model.png)](img/dwh_model.png)
 
 Next to structure, the model also contains information about the mapping from source to target including the usage of business rules. Below is an example of the mapping for the customer entity.
+
 ![DWH model diagram](img/dwh_mapping.png)
 
-All information in the model translates to the XML file below, containing target structures (entity and relation), businessrule definitions and source to target mappings.
+All information in the model translates to the XML file below, containing target structures (entity and relation), business rule definitions and source to target mappings.
 
 ## Model file
 

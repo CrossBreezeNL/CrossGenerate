@@ -1,30 +1,32 @@
-# Microsoft SSIS - Datavault - Master package
+# Microsoft SSIS - DataVault - Master package
+In this example the master package for the [DataVault](../DataVault) solution is described.
+
 ## Model
-See [DWH Model](../../model/DWH_Model)
+See [DWH Model](../../model/DWH_Model).
 
 ## Template
 ### Load_DWH_DataVault.dtsx
 
-This package is a container that executes the other hub, link, and sat packages in the appropriate order. The package consists of the following components:
+This package is the orchastration package that executes the all Hub, Hub-Sat, Link, and Link-Sat packages in the appropriate order. The package consists of the following components:
 
 #### Control Flow
-The control flow contains sequence containers for the different types of packages and ensures the load order is correct (hubs before links and hub-sats, links before link-sats).
+The control flow contains sequence containers for the different types of packages and ensures the load order is correct (hubs before links and Hub-sats, links before Link-sats).
 [![Template Control Flow](img/master_control_flow.png)](img/master_control_flow.png)
 
 #### Execute package tasks
-Each execute package task refers to one of the template packages, for instance the hub or hub-sat loading package described in the previous pages. Each execute package task has the appropriate section annotation in the description (either Entity or Relation)
+Each execute package task refers to one of the template packages, for instance the Hub or Hub-Sat loading package described in the previous pages. Each execute package task has the appropriate section annotation in the description (either Entity or Relation)
 
-##### Execute package task for hub
+##### Execute package task for Hub
 ![Execute Package Task](img/master_execute_package_hub.png)
 
-##### Execute package task for link
+##### Execute package task for Link
 ![Execute Package Task](img/master_execute_package_link.png)
 
 ### Documentation
 For documentation on templates, please see [Template](../../Template).
 
 ## Config
-For generating a masterpackage les config is needed when compared to generating hub and hub-sat packages. This is due to the fact that less information from the model is needed to generate the master package. As can be seen in the config below we:
+For generating a master package less config is needed when compared to generating Hub and Hub-Sat packages. This is due to the fact that less information from the model is needed to generate the master package. As can be seen in the config below we:
 
 - Inject a new attribute in the model to supply each entity, and relation with a keyPackageId and a nonKeyPackageId. These are needed to provide each execute package task a unique identifier, something that SSIS requires.
 - Substitute the DTSID, the unique identifier of each execute package task, with a placeholder so CrossGenerate can substitute the appropriate packageID that was injected in the model earlier.
@@ -64,9 +66,11 @@ For generating a masterpackage les config is needed when compared to generating 
 When running CrossGenerate with the given Model, Template and Config, a package named Load_DWH_DataVault.dtsx is created containing an execute package task for all of the generated packages in the appropriate sequence container.
 
 #### Control Flow
-The control flow now contains execute package tasks for each generated package
+The control flow now contains execute package tasks for each generated package.
+
 [![Output Control Flow](img/master_output_control_flow.png)](img/master_output_control_flow.png)
 
 #### Execute package tasks
 Each execute package task refers to one of the generated packages.
+
 ![Output Execute Package Task](img/master_output_execute_package.png)

@@ -1,35 +1,39 @@
-# Microsoft SSIS - Datavault
+# Microsoft SSIS - DataVault
 
-This example shows how you can generate a datavault using Crossgenerate. Have a look at the [Simple Staging example](../Simple_staging) first to read up on the CrossGenerate template- and config concepts used in this example.
+This example shows how you can generate a DataVault using CrossGenerate. If you haven't done already, have a look at the [Simple Staging example](../Simple_staging) first to read up on the CrossGenerate template- and config concepts used in this example.
 
-The implementation covers hubs, links and sattelites for hubs and links. The hub and hub-sat loading package templates are explained in detail in subsequent pages as well as how to create a master package. Since link and linksat are very similar to hub and hub sat (with regards to CrossGenerate concepts used) these packages are not explained in separate pages but are included in the [downloadable example](CrossGenerate_Example_SSIS_DWH_Datavault.zip).
+The implementation covers Hubs, Links and Satelites for Hubs and Links. The Hub and Hub-Sat loading package templates are explained in detail in subsequent pages as well as how to create a master package. Since Link and Link-Sat are very similar to Hub and Hub-Sat (with regards to CrossGenerate concepts used) these packages are not explained in separate pages but are included in the [downloadable example](#attachments).
+
 
 ## Model
-In this example we will be generating datavault packages for entities defined in the [DWH model](../Model/DWH_model).
+In this example we will be generating DataVault packages for entities defined in the [DWH model](../Model/DWH_model).
+
 
 ## Template
 
 ### Load_Entity_owner_H_Entity_name.dtsx
 
-please see [Hub package](Hub_package)
+Please see [Hub load package](Hub_package).
 
 ### Load_Entity_owner_HS_Entity_name.dtsx
 
-please see [Hub-sat package](HubSat_package)
+Please see [Hub-Sat load package](HubSat_package).
 
-### Load_Entity_owner_HS_Entity_name.dtsx
+### Load_DWH_DataVault.dtsx
 
-please see [Master package](Master_package)
+Please see [Master package](Master_package).
 
 ### Documentation
 For documentation on templates, please see [Template](../../../Template).
 
+
 ## Config
+
 Besides the concepts introduced in the [Simple Staging example](../Simple_staging) this config introduces the feature to use text templates within an XML template.
 As can be seen in the `TextTemplates` section, a node in the xml template can be marked as text template, which results in the node's context being interpreted similar to a text template. Within the node, text sections can then be defined using the @XGenTextSection annotation. Sections can also be defined in the config by adding `TextSections` to the `TextTemplate` node, as is done in the last `TextTemplate` definition in the config below.
 
 
-### Full config example for hub and hub-sat
+### Full config example for Hub and Hub-Sat
 ``` xml
 <?xml version="1.0" encoding="UTF-8"?>
 <XGenConfig>
@@ -126,17 +130,36 @@ As can be seen in the `TextTemplates` section, a node in the xml template can be
 ### Documentation
 For documentation on the configuration, please see [Config](../../../Config).
 
+
 ## Output
 
-### Load_Entity_owner_H_Entity_name.dtsx
+### Hub load packages
+- Load_BusinessVault_H_Country.dtsx
+- Load_BusinessVault_H_Customer.dtsx
+- Load_BusinessVault_H_Order.dtsx
 
-please see [Hub package](Hub_package#output)
+Please see [Hub package](Hub_package#output).
 
-### Load_Entity_owner_HS_Entity_name.dtsx
+### Hub-Sat load packages
+- Load_BusinessVault_HS_Country.dtsx
+- Load_BusinessVault_HS_Customer.dtsx
+- Load_BusinessVault_HS_Order.dtsx
 
-please see [Hub-Sat package](HubSat_package#output)
+Please see [Hub-Sat package](HubSat_package#output).
 
-- [CrossGenerate_Example_SSIS_Simple_staging.zip](CrossGenerate_Example_SSIS_Simple_staging.zip)
+### Link load packages
+- Load_BusinessVault_L_Order_Customer.dtsx
 
-## Download
-Download the entire Datavault example, including SQL and SSIS templates [here](CrossGenerate_Example_SSIS_DWH_Datavault.zip).
+### Link-Sat load packages
+- Load_BusinessVault_LS_Order_Customer.dtsx
+
+### Master package
+- Load_DWH_DataVault.dtsx
+
+Please see [Master package](Master_package#output).
+
+
+## Attachments
+The entire DataVault example, including SQL and SSIS templates, can be found in the following zip file:
+
+- [CrossGenerate_Example_SSIS_DWH_DataVault.zip](CrossGenerate_Example_SSIS_DWH_DataVault.zip)

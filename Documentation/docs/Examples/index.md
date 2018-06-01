@@ -17,13 +17,13 @@ We created several examples for different technologies. Please find the sample y
 ### SQL
 
 - [Create a simple stage table](./SQL/Simple_staging)
-- [Create a Datavault structure](./SQL/Datavault)
+- [Create a DataVault structure](./SQL/DataVault)
 - [Implement business logic](./SQL/Businesslogic)
 
 ### Microsoft SSIS
 
 - [A simple SSIS staging package](./Microsoft_SSIS/Simple_staging)
-- [A Datavault implementation](./Microsoft_SSIS/Datavault)
+- [A DataVault implementation](./Microsoft_SSIS/DataVault)
 
 ### Informatica Powercenter
 
