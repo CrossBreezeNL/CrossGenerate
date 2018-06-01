@@ -91,14 +91,14 @@
   <ItemGroup>
     <ProjectReference Include="..\DWH_Staging_ExampleSource\DWH_Staging_ExampleSource.sqlproj">
       <Name>DWH_Staging_ExampleSource</Name>
-      <Project>{380932B1-4152-4A1E-B649-93677B501977}</Project>
+      <Project>{5BFD8FE0-5C25-47AF-B3EC-76DCAD86B9FC}</Project>
       <Private>True</Private>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>DWH_Staging_ExampleSource</DatabaseSqlCmdVariable>
     </ProjectReference>
     <ProjectReference Include="..\DWH_Staging_Reference\DWH_Staging_Reference.sqlproj">
       <Name>DWH_Staging_Reference</Name>
-      <Project>{3A8B3BF1-B56B-48A8-A566-0C01515D48AC}</Project>
+      <Project>{286308CC-CB06-435C-871E-FFBCCBFE785B}</Project>
       <Private>True</Private>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>DWH_Staging_Reference</DatabaseSqlCmdVariable>
