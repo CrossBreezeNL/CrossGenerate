@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <XGenAppConfig>
     <App>
-        <ConfigFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateLibTest\src\test\resources\feature-support-files\integration\SSIS\DataVault_DWH\config-files</ConfigFolder>
+        <ConfigFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateLibTest\src\test\resources\feature-support-files\integration\SSIS\DWH_DataVault\config-files</ConfigFolder>
         <ModelFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateLibTest\src\test\resources\feature-support-files\common\</ModelFolder>
         <OutputFolder>C:\CrossGenerate\Output\</OutputFolder>
-        <TemplateFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateLibTest\src\test\resources\feature-support-files\integration\SSIS\DataVault_DWH\template-files\</TemplateFolder>
+        <TemplateFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateLibTest\src\test\resources\feature-support-files\integration\SSIS\DWH_DataVault\template-files\</TemplateFolder>
     </App>
     <License>
         <ContractId>0</ContractId>
