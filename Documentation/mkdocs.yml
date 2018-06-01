@@ -47,11 +47,18 @@ pages:
     - 'Overview'        : 'Examples/index.md'
     - 'Model':
         - 'Source model'     : 'Examples/Model/Source_model.md'
-#        - 'DWH model'        : 'Examples/Model/DWH_model.md'
+        - 'DWH model'        : 'Examples/Model/DWH_model.md'
     - 'SQL':
         - 'Simple staging'   : 'Examples/SQL/Simple_staging.md'
+        - 'Datavault'        : 'Examples/SQL/Datavault.md'
+        - 'Business logic'   : 'Examples/SQL/Businesslogic.md'
     - 'Microsoft SSIS':
         - 'Simple staging'   : 'Examples/Microsoft_SSIS/Simple_staging.md'
+        - Datavault: 
+            - 'Overview'                    : 'Examples/Microsoft_SSIS/Datavault/index.md'
+            - 'Hub loading package'         : 'Examples/Microsoft_SSIS/Datavault/Hub_package.md'            
+            - 'Hub-sat loading package'         : 'Examples/Microsoft_SSIS/Datavault/Hubsat_package.md'            
+            - 'Master package'         : 'Examples/Microsoft_SSIS/Datavault/Master_package.md'            
     - 'Informatica PowerCenter':
         - 'Simple staging'   : 'Examples/Informatica_PowerCenter/Simple_staging.md'
     - 'IBM DataStage':

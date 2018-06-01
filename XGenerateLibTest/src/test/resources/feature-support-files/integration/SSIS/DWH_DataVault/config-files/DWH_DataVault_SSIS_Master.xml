@@ -8,14 +8,8 @@
     </ModelAttributeInjections>
   </Model>
   <XmlTemplate rootSectionName="System">
-    <FileFormat currentAccessor="_" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <FileFormat currentAccessor="_" annotationPrefix="@XGen" commentNodeXPath="@Description" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <Output type="single_output" />
-    <XmlSections>
-      <XmlSection name="Entity" templateXPath="//Executable[@refId='Package\Load Hubs\Load_Entity_owner_H_Entity_name']" />
-      <XmlSection name="Entity" templateXPath="//Executable[@refId='Package\Load Hub-Sats\Load Entity_owner_HS_Entity_name']" />      
-      <XmlSection name="Relation" templateXPath="//Executable[@refId='Package\Load Links\Load Relation_owner_L_Relation_name']" />
-      <XmlSection name="Relation" templateXPath="//Executable[@refId='Package\Load Link-Sats\Load Relation_owner_LS_Relation_name']" />      
-    </XmlSections>
      <TemplatePlaceholderInjections>
       <!-- Inject a placeholder for the ID property for the packages. -->
       <TemplatePlaceholderInjection templateXPath="//Executable[@refId='Package\Load Hubs\Load_Entity_owner_H_Entity_name']/@DTSID" modelNode="keyPackageId" scope="current" />

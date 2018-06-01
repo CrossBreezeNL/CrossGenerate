@@ -7,13 +7,13 @@
   DTS:CreatorName="DESKTOP-EC40127\Willem"
   DTS:DTSID="{07A9F8DD-AA7D-44E5-8F7D-E52490E88955}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="13.0.4472.7"
+  DTS:LastModifiedProductVersion="13.0.4451.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="Load_DWH_DataVault"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="11"
-  DTS:VersionGUID="{A59773E0-348D-420B-8F46-A71405A7E628}">
+  DTS:VersionBuild="13"
+  DTS:VersionGUID="{D797310B-84E8-4B5B-87EB-DB58E40AA540}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -31,7 +31,7 @@
         <DTS:Executable
           DTS:refId="Package\Load Hub-Sats\Load Entity_owner_HS_Entity_name"
           DTS:CreationName="Microsoft.ExecutePackageTask"
-          DTS:Description="Execute Package Task"
+          DTS:Description="@XGenXmlSection(name=&quot;Entity&quot;)"
           DTS:DTSID="{915FBAB2-EC70-4DAC-A698-7EEF59C2BE0A}"
           DTS:ExecutableType="Microsoft.ExecutePackageTask"
           DTS:LocaleID="-1"
@@ -64,7 +64,7 @@
         <DTS:Executable
           DTS:refId="Package\Load Hubs\Load_Entity_owner_H_Entity_name"
           DTS:CreationName="Microsoft.ExecutePackageTask"
-          DTS:Description="Execute Package Task"
+          DTS:Description="@XGenXmlSection(name=&quot;Entity&quot;)"
           DTS:DTSID="{BB80B59C-2320-4BCC-838E-82C76086786F}"
           DTS:ExecutableType="Microsoft.ExecutePackageTask"
           DTS:LocaleID="-1"
@@ -97,7 +97,7 @@
         <DTS:Executable
           DTS:refId="Package\Load Link-Sats\Load Relation_owner_LS_Relation_name"
           DTS:CreationName="Microsoft.ExecutePackageTask"
-          DTS:Description="Execute Package Task"
+          DTS:Description="@XGenXmlSection(name=&quot;Relation&quot;)"
           DTS:DTSID="{97882A39-0F9A-40C2-ACB9-0DF0FB37BE87}"
           DTS:ExecutableType="Microsoft.ExecutePackageTask"
           DTS:LocaleID="-1"
@@ -130,7 +130,7 @@
         <DTS:Executable
           DTS:refId="Package\Load Links\Load Relation_owner_L_Relation_name"
           DTS:CreationName="Microsoft.ExecutePackageTask"
-          DTS:Description="Execute Package Task"
+          DTS:Description="@XGenXmlSection(name=&quot;Relation&quot;)"
           DTS:DTSID="{FEAD80AD-5B8E-421D-B338-1D54AE527D3B}"
           DTS:ExecutableType="Microsoft.ExecutePackageTask"
           DTS:LocaleID="-1"

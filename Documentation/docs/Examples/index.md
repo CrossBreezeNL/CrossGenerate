@@ -1,6 +1,6 @@
 # Examples
 
-We created a set of examples as a starting point to use CrossGenerate.
+We have created a set of examples as a starting point to use CrossGenerate.
 Please consult the examples for your technology here.
 
 ## Model
@@ -8,6 +8,7 @@ Please consult the examples for your technology here.
 In the examples we use example models, namely:
 
 - [Source model](./Model/Source_model)
+- [DWH model](./Model/DWH_model)
 
 ## Template
 
@@ -16,10 +17,13 @@ We created several examples for different technologies. Please find the sample y
 ### SQL
 
 - [Create a simple stage table](./SQL/Simple_staging)
+- [Create a Datavault structure](./SQL/Datavault)
+- [Implement business logic](./SQL/Businesslogic)
 
 ### Microsoft SSIS
 
 - [A simple SSIS staging package](./Microsoft_SSIS/Simple_staging)
+- [A Datavault implementation](./Microsoft_SSIS/Datavault)
 
 ### Informatica Powercenter
 
