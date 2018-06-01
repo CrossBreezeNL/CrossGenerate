@@ -1,0 +1,4 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RedirectMatch ^/docs/$ /docs/2.1.0/
+</IfModule>
