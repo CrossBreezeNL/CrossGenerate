@@ -3,7 +3,7 @@
 In this example the Hub-Sat load package for the [DataVault](../DataVault) solution is described.
 
 ## Model
-See [DWH Model](../../model/DWH_Model)
+See [DWH Model](../../Model/DWH_Model)
 
 ## Template
 ### Load_Entity_owner_HS_Entity_name.dtsx

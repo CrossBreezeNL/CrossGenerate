@@ -6,7 +6,7 @@ The implementation covers Hubs, Links and Satelites for Hubs and Links. The Hub 
 
 
 ## Model
-In this example we will be generating DataVault packages for entities defined in the [DWH model](../Model/DWH_model).
+In this example we will be generating DataVault packages for entities defined in the [DWH model](../../Model/DWH_model).
 
 
 ## Template

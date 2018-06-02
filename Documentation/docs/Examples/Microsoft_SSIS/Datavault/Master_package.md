@@ -2,12 +2,12 @@
 In this example the master package for the [DataVault](../DataVault) solution is described.
 
 ## Model
-See [DWH Model](../../model/DWH_Model).
+See [DWH Model](../../Model/DWH_Model).
 
 ## Template
 ### Load_DWH_DataVault.dtsx
 
-This package is the orchastration package that executes the all Hub, Hub-Sat, Link, and Link-Sat packages in the appropriate order. The package consists of the following components:
+This package is the orchestration package that executes the all Hub, Hub-Sat, Link, and Link-Sat packages in the appropriate order. The package consists of the following components:
 
 #### Control Flow
 The control flow contains sequence containers for the different types of packages and ensures the load order is correct (hubs before links and Hub-sats, links before Link-sats).
