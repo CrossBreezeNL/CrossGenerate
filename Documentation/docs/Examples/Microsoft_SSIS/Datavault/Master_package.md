@@ -2,7 +2,7 @@
 In this example the master package for the [DataVault](../DataVault) solution is described.
 
 ## Model
-See [DWH Model](../../Model/DWH_Model).
+See [DWH Model](../../Model/DWH_model).
 
 ## Template
 ### Load_DWH_DataVault.dtsx
