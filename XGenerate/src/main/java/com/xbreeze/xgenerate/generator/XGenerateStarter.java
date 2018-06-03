@@ -189,6 +189,15 @@ public class XGenerateStarter {
 	 */
 	private static void startGenerator(XGenAppConfig appConfig, ArrayList<ModelTemplateConfigCombination> modelTemplateConfigCombinations, boolean debugMode) {
 		try {
+			
+			//Load Generator from licenseClassLoader
+			LicensedClassLoader lcl = new LicensedClassLoader(GeneratorStub.class.getClassLoader(), appConfig.getLicenseConfig(), debugMode);
+			
+			// Load generator class from licensed ClassLoader
+			Class<?> c = lcl.loadClass("com.xbreeze.xgenerate.generator.Generator");                                      
+            // Instantiate new object
+			GeneratorStub generator = (GeneratorStub)c.newInstance();
+
 			// Loop through the model-template-config combinations and perform the generation.
 			for (ModelTemplateConfigCombination modelTemplateConfigCombination : modelTemplateConfigCombinations) {
 				// Create the full paths to the needed files.
@@ -206,15 +215,7 @@ public class XGenerateStarter {
 				if (debugMode) {
 					logger.warning("Debug mode enabled");
 				}
-			
-				//Load Generator from licenseClassLoader
-				LicensedClassLoader lcl = new LicensedClassLoader(GeneratorStub.class.getClassLoader(), appConfig.getLicenseConfig(), debugMode);
-				
-				// Load generator class from licensed ClassLoader
-				Class<?> c = lcl.loadClass("com.xbreeze.xgenerate.generator.Generator");                                      
-                // Instantiate new object
-				GeneratorStub generator = (GeneratorStub)c.newInstance();
-				
+								
 				generator.setDebugMode(debugMode);
 				// Set the model using the file location.
 				generator.setModelFromFile(modelFileLocation);
