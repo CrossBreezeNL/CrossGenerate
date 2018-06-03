@@ -11,7 +11,7 @@ CREATE TABLE [BusinessVault].[HS_Customer] (
   [LoadDateTime]             datetime2(2) NOT NULL,
   [EndDateTime]              datetime2(2) NOT NULL,
   [RecordHash] VARBINARY(16) NOT NULL, 
-    CONSTRAINT [PK_BusinessVault_HS_Customer] PRIMARY KEY NONCLUSTERED ([H_Customer_SQN], [LoadDateTime]),
+  CONSTRAINT [PK_BusinessVault_HS_Customer] PRIMARY KEY NONCLUSTERED ([H_Customer_SQN], [LoadDateTime]),
   CONSTRAINT [FK_BusinessVault_HS_Customer_BusinessVault_H_Customer] FOREIGN KEY ([H_Customer_SQN]) REFERENCES [BusinessVault].[H_Customer] ([H_Customer_SQN])
 );
 GO

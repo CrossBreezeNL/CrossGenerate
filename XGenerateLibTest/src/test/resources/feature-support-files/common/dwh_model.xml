@@ -15,12 +15,12 @@
         <mappableObjectMappings>
           <mappableObjectMapping id="Mapping_Lookup_Country_Reference_Country" internalId="4214BBCB-0566-47A6-9B93-F5A301668C38" name="Mapping_Lookup_Country_Reference_Country" pdObjectType="TableMapping" mappingType="source" mainMappedObject="Reference_Country" mappedObjectJoiner="[$(DWH_Staging_Reference)].[dbo].[Country] AS [Reference_Country]">
             <mappedObjects>
-              <mappedObject mappedObjectId="Country" mappedObjectSystemName="Reference" mappedObjectName="Country" expression="Reference_Country" />
+              <mappedObject mappedObjectId="Country" mappedObjectSystemName="Reference" mappedObjectOwner="dbo" mappedObjectName="Country" expression="Reference_Country" />
             </mappedObjects>
             <attributeMappings>
-              <attributeMapping sourceAttributeId="Country_Code" sourceAttributeSystem="Reference" sourceAttributeName="Country_Code" expression="Reference_Country.Country_Code" targetAttributeId="Country_Code" targetAttributeName="Country_Code" targetAttributeStereotype="parameter"/>
-              <attributeMapping sourceAttributeId="Country_Description" sourceAttributeSystem="Reference" sourceAttributeName="Country_Description" expression="Reference_Country.Country_Description" targetAttributeId="Country_Description" targetAttributeName="Country_Description" targetAttributeStereotype="attribute"/>
-              <attributeMapping sourceAttributeId="Country_Continent" sourceAttributeSystem="Reference" sourceAttributeName="Country_Continent" expression="Reference_Country.Country_Continent" targetAttributeId="Country_Continent" targetAttributeName="Country_Continent" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="Country_Code" sourceAttributeSystem="Reference" sourceAttributeOwner="dbo" sourceAttributeName="Country_Code" expression="Reference_Country.Country_Code" targetAttributeId="Country_Code" targetAttributeName="Country_Code" targetAttributeStereotype="parameter"/>
+              <attributeMapping sourceAttributeId="Country_Description" sourceAttributeSystem="Reference" sourceAttributeOwner="dbo" sourceAttributeName="Country_Description" expression="Reference_Country.Country_Description" targetAttributeId="Country_Description" targetAttributeName="Country_Description" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="Country_Continent" sourceAttributeSystem="Reference" sourceAttributeOwner="dbo" sourceAttributeName="Country_Continent" expression="Reference_Country.Country_Continent" targetAttributeId="Country_Continent" targetAttributeName="Country_Continent" targetAttributeStereotype="attribute"/>
             </attributeMappings>
           </mappableObjectMapping>
         </mappableObjectMappings>
@@ -45,19 +45,19 @@
           OUTER APPLY [BusinessRule].[udf_BR_Lookup_Country]([ExampleSource_Customer].[Country]) AS [BusinessRule_Lookup_Country]
           OUTER APPLY [BusinessRule].[udf_BR_Derive_Customer_FullName]([ExampleSource_Customer].[FirstName], [ExampleSource_Customer].[LastName]) AS [BusinessRule_Derive_Customer_FullName]">
             <mappedObjects>
-              <mappedObject mappedObjectId="Customer" mappedObjectSystemName="ExampleSource" mappedObjectName="Customer" expression="ExampleSource_Customer" stereotype="ExampleTableType" />
+              <mappedObject mappedObjectId="Customer" mappedObjectSystemName="ExampleSource" mappedObjectOwner="dbo" mappedObjectName="Customer" expression="ExampleSource_Customer" stereotype="ExampleTableType" />
               <mappedObject mappedObjectId="Lookup_Country" mappedObjectSystemName="ExampleDWH" mappedObjectOwner="BusinessRule" mappedObjectName="Lookup_Country" expression="ExampleDWH_BusinessRule_Lookup_Country" stereotype="lookup" />
               <mappedObject mappedObjectId="Derive_Customer_FullName" mappedObjectSystemName="ExampleDWH" mappedObjectOwner="BusinessRule" mappedObjectName="Derive_Customer_FullName" expression="ExampleDWH_BusinessRule_Derive_Customer_FullName" stereotype="derive" />
             </mappedObjects>
             <attributeMappings>
-              <attributeMapping sourceAttributeId="Id" sourceAttributeSystem="ExampleSource" sourceAttributeName="Id" expression="ExampleSource_Customer.Id" targetAttributeId="Id" targetAttributeName="Id" targetAttributePrimary="true" targetAttributeStereotype="attribute"/>
-              <attributeMapping sourceAttributeId="FirstName" sourceAttributeSystem="ExampleSource" sourceAttributeName="FirstName" expression="ExampleSource_Customer.FirstName" targetAttributeId="FirstName" targetAttributeName="FirstName" targetAttributeStereotype="attribute"/>
-              <attributeMapping sourceAttributeId="LastName" sourceAttributeSystem="ExampleSource" sourceAttributeName="LastName" expression="ExampleSource_Customer.LastName" targetAttributeId="LastName" targetAttributeName="LastName" targetAttributeStereotype="attribute"/>
-              <attributeMapping sourceAttributeId="City" sourceAttributeSystem="ExampleSource" sourceAttributeName="City" expression="ExampleSource_Customer.City" targetAttributeId="City" targetAttributeName="City" targetAttributeStereotype="attribute"/>
-              <attributeMapping sourceAttributeId="Country" sourceAttributeSystem="ExampleSource" sourceAttributeName="Country" expression="ExampleSource_Customer.Country" targetAttributeId="Country_Code" targetAttributeName="Country_Code" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="Id" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="Id" expression="ExampleSource_Customer.Id" targetAttributeId="Id" targetAttributeName="Id" targetAttributePrimary="true" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="FirstName" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="FirstName" expression="ExampleSource_Customer.FirstName" targetAttributeId="FirstName" targetAttributeName="FirstName" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="LastName" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="LastName" expression="ExampleSource_Customer.LastName" targetAttributeId="LastName" targetAttributeName="LastName" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="City" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="City" expression="ExampleSource_Customer.City" targetAttributeId="City" targetAttributeName="City" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="Country" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="Country" expression="ExampleSource_Customer.Country" targetAttributeId="Country_Code" targetAttributeName="Country_Code" targetAttributeStereotype="attribute"/>
               <attributeMapping sourceAttributeId="Country_Description" sourceAttributeSystem="ExampleDWH" sourceAttributeOwner="BusinessRule" sourceAttributeName="Country_Description" expression="BusinessRule_Lookup_Country.Country_Description" targetAttributeId="Country_Description" targetAttributeName="Country_Description" targetAttributeStereotype="attribute"/>
               <attributeMapping sourceAttributeId="Country_Continent" sourceAttributeSystem="ExampleDWH" sourceAttributeOwner="BusinessRule" sourceAttributeName="Country_Continent" expression="BusinessRule_Lookup_Country.Country_Continent" targetAttributeId="Country_Continent" targetAttributeName="Country_Continent" targetAttributeStereotype="attribute"/>
-              <attributeMapping sourceAttributeId="Phone" sourceAttributeSystem="ExampleSource" sourceAttributeName="Phone" expression="ExampleSource_Customer.Phone" targetAttributeId="Phone" targetAttributeName="Phone" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="Phone" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="Phone" expression="ExampleSource_Customer.Phone" targetAttributeId="Phone" targetAttributeName="Phone" targetAttributeStereotype="attribute"/>
               <attributeMapping sourceAttributeId="FullName" sourceAttributeSystem="ExampleDWH" sourceAttributeOwner="BusinessRule" sourceAttributeName="FullName" expression="BusinessRule_Derive_Customer_FullName.FullName" targetAttributeId="FullName" targetAttributeName="FullName" targetAttributeStereotype="attribute"/>
             </attributeMappings>
           </mappableObjectMapping>
@@ -77,14 +77,14 @@
         <mappableObjectMappings>
           <mappableObjectMapping id="Mapping_Order_ExampleSource_Order" internalId="A92B7B45-F0C5-416E-9DC2-6CEBC71D900B" name="Mapping_Order_ExampleSource_Order" pdObjectType="TableMapping" mappingType="source" mainMappedObject="ExampleSource_Order" mappedObjectJoiner="[DWH_Staging_ExampleSource].[dbo].[Order] AS [ExampleSource_Order]">
             <mappedObjects>
-              <mappedObject mappedObjectId="Order" mappedObjectSystemName="ExampleSource" mappedObjectName="Order" expression="ExampleSource_Order" />
+              <mappedObject mappedObjectId="Order" mappedObjectSystemName="ExampleSource" mappedObjectOwner="dbo" mappedObjectName="Order" expression="ExampleSource_Order" />
             </mappedObjects>
             <attributeMappings>
-              <attributeMapping sourceAttributeId="Id" sourceAttributeSystem="ExampleSource" sourceAttributeName="Id" expression="ExampleSource_Order.Id" targetAttributeId="Id" targetAttributeName="Id" targetAttributePrimary="true" targetAttributeStereotype="attribute"/>
-              <attributeMapping sourceAttributeId="OrderDate" sourceAttributeSystem="ExampleSource" sourceAttributeName="OrderDate" expression="ExampleSource_Order.OrderDate" targetAttributeId="OrderDate" targetAttributeName="OrderDate" targetAttributeStereotype="attribute"/>
-              <attributeMapping sourceAttributeId="OrderNumber" sourceAttributeSystem="ExampleSource" sourceAttributeName="OrderNumber" expression="ExampleSource_Order.OrderNumber" targetAttributeId="OrderNumber" targetAttributeName="OrderNumber" targetAttributeStereotype="attribute"/>
-              <attributeMapping sourceAttributeId="CustomerId" sourceAttributeSystem="ExampleSource" sourceAttributeName="CustomerId" expression="ExampleSource_Order.CustomerId" targetAttributeId="CustomerId" targetAttributeName="CustomerId" targetAttributeStereotype="attribute"/>
-              <attributeMapping sourceAttributeId="TotalAmount" sourceAttributeSystem="ExampleSource" sourceAttributeName="TotalAmount" expression="ExampleSource_Order.TotalAmount" targetAttributeId="TotalAmount" targetAttributeName="TotalAmount" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="Id" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="Id" expression="ExampleSource_Order.Id" targetAttributeId="Id" targetAttributeName="Id" targetAttributePrimary="true" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="OrderDate" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="OrderDate" expression="ExampleSource_Order.OrderDate" targetAttributeId="OrderDate" targetAttributeName="OrderDate" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="OrderNumber" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="OrderNumber" expression="ExampleSource_Order.OrderNumber" targetAttributeId="OrderNumber" targetAttributeName="OrderNumber" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="CustomerId" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="CustomerId" expression="ExampleSource_Order.CustomerId" targetAttributeId="CustomerId" targetAttributeName="CustomerId" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="TotalAmount" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="TotalAmount" expression="ExampleSource_Order.TotalAmount" targetAttributeId="TotalAmount" targetAttributeName="TotalAmount" targetAttributeStereotype="attribute"/>
             </attributeMappings>
           </mappableObjectMapping>
         </mappableObjectMappings>
@@ -101,11 +101,11 @@
         <mappableObjectMappings>
           <mappableObjectMapping id="Mapping_Order_Customer_ExampleSource_Order" internalId="B46BF85F-D0C1-440F-BBC9-3FA5A5892F72" name="Mapping_Order_Customer_ExampleSource_Order" pdObjectType="TableMapping" mappingType="source" mainMappedObject="ExampleSource_Order" mappedObjectJoiner="[DWH_Staging_ExampleSource].[dbo].[Order] AS [ExampleSource_Order]">
             <mappedObjects>
-              <mappedObject mappedObjectId="Order" mappedObjectSystemName="ExampleSource" mappedObjectName="Order" expression="ExampleSource_Order" />
+              <mappedObject mappedObjectId="Order" mappedObjectSystemName="ExampleSource" mappedObjectOwner="dbo" mappedObjectName="Order" expression="ExampleSource_Order" />
             </mappedObjects>
             <attributeMappings>
-              <attributeMapping sourceAttributeId="Id" sourceAttributeSystem="ExampleSource" sourceAttributeName="Id" expression="ExampleSource_Order.Id" targetAttributeId="OrderId" targetAttributeName="OrderId" targetAttributePrimary="true" targetAttributeStereotype="attribute"/>
-              <attributeMapping sourceAttributeId="CustomerId" sourceAttributeSystem="ExampleSource" sourceAttributeName="CustomerId" expression="ExampleSource_Order.CustomerId" targetAttributeId="CustomerId" targetAttributeName="CustomerId" targetAttributePrimary="true" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="Id" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="Id" expression="ExampleSource_Order.Id" targetAttributeId="OrderId" targetAttributeName="OrderId" targetAttributePrimary="true" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="CustomerId" sourceAttributeSystem="ExampleSource" sourceAttributeOwner="dbo" sourceAttributeName="CustomerId" expression="ExampleSource_Order.CustomerId" targetAttributeId="CustomerId" targetAttributeName="CustomerId" targetAttributePrimary="true" targetAttributeStereotype="attribute"/>
             </attributeMappings>
           </mappableObjectMapping>
         </mappableObjectMappings>
@@ -134,12 +134,12 @@
         <mappableObjectMappings>
           <mappableObjectMapping id="Mapping_Country_Reference_Country" internalId="3E3AB9A2-22B7-4008-ABCD-C6657AE69392" name="Mapping_Country_Reference_Country" pdObjectType="TableMapping" mappingType="source" mainMappedObject="Reference_Country" mappedObjectJoiner="[$(DWH_Staging_Reference)].[dbo].[Country] AS [Reference_Country]">
             <mappedObjects>
-              <mappedObject mappedObjectId="Country" mappedObjectSystemName="Reference" mappedObjectName="Country" expression="Reference_Country" />
+              <mappedObject mappedObjectId="Country" mappedObjectSystemName="Reference" mappedObjectOwner="dbo" mappedObjectName="Country" expression="Reference_Country" />
             </mappedObjects>
             <attributeMappings>
-              <attributeMapping sourceAttributeId="Country_Code" sourceAttributeSystem="Reference" sourceAttributeName="Country_Code" expression="Reference_Country.Country_Code" targetAttributeId="Code" targetAttributeName="Code" targetAttributePrimary="true" targetAttributeStereotype="attribute"/>
-              <attributeMapping sourceAttributeId="Country_Description" sourceAttributeSystem="Reference" sourceAttributeName="Country_Description" expression="Reference_Country.Country_Description" targetAttributeId="Description" targetAttributeName="Description" targetAttributeStereotype="attribute"/>
-              <attributeMapping sourceAttributeId="Country_Continent" sourceAttributeSystem="Reference" sourceAttributeName="Country_Continent" expression="Reference_Country.Country_Continent" targetAttributeId="Continent" targetAttributeName="Continent" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="Country_Code" sourceAttributeSystem="Reference" sourceAttributeOwner="dbo" sourceAttributeName="Country_Code" expression="Reference_Country.Country_Code" targetAttributeId="Code" targetAttributeName="Code" targetAttributePrimary="true" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="Country_Description" sourceAttributeSystem="Reference" sourceAttributeOwner="dbo" sourceAttributeName="Country_Description" expression="Reference_Country.Country_Description" targetAttributeId="Description" targetAttributeName="Description" targetAttributeStereotype="attribute"/>
+              <attributeMapping sourceAttributeId="Country_Continent" sourceAttributeSystem="Reference" sourceAttributeOwner="dbo" sourceAttributeName="Country_Continent" expression="Reference_Country.Country_Continent" targetAttributeId="Continent" targetAttributeName="Continent" targetAttributeStereotype="attribute"/>
             </attributeMappings>
           </mappableObjectMapping>
         </mappableObjectMappings>
