@@ -18,11 +18,18 @@ public class ModelConfig {
 	private ArrayList<ModelAttributeInjection> _modelAttributeInjections;
 	
 	/**
+	 * The ModelNodeRemoval elements specified within the Model configuration.
+	 */
+	private ArrayList<ModelNodeRemoval> _modelModelNodeRemovals;
+	
+	/**
 	 * Constructor.
 	 */
 	public ModelConfig() {
 		// Initialize the modelAttributeInjections.
 		this._modelAttributeInjections = new ArrayList<ModelAttributeInjection>();
+		// Initialize the modelModelNodeRemovals.
+		this.setModelModelNodeRemovals(new ArrayList<ModelNodeRemoval>());		
 	}
 
 	/**
@@ -39,5 +46,21 @@ public class ModelConfig {
 	 */
 	public void setModelAttributeInjections(ArrayList<ModelAttributeInjection> modelAttributeInjections) {
 		this._modelAttributeInjections = modelAttributeInjections;
+	}
+
+	/**
+	 * @return the modelModelNodeRemovals
+	 */
+	@XmlElement(name="ModelNodeRemoval")
+	@XmlElementWrapper(name="ModelNodeRemovals")
+	public ArrayList<ModelNodeRemoval> getModelModelNodeRemovals() {
+		return _modelModelNodeRemovals;
+	}
+
+	/**
+	 * @param modelModelNodeRemovals the modelModelNodeRemovals to set
+	 */
+	public void setModelModelNodeRemovals(ArrayList<ModelNodeRemoval> modelModelNodeRemovals) {
+		this._modelModelNodeRemovals = modelModelNodeRemovals;
 	}
 }

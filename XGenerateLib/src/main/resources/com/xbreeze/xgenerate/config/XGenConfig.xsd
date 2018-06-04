@@ -23,6 +23,13 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="ModelNodeRemovals" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ModelNodeRemoval" type="modelNodeRemoval" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
 
@@ -32,6 +39,11 @@
     <xs:attribute name="targetAttribute" type="xs:string" use="required"/>
     <xs:attribute name="targetValue" type="xs:string"/>
     <xs:attribute name="targetXPath" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="modelNodeRemoval">
+    <xs:sequence/>
+    <xs:attribute name="modelXPath" type="xs:string" use="required"/>
   </xs:complexType>
 
   <xs:complexType name="textTemplateConfig">
@@ -79,7 +91,7 @@
         <xs:attribute name="includeEnd" type="xs:boolean"/>
         <xs:attribute name="literalOnFirstLine" type="xs:string"/>
         <xs:attribute name="literalOnLastLine" type="xs:string"/>
-        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="name" type="xs:string" use="required"/>
         <xs:attribute name="nrOfLines" type="xs:int"/>
         <xs:attribute name="prefix" type="xs:string"/>
         <xs:attribute name="prefixAction" type="repetitionAction"/>
@@ -135,7 +147,7 @@
     <xs:complexContent>
       <xs:extension base="templateAnnotation">
         <xs:sequence/>
-        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="name" type="xs:string" use="required"/>
         <xs:attribute name="templateXPath" type="xs:string"/>
       </xs:extension>
     </xs:complexContent>
