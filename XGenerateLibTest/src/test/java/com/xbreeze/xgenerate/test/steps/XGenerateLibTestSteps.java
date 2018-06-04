@@ -141,10 +141,10 @@ public class XGenerateLibTestSteps {
 	public void iRunTheGenerator() throws Throwable {	
 		//check if generator needs to be invoked with files or with template and config string
 		if (this._rawTemplate != null && this._xGenConfig != null) {
-			_generationResults = this._generator.generate(this._rawTemplate, this._xGenConfig, _outputFolderUri);
+			_generationResults = this._generator.generate(this._rawTemplate, this._xGenConfig, this._outputFolderUri, "");
 		}
 		else if (this._templateFileUri != null && this._configFileUri != null) {
-			_generationResults = this._generator.generateFromFiles(this._templateFileUri, this._configFileUri, this._outputFolderUri);
+			_generationResults = this._generator.generateFromFiles(this._templateFileUri, this._configFileUri, this._outputFolderUri, "");
 		}
 		else {
 			throw new GeneratorException ("Template and config should both be specified as either content or file(URI) in the feature.");
@@ -186,7 +186,7 @@ public class XGenerateLibTestSteps {
 	private void compareActualAndExpectedOutput(String outputName, String expectedResultContent) throws Throwable {
 		Boolean outputFound = false;
 		for(GenerationResult generationResult : this._generationResults.getGenerationResults()) {
-			if (generationResult.getOutputFileLocation() != null && _outputFolderUri.resolve(uriEncode(outputName)).equals(URI.create(generationResult.getOutputFileLocation()))) {
+			if (generationResult.getOutputFileLocation() != null && uriEncode(outputName).equals(generationResult.getOutputFileLocation())) {
 				outputFound = true;
 				assertEquals(
 						"The expected and actual result content is different",

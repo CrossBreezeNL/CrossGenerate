@@ -3,6 +3,7 @@ package com.xbreeze.xgenerate.generator;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.logging.ConsoleHandler;
@@ -205,13 +206,19 @@ public class XGenerateStarter {
 				URI templateFileLocation = Paths.get(appConfig.getAppConfig().getTemplateFolder(), modelTemplateConfigCombination.getTemplateFileLocation()).toUri();
 				URI configFileLocation = Paths.get(appConfig.getAppConfig().getConfigFolder(), modelTemplateConfigCombination.getConfigFileLocation()).toUri();
 				// Write the output to the output folder and the relative folder the template is in.
-				URI outputFileLocation = Paths.get(appConfig.getAppConfig().getOutputFolder(), modelTemplateConfigCombination.getTemplateFileLocation()).getParent().toUri();
+				URI outputFolderLocation = Paths.get(appConfig.getAppConfig().getOutputFolder()).toUri();
+				
+				// Derive the relative template folder, if there is a parent folder for the template file.
+				String relativeTemplateFolder = "";
+				Path templateFileParent = Paths.get(modelTemplateConfigCombination.getTemplateFileLocation()).getParent();
+				if (templateFileParent != null)
+					relativeTemplateFolder = templateFileParent.toString();
 				
 				logger.info("Starting CrossGenerate with the following arguments:");
 				logger.info(String.format(" - ModelFileLocation: %s", modelFileLocation));
 				logger.info(String.format(" - TemplateFileLocation: %s", templateFileLocation));
 				logger.info(String.format(" - ConfigFileLocation: %s", configFileLocation));
-				logger.info(String.format(" - OutputFileLocation: %s", outputFileLocation));
+				logger.info(String.format(" - OutputFolderLocation: %s", outputFolderLocation));
 				if (debugMode) {
 					logger.warning("Debug mode enabled");
 				}
@@ -220,7 +227,7 @@ public class XGenerateStarter {
 				// Set the model using the file location.
 				generator.setModelFromFile(modelFileLocation);
 				// Generate the output using the file locations.
-				generator.generateFromFilesAndWriteOutput(templateFileLocation, configFileLocation, outputFileLocation);
+				generator.generateFromFilesAndWriteOutput(templateFileLocation, configFileLocation, outputFolderLocation, relativeTemplateFolder);
 			}
 			
 			logger.info("Generation complete");

@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
@@ -153,7 +154,7 @@ public class XMLUtils {
         return modifiedTemplate;
 	}
 	
-	public static XsltTransformer getXsltTransformer(String xsltTemplateContent, String modelFileContent) throws GeneratorException {
+	public static XsltTransformer getXsltTransformer(String xsltTemplateContent, String modelFileContent, URI outputFolderUri) throws GeneratorException {
 		// Create a string reader on the pre-processed template.
 		StringReader xslStringReader = new StringReader(xsltTemplateContent);
 		StreamSource xslSource = new StreamSource(xslStringReader);
@@ -196,13 +197,15 @@ public class XMLUtils {
 		// Create a XdmNode based on the model file content.
 		XdmNode modelDocumentNode;
 		try {
-			modelDocumentNode = processor.newDocumentBuilder().build(new StreamSource(new StringReader(modelFileContent)));
+			StreamSource modelFileStreamSource = new StreamSource(new StringReader(modelFileContent));
+			modelDocumentNode = processor.newDocumentBuilder().build(modelFileStreamSource);
 		} catch (SaxonApiException e) {
 			throw new GeneratorException(String.format("Error while parsing model file content: %s", e.getMessage()));
 		}
 		// Set the initial context node the the model XdmNode.
 		xsltTransformer.setInitialContextNode(modelDocumentNode);
 		// Set the serializer on the transformer, this can be an unconfigured serializer since the output uri's are absolute.
+		xsltTransformer.setBaseOutputURI(outputFolderUri.toString());
 		Serializer outputSerializer = processor.newSerializer();
 		xsltTransformer.setDestination(outputSerializer);
 		

@@ -56,7 +56,7 @@ public class GeneratorStub {
 		logger.warning("Invoking generator stub instead of actual generator");
 	}
 		
-	public void generateFromFilesAndWriteOutput(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException {
+	public void generateFromFilesAndWriteOutput(URI templateFileUri, URI configFileUri, URI outputFolderUri, String relativeTemplateFolderUri) throws GeneratorException {
 		logger.warning("Invoking generator stub instead of actual generator");
 	}
 	

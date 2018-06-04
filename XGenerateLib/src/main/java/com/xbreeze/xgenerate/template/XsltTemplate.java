@@ -1,6 +1,5 @@
 package com.xbreeze.xgenerate.template;
 
-import java.net.URI;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,18 +40,18 @@ public class XsltTemplate {
 	 * @param outputFolder
 	 * @param rootSectionModelBindingConfig
 	 */
-	public XsltTemplate(String templateId, String templateFileLocation, RootTemplateConfig templateConfig, URI outputFileUri, SectionModelBindingConfig rootSectionModelBindingConfig) {
+	public XsltTemplate(String templateId, String templateFileLocation, RootTemplateConfig templateConfig, String relativeOutputFileUri, SectionModelBindingConfig rootSectionModelBindingConfig) {
 		this._templateBuffer = new StringBuffer();
 		this._outputType = templateConfig.getOutputConfig().getType();
 		
 		// Initialize the template.
-		initTemplate(templateId, templateFileLocation, templateConfig, outputFileUri, rootSectionModelBindingConfig);
+		initTemplate(templateId, templateFileLocation, templateConfig, relativeOutputFileUri, rootSectionModelBindingConfig);
 	}
 	
 	/**
 	 * Initialize the template, by creating the starting elements for the XSLT.
 	 */
-	private void initTemplate(String templateId, String templateFileName, RootTemplateConfig templateConfig, URI outputFileUri, SectionModelBindingConfig rootSectionModelBindingConfig) {
+	private void initTemplate(String templateId, String templateFileName, RootTemplateConfig templateConfig, String relativeOutputFileUri, SectionModelBindingConfig rootSectionModelBindingConfig) {
 		appendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		// https://www.w3schools.com/xml/ref_xsl_el_stylesheet.asp
 		appendLine("<xsl:stylesheet id=\"%s\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"3.0\">", templateId);
@@ -83,7 +82,7 @@ public class XsltTemplate {
 		// If this is the root section, add the output document info.
 		// If the output type is output_per_element, add the result-document directive.
 		// TODO Use full template location (without config part)
-		String fileNamePlaceholder = processPlaceholders(Paths.get(outputFileUri).resolve(templateId).toUri().toString(), rootSectionModelBindingConfig, templateConfig.getFileFormatConfig(), PlaceholderType.XSL_INLINE, _outputType.equals(OutputType.output_per_element));
+		String fileNamePlaceholder = processPlaceholders(Paths.get(relativeOutputFileUri).resolve(templateId).toString(), rootSectionModelBindingConfig, templateConfig.getFileFormatConfig(), PlaceholderType.XSL_INLINE, _outputType.equals(OutputType.output_per_element));
 		// Add the for-each part on the model node to match the template on.
 		String rootForEach = String.format("<xsl:for-each select=\"%s\">", rootSectionModelBindingConfig.getModelXPath());
 		

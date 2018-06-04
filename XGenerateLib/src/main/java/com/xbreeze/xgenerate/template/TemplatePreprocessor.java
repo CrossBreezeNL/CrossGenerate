@@ -1,6 +1,5 @@
 package com.xbreeze.xgenerate.template;
 
-import java.net.URI;
 import java.util.ListIterator;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -58,7 +57,7 @@ public abstract class TemplatePreprocessor {
 	 * @throws UnhandledException 
 	 * @throws UnknownAnnotationException 
 	 */
-	public XsltTemplate preProcess(RawTemplate rawTemplate, URI outputFileUri) throws TemplatePreprocessorException, UnhandledException {
+	public XsltTemplate preProcess(RawTemplate rawTemplate, String relativeOutputFileUri) throws TemplatePreprocessorException, UnhandledException {
 		RootTemplateConfig templateConfig = _config.getTemplateConfig();
 		
 		// Perform the specific sectionizing for the current template.
@@ -84,8 +83,7 @@ public abstract class TemplatePreprocessor {
 		SectionedTemplate sectionizedTemplate = this.sectionizeTemplate(preprocessedTemplate);
 		
 		// Now the templates are pre-processed by their specific preprocessor, we can perform the generic pre-processing here.
-		// TODO: Put in right output folder.
-		XsltTemplate xsltTemplate = new XsltTemplate(rawTemplate.getRawTemplateFileName(), rawTemplate.getRawTemplateFileLocation(), templateConfig, outputFileUri, rootSectionModelBinding);
+		XsltTemplate xsltTemplate = new XsltTemplate(rawTemplate.getRawTemplateFileName(), rawTemplate.getRawTemplateFileLocation(), templateConfig, relativeOutputFileUri, rootSectionModelBinding);
 		
 		// Append the Xslt from the section to the pre-processed template.
 		sectionizedTemplate.appendTemplateXslt(xsltTemplate, _config, rootSectionModelBinding);

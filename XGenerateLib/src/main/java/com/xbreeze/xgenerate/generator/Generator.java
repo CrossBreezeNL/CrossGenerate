@@ -1,6 +1,7 @@
 package com.xbreeze.xgenerate.generator;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
@@ -9,6 +10,8 @@ import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.TransformerException;
+
+import org.apache.commons.io.FileUtils;
 
 import com.xbreeze.xgenerate.UnhandledException;
 import com.xbreeze.xgenerate.config.ConfigException;
@@ -81,7 +84,7 @@ public class Generator extends GeneratorStub {
 	 * @throws UnhandledException 
 	 * @throws UnknownAnnotationException 
 	 */
-	public GenerationResults generateFromFiles(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException {
+	public GenerationResults generateFromFiles(URI templateFileUri, URI configFileUri, URI outputFolderUri, String relativeTemplateFolderUri) throws GeneratorException {
 		// Unmarshal the config file into a XGenConfig object.
 		XGenConfig xGenConfig;
 		try {
@@ -99,12 +102,12 @@ public class Generator extends GeneratorStub {
 		}
 		
 		// Generate using the template and config.
-		return generate(rawTemplate, xGenConfig, outputFileUri);
+		return generate(rawTemplate, xGenConfig, outputFolderUri, relativeTemplateFolderUri);
 	}
 	
 	@Override
-	public void generateFromFilesAndWriteOutput(URI templateFileUri, URI configFileUri, URI outputFileUri) throws GeneratorException {
-		GenerationResults generationResults = generateFromFiles(templateFileUri, configFileUri, outputFileUri);
+	public void generateFromFilesAndWriteOutput(URI templateFileUri, URI configFileUri, URI outputFolderUri, String relativeTemplateFolderUri) throws GeneratorException {
+		GenerationResults generationResults = generateFromFiles(templateFileUri, configFileUri, outputFolderUri, relativeTemplateFolderUri);
 		
 		// For each generation result, write the results.
 		for (GenerationResult generationResult : generationResults.getGenerationResults()) {
@@ -112,7 +115,7 @@ public class Generator extends GeneratorStub {
 			// If debug mode is on, also write the pre-processed template to the output.
 			if (this._debugMode) {
 				// Construct the path to the pre-processed model.
-				String preprocessedModelLocation = Paths.get(outputFileUri).resolve(String.format("preprocessed_%s", generationResult.getModelFileName())).toString();
+				String preprocessedModelLocation = Paths.get(outputFolderUri).resolve(relativeTemplateFolderUri).resolve(String.format("preprocessed_%s", generationResult.getModelFileName())).toString();
 				logger.info(String.format("Writing preprocessed model to '%s'", preprocessedModelLocation));
 				// Write the pre-processed model.
 				writeToFile(preprocessedModelLocation, _model.getPreprocessedModel());
@@ -120,7 +123,7 @@ public class Generator extends GeneratorStub {
 				// If there is a pre-processed template, write it to the output folder.
 				if (generationResult.getPreprocessedTemplate() != null) {
 					// Construct the path to the pre-processed template.
-					String preprocessedFileLocation = Paths.get(outputFileUri).resolve(String.format("preprocessed_%s", generationResult.getTemplateFileName())).toString();
+					String preprocessedFileLocation = Paths.get(outputFolderUri).resolve(String.format("preprocessed_%s", generationResult.getTemplateFileName())).toString();
 					logger.info(String.format("Writing preprocessed template to '%s'", preprocessedFileLocation));
 					writeToFile(preprocessedFileLocation, generationResult.getPreprocessedTemplate());
 				}
@@ -144,6 +147,15 @@ public class Generator extends GeneratorStub {
 	private void writeToFile(String outputFileLocation, String outputFileContent) throws GeneratorException {
 		// Open a write on the output file location.
 		BufferedWriter writer;
+		
+		// If the output folder doesn't exist, create it.
+		File outputFolderLocation = new File(outputFileLocation).getParentFile();
+		try {
+			FileUtils.forceMkdir(outputFolderLocation);
+		} catch (IOException e1) {
+			throw new GeneratorException(String.format("Error while creating folder '%s': %s.", outputFolderLocation.toString(), e1.getMessage()));
+		}
+		
 		try {
 			writer = new BufferedWriter(new FileWriter(outputFileLocation));
 		} catch (IOException e) {
@@ -174,7 +186,7 @@ public class Generator extends GeneratorStub {
 	 * @throws UnhandledException 
 	 * @throws UnknownAnnotationException 
 	 */
-	public GenerationResults generate(RawTemplate rawTemplate, XGenConfig xGenConfig, URI outputFileUri) throws GeneratorException {
+	public GenerationResults generate(RawTemplate rawTemplate, XGenConfig xGenConfig, URI outputFolderUri, String relativeTemplateFolder) throws GeneratorException {
 		
 		// Pre-process the model (if model attribute injections are defined.
 		if (xGenConfig.getModelConfig() != null) {
@@ -202,7 +214,7 @@ public class Generator extends GeneratorStub {
 					// Get the template preprocessor for the template type we are dealing with.
 					TemplatePreprocessor templatePreprocessor = templateConfig.getTemplatePreprocessor(xGenConfig);
 					// Pre-process the raw template into a xslt template.
-					XsltTemplate xsltTemplate = templatePreprocessor.preProcess(rawTemplate, outputFileUri);
+					XsltTemplate xsltTemplate = templatePreprocessor.preProcess(rawTemplate, relativeTemplateFolder);
 					xsltTemplateString = xsltTemplate.toString();
 					// If in debug mode, write the preprocessed template.
 					if (this.isDebugMode()) {
@@ -218,7 +230,7 @@ public class Generator extends GeneratorStub {
 				{
 					logger.info("Begin template transformation");
 					
-					XsltTransformer xsltTransformer = XMLUtils.getXsltTransformer(xsltTemplateString, _model.getPreprocessedModel());
+					XsltTransformer xsltTransformer = XMLUtils.getXsltTransformer(xsltTemplateString, _model.getPreprocessedModel(), outputFolderUri);
 					
 					// If running in test mode, cast the xslTransformer to net.sf.saxon.jaxp.TransformerImpl and set our custom
 					// output resolver to get the output in GenerationResults instead of files					 
@@ -228,7 +240,19 @@ public class Generator extends GeneratorStub {
 					}
 					
 					// Perform the transformation.
-					xsltTransformer.transform();
+					try {
+						xsltTransformer.transform();
+					}
+					// We catch the SaxonApiException here and check for a specific error which occurs when the root node has no matches in the binding.
+					catch (SaxonApiException e) {
+						if (e.getMessage().equals("Result has no system ID, writer, or output stream defined")) {
+							logger.warning("The generation yielded no results because the root node binding has no matches.");
+						}
+						// Rethrow all other errors.
+						else {
+							throw e;
+						}
+					}
 					
 					logger.info("End template transformation");
 				}
