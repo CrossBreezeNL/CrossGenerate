@@ -82,3 +82,37 @@ Feature: Unit_Config_Model_ModelAttributeInjection
       C -> The entity is C
 
       """
+
+  Scenario: Inject an already existing attribute
+   Given the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model>
+          <ModelAttributeInjections>
+            <ModelAttributeInjection modelXPath="//entity[@name='A']" targetAttribute="type" targetValue="The entity was A" />
+            <ModelAttributeInjection modelXPath="//entity[@name='B']" targetAttribute="type" targetValue="The entity was B" />
+            <ModelAttributeInjection modelXPath="//entity[@name='C']" targetAttribute="type" targetValue="The entity was C" />
+            <ModelAttributeInjection modelXPath="//entity[@name='A']" targetAttribute="name" targetValue="NewA" />
+            <ModelAttributeInjection modelXPath="//entity[@name='B']" targetAttribute="name" targetValue="NewB" />
+            <ModelAttributeInjection modelXPath="//entity[@name='C']" targetAttribute="name" targetValue="NewC" />
+          </ModelAttributeInjections>
+        </Model>
+        <TextTemplate rootSectionName="Template">
+          <Output type="single_output" />
+        </TextTemplate>
+        <Binding>
+          <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table" />
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "Unit_Config_Model_ModelAttributeInjection.txt" with content:
+      """
+      NewA -> The entity was A
+      NewB -> The entity was B
+      NewC -> The entity was C
+
+      """
+  
