@@ -1,23 +1,14 @@
 package com.xbreeze.xgenerate.generator;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import com.xbreeze.xgenerate.UnhandledException;
 import com.xbreeze.xgenerate.config.ConfigException;
@@ -33,7 +24,10 @@ import com.xbreeze.xgenerate.template.TemplatePreprocessor;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.XsltTemplate;
 import com.xbreeze.xgenerate.template.annotation.UnknownAnnotationException;
-import com.xbreeze.xgenerate.template.xml.XMLUtils;
+import com.xbreeze.xgenerate.utils.XMLUtils;
+
+import net.sf.saxon.s9api.SaxonApiException;
+import net.sf.saxon.s9api.XsltTransformer;
 
 public class Generator extends GeneratorStub {
 	// The logger for this class.
@@ -118,20 +112,10 @@ public class Generator extends GeneratorStub {
 			// If debug mode is on, also write the pre-processed template to the output.
 			if (this._debugMode) {
 				// Construct the path to the pre-processed model.
-				File preprocessedModelLocation = Paths.get(outputFileUri).resolve(String.format("preprocessed_%s", generationResult.getModelFileName())).toFile();
+				String preprocessedModelLocation = Paths.get(outputFileUri).resolve(String.format("preprocessed_%s", generationResult.getModelFileName())).toString();
 				logger.info(String.format("Writing preprocessed model to '%s'", preprocessedModelLocation));
-				try {
-					Transformer xmlTransformer = XMLUtils.getXmlTransformer().newTransformer();
-					xmlTransformer.transform(_model.getAsDOMSource(), new StreamResult(preprocessedModelLocation));
-				}
-				// Error while getting the XML Transformer.
-				catch (TransformerConfigurationException e) {
-					throw new GeneratorException(e);
-				}
-				// Error while transforming the model into a XML.
-				catch (TransformerException e) {
-					throw new GeneratorException(e);
-				}
+				// Write the pre-processed model.
+				writeToFile(preprocessedModelLocation, _model.getPreprocessedModel());
 				
 				// If there is a pre-processed template, write it to the output folder.
 				if (generationResult.getPreprocessedTemplate() != null) {
@@ -234,57 +218,24 @@ public class Generator extends GeneratorStub {
 				{
 					logger.info("Begin template transformation");
 					
-					// Create a string reader on the pre-processed template.
-					StringReader xslStringReader = new StringReader(xsltTemplateString);
-					StreamSource xslSource = new StreamSource(xslStringReader);
-					
-					// Create a stream writer, to write the resulting output.
-					StringWriter xslResultWriter = new StringWriter();
-					StreamResult outputResult = new StreamResult(xslResultWriter);
-					
-					// Create the transformer objects to transform the XSLT with the Model into the output.
-					TransformerFactory xsltTransformerFactory = XMLUtils.getXmlTransformer();
-					// Create an ErrorListener for the TransformerFactory and Transformer, so warnings are logged using the local logger.
-					ErrorListener errorListener = new ErrorListener() {
-						@Override
-						public void warning(TransformerException exception) throws TransformerException {
-							// Send warnings to the local logger on the fine log level, so this is only visible when running in debug mode.
-							logger.fine(String.format("Warning fired during template transformation: %s", exception.getMessage()));
-						}
-						
-						@Override
-						public void fatalError(TransformerException exception) throws TransformerException {
-							throw new TransformerException(exception);
-						}
-						
-						@Override
-						public void error(TransformerException exception) throws TransformerException {
-							throw new TransformerException(exception);
-						}
-					};
-					// Set the error listener on the factory (for template compile-time warnings and errors).
-					xsltTransformerFactory.setErrorListener(errorListener);
-					// Create the XSLT Transformer.
-					Transformer xslTransformer = xsltTransformerFactory.newTransformer(xslSource);
-					// Set the error listener on the transformer (for template run-time warnings and errors).
-					xslTransformer.setErrorListener(errorListener);
+					XsltTransformer xsltTransformer = XMLUtils.getXsltTransformer(xsltTemplateString, _model.getPreprocessedModel());
 					
 					// If running in test mode, cast the xslTransformer to net.sf.saxon.jaxp.TransformerImpl and set our custom
 					// output resolver to get the output in GenerationResults instead of files					 
 					if (this._testMode) {
-						GenerationResultsOutputResolver outputResolver = new GenerationResultsOutputResolver(generationResults,_model.getModelFileName(), rawTemplate.getRawTemplateFileName());
-						((net.sf.saxon.jaxp.TransformerImpl)xslTransformer).getUnderlyingController().setOutputURIResolver(outputResolver);
+						GenerationResultsOutputResolver outputResolver = new GenerationResultsOutputResolver(generationResults, _model.getModelFileName(), rawTemplate.getRawTemplateFileName());
+						xsltTransformer.getUnderlyingController().setOutputURIResolver(outputResolver);
 					}
 					
-					//Invoke transform on the model
-					xslTransformer.transform(_model.getAsDOMSource(), outputResult);								
+					// Perform the transformation.
+					xsltTransformer.transform();
 					
 					logger.info("End template transformation");
 				}
 			}
 			
 			// If an exception occurs, wrap it in a GeneratorException and set it on a new GenerationResult.
-			catch (TemplatePreprocessorException | TransformerException | UnhandledException e) {
+			catch (TemplatePreprocessorException | UnhandledException | GeneratorException | SaxonApiException e) {
 				logger.severe(String.format("Error while generating: %s", e.getMessage()));
 				GenerationResult generationExeptionResult = new GenerationResult(_model.getModelFileName(), rawTemplate.getRawTemplateFileName());				
 				generationExeptionResult.setException(new GeneratorException(e));

@@ -1,14 +1,12 @@
 package com.xbreeze.xgenerate.template;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.input.BOMInputStream;
+import com.xbreeze.xgenerate.utils.FileUtils;
 
 public class RawTemplate {
 	// The logger for this class.
@@ -69,17 +67,11 @@ public class RawTemplate {
 		String rawTemplateFileName = rawTemplateFilePath.getFileName().toString();
 		String rawTemplateContent;
 		
-		// Try to read the template file into a string.
+		// Try to read the template file into a String.
 		try {
-			// Create a input stream from the template file.
-			FileInputStream fis = new FileInputStream(rawTemplateFilePath.toFile());
-			// Wrap the input stream in a BOMInputStream so it is invariant for the BOM.
-			BOMInputStream bomInputStream = new BOMInputStream(fis);
-			// Create a String using the BOMInputStream and the charset.
-			// The charset can be null, this gives no errors.
-			rawTemplateContent = IOUtils.toString(bomInputStream, bomInputStream.getBOMCharsetName());
+			rawTemplateContent = FileUtils.getFileContent(rawTemplateFileUri);
 		} catch (IOException e) {
-			throw new TemplateException(String.format("Couldn't read the template file (%s)", rawTemplateFilePath));
+			throw new TemplateException(String.format("Couldn't read the template file (%s): %s", rawTemplateFilePath, e.getMessage()));
 		}
 		
 		// Return the RawTemplate object.

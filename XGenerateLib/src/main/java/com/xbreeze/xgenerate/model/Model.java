@@ -5,14 +5,8 @@ import java.net.URI;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.transform.dom.DOMSource;
-
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
 import com.xbreeze.xgenerate.generator.GeneratorException;
-import com.xbreeze.xgenerate.template.xml.XMLUtils;
+import com.xbreeze.xgenerate.utils.FileUtils;
 
 public class Model {
 	// The logger for this class.
@@ -24,39 +18,32 @@ public class Model {
 	private String _modelFileName;
 	
 	/**
-	 * The model Document.
+	 * The model file content.
 	 */
-	private Document _modelDocument;
+	private String _modelFileContent;
+	
+	/**
+	 * The preprocessed model.
+	 */
+	private String _preprocessedModel;
 	
 	/**
 	 * Constructor.
 	 * @param modelFileUri The model file location.
 	 */
-	public Model(String modelFileName, Document modelDocument) {
+	public Model(String modelFileName, String modelFileContent) {
 		this._modelFileName = modelFileName;
-		this._modelDocument = modelDocument;
+		this._modelFileContent = modelFileContent;
+		// Store the initial model content in the preprocessed model, in case there is no pre-processing.
+		setPreprocessedModel(this._modelFileContent);
 	}
 	
 	/**
-	 * @return the modelDocument
+	 * Get the model file content.
+	 * @return The model file content.
 	 */
-	public Document getModelDocument() {
-		return _modelDocument;
-	}
-
-	/**
-	 * @param modelDocument the modelDocument to set
-	 */
-	public void setModelDocument(Document modelDocument) {
-		this._modelDocument = modelDocument;
-	}
-	
-	/**
-	 * Get the model document as a DOMSource.
-	 * @return
-	 */
-	public DOMSource getAsDOMSource() {
-		return new DOMSource(this._modelDocument);
+	public String getModelFileContent() {
+		return this._modelFileContent;
 	}
 	
 	/**
@@ -67,20 +54,16 @@ public class Model {
 	 */
 	public static Model fromFile(URI modelFileUri) throws GeneratorException {
 		logger.fine(String.format("Creating Model object from '%s'", modelFileUri));
-		Document modelDocument;
-		DocumentBuilder documentBuilder = XMLUtils.getDocumentBuilder();
+		
+		// Read the model file content into a String.
+		String modelFileContent;
 		try {
-			modelDocument = documentBuilder.parse(modelFileUri.toString());
+			modelFileContent = FileUtils.getFileContent(modelFileUri);
+		} catch (IOException e) {
+			throw new GeneratorException(String.format("Couldn't read the model file (%s): %s", modelFileUri, e.getMessage()));
 		}
-		// IOException when reading the model file.
-		catch (IOException e) {
-			throw new GeneratorException(String.format("Couldn't read the model file: %s", e.getMessage()));
-		}
-		// SAXException when parsing the model file.
-		catch (SAXException e) {
-			throw new GeneratorException(String.format("Couldn't parse the model file: %s", e.getMessage()));
-		}
-		return new Model(Paths.get(modelFileUri).getFileName().toString(), modelDocument);
+		
+		return new Model(Paths.get(modelFileUri).getFileName().toString(), modelFileContent);
 	}
 
 	/**
@@ -95,5 +78,19 @@ public class Model {
 	 */
 	public void setModelFileName(String modelFileName) {
 		this._modelFileName = modelFileName;
+	}
+
+	/**
+	 * @return the preprocessedModel
+	 */
+	public String getPreprocessedModel() {
+		return _preprocessedModel;
+	}
+
+	/**
+	 * @param preprocessedModel the preprocessedModel to set
+	 */
+	public void setPreprocessedModel(String preprocessedModel) {
+		this._preprocessedModel = preprocessedModel;
 	}
 }

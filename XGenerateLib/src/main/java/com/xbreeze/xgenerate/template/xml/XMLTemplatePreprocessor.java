@@ -23,6 +23,7 @@ import com.xbreeze.xgenerate.template.annotation.TemplateXmlSectionAnnotation;
 import com.xbreeze.xgenerate.template.scanner.AnnotationScanner;
 import com.xbreeze.xgenerate.template.section.NamedTemplateSection;
 import com.xbreeze.xgenerate.template.text.TextTemplatePreprocessor;
+import com.xbreeze.xgenerate.utils.XMLUtils;
 import com.ximpleware.AutoPilot;
 import com.ximpleware.ModifyException;
 import com.ximpleware.NavException;

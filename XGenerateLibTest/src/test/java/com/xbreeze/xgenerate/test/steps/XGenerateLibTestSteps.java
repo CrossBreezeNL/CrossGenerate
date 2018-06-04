@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringReader;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.logging.ConsoleHandler;
@@ -16,13 +15,9 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.http.client.utils.URIBuilder;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.generator.GenerationResult;
@@ -111,9 +106,7 @@ public class XGenerateLibTestSteps {
 
 	@Given("^I have the following model:$")
 	public void iHaveTheFollowingModel(String modelContent) throws Throwable {
-		// Create the model object.
-		Document modelDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(modelContent)));		
-		this._generator.setModel(new Model(null, modelDocument));
+		this._generator.setModel(new Model(null, modelContent));
 	}
 	
 	@Given("^I have the following model file: \"(.*)\"$")

@@ -1,15 +1,15 @@
-package com.xbreeze.xgenerate.template.xml;
+package com.xbreeze.xgenerate.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.xpath.XPath;
+import javax.xml.transform.ErrorListener;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.stream.StreamSource;
 
 import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
@@ -21,47 +21,17 @@ import com.ximpleware.VTDGen;
 import com.ximpleware.VTDNav;
 import com.ximpleware.XMLModifier;
 
-import net.sf.saxon.TransformerFactoryImpl;
-import net.sf.saxon.xpath.XPathFactoryImpl;
+import net.sf.saxon.s9api.Processor;
+import net.sf.saxon.s9api.SaxonApiException;
+import net.sf.saxon.s9api.Serializer;
+import net.sf.saxon.s9api.XdmNode;
+import net.sf.saxon.s9api.XsltCompiler;
+import net.sf.saxon.s9api.XsltExecutable;
+import net.sf.saxon.s9api.XsltTransformer;
 
-//TODO move this to a more generic package
 public class XMLUtils {
 	// The logger for this class.
 	protected static final Logger logger = Logger.getLogger(TemplatePreprocessor.class.getName());
-
-	public static DocumentBuilder getDocumentBuilder() throws GeneratorException {
-		// Create a DocumentBuilderFactory.
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		// Setting features on the DocumentBuilderFactory.
-		// See: https://stackoverflow.com/questions/155101/make-documentbuilder-parse-ignore-dtd-references
-		dbf.setValidating(false);
-		dbf.setNamespaceAware(true);
-		try {
-			dbf.setFeature("http://xml.org/sax/features/namespaces", true);
-			dbf.setFeature("http://xml.org/sax/features/validation", false);
-			// Disable loading of dtd's.
-			dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-			dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-			// Return the document builder.
-			return dbf.newDocumentBuilder();
-		}
-		catch (ParserConfigurationException e) {
-			throw new GeneratorException(e);
-		}
-	}
-	
-	public static TransformerFactory getXmlTransformer() {
-		return new TransformerFactoryImpl();
-	}
-	
-	/**
-	 * Get a XPath evaluator.
-	 * @return
-	 */
-	public static XPath getXPath() {
-		// Create a XPath evaluator (use new XPathFactoryImpl() to make sure the Saxon XPath is used).
-		return new XPathFactoryImpl().newXPath();
-	}
 	
 	/**
 	 * Escape XML characters.
@@ -111,16 +81,24 @@ public class XMLUtils {
 	public static void appendAttribute(VTDNav nv, XMLModifier xm, String attributeName, String attributeValue) throws GeneratorException {
     	// Only inject attribute if it does not already exist
     	try {
-			if (nv.getAttrVal(attributeName) == -1) {
+    		int attributeValueIndex = nv.getAttrVal(attributeName);
+    		// If the attribute doesn't exist, create it.
+			if (attributeValueIndex == -1) {
 				// Take the element index and count 2 token per attribute (name and value) to get to the last attribute value index.
 				int lastAttributeValueIndex = nv.getCurrentIndex() + (nv.getAttrCount() * 2);
 				// Take the offset of the last value, add the length of the value + 1 (for the double quote)
 				int lastAttributeValueEndIndex = (int)nv.getTokenOffset(lastAttributeValueIndex) + nv.getTokenLength(lastAttributeValueIndex) + 1;
-				logger.info(String.format("Appending attribute '%s' into template at %d", attributeName, lastAttributeValueEndIndex));
+				logger.info(String.format("Appending attribute '%s' at %d", attributeName, lastAttributeValueEndIndex));
 				// Insert  the new attribute.
 				xm.insertBytesAt(lastAttributeValueEndIndex, String.format(" %s=\"%s\"", attributeName, attributeValue).getBytes());
-			} else {
-				throw new GeneratorException(String.format("Trying to inject an attribute on an existing attribute, this is not allowed ('%s' -> '%s').", xm.toString(), attributeName));
+			}
+			// If the attribute already exists, update it.
+			else {
+				try {
+					xm.updateToken(attributeValueIndex, attributeValue.getBytes());
+				} catch (UnsupportedEncodingException e) {
+					throw new GeneratorException(String.format("Error while updating attribute value (%s)", attributeName), e);
+				}
 			}
 		} catch (NavException | ModifyException e) {
 			e.printStackTrace();
@@ -173,5 +151,62 @@ public class XMLUtils {
 		}
         // Return the XML document as a String.
         return modifiedTemplate;
+	}
+	
+	public static XsltTransformer getXsltTransformer(String xsltTemplateContent, String modelFileContent) throws GeneratorException {
+		// Create a string reader on the pre-processed template.
+		StringReader xslStringReader = new StringReader(xsltTemplateContent);
+		StreamSource xslSource = new StreamSource(xslStringReader);
+		
+		// Create an ErrorListener for the TransformerFactory and Transformer, so warnings are logged using the local logger.
+		ErrorListener errorListener = new ErrorListener() {
+			@Override
+			public void warning(TransformerException exception) throws TransformerException {
+				// Send warnings to the local logger on the fine log level, so this is only visible when running in debug mode.
+				logger.fine(String.format("Warning fired during template transformation: %s", exception.getMessage()));
+			}
+			
+			@Override
+			public void fatalError(TransformerException exception) throws TransformerException {
+				throw new TransformerException(exception);
+			}
+			
+			@Override
+			public void error(TransformerException exception) throws TransformerException {
+				throw new TransformerException(exception);
+			}
+		};
+		
+		// Create a Saxon processor.
+		Processor processor = new Processor(false);
+		// Create the Xslt Compiler.
+		XsltCompiler xsltCompiler = processor.newXsltCompiler();
+		
+		// Compile the XSLT stylesheet.
+		XsltExecutable xsltExecutable;
+		try {
+			xsltExecutable = xsltCompiler.compile(xslSource);
+		} catch (SaxonApiException e) {
+			throw new GeneratorException(String.format("Error while parsing XSLT template: %s", e.getMessage()));
+		}
+		// Load the Xslt Transformer.
+		XsltTransformer xsltTransformer = xsltExecutable.load();
+		// Set the error listener on the XSLT transformer.
+		xsltTransformer.setErrorListener(errorListener);
+		// Create a XdmNode based on the model file content.
+		XdmNode modelDocumentNode;
+		try {
+			modelDocumentNode = processor.newDocumentBuilder().build(new StreamSource(new StringReader(modelFileContent)));
+		} catch (SaxonApiException e) {
+			throw new GeneratorException(String.format("Error while parsing model file content: %s", e.getMessage()));
+		}
+		// Set the initial context node the the model XdmNode.
+		xsltTransformer.setInitialContextNode(modelDocumentNode);
+		// Set the serializer on the transformer, this can be an unconfigured serializer since the output uri's are absolute.
+		Serializer outputSerializer = processor.newSerializer();
+		xsltTransformer.setDestination(outputSerializer);
+		
+		// Return the xslt transformer.
+		return xsltTransformer;
 	}
 }

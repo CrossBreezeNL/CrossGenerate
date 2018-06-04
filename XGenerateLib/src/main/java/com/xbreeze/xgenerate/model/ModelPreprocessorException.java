@@ -23,4 +23,12 @@ public class ModelPreprocessorException extends CrossGenerateException {
 	public ModelPreprocessorException(Throwable throwable) {
 		super(throwable);
 	}
+	
+	/**
+	 * Constructor.
+	 * @param message The exception message.
+	 */
+	public ModelPreprocessorException(String message, Throwable throwable) {
+		super(message, throwable);
+	}
 }

@@ -24,7 +24,7 @@ import com.xbreeze.xgenerate.template.section.NamedTemplateSection;
 import com.xbreeze.xgenerate.template.section.RawTemplateSection;
 import com.xbreeze.xgenerate.template.section.RepetitionTemplateSection;
 import com.xbreeze.xgenerate.template.section.SectionedTemplate;
-import com.xbreeze.xgenerate.template.xml.XMLUtils;
+import com.xbreeze.xgenerate.utils.XMLUtils;
 
 public abstract class TemplatePreprocessor {
 	// The logger for this class.
