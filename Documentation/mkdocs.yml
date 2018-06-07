@@ -22,6 +22,9 @@ pages:
     - 'Introduction'    : 'index.md'
     - 'Getting started' : 'GettingStarted.md'
     - 'Overview'        : 'Overview.md'
+- Application:
+    - 'Command line'         : 'Application/CommandLine.md'
+    - 'Application config'   : 'Application/XGenAppConfig.md'
 - Model:
     - 'Introduction'    : 'Model/index.md'
 - Template:

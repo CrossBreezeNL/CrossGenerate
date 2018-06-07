@@ -7,6 +7,7 @@ To get an overview of what CrossGenerate is and how it works on a conceptual lev
 ## Components
 To get an explanation about the different inputs which need to be passed to CrossGenerate in order to generate the desired output, please consult one of the following pages:
 
+- [Application](./Application/CommandLine)
 - [Model](./Model)
 - [Template](./Template)
 - [Binding](./Binding)
