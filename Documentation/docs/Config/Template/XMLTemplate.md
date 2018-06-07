@@ -87,7 +87,7 @@ The XmlSection configuration defines a section in a XML template. This can eithe
 | Parameter                   | Description | Default | Remark |
 |:---                         |:--- |:--- |:--- |
 | templateXPath[^1]           | The XPath for template node where attribute needs to be injected. | | |
-| attributeName[^1]           | The name of the attribute to inject. | | |
+| attributeName[^1]           | The name of the attribute to inject. | |If the attribute is already present in the template it's value will be overwritten |
 | attributeValue              | Default value for the newly injected attribute. | | |
 
 
