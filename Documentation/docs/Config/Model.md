@@ -44,7 +44,7 @@ Model attribute injection can be used to inject attributes to the model before g
 
 
 ## ModelNodeRemoval
-Model node removal can be used to remove certain elements or attributes from the model before the generation starts. This can be usefull when the model contains more information then should be used in this generation step. For example when a source model is automatically extracted from a source system and you don't want to include certain columns in the extraction process, you can remove these nodes from the model before generating.
+Model node removal can be used to remove certain elements or attributes from the model before the generation starts. This can be usefull when the model contains more information then should be used in a certain generation step. For example when a source model is automatically extracted from a source system and you don't want to include certain columns in the extraction process, you can remove these nodes from the model before generating.
 
 ### Syntax
 ``` xml
@@ -56,7 +56,7 @@ Model node removal can be used to remove certain elements or attributes from the
 ### Parameters
 | Parameter                              | Description | Default | Remark |
 |:---                                    |:--- |:--- |:--- |
-| modelXPath[^1]                         | The XPath to apply on the model to get to the element or attribute which needs to be removed. | | |
+| modelXPath[^1]                         | The XPath to apply on the model to get to the element or attribute which needs to be removed. When the XPath resolves to multiple elements or attributes, all will be removed. | | |
 
 
 [comment]: Footnotes
