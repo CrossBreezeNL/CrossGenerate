@@ -196,7 +196,7 @@ public class NamedTemplateSection extends TemplateSection {
 				}
 				
 				// Process the placeholder of this section.
-				placeholderProcessedTemplateContent = XsltTemplate.processPlaceholders(placeholderProcessedTemplateContent, parentBindingConfig, config.getTemplateConfig().getFileFormatConfig());
+				placeholderProcessedTemplateContent = XsltTemplate.processPlaceholders(placeholderProcessedTemplateContent, parentBindingConfig, config.getTemplateConfig());
 				
 				// Append the raw template section into the pre-processed template.
 				xsltTemplate.append("<!-- Raw begin -->");

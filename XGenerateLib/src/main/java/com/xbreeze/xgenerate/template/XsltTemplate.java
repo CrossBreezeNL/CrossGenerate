@@ -10,6 +10,7 @@ import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
 import com.xbreeze.xgenerate.config.template.FileFormatConfig;
 import com.xbreeze.xgenerate.config.template.OutputConfig.OutputType;
 import com.xbreeze.xgenerate.config.template.RootTemplateConfig;
+import com.xbreeze.xgenerate.config.template.XMLTemplateConfig;
 
 public class XsltTemplate {
 	// The logger for this class.
@@ -65,6 +66,7 @@ public class XsltTemplate {
 //			appendLine("<xsl:output method=\"text\" encoding=\"UTF-8\" indent=\"no\" />");
 //		} else {
 			appendLine("<xsl:output method=\"text\" encoding=\"UTF-8\" indent=\"no\" />");
+		
 //		}
 		
 		// Strip white space from all elements (from the model).
@@ -82,7 +84,7 @@ public class XsltTemplate {
 		// If this is the root section, add the output document info.
 		// If the output type is output_per_element, add the result-document directive.
 		// TODO Use full template location (without config part)
-		String fileNamePlaceholder = processPlaceholders(Paths.get(relativeOutputFileUri).resolve(templateId).toString(), rootSectionModelBindingConfig, templateConfig.getFileFormatConfig(), PlaceholderType.XSL_INLINE, _outputType.equals(OutputType.output_per_element));
+		String fileNamePlaceholder = processPlaceholders(Paths.get(relativeOutputFileUri).resolve(templateId).toString(), rootSectionModelBindingConfig, templateConfig, PlaceholderType.XSL_INLINE, _outputType.equals(OutputType.output_per_element));
 		// Add the for-each part on the model node to match the template on.
 		String rootForEach = String.format("<xsl:for-each select=\"%s\">", rootSectionModelBindingConfig.getModelXPath());
 		
@@ -100,11 +102,11 @@ public class XsltTemplate {
 		}
 	}
 	
-	public static String processPlaceholders(String templatePart, SectionModelBindingConfig parentBindingConfig, FileFormatConfig fileFormatConfig) {
-		return processPlaceholders(templatePart, parentBindingConfig, fileFormatConfig, PlaceholderType.XSL_VALUE_OF, true);
+	public static String processPlaceholders(String templatePart, SectionModelBindingConfig parentBindingConfig, RootTemplateConfig templateConfig) {
+		return processPlaceholders(templatePart, parentBindingConfig, templateConfig, PlaceholderType.XSL_VALUE_OF, true);
 	}
 	
-	public static String processPlaceholders(String templatePart, SectionModelBindingConfig parentBindingConfig, FileFormatConfig fileFormatConfig, PlaceholderType placeholderType, boolean isBounded) {
+	public static String processPlaceholders(String templatePart, SectionModelBindingConfig parentBindingConfig, RootTemplateConfig templateConfig, PlaceholderType placeholderType, boolean isBounded) {
 		// Store the result in a local String.
 		String processedTemplatePart = templatePart;
 		
@@ -115,7 +117,7 @@ public class XsltTemplate {
 				// If not bounded, we use the model XPath.
 				(isBounded) ? "." : parentBindingConfig.getModelXPath(),
 				processedTemplatePart,
-				fileFormatConfig,
+				templateConfig,
 				placeholderType
 		);
 		
@@ -126,7 +128,7 @@ public class XsltTemplate {
 						placeholder.getName(),
 						placeholder.getModelXPath(),
 						processedTemplatePart,
-						fileFormatConfig,
+						templateConfig,
 						placeholderType
 				);
 			}
@@ -144,7 +146,7 @@ public class XsltTemplate {
 	 * @param placeholderType The placeholder type.
 	 * @return The processed template, where placeholders are replaced with XSLT expressions.
 	 */
-	private static String processPlaceholder(String placeholderName, String modelXPath, String templatePartToProcess, FileFormatConfig fileFormatConfig, PlaceholderType placeholderType) {
+	private static String processPlaceholder(String placeholderName, String modelXPath, String templatePartToProcess, RootTemplateConfig templateConfig, PlaceholderType placeholderType) {
 		String processedTemplate = templatePartToProcess;
 		
 		/**
@@ -160,13 +162,13 @@ public class XsltTemplate {
 		);
 		
 		// Perform placeholder replacement for the current accessor.
-		String currentAccessorPlaceholderRegex = String.format(placeholderRegex, Pattern.quote(fileFormatConfig.getCurrentAccessor()));
-		processedTemplate = replacePlaceholders(processedTemplate, currentAccessorPlaceholderRegex, "%s/@$1", modelXPath, placeholderType);
+		String currentAccessorPlaceholderRegex = String.format(placeholderRegex, Pattern.quote(templateConfig.getFileFormatConfig().getCurrentAccessor()));
+		processedTemplate = replacePlaceholders(processedTemplate, currentAccessorPlaceholderRegex, "%s/@$1", modelXPath, placeholderType, templateConfig);
 		
 		// Perform placeholder replacement for the child accessor.
-		if (fileFormatConfig.getChildAccessor() != null && fileFormatConfig.getChildAccessor().length() > 0) {
-			String childAccessorPlaceholderRegex = String.format(placeholderRegex, Pattern.quote(fileFormatConfig.getChildAccessor()));
-			processedTemplate = replacePlaceholders(processedTemplate, childAccessorPlaceholderRegex, "%s/$1", modelXPath, placeholderType);
+		if (templateConfig.getFileFormatConfig().getChildAccessor() != null && templateConfig.getFileFormatConfig().getChildAccessor().length() > 0) {
+			String childAccessorPlaceholderRegex = String.format(placeholderRegex, Pattern.quote(templateConfig.getFileFormatConfig().getChildAccessor()));
+			processedTemplate = replacePlaceholders(processedTemplate, childAccessorPlaceholderRegex, "%s/$1", modelXPath, placeholderType, templateConfig);
 		}
 		
 		return processedTemplate;
@@ -181,7 +183,7 @@ public class XsltTemplate {
 	 * @param placeholderType The placeholder type.
 	 * @return The processed template part, where placeholders are replaced wit the XSLT instruction.
 	 */
-	private static String replacePlaceholders(String templatePartToProcess, String placeholderRegex, String placeholderReplaceXPath, String modelXPath, PlaceholderType placeholderType) {
+	private static String replacePlaceholders(String templatePartToProcess, String placeholderRegex, String placeholderReplaceXPath, String modelXPath, PlaceholderType placeholderType, RootTemplateConfig templateConfig) {
 		String placeholderFormat;
 		switch (placeholderType) {
 			case XSL_INLINE:
@@ -195,7 +197,14 @@ public class XsltTemplate {
 				 * @    - The XML attribute accessor.
 				 * $1   - The value of group 1 (the attribute name to select from the find regex)
 				 */
-				placeholderFormat = String.format("{%s}", placeholderReplaceXPath);
+				// When processing an XML template, double encode xml entities so the entities are still escaped after XSLT
+				// TODO make this more generic xsl replace is supposed to support regex but didn't seem to work well with & also &apos; is not escaped (gave an error)
+				if (templateConfig instanceof XMLTemplateConfig) {
+					placeholderFormat = String.format("{replace(replace(replace(replace(%s,'&amp;','&amp;amp;'), '&lt;','&amp;lt;'),'&gt;','&amp;gt;'),'&quot;','&amp;quot;')}", placeholderReplaceXPath);
+				}
+				else {
+					placeholderFormat = String.format("{%s}", placeholderReplaceXPath);
+				}
 				break;
 			// In all other cases return the value-of version.
 			case XSL_VALUE_OF:
@@ -210,7 +219,15 @@ public class XsltTemplate {
 				 * @    - The XML attribute accessor.
 				 * $1   - The value of group 1 (the attribute name to select from the find regex)
 				 */
-				placeholderFormat = String.format("</xsl:text><xsl:value-of select=\"%s\" /><xsl:text>", placeholderReplaceXPath);
+				
+				// When processing an XML template, double encode xml entities so the entities are still escaped after XSLT
+
+				if (templateConfig instanceof XMLTemplateConfig) {
+					placeholderFormat = String.format("</xsl:text><xsl:value-of select=\"replace(replace(replace(replace(%s,'&amp;','&amp;amp;'), '&lt;','&amp;lt;'),'&gt;','&amp;gt;'),'&quot;','&amp;quot;')\" /><xsl:text>", placeholderReplaceXPath);
+				}
+				else {
+					placeholderFormat = String.format("</xsl:text><xsl:value-of select=\"%s\" /><xsl:text>", placeholderReplaceXPath);
+				}
 				break;
 		}
 		
