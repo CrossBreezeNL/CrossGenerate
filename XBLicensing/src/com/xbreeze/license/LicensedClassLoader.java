@@ -85,10 +85,13 @@ public class LicensedClassLoader extends ClassLoader {
 			throw new LicenseException("Licensing url not specified");
 		}
 		// Check whether the license url scheme is https (only when not in developer mode).
-		else if (!_config.getDeveloperMode() && !_config.getUrl().getScheme().equals("https")) {
+		// TODO re-enable https check if certification issue is solved
+		/*
+		 else if (!_config.getDeveloperMode() && !_config.getUrl().getScheme().equals("https")) {
+		 
 			throw new LicenseException("Licensing url scheme must be HTTPS");
 		}
-
+		 */
 		// Check whether the version is specified.
 		if (StringHelper.isEmptyOrWhitespace(config.getVersion())) {
 			throw new LicenseException("Licensing application version not specified");
