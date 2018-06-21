@@ -23,6 +23,7 @@ public class AnnotationScanner {
 	
 	/**
 	 * The following regex part is for identifying annotations with is parameters.
+	 * OLD
 	 * %s           -> 1nd parameter for String.format, the annotation prefix
 	 * ([a-zA-Z]+)  -> The name of the annotation (region 1)
 	 * [ \t]*       -> Again, any space or tab characters
@@ -30,10 +31,20 @@ public class AnnotationScanner {
 	 * (.*[^ \t])   -> The arguments for the annotation, not ending with a space or tab (region 2).
 	 * [ \t]*       -> Again, any space or tab characters
 	 * %s           -> 3th parameter for String.format, the annotation args suffix
+	 * 
+	 * NEW per 2018-06-21:
+	 * %s           -> 1nd parameter for String.format, the annotation prefix
+	 * ([a-zA-Z]+)  -> The name of the annotation (region 1)
+	 * [ \t]*       -> Again, any space or tab characters
+	 * %s           -> 2rd parameter for String.format, the annotation args prefix
+	 * ([^@]*)   -> The arguments for the annotation, being everything except another annotationPrefix, marked by @ (region 2).
+	 * [ \t]*       -> Again, any space or tab characters
+	 * %s           -> 3th parameter for String.format, the annotation args suffix
 	 */
 	private static String ANNOTATION_REGEX(String annotationPrefix, String annotationArgsPrefix, String annotationArgsSuffix) {
 		return String.format(
-				"%s([a-zA-Z]+)[ \\t]*%s(.*[^ \\t])[ \\t]*%s",
+				/* "%s([a-zA-Z]+)[ \\t]*%s(.*[^ \\t])[ \\t]*%s", */
+				"%s([a-zA-Z]+)[ \\\\t]*%s([^@]*)[ \\\\t]*%s",
 				Pattern.quote(annotationPrefix),
 				Pattern.quote(annotationArgsPrefix),
 				Pattern.quote(annotationArgsSuffix)

@@ -338,3 +338,35 @@ Feature: Unit_TextTemplate_Section_Bounds
       GO;
       -- End of template
       """
+
+       Scenario: Section with multiple sections and annotations on one line
+    Given the following template named "DropTables.sql":
+      """
+      -- @XGenTextSection(name="Entity" begin="DROP INDEX" includeBegin="true" end="DROP TABLE" includeEnd="false") @XGenTextSection(name="entity" begin='DROP TABLE' includeBegin="true" end='TABLE entity_name;' includeEnd="true")    
+      DROP INDEX IDX_entity_name; DROP TABLE entity_name;
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model/>
+        <TextTemplate rootSectionName="System">
+          <FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="single_output" />
+        </TextTemplate>
+        <Binding>
+          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
+          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
+            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity"/>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "DropTables.sql" with content:
+      """
+      --     
+     DROP INDEX IDX_Order; DROP INDEX IDX_Customer; DROP TABLE Order;DROP TABLE Customer;
+      """
+      
