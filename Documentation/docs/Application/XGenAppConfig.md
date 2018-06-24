@@ -50,13 +50,13 @@ In the license section the license information is specified. Most fields can be 
 
 ### Syntax
 ``` xml
-<App>
+<License>
   <LicenseKey>...</LicenseKey>
   <ContractId>...</ContractId>
   <Tag>...</Tag>
   <Url>...</Url>
   <Version>...</Version>
-</App>
+</License>
 ```
 
 ### Parameters
