@@ -38,17 +38,18 @@ public class ModelPreprocessor {
 		/// Store the pre-processed model.
 		String preprocessedModel = model.getModelFileContent();
 		
-		// ModelNodeRemovals
-		// Perform these first, so the injections aren't performed on nodes which will be removed afterwards.
-		if (modelConfig != null && modelConfig.getModelNodeRemovals() != null && modelConfig.getModelNodeRemovals().size() > 0) {
-			preprocessedModel = performModelNodeRemovals(preprocessedModel, modelConfig.getModelNodeRemovals());
-		}
 		
 		// ModelAttributeInjections
+		// First do attribute injection, in case attributes are used as source that are removed in the next step
 		if (modelConfig != null && modelConfig.getModelAttributeInjections() != null && modelConfig.getModelAttributeInjections().size() > 0) {
 			preprocessedModel = performModelAttributeInjections(preprocessedModel, modelConfig.getModelAttributeInjections());
 		}
-		
+
+		// ModelNodeRemovals
+		if (modelConfig != null && modelConfig.getModelNodeRemovals() != null && modelConfig.getModelNodeRemovals().size() > 0) {
+			preprocessedModel = performModelNodeRemovals(preprocessedModel, modelConfig.getModelNodeRemovals());
+		}
+
 		// Store the pre-processed model in the Model object.
 		model.setPreprocessedModel(preprocessedModel);
 		
