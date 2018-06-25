@@ -374,14 +374,14 @@ public abstract class TemplatePreprocessor {
 	/**
 	 * Double entity encode a String.
 	 * XHTML entities can be in the format of:
-	 *  - &name           -> &([a-z]{2,10};)
+	 *  - &name           -> &([a-zA-Z]{2,10};)
 	 *  - &#number        -> &(#[0-9]{1,4};)
-	 *  - &#xhexadecimal  -> &(#x[0-9a-f]{1,4};) 
+	 *  - &#xhexadecimal  -> &(#x[0-9a-fA-F]{1,4};) 
 	 * https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references
 	 * @param input
 	 * @return
 	 */
 	private static String doubleEntityEncode(String input) {
-		return input.replaceAll("&([a-z]{2,10};|#[0-9]{1,4};|#x[0-9a-f]{1,4};)", "&amp;$1");
+		return input.replaceAll("&([a-zA-Z]{2,10};|#[0-9]{1,4};|#x[0-9a-fA-F]{1,4};)", "&amp;$1");
 	}
 }

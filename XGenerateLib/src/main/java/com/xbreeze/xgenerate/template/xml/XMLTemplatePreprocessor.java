@@ -176,7 +176,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		        		throw new TemplatePreprocessorException(String.format("Error while getting annotation value for XPath '%s' at %d.", fileFormatConfig.getCommentNodeXPath(), annotationNodeIndex));
 		        	
 		        	// Get the annotation value.
-		        	String annotationAttributeValue = annotationNav.toString(annotationValueIndex);
+		        	String annotationAttributeValue = annotationNav.toRawString(annotationValueIndex);
 		        	int annotationValueStartIndex = (int)annotationNav.getTokenOffset(annotationValueIndex);
 					int annotationValueEndIndex = annotationValueStartIndex + annotationNav.getTokenLength(annotationValueIndex);
 					logger.fine(String.format("Found annotation node value (start=%d; end=%d): '%s'", annotationValueStartIndex, annotationValueEndIndex, annotationAttributeValue));
@@ -230,7 +230,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 				        	
 				        	// We are at the point now were the annotationValueIndex points to the text template content.
 				        	// Get the annotation value.
-				        	String textTemplateContent = nv.toString(annotationValueIndex);
+				        	String textTemplateContent = nv.toRawString(annotationValueIndex);
 				        	int textTemplateStartIndex = (int)nv.getTokenOffset(annotationValueIndex);
 							int textTemplateEndIndex = textTemplateStartIndex + nv.getTokenLength(annotationValueIndex);
 							logger.fine(String.format("Found text template node value (start=%d; end=%d): '%s'", textTemplateStartIndex, textTemplateEndIndex, textTemplateContent));

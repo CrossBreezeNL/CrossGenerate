@@ -1,8 +1,8 @@
 @Unit
 Feature: Unit_Config_XmlTemplate_TextTemplate_Attribute
   In this feature we will describe the TextTemplate config feature in an attribute in a XML template
-  
-  Background:
+
+  Background: 
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -13,7 +13,7 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Attribute
         </system>
       </modeldefinition>
       """
-      
+
   Scenario: TextTemplate without section in XMLTemplate
     Given the following template named "ExampleTemplate.xml":
       """
@@ -45,7 +45,44 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Attribute
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource" description="This is database: 'ExampleSource'" />
       """
-      
+
+  Scenario Outline: TextTemplate without section in XMLTemplate with <Examples>
+    Given the following template named "ExampleTemplate.xml":
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="system_id" name="system_name" description="This is database:<TemplatePart>'system_name'" />
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <XmlTemplate rootSectionName="Database">
+          <FileFormat currentAccessor="_" />
+          <Output type="output_per_element" />
+          <TextTemplates>
+            <TextTemplate node="/Database/@description">
+              <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+            </TextTemplate>
+          </TextTemplates>
+        </XmlTemplate>
+        <Binding>
+          <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="system" />
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "ExampleTemplate.xml" with content:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource" description="This is database:<TemplatePart>'ExampleSource'" />
+      """
+
+    Examples: 
+      | Scenario        | TemplatePart |
+      | Escaped newline | &#xA;        |
+      | Escaped quote   | &quot;       |
+
   Scenario: TextTemplate with annotated single-line section in XMLTemplate
     Given the following template named "ExampleTemplate.xml":
       """
@@ -117,7 +154,7 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Attribute
       Customer
       " />
       """
-      
+
   Scenario: TextTemplate with configured multi-line section in XMLTemplate
     Given the following template named "ExampleTemplate.xml":
       """
