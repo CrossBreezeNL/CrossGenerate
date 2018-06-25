@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import com.xbreeze.xgenerate.config.binding.PlaceholderConfig;
 import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
-import com.xbreeze.xgenerate.config.template.FileFormatConfig;
 import com.xbreeze.xgenerate.config.template.OutputConfig.OutputType;
 import com.xbreeze.xgenerate.config.template.RootTemplateConfig;
 import com.xbreeze.xgenerate.config.template.XMLTemplateConfig;
