@@ -37,6 +37,12 @@ public class XMLTemplateConfig extends RootTemplateConfig {
 	private ArrayList<XMLTemplatePlaceholderInjection> _templatePlaceholderInjections;
 	
 	/**
+	 * The list of template node removals.
+	 * @see XMLTemplateNodeRemoval
+	 */
+	private ArrayList<XMLTemplateNodeRemoval> _templateNodeRemovals;
+	
+	/**
 	 * The list of XML node text templates.
 	 * @see XMLTemplatePlaceholderInjection
 	 */
@@ -87,6 +93,22 @@ public class XMLTemplateConfig extends RootTemplateConfig {
 	 */
 	public void setTemplatePlaceholderInjections(ArrayList<XMLTemplatePlaceholderInjection> templatePlaceholderInjections) {
 		this._templatePlaceholderInjections = templatePlaceholderInjections;
+	}
+
+	/**
+	 * @return the _templateNodeRemovals
+	 */
+	@XmlElement(name="TemplateNodeRemoval")
+	@XmlElementWrapper(name="TemplateNodeRemovals")
+	public ArrayList<XMLTemplateNodeRemoval> getTemplateNodeRemovals() {
+		return _templateNodeRemovals;
+	}
+
+	/**
+	 * @param _templateNodeRemovals the _templateNodeRemovals to set
+	 */
+	public void setTemplateNodeRemovals(ArrayList<XMLTemplateNodeRemoval> _templateNodeRemovals) {
+		this._templateNodeRemovals = _templateNodeRemovals;
 	}
 
 	/**

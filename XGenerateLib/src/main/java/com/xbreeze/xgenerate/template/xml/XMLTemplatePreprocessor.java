@@ -9,6 +9,7 @@ import com.xbreeze.xgenerate.config.template.FileFormatConfig;
 import com.xbreeze.xgenerate.config.template.XMLNodeTextTemplateConfig;
 import com.xbreeze.xgenerate.config.template.XMLTemplateAttributeInjection;
 import com.xbreeze.xgenerate.config.template.XMLTemplateConfig;
+import com.xbreeze.xgenerate.config.template.XMLTemplateNodeRemoval;
 import com.xbreeze.xgenerate.config.template.XMLTemplatePlaceholderInjection;
 import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.template.PreprocessedTemplate;
@@ -70,6 +71,16 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		
 		// First perform all modifications on the XML document (like attribute and placeholder injection).
 		// This is to make sure the document doesn't change anymore when sectionizing, since character indexes are stored.
+		
+		// Perform template node removals on XML document (if defined).
+		// This is done first, since none of the configuration options later are using an XPath on the template.
+		// So the nodes to be removed cannot be referenced by any processing option.
+		// For performance its best to do the removal first.
+		if (xmlTemplateConfig.getTemplateNodeRemovals() != null
+				&& xmlTemplateConfig.getTemplateNodeRemovals().size() > 0) 
+		{
+			preprocessedTemplate = performNodeRemovals(preprocessedTemplate, xmlTemplateConfig.getTemplateNodeRemovals());
+		}
 
 		// Perform template attribute injections on XML document (if defined).
 		if (xmlTemplateConfig.getTemplateAttributeInjections() != null
@@ -274,7 +285,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		// Return the pre-processed template.
 		return new PreprocessedTemplate(preprocessedTemplate, tsba, templateAnnotations);
 	}
-	
+
 	/**
 	 * Get a TemplateSectionBoundsAnnotation based on a TemplateSectionAnnotation and a VTDNav at the section element location.
 	 * It finds the surrounding whitespace and add the right parts to the indexes of the section bounds.
@@ -345,6 +356,67 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
     	TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(tsa, contentStartIndex, contentEndIndex);
     	// Return the TemplateSectionBoundsAnnotation.
     	return tsba;
+	}
+	
+	/**
+	 * Perform the template node removals.
+	 * @param template The pre-processed template.
+	 * @param templateNodeRemovals The template node removals to perform.
+	 * @return The pre-processed template after removing the nodes.
+	 * @throws TemplatePreprocessorException
+	 */
+	private String performNodeRemovals(String template, ArrayList<XMLTemplateNodeRemoval> templateNodeRemovals) throws TemplatePreprocessorException {
+		logger.info("Performing template node removals.");
+		
+		// Create a VTDNav for navigating the document.
+		VTDNav nv;
+		try {
+			nv = XMLUtils.getVTDNav(template);
+		} catch (GeneratorException e) {
+			throw new TemplatePreprocessorException(String.format("Error while reading raw template before attribute injection: %s", e.getMessage()), e);
+		}
+		
+		// Create the XMLModifier for modifying the document.
+		XMLModifier xm;
+		try {
+			xm = new XMLModifier(nv);
+		} catch (ModifyException e) {
+			throw new TemplatePreprocessorException(e);
+		}
+		
+		// Loop through the template node removals and process them.
+		for (XMLTemplateNodeRemoval mnr : templateNodeRemovals) {
+			// Create an AutoPilot for querying the document.
+			AutoPilot ap = new AutoPilot(nv);
+			
+			try {
+				// Set the XPath expression from the config.
+				ap.selectXPath(mnr.getTemplateXPath());
+				
+				// Execute the XPath expression and loop through the results.
+		        while ((ap.evalXPath()) != -1) {
+		        	// Remove the node.
+		        	xm.remove();
+		        }
+		        
+		        // Output and re-parse the document for the next injection.
+		        // This is necessary, otherwise exceptions will be thrown when injecting attributes for the same element.
+		        nv = xm.outputAndReparse();
+		        // Reset and bind the modifier to the new VTDNav object.
+		        xm.reset();
+		        xm.bind(nv);
+		        
+			} catch (XPathParseException | XPathEvalException | NavException | ModifyException | ParseException | TranscodeException | IOException e) {
+				throw new TemplatePreprocessorException(String.format("Error while processing template node removal for XPath %s: %s", mnr.getTemplateXPath(),  e.getMessage()));
+			}
+		}
+		
+		// Return the modified XML document.
+		try {
+			return XMLUtils.getResultingXml(xm);
+		} catch (GeneratorException e) {
+			throw new TemplatePreprocessorException(e);
+		}
 	}
 	
 	/**

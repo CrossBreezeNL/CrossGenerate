@@ -38,7 +38,7 @@ import com.xbreeze.xgenerate.config.template.XMLTemplateConfig;
  * It contains the model, template and binding configuration.
  * @author Harmen
  */
-@XmlRootElement(name="XGenConfig")
+@XmlRootElement(name="XGenConfig") // , namespace="http://generate.x-breeze.com/XGenConfig"
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder={"modelConfig","templateConfig","bindingConfig"})
 public class XGenConfig {
