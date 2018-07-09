@@ -1,8 +1,8 @@
 @Unit
 Feature: Unit_XmlTemplate_Section_Whitespace
   In this feature we will describe the section annotation whitespace feature in XML templates
-  
-  Background:
+
+  Background: 
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -62,7 +62,7 @@ Feature: Unit_XmlTemplate_Section_Whitespace
         </Tables>
       </Database>
       """
-      
+
   Scenario: Whitespace after section
     Given the following template named "ExampleTemplate.xml":
       """
@@ -87,7 +87,7 @@ Feature: Unit_XmlTemplate_Section_Whitespace
         </Tables>
       </Database>
       """
-      
+
   Scenario: Whitespace before nested section
     Given the following template named "ExampleTemplate.xml":
       """
@@ -128,7 +128,7 @@ Feature: Unit_XmlTemplate_Section_Whitespace
         </Tables>
       </Database>
       """
-      
+
   Scenario: Whitespace after nested section
     Given the following template named "ExampleTemplate.xml":
       """
@@ -169,7 +169,7 @@ Feature: Unit_XmlTemplate_Section_Whitespace
         </Tables>
       </Database>
       """
-      
+
   Scenario: Whitespace between adjecent section
     Given the following template named "ExampleTemplate.xml":
       """
@@ -197,15 +197,15 @@ Feature: Unit_XmlTemplate_Section_Whitespace
         </Tables>
       </Database>
       """
-      
+
   @Debug @KnownIssue
-  Scenario: Whitespacing with special characters in file
+  Scenario Outline: Whitespacing <Scenario> in file
     Given the following template named "ExampleTemplate.xml":
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="system_id" name="system_name">
         <!--
-        Microsoft® Visual Studio®
+        <Special char>
         -->
         <Tables>
           <Table name="entity_name" description="  @XGenXmlSection(name=&quot;Tables&quot;)"/>
@@ -219,7 +219,7 @@ Feature: Unit_XmlTemplate_Section_Whitespace
       <?xml version="1.0" encoding="UTF-8"?>
       <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
         <!--
-        Microsoft® Visual Studio®
+        <Special char>
         -->
         <Tables>
           <Table name="Order" description="  "/>
@@ -227,3 +227,9 @@ Feature: Unit_XmlTemplate_Section_Whitespace
         </Tables>
       </Database>
       """
+
+    Examples: 
+      | Scenario          | Special char  |
+      | SSIS registered   | CrossBreeze® |
+      | ASCII registrered | CrossBreeze�  |
+      | ASCII copyright   | CrossBreeze�  |
