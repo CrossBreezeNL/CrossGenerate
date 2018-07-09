@@ -197,3 +197,33 @@ Feature: Unit_XmlTemplate_Section_Whitespace
         </Tables>
       </Database>
       """
+      
+  @Debug @KnownIssue
+  Scenario: Whitespacing with special characters in file
+    Given the following template named "ExampleTemplate.xml":
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="system_id" name="system_name">
+        <!--
+        Microsoft® Visual Studio®
+        -->
+        <Tables>
+          <Table name="entity_name" description="  @XGenXmlSection(name=&quot;Tables&quot;)"/>
+        </Tables>
+      </Database>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "ExampleTemplate.xml" with content:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
+        <!--
+        Microsoft® Visual Studio®
+        -->
+        <Tables>
+          <Table name="Order" description="  "/>
+          <Table name="Customer" description="  "/>
+        </Tables>
+      </Database>
+      """
