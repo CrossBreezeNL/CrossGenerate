@@ -16,6 +16,9 @@
   <TemplatePlaceholderInjections>
     <TemplatePlaceholderInjection ... />
   </TemplatePlaceholderInjections>
+  <TemplateNodeRemovals>
+    <TemplateNodeRemoval ... />
+  </TemplateNodeRemovals>
   <TextTemplates>
     <TextTemplate ... />
   </TextTemplates>
@@ -35,6 +38,7 @@
 | XmlSection                       | See [XmlSection](#xmlsection) |
 | TemplateAttributeInjection       | See [TemplateAttributeInjection](#templateattributeinjection) |
 | TemplatePlaceholderInjection     | See [TemplatePlaceholderInjection](#templateplaceholderinjection) |
+| TemplateNodeRemoval              | See [TemplateNodeRemoval](#templatenoderemoval) |
 | TextTemplate                     | See [TextTemplate](#texttemplate) |
 
 ## FileFormat
@@ -108,6 +112,23 @@ The XmlSection configuration defines a section in a XML template. This can eithe
 | templateXPath[^1]      | The XPath to evaluate on the template document to find the node on which to inject the placeholder. | | |
 | modelNode[^1]          | What node in the model needs to be selected in the placeholder (it will be the right side of the placeholder). | | |
 | scope                  | The template placeholder scope. This is either current or child. | current | |
+
+
+
+## TemplateNodeRemoval
+The TemplateNodeRemoval configuration can be used to remove parts of an XML template during generation. This step is performed before all other modifications on the XML template (like attribute and placeholder injection).
+
+### Syntax
+``` xml
+<TemplateNodeRemoval
+  templateXPath="..."
+/>
+```
+
+### Parameters
+| Parameter              | Description | Default | Remark |
+|:---                    |:--- |:--- |:--- |
+| templateXPath[^1]      | The XPath to apply on the template to get to the element or attribute which needs to be removed. When the XPath resolves to multiple elements or attributes, all will be removed. | | |
 
 
 ## TextTemplate

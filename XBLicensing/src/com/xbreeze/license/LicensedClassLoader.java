@@ -219,32 +219,30 @@ public class LicensedClassLoader extends ClassLoader {
 			// String message = "{\"method\":\"validate\",\"licensekey\":\"" +licenseKey +
 			// "\",\"token\":\""+ token +"\",\"signature\":\""+ sign + "\"}";
 			
-			CloseableHttpResponse licenseResponse;
-			try {
-				licenseResponse = performRequest(_config.getUrl(), message);
+			// Set the response message.
+			String responseMessage = null;
+			
+			// Perform the performRequest in a try so it is closed automatically when not used anymore.
+			try (CloseableHttpResponse licenseResponse = performRequest(_config.getUrl(), message)) {
+
+				// Set the status code.
+				statusCode = licenseResponse.getStatusLine().getStatusCode();
+				if (licenseResponse.getEntity() != null) {
+					try {
+						responseMessage = EntityUtils.toString(licenseResponse.getEntity());
+					} catch (ParseException | IOException e) {
+						logger.severe(String.format("Error while getting response body: %s", e.getMessage()));
+						return false;
+					}
+				}
+				// If there was no response body, we will set the message to the status reason phrase.
+				if (responseMessage == null || responseMessage.length() == 0) {
+					responseMessage = licenseResponse.getStatusLine().getReasonPhrase();
+				}
+			
 			} catch (LicenseException e) {
 				logger.severe(String.format("Error occured during license check: %s", e.getMessage()));
 				return false;
-			}
-			// Set the status code.
-			statusCode = licenseResponse.getStatusLine().getStatusCode();
-			// Set the response message.
-			String responseMessage = null;
-			if (licenseResponse.getEntity() != null) {
-				try {
-					responseMessage = EntityUtils.toString(licenseResponse.getEntity());
-				} catch (ParseException | IOException e) {
-					logger.severe(String.format("Error while getting response body: %s", e.getMessage()));
-					return false;
-				}
-			}
-			// If there was no response body, we will set the message to the status reason phrase.
-			if (responseMessage == null || responseMessage.length() == 0) {
-				responseMessage = licenseResponse.getStatusLine().getReasonPhrase();
-			}
-			
-			try {
-				licenseResponse.close();
 			} catch (IOException e) {
 				logger.severe(String.format("Error while closing HTTP connection: %s", e.getMessage()));
 				return false;
@@ -332,40 +330,48 @@ public class LicensedClassLoader extends ClassLoader {
 					+ "\",\"signature\":\"" + sign + "\",\"version\":\"" + this._config.getVersion()
 					+ "\",\"licensekey\":\"" + this._config.getLicenseKey() + "\"}";
 			
-			CloseableHttpResponse classOrResourceResponse = performRequest(_config.getUrl(), message);
 			
-			// Get the status code.
-			statusCode = classOrResourceResponse.getStatusLine().getStatusCode();
-			if (statusCode == 204) {
-				retry++;
-				try {
-					classOrResourceResponse.close();
-				} catch (IOException e) {
-					logger.severe(String.format("Error while closing HTTP connection: %s", e.getMessage()));
-				}
-				logger.warning("Invalid token/signature, retry " + String.valueOf(retry));
-			}
-			else if (statusCode == 200) {
-				// Response contains classfile
-				HttpEntity httpEntity = classOrResourceResponse.getEntity();
-				
-				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-				int nRead;
-				byte[] data = new byte[65536];
-				try {
-					InputStream inputStream = httpEntity.getContent();
-					while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-						buffer.write(data, 0, nRead);
+			// Perform the performRequest in a try so it is closed automatically when not used anymore.
+			try(CloseableHttpResponse classOrResourceResponse = performRequest(_config.getUrl(), message)) {
+			
+				// Get the status code.
+				statusCode = classOrResourceResponse.getStatusLine().getStatusCode();
+				if (statusCode == 204) {
+					retry++;
+					try {
+						classOrResourceResponse.close();
+					} catch (IOException e) {
+						logger.severe(String.format("Error while closing HTTP connection: %s", e.getMessage()));
 					}
-					buffer.flush();
-					classOrResourceResponse.close();
-				} catch (IOException e) {
-					throw new LicenseException(String.format("Error while fetching remote class file: %s", e.getMessage()));
+					logger.warning("Invalid token/signature, retry " + String.valueOf(retry));
 				}
-
-				// Return the bytes of the class or resource.
-				return buffer.toByteArray();
+				else if (statusCode == 200) {
+					// Response contains classfile
+					HttpEntity httpEntity = classOrResourceResponse.getEntity();
+					
+					ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+					int nRead;
+					byte[] data = new byte[65536];
+					try {
+						InputStream inputStream = httpEntity.getContent();
+						while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+							buffer.write(data, 0, nRead);
+						}
+						buffer.flush();
+						classOrResourceResponse.close();
+					} catch (IOException e) {
+						throw new LicenseException(String.format("Error while fetching remote class file: %s", e.getMessage()));
+					}
+	
+					// Return the bytes of the class or resource.
+					return buffer.toByteArray();
+				}
 			}
+			// When an error occured while closing the http responce, handle it here.
+			catch (IOException e1) {
+				throw new LicenseException(String.format("Error while getting remote class or resource: %s", e1.getMessage()), e1);
+			}
+			
 		}
 		
 		throw new LicenseException("Error while fetching remote class file");
@@ -386,9 +392,10 @@ public class LicensedClassLoader extends ClassLoader {
 			params = new StringEntity(message);
 			request.setEntity(params);
 		} catch (UnsupportedEncodingException e1) {
-			// TODO Handle exception properly.
 			logger.severe(e1.getMessage());
+			throw new LicenseException(String.format("Error while performing Http request: %s", e1.getMessage()));
 		}
+		// Set the Content-Type in the header.
 		request.addHeader("Content-Type", "application/json; charset=UTF-8");
 		
 		try {

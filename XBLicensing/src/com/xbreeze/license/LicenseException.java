@@ -1,4 +1,5 @@
 package com.xbreeze.license;
+
 /**
  * LicenseError is thrown in case of errors during license validation  
  * @author Willem
@@ -17,6 +18,14 @@ public class LicenseException extends Exception {
 	 */
 	public LicenseException(String message) {
          super(message);
-	 } 
+	}
 	
+	/**
+	 * Constructor.
+	 * @param message
+	 * @param throwable
+	 */
+	public LicenseException(String message, Throwable throwable) {
+        super(message, throwable);
+	}
 }

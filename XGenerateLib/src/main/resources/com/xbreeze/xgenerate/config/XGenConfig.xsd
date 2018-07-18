@@ -125,6 +125,13 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="TemplateNodeRemovals" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="TemplateNodeRemoval" type="xmlTemplateNodeRemoval" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="TemplatePlaceholderInjections" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
@@ -158,6 +165,11 @@
     <xs:attribute name="attributeName" type="xs:string"/>
     <xs:attribute name="attributeValue" type="xs:string"/>
     <xs:attribute name="templateXPath" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="xmlTemplateNodeRemoval">
+    <xs:sequence/>
+    <xs:attribute name="templateXPath" type="xs:string" use="required"/>
   </xs:complexType>
 
   <xs:complexType name="xmlTemplatePlaceholderInjection">
