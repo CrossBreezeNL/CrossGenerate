@@ -19,6 +19,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -26,6 +29,7 @@ import javax.xml.validation.SchemaFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
 
 import com.xbreeze.xgenerate.config.binding.BindingConfig;
 import com.xbreeze.xgenerate.config.model.ModelConfig;
@@ -179,22 +183,34 @@ public class XGenConfig {
 			// Create the JAXB context.
 			JAXBContext jaxbContext = JAXBContext.newInstance(XGenConfig.class);
 			Unmarshaller xGenConfigUnmarshaller = jaxbContext.createUnmarshaller();
-			// Set the schema on the unmarshaller.
-			xGenConfigUnmarshaller.setSchema(configSchema);
-			// Set the event handler.
-			xGenConfigUnmarshaller.setEventHandler(new UnmarshallValidationEventHandler());
-			// Unmarshal the config.
-			xGenConfig = (XGenConfig) xGenConfigUnmarshaller.unmarshal(inputSource);
-		} catch (UnmarshalException e) {
+			//xGenConfigUnmarshaller.setSchema(configSchema);
+			//Create a SAXParser factory
+			 SAXParserFactory spf = SAXParserFactory.newInstance();
+			 spf.setXIncludeAware(true);
+			 spf.setNamespaceAware(true);
+			 spf.setSchema(configSchema);
+			 XMLReader xr = spf.newSAXParser().getXMLReader();
+			 //Prevent xml:base tags from being added when includes are processed
+			 xr.setFeature("http://apache.org/xml/features/xinclude/fixup-base-uris", false);
+			 SAXSource saxSource = new SAXSource(xr, inputSource);
+			
+			 // Set the event handler.
+			 xGenConfigUnmarshaller.setEventHandler(new UnmarshallValidationEventHandler());			
+					 
+			// Unmarshal the config.			
+			xGenConfig = (XGenConfig) xGenConfigUnmarshaller.unmarshal(saxSource);
+		} catch (UnmarshalException | SAXException  e) {
 			// If the linked exception is a sax parse exception, it contains the error in the config file.
-			if (e.getLinkedException() instanceof SAXParseException) {
-				throw new ConfigException(String.format("Error in config file: %s", e.getLinkedException().getMessage()), e);
+			if (e instanceof UnmarshalException && ((UnmarshalException)e).getLinkedException() instanceof SAXParseException) {
+				throw new ConfigException(String.format("Error in config file: %s", ((UnmarshalException)e).getLinkedException().getMessage()), e);
 			} else {
 				throw new ConfigException(String.format("Error in config file: %s", e.getMessage()), e);
 			}
 		} catch (JAXBException e) {
 			throw new ConfigException(String.format("Couldn't read the config file"), e);
-		}
+		} catch (ParserConfigurationException e) { 
+			throw new ConfigException(String.format("Parser configuration error"), e);
+		} 
 
 		return xGenConfig;
 	}
