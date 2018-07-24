@@ -14,10 +14,10 @@ Feature: Unit_Config_Reuse_Partials
       </system>
       """
     And the following template named "Unit_Config_Reuse_Partials.txt":
-      """ 
+      """
       -- @XGenTextSection(name="Tables")
       table_name -> system_name;
-      
+
       """
 
   Scenario Outline: Reuse of binding <Scenario>
@@ -30,7 +30,7 @@ Feature: Unit_Config_Reuse_Partials
           <Output type="single_output" />
         </TextTemplate>              
         <Binding>        
-          <xi:include href="C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateLibTest\src\test\resources\feature-support-files\unit\config\Reuse_Partials\<bindingFile>"/>
+          <xi:include href="<path>\<bindingFile>"/>
         </Binding>          
       </XGenConfig>
       """
@@ -40,12 +40,11 @@ Feature: Unit_Config_Reuse_Partials
       """
       <expectedResultA>
       <expectedResultB>
-      
+
       """
 
     Examples: 
-      | Scenario              | bindingFile       | expectedResultA | expectedResultB | 
-      | No Nesting | entityBinding.xml | A -> sys;        | B -> sys;        |
-      | Nested include for placeholders | entityBindingWithInclude.xml | A -> sys;        | B -> sys;        |
-      
-      
+      | Scenario                                 | bindingFile                  | path                                                                                                                                                   | expectedResultA | expectedResultB |  |
+      | No Nesting                               | entityBinding.xml            | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Reuse_Partials | A -> sys;       | B -> sys;       |  |
+      | Nested include for placeholders absolute | entityBindingWithInclude.xml | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Reuse_Partials | A -> sys;       | B -> sys;       |  |
+      | Nested include for placeholders relative | entityBindingWithInclude.xml | src\\test\\resources\\feature-support-files\\unit\\config\\Reuse_Partials                                                                              | A -> sys;       | B -> sys;       |  |
