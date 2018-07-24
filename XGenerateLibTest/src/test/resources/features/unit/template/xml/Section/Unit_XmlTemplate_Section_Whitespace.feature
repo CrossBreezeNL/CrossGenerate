@@ -198,7 +198,6 @@ Feature: Unit_XmlTemplate_Section_Whitespace
       </Database>
       """
 
-  @Debug @KnownIssue
   Scenario Outline: Whitespacing <Scenario> in file
     Given the following template named "ExampleTemplate.xml":
       """
@@ -222,8 +221,8 @@ Feature: Unit_XmlTemplate_Section_Whitespace
         <Special char>
         -->
         <Tables>
-          <Table name="Order" description="  "/>
-          <Table name="Customer" description="  "/>
+          <Table name="Order" description=""/>
+          <Table name="Customer" description=""/>
         </Tables>
       </Database>
       """

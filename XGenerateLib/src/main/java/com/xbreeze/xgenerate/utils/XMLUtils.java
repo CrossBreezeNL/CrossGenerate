@@ -58,7 +58,10 @@ public class XMLUtils {
 		vg.enableIgnoredWhiteSpace(true);
 		
 		// Set the document (in UTF-8 encoding).
-		vg.setDoc(xmlDocument.getBytes(StandardCharsets.UTF_8));
+		// Currently the encoding is set to US_ASCII, cause this solves the issue for special characters and doesn't seem to break anything.
+		// Question is asked to the vtd-gen developer if this is a bug in vtg-gen.
+		// https://stackoverflow.com/questions/51507388/vtd-xml-element-fragment-incorrect
+		vg.setDoc(xmlDocument.getBytes(StandardCharsets.US_ASCII));
 		
 		// Parse without namespace.
 		try {
