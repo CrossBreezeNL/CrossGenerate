@@ -1,7 +1,7 @@
 ![Wiki Structure](img/wiki-structure.png)
 
 # Introduction
-This wiki described the documentation of CrossGenerate.
+This wiki contains the documentation of CrossGenerate.
 
 To get started go to [Getting started](./GettingStarted)
 
