@@ -46,6 +46,7 @@ pages:
         - 'TextTemplate'          : 'Config/Template/TextTemplate.md'
         - 'Generic options'   : 'Config/Template/GenericTemplate.md'
     - 'Binding'         : 'Config/Binding.md'
+    - 'XPath'           : 'Config/XPath.md'
 - Examples:
     - 'Overview'        : 'Examples/index.md'
     - 'Model':

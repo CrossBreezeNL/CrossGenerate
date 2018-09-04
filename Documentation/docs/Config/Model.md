@@ -37,10 +37,10 @@ Model attribute injection can be used to inject attributes to the model before g
 ### Parameters
 | Parameter                              | Description | Default | Remark |
 |:---                                    |:--- |:--- |:--- |
-| modelXPath[^1]                         | The XPath to apply on the model to get to the element on which to inject the attribute. | | |
+| modelXPath[^1]                         | The XPath to apply on the model to get to the element on which to inject the attribute. | | See [XPath](./XPath). |
 | targetAttribute[^1]                    | The name of the attribute to inject. | |If the target attribute is already present in the model it's value will be overwritten |
 | targetValue[^2]                        | The value of the attribute to inject. | | | 
-| targetXPath[^2]                        | The XPath to apply on the model element to get the target value. | | | 
+| targetXPath[^2]                        | The XPath to apply on the model element to get the target value. | | See [XPath](./XPath). | 
 
 
 ## ModelNodeRemoval
@@ -56,7 +56,7 @@ Model node removal can be used to remove certain elements or attributes from the
 ### Parameters
 | Parameter                              | Description | Default | Remark |
 |:---                                    |:--- |:--- |:--- |
-| modelXPath[^1]                         | The XPath to apply on the model to get to the element or attribute which needs to be removed. When the XPath resolves to multiple elements or attributes, all will be removed. | | |
+| modelXPath[^1]                         | The XPath to apply on the model to get to the element or attribute which needs to be removed. When the XPath resolves to multiple elements or attributes, all will be removed. | | See [XPath](./XPath). |
 
 
 [comment]: Footnotes

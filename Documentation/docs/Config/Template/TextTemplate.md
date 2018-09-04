@@ -82,7 +82,7 @@ The TextSection configuration defines a section in a text template. This can eit
 | name[^1]                   | The name of the section. | | This can only contain a-z, A-Z, 0-9, _ and - characters. |
 | begin[^3]                  | Character sequence which defines the beginning of the section. | | If begin is not specified, it will automatically start on the first line after the annotation. This can thus only be done with an inline annotation. |
 | includeBegin               | Whether to include the characters specified in `begin` in the output | true |
-| end[^3]                    | Character sequence which defines the beginning of the section. | | Cannot be used in conjunction with `nrOfLines`. |
+| end[^3]                    | Character sequence which defines the end of the section. | | Cannot be used in conjunction with `nrOfLines`. |
 | includeEnd                 | Whether to include the characters specified in `end` in the output | true |
 | literalOnFirstLine[^3]     | Literal which exists on the first line of the section, the whole line will be taken into the section. | | Cannot be used in conjunction with `begin`. |
 | literalOnLastLine[^3]      | Literal which exists on the last line of the section, the whole line will be taken into the section. | | Cannot be used in conjunction with `end` or `nrOfLines`. |
