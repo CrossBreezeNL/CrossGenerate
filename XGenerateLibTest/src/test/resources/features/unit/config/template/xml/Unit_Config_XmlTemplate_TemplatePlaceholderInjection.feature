@@ -16,8 +16,8 @@ Feature: Unit_Config_XmlTemplate_TemplatePlaceholderInjection
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <tables>
-        <table name="table_name" filter="yes" someProperty="Bla1"/>
-        <table name="table_name" filter="no" someProperty="Bla2"/>
+        <table name="table_name" filter="yes" <propertyName>="Bla1"/>
+        <table name="table_name" filter="no" <propertyName>="Bla2"/>
       </tables>
       """
     And the following config:
@@ -48,8 +48,11 @@ Feature: Unit_Config_XmlTemplate_TemplatePlaceholderInjection
       """
 
     Examples: 
-      | Scenario       | templateXPath                        | modelNode     | scope   | expectedResult1                                               | expectedResult2                                              |
-      | simple current | //table/@someProperty                | property      | current | <table name="A" filter="yes" someProperty="something"/>       | <table name="A" filter="no" someProperty="something"/>       |
-      | filter current | //table[@filter='yes']/@someProperty | property      | current | <table name="A" filter="yes" someProperty="something"/>       | <table name="A" filter="no" someProperty="Bla2"/>            |
-      | simple child   | //table/@someProperty                | childProperty | child   | <table name="A" filter="yes" someProperty="Something child"/> | <table name="A" filter="no" someProperty="Something child"/> |
-      | filter child   | //table[@filter='yes']/@someProperty | childProperty | child   | <table name="A" filter="yes" someProperty="Something child"/> | <table name="A" filter="no" someProperty="Bla2"/>            |
+      | Scenario                    | propertyName    | templateXPath                        | modelNode     | scope   | expectedResult1                                               | expectedResult2                                              |
+      | simple current              | someProperty    | //table/@someProperty                | property      | current | <table name="A" filter="yes" someProperty="something"/>       | <table name="A" filter="no" someProperty="something"/>       |
+      | filter current              | someProperty    | //table[@filter='yes']/@someProperty | property      | current | <table name="A" filter="yes" someProperty="something"/>       | <table name="A" filter="no" someProperty="Bla2"/>            |
+      | simple child                | someProperty    | //table/@someProperty                | childProperty | child   | <table name="A" filter="yes" someProperty="Something child"/> | <table name="A" filter="no" someProperty="Something child"/> |
+      | filter child                | someProperty    | //table[@filter='yes']/@someProperty | childProperty | child   | <table name="A" filter="yes" someProperty="Something child"/> | <table name="A" filter="no" someProperty="Bla2"/>            |
+      #| namespace all      | xb:someProperty | //table/@xb:someProperty             | property      | current | <table name="A" filter="yes" xb:someProperty="something"/>    | <table name="A" filter="no" xb:someProperty="something"/>    |
+      | namespace template          | xb:someProperty | //table/@someProperty                | property      | current | <table name="A" filter="yes" xb:someProperty="something"/>    | <table name="A" filter="no" xb:someProperty="something"/>    |
+      | namespace template no value | xb:someProperty | //table/@someProperty                | unknown       | current | <table name="A" filter="yes"/>                                | <table name="A" filter="no"/>                                |

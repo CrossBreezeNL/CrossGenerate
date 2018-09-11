@@ -64,6 +64,7 @@ public class XMLUtils {
 		vg.setDoc(xmlDocument.getBytes(StandardCharsets.US_ASCII));
 		
 		// Parse without namespace.
+		// When enabling namespace awareness, you must map the URLs of all used namespaces here.
 		try {
 			vg.parse(false);
 		} catch (ParseException e) {

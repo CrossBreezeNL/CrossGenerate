@@ -157,7 +157,7 @@ public class NamedTemplateSection extends TemplateSection {
 					 * TODO: This is a simple way to inject a if for placeholder injections. Should be designed properly later.
 					 * In the template we find something like 'someAttribute="{{PLACEHOLDER_NAME}}_someModelNode"'
 					 * These placeholders are there because of injection.
-					 * We would like to add a <xsl:if> around this attribute so it is only where when there is a value.
+					 * We would like to add a <xsl:if> around this attribute so it is only there when there is a value.
 					 */
 					/**
 					 * The regex to find a placeholder injected attribute:
@@ -165,30 +165,31 @@ public class NamedTemplateSection extends TemplateSection {
 					 *   [ \\t\\r\\n]* - Whitespace (space, tab or new-line)
 					 *   
 					 * group 2:
+					 *   ([a-zA-Z]+:)? - The namespace prefix (group 3)
 					 *   [a-zA-Z_-]+   - The attribute name
 					 *   [ \\t]*       - Whitespace (space or tab)
 					 *   =             - Assignment operator
 					 *   [ \\t]*       - Whitespace (space or tab)
 					 *   \"            - Opening quote
 					 *  
-					 * group 3:
+					 * group 4:
 					 *   %s            - The placeholder for placeholder name.
 					 * 
-					 * group 4:
+					 * group 5:
 					 *   %s            - Current accessor
 					 *   
-					 * group 5:
+					 * group 6:
 					 *   [a-zA-Z]+     - The attribute name to select
 					 *   
-					 * group 6:
+					 * group 7:
 					 *   \"            - The closing quote
 					 */
 					String placeholderRegex =  String.format(
-							"([ \\t\\r\\n]*)([a-zA-Z_-]+[ \\t]*=[ \\t]*\")(%s)(%s)([a-zA-Z]+)(\")",
+							"([ \\t\\r\\n]*)(([a-zA-Z]+:)?[a-zA-Z_-]+[ \\t]*=[ \\t]*\")(%s)(%s)([a-zA-Z]+)(\")",
 							Pattern.quote(PLACEHOLDER_PLACEHOLDER_NAME),
 							Pattern.quote(config.getTemplateConfig().getFileFormatConfig().getCurrentAccessor())
 					);
-					placeholderProcessedTemplateContent = placeholderProcessedTemplateContent.replaceAll(placeholderRegex, String.format("</xsl:text><xsl:if test=\"./@$5\"><xsl:text>$1$2%s$4$5$6</xsl:text></xsl:if><xsl:text>", parentBindingConfig.getPlaceholderName()));
+					placeholderProcessedTemplateContent = placeholderProcessedTemplateContent.replaceAll(placeholderRegex, String.format("</xsl:text><xsl:if test=\"./@$6\"><xsl:text>$1$2%s$5$6$7</xsl:text></xsl:if><xsl:text>", parentBindingConfig.getPlaceholderName()));
 					
 					// When the placeholder wasn't replaced in the previous replacement, its due to it not being an attribute (probably).
 					// So we replace only the placeholder now.
