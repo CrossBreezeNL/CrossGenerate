@@ -10,7 +10,7 @@ For the basic explanation on XPath, please consult the following website:
 Here some examples are given which represent commonly occuring configurations containg XPath when using CrossGenerate.
 
 ### Selection
-When using XPath an important concept is the use of axes. An axis is a relationship of a certain node or set of nodes in the XML document to the current node. When traversing nodes the first part of the XPath is always the axis. See <a href="https://www.w3schools.com/xml/xpath_axes.asp" target="_blank">W3Schools - XPath Axes</a> for an explanation of this concept.
+When using XPath an important concept is the use of axes. An axis is a relationship of a certain node or set of nodes in the XML document to the current node. When traversing nodes the first part of the XPath is usually the axis. If no axis is given, the current node (self) is the default. See <a href="https://www.w3schools.com/xml/xpath_axes.asp" target="_blank">W3Schools - XPath Axes</a> for an explanation of this concept.
 
 #### Child node selection
 The '/' at the beginning of the expression makes sure it selects all attribute elements relative to the current node.
