@@ -1,6 +1,7 @@
 # Release notes
 
-Here you can find the release notes of all CrossGenerate release up till the release this documentation applies to.
+Here you can find the release notes of all CrossGenerate releases up till the release this documentation applies to.
+Click on the header of a version number to go to the documentation of that specific version.
 
 [//]: # (Use the following example to create the release notes for a new release.)
 [//]: # ()
@@ -8,57 +9,57 @@ Here you can find the release notes of all CrossGenerate release up till the rel
 [//]: # ()
 [//]: # (- [ ] x.x.x <sup>xx-xx-xxxx</sup>)
 [//]: # (>)
-[//]: # (> ???+ success "New features")
+[//]: # (> !!! success "New features")
 [//]: # (>     * [ ] Template)
 [//]: # (>         * [ ] XML Template)
 [//]: # (>             - [X] Some new feature...)
-[//]: # (> ???+ "Enhanced features")
+[//]: # (> !!! "Enhanced features")
 [//]: # (>     * [ ] Model)
 [//]: # (>         - [X] Some enhanced feature...)
-[//]: # (> ???+ warning "Bug fixes")
+[//]: # (> !!! warning "Bug fixes")
 [//]: # (>     * [ ] Binding)
 [//]: # (>         * [X] Some issue...)
 
-## Version 2.3 <sup>[docs](../2.3/)</sup>
+## [Version 2.3](../2.3/)
 
 - [ ] 2.3.1 <sup>11-09-2018</sup>
->
-> ???+ warning "Bug fixes"
+> 
+> !!! warning "Bug fixes"
 >     * [ ] Template
 >         * [ ] XML Template
 >             - [X] TemplatePlaceholderInjection ignores namespace part of template node
 
 - [ ] 2.3 <sup>25-07-2018</sup>
 >
-> ???+ success "New features"
+> !!! success "New features"
 >     * [ ] Template
 >         * [ ] XML Template
 >             - [X] Remove a node from the template (TemplateNodeRemoval)
-> ???+ warning "Bug fixes"
+> !!! warning "Bug fixes"
 >     * [ ] Template
 >         * [ ] XML Template
 >             - [X] Wrong section bounds found for XML nodes when template contains special characters
 
-## Version 2.2 <sup>[docs](../2.1/)</sup>
+## [Version 2.2](../2.1/)
 
 - [ ] 2.2 <sup>25-06-2018</sup>
 > 
-> ???+ success "New features"
+> !!! success "New features"
 >     * [ ] Model
 >         - [X] Remove a node from the model (ModelNodeRemoval)
 
-## Version 2.1 <sup>[docs](../2.1/)</sup>
+## [Version 2.1](../2.1/)
 
 - [ ] 2.1 <sup>03-06-2018</sup>
 > 
-> ???+ success "New features"
+> !!! success "New features"
 >     * [ ] Commandline options
 >         - [X] Enable debug mode
 >         - [X] Specify log level and destination
 >     * [ ] Template
 >         * [ ] XML Template
 >             - [X] Support text template in XML templates (TextTemplate)
-> ???+ warning "Bug fixes"
+> !!! warning "Bug fixes"
 >     * [ ] Template
 >         * [ ] Text Template
 >             - [X] Issue with adjecant placeholders in section based template
@@ -66,11 +67,11 @@ Here you can find the release notes of all CrossGenerate release up till the rel
 >         * [ ] XML Template
 >             - [X] XML Output formatting is not same as input
 
-## Version 2.0 <sup>[docs](../2.0/)</sup>
+## [Version 2.0](../2.0/)
 
 - [ ] 2.0 <sup>22-02-2018</sup>
 > 
-> ???+ success "New features"
+> !!! success "New features"
 >     * [ ] Commandline options
 >         - [X] Specify Model - Template - Config combinations
 >     * [ ] Application config

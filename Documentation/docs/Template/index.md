@@ -7,6 +7,6 @@ A typical example of a template would be a DDL script to create a table for the 
 CrossGenerate supports two types of template, namely:
 
 - [Text](./TextTemplate)
-- [XML](./XMLTemplate)
+- [XML](./XmlTemplate)
 
 For more information on the template types and what options you have for each template, please click on the type to see the specific documentation.
