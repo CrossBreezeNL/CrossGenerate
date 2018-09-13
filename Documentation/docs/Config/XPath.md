@@ -7,10 +7,10 @@ For the basic explanation on XPath, please consult the following website:
 - <a href="https://www.w3schools.com/xml/xpath_intro.asp" target="_blank">W3Schools - XPath Tutorial</a>
 
 ## Examples
-Here some examples are given which represent commonly occuring configurtions containg XPath when using CrossGenerate.
+Here some examples are given which represent commonly occuring configurations containg XPath when using CrossGenerate.
 
 ### Selection
-When using XPath an important concept is the use of axis. When traversing nodes the first part of the XPath is always the axis.
+When using XPath an important concept is the use of axes. An axis is a relationship of a certain node or set of nodes in the XML document to the current node. When traversing nodes the first part of the XPath is always the axis. See <a href="https://www.w3schools.com/xml/xpath_axes.asp" target="_blank">W3Schools - XPath Axes</a> for an explanation of this concept.
 
 #### Child node selection
 The '/' at the beginning of the expression makes sure it selects all attribute elements relative to the current node.
@@ -19,7 +19,7 @@ The '/' at the beginning of the expression makes sure it selects all attribute e
 ```
 
 #### Child attribute selection
-In this example we want to select all name attributes of the current node.
+In this example we want to select all name attributes of the current node. This will result in a single result or no result, since a node can have only one attribute with a certain name.
 ``` xml
 /@name
 ```
@@ -31,7 +31,7 @@ To get to a node of the parent use the '../' axis. For example here we select th
 ```
 
 #### Any attribute selection
-The '//' at the beginning of the expression makes sure it selects all attribute elements no matter where they reside in the model (so not only of the current node).
+The '//' at the beginning of the expression makes sure it selects all attribute elements no matter where they reside in the XML document (so not only descedants of the current node).
 ``` xml
 //attribute
 ```
@@ -49,7 +49,7 @@ To make the comparison in the filter case insensitive, make sure to use lower-ca
 ``` xml
 /attribute[lower-case(@datatype)='varchar']
 ```
-One can also use different boolean type function to perform checks in filters. For example contains(), starts-with() & ends-with().
+One can also use different boolean type functions to perform checks in filters. For example contains(), starts-with() & ends-with().
 
 #### Filter on attribute
 Here we add a filter on the current datatype attribute. See how we use the '.' to select the current node value.
@@ -58,7 +58,7 @@ Here we add a filter on the current datatype attribute. See how we use the '.' t
 ```
 
 ### Functions
-There are quite some functions available in XPath to perform different types of actions. For example string manipulation or math functions. See the 'Saxon - XPath Functions' reference on the bottom of this page of a full list of functions available.
+There are quite some functions available in XPath to perform different types of actions. For example string manipulation or mathematical functions. See the references on the bottom of this page for an overview of all functions available.
 
 #### Concatenate
 Here we use the concat function to concatenate the current node name attribute and the parent node name attribute.
@@ -77,5 +77,5 @@ In this section a list of relevant references is given.
 
 - <a href="https://www.w3schools.com/xml/xml_xpath.asp" target="_blank">W3Schools - XML and XPath</a>
 - <a href="https://www.w3schools.com/xml/xpath_intro.asp" target="_blank">W3Schools - XPath Tutorial</a>
-- <a href="https://www.saxonica.com/html/documentation/expressions/" target="_blank">Saxon - XPath Expression Syntax</a>
-- <a href="https://www.saxonica.com/html/documentation/functions/fn/" target="_blank">Saxon - XPath Functions</a>
+- <a href="https://www.w3schools.com/xml/xsl_functions.asp" target="_blank">XPath Function Reference</a>
+- <a href="https://www.w3.org/TR/xquery-operators/" target="_blank">XQuery and XPath Reference</a>
