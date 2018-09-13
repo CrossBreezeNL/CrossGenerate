@@ -1,5 +1,5 @@
 # Project information
-site_name: 'CrossGenerate v2.3.0'
+site_name: 'CrossGenerate v2.3'
 
 # Copyright
 copyright: 'Copyright &copy; 2018 - CrossBreeze'
@@ -20,6 +20,7 @@ theme:
 pages:
 - Home:
     - 'Introduction'    : 'index.md'
+    - 'Release notes'   : 'ReleaseNotes.md'
     - 'Getting started' : 'GettingStarted.md'
     - 'Overview'        : 'Overview.md'
 - Application:
@@ -81,6 +82,7 @@ markdown_extensions:
       permalink: true
   - footnotes
   - admonition
+  - def_list
   - pymdownx.betterem:
       smart_enable: all
   - pymdownx.caret

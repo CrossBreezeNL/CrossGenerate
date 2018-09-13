@@ -55,7 +55,7 @@
 | Parameter                    | Description | Default | Remark |
 |:---                          |:--- |:--- |:--- |
 | ...                          | Click [here](GenericTemplate/#fileformat) to see the generic FileFormat options. |||
-| commentNodeXPath[^1]         | The template comment node XPath, this will be executed on the template and the resulting elements or attributes are inspected for annotations.| | See [XPath](../XPath). | 
+| commentNodeXPath[^1]         | The template comment node XPath, this will be executed on the template and the resulting elements or attributes are inspected for annotations.<br/>The commentNodeXPath expression must be specified relative to the node for which the annotation applies. So for example when the description attribute of an element may contain the annotation the XPath must be '@description'. | | See [XPath](../XPath). | 
 
 
 ## XmlSection
