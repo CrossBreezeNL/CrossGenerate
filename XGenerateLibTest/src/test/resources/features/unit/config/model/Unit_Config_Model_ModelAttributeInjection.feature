@@ -84,7 +84,7 @@ Feature: Unit_Config_Model_ModelAttributeInjection
       """
 
   Scenario: Inject an already existing attribute
-   Given the following config:
+    Given the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
@@ -115,17 +115,16 @@ Feature: Unit_Config_Model_ModelAttributeInjection
       NewC -> The entity was C
 
       """
-  
-  
+
   Scenario: Inject using target xpath
-  Given the following config:
+    Given the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model>
           <ModelAttributeInjections>
-            <ModelAttributeInjection modelXPath="//entity" targetAttribute="type" targetXPath="concat('The entity was ',@name)" />
-            <ModelAttributeInjection modelXPath="//entity" targetAttribute="name" targetXPath="concat('New',@name)" />
+            <ModelAttributeInjection modelXPath="//entity" targetAttribute="type" targetXPath="concat('The entity was ', @name)" />
+            <ModelAttributeInjection modelXPath="//entity" targetAttribute="name" targetXPath="concat('New', @name)" />
             
           </ModelAttributeInjections>
         </Model>
@@ -146,15 +145,15 @@ Feature: Unit_Config_Model_ModelAttributeInjection
       NewC -> The entity was C
 
       """
-      
+
   Scenario: Inject using incorrect modelXPath
-  Given the following config:
+    Given the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model>
           <ModelAttributeInjections>
-            <ModelAttributeInjection modelXPath="concats('test','test')" targetAttribute="type" targetXPath="concat('The entity was ',@name)" />
+            <ModelAttributeInjection modelXPath="concats('test','test')" targetAttribute="type" targetXPath="concat('The entity was ', @name)" />
           </ModelAttributeInjections>
         </Model>
         <TextTemplate rootSectionName="Template">
@@ -167,18 +166,18 @@ Feature: Unit_Config_Model_ModelAttributeInjection
       """
     When I run the generator
     Then I expect the following error message:
-    """    
-    com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for model XPath concats('test','test'): XPath Syntax error: #8
-    """      
-        
-    Scenario: Inject using incorrect targetXPath
-  	Given the following config:
+      """
+      com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for model XPath ´concats('test','test')´: Syntax error after or around the end of ´concats´
+      """
+
+  Scenario: Inject using incorrect targetXPath
+    Given the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model>
           <ModelAttributeInjections>
-            <ModelAttributeInjection modelXPath="//entity" targetAttribute="type" targetXPath="concats('The entity was ',@name)" />
+            <ModelAttributeInjection modelXPath="//entity" targetAttribute="type" targetXPath="concats('The entity was ', @name)" />
           </ModelAttributeInjections>
         </Model>
         <TextTemplate rootSectionName="Template">
@@ -191,6 +190,6 @@ Feature: Unit_Config_Model_ModelAttributeInjection
       """
     When I run the generator
     Then I expect the following error message:
-    """
-    com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for target XPath concats('The entity was ',@name): XPath Syntax error: #8
-    """   
+      """
+      com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for target XPath ´concats('The entity was ', @name)´: Syntax error after or around the end of ´concats´
+      """

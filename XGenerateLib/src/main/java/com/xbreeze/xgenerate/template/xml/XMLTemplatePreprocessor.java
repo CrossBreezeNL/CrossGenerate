@@ -144,7 +144,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 				        }
 					}
 					catch (XPathParseException | XPathEvalException | NavException e) {
-						throw new TemplatePreprocessorException(String.format("Error while processing template section annotation for XPath %s: %s", xmlSectionAnnotation.getTemplateXPath(),  e.getMessage()));
+						throw new TemplatePreprocessorException(String.format("Error while processing template section annotation for XPath %s: %s", xmlSectionAnnotation.getTemplateXPath(), XMLUtils.getAutopilotExceptionMessage(xmlSectionAnnotation.getTemplateXPath(), e)));
 					}
 					
 					// If there are no nodes found for this section, log a severe error.
@@ -169,8 +169,9 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 			AutoPilot annotatedElementAp = new AutoPilot(nv);
 			// Find all elements with annotations, where the XPath is -> //*[contains(<<element-or-attribute-selection>>, '<<annotation-prefix>>')]
 			// For example for SSIS we use @*[lower-case(local-name())='description'] to select all attributes (namespace and case insensitive) with the name 'description'.
+			String annotationElementXPath = String.format("//*[contains(%s, '%s')]", fileFormatConfig.getCommentNodeXPath(), fileFormatConfig.getAnnotationPrefix());
 			try {
-				annotatedElementAp.selectXPath(String.format("//*[contains(%s, '%s')]", fileFormatConfig.getCommentNodeXPath(), fileFormatConfig.getAnnotationPrefix()));
+				annotatedElementAp.selectXPath(annotationElementXPath);
 		        while ((annotatedElementAp.evalXPath()) != -1) {
 		        	// Get the annotation node value.
 	        		// Clone the navigation object.
@@ -209,7 +210,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 					templateAnnotations.addAll(foundInlineAnnotations);
 		        }
 			} catch (XPathParseException | XPathEvalException | NavException e) {
-				throw new TemplatePreprocessorException("Error while processing template annotations.", e);
+				throw new TemplatePreprocessorException(String.format("Error while processing template annotations using XPath ´%s´: %s", annotationElementXPath, XMLUtils.getAutopilotExceptionMessage(annotationElementXPath, e)));
 			}
 		}
 		
@@ -272,7 +273,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 					}
 					// If some exception occurs while performing the XML Xpath stuff, rethrow the exception in a TemplatePreprocessorException.
 					catch (XPathParseException | XPathEvalException | NavException e) {
-						throw new TemplatePreprocessorException(String.format("Error while finding TextTemplate node '%s': %s", textTemplateConfig.getNode(), e.getMessage()), e);
+						throw new TemplatePreprocessorException(String.format("Error while finding TextTemplate node ´%s´: %s", textTemplateConfig.getNode(), XMLUtils.getAutopilotExceptionMessage(textTemplateConfig.getNode(), e)), e);
 					}
 				}
 		}
@@ -407,7 +408,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		        xm.bind(nv);
 		        
 			} catch (XPathParseException | XPathEvalException | NavException | ModifyException | ParseException | TranscodeException | IOException e) {
-				throw new TemplatePreprocessorException(String.format("Error while processing template node removal for XPath %s: %s", mnr.getTemplateXPath(),  e.getMessage()));
+				throw new TemplatePreprocessorException(String.format("Error while processing template node removal for XPath ´%s´: %s", mnr.getTemplateXPath(), XMLUtils.getAutopilotExceptionMessage(mnr.getTemplateXPath(), e)));
 			}
 		}
 		
@@ -466,7 +467,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		        xm.reset();
 		        xm.bind(nv);
 			} catch (GeneratorException | XPathParseException | XPathEvalException | NavException | ParseException | TranscodeException | ModifyException | IOException e) {
-				throw new TemplatePreprocessorException(String.format("Error while processing template attribute injection for XPath %s: %s", tai.getTemplateXPath(),  e.getMessage()));
+				throw new TemplatePreprocessorException(String.format("Error while processing template attribute injection for XPath ´%s´: %s", tai.getTemplateXPath(), XMLUtils.getAutopilotExceptionMessage(tai.getTemplateXPath(), e)));
 			}
 		}
 		
@@ -544,7 +545,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 		        	
 		        }
 			} catch (GeneratorException | XPathParseException | XPathEvalException | NavException | ModifyException | UnsupportedEncodingException e) {
-				throw new TemplatePreprocessorException(String.format("Error while processing template attribute injection for XPath %s: %s", tpi.getTemplateXPath(),  e.getMessage()));
+				throw new TemplatePreprocessorException(String.format("Error while processing template attribute injection for XPath ´%s´: %s", tpi.getTemplateXPath(), XMLUtils.getAutopilotExceptionMessage(tpi.getTemplateXPath(), e)));
 			}
 		}
 		
@@ -573,7 +574,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 				accessor = _config.getTemplateConfig().getFileFormatConfig().getChildAccessor();
 				break;
 			default:
-				throw new TemplatePreprocessorException(String.format("Unrecognized scope defined in TemplatePlaceholderInjection '%s'", tpi.getScope().toString()));
+				throw new TemplatePreprocessorException(String.format("Unrecognized scope defined in TemplatePlaceholderInjection ´%s´", tpi.getScope().toString()));
 		}
 		// If the accessor is not set, throw an exception.
 		if (accessor == null)

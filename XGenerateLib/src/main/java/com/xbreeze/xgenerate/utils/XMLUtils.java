@@ -21,6 +21,7 @@ import com.ximpleware.TranscodeException;
 import com.ximpleware.VTDGen;
 import com.ximpleware.VTDNav;
 import com.ximpleware.XMLModifier;
+import com.ximpleware.XPathParseException;
 
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.SaxonApiException;
@@ -215,5 +216,24 @@ public class XMLUtils {
 		
 		// Return the xslt transformer.
 		return xsltTransformer;
+	}
+	
+	/**
+	 * Function to get a more informative error message when a XPathParseException is fired while using the VTD-Gen AutoPilot.
+	 * @param xPath The XPath which was parsed.
+	 * @param e The exception which was thrown.
+	 * @return The improved exception message.
+	 */
+	public static String getAutopilotExceptionMessage(String xPath, Exception e) {
+		// Init the exception message.
+		String exceptionMessage = e.getMessage();
+		// If the exception is a XPathParseException, create a exception message using the offset.
+		if (e instanceof XPathParseException && ((XPathParseException) e).getOffset() > 0) {
+			int substringEnd = ((XPathParseException) e).getOffset();
+			int substringStart = (substringEnd <= 10) ? 0 : substringEnd - 10;
+			exceptionMessage = String.format("Syntax error after or around the end of ´%s´", xPath.substring(substringStart, substringEnd));
+		}
+		// Return the exception message.
+		return exceptionMessage;
 	}
 }

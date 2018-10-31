@@ -98,7 +98,7 @@ public class ModelPreprocessor {
 		        xm.bind(nv);
 		        
 			} catch (XPathParseException | XPathEvalException | NavException | ModifyException | ParseException | TranscodeException | IOException e) {
-				throw new ModelPreprocessorException(String.format("Error while processing model node removal for XPath %s: %s", mnr.getModelXPath(),  e.getMessage()));
+				throw new ModelPreprocessorException(String.format("Error while processing model node removal for XPath ´%s´: %s", mnr.getModelXPath(),  XMLUtils.getAutopilotExceptionMessage(mnr.getModelXPath(), e)));
 			}
 		}
 		
@@ -152,10 +152,10 @@ public class ModelPreprocessor {
 							AutoPilot ap_targetValue = new AutoPilot(nv);
 							ap_targetValue.selectXPath(mai.getTargetXPath());
 							targetValue = ap_targetValue.evalXPathToString();
-							logger.info(String.format("Target XPath defined for attribute injection, value: '%s' => '%s'", mai.getTargetXPath(), targetValue));
+							logger.info(String.format("Target XPath defined for attribute injection, value: ´%s´ => ´%s´", mai.getTargetXPath(), targetValue));
 						}
 						catch (XPathParseException e) {
-							throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for target XPath %s: %s", mai.getTargetXPath(),  e.getMessage()));			
+							throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for target XPath ´%s´: %s", mai.getTargetXPath(),  XMLUtils.getAutopilotExceptionMessage(mai.getTargetXPath(), e)));			
 						}
 					}
 					else if (mai.getTargetValue() != null) {
@@ -174,7 +174,8 @@ public class ModelPreprocessor {
 		        xm.bind(nv);
 				
 			} catch (XPathParseException | XPathEvalException | NavException | ModifyException | ParseException | TranscodeException | IOException | GeneratorException e) {
-				throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for model XPath %s: %s", mai.getModelXPath(),  e.getMessage()));
+				// Throw a new exception.
+				throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for model XPath ´%s´: %s", mai.getModelXPath(),  XMLUtils.getAutopilotExceptionMessage(mai.getModelXPath(), e)));
 			}
 		}
 		
