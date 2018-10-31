@@ -22,10 +22,13 @@ Click on the header of a version number to go to the documentation of that speci
 
 ## [Version 2.3](../2.3/)
 - [ ] 2.3.2 <sup>dd-mm-2018</sup>
+>
 > !!! warning "Bug fixes"
 >     * [ ] Model
 >         * [ ] Model Attribute injection
 >             - [X] Error message when applying incorrect XPath in targetXPath attribute was misleading, suggesting incorrect modelXPath instead of targetXPath
+> !!! info "Enhanced features"
+>     * [X] Improved error message on XPath parse error for Model & XML Template XPath expressions.
 
 - [ ] 2.3.1 <sup>11-09-2018</sup>
 > 
