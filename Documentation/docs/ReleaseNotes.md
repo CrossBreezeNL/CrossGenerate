@@ -21,6 +21,11 @@ Click on the header of a version number to go to the documentation of that speci
 [//]: # (>         * [X] Some issue...)
 
 ## [Version 2.3](../2.3/)
+- [ ] 2.3.2 <sup>dd-mm-2018</sup>
+> !!! warning "Bug fixes"
+>     * [ ] Model
+>         * [ ] Model Attribute injection
+>             - [X] Error message when applying incorrect XPath in targetXPath attribute was misleading, suggesting incorrect modelXPath instead of targetXPath
 
 - [ ] 2.3.1 <sup>11-09-2018</sup>
 > 
