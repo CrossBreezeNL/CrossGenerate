@@ -1,7 +1,7 @@
 @Unit
 Feature: Unit_TextTemplate_Section_Prefix
   In this feature we will describe the section prefix feature in text templates.
-  
+
   Background: 
     Given I have the following model:
       """
@@ -78,3 +78,20 @@ Feature: Unit_TextTemplate_Section_Prefix
       | lastOnly    | /** last */      | FirstColumn                | SecondColumn                 | /** last */ThirdColumn      |
       | allButFirst | /** not first */ | FirstColumn                | /** not first */SecondColumn | /** not first */ThirdColumn |
       | allButLast  | /** not last */  | /** not last */FirstColumn | /** not last */SecondColumn  | ThirdColumn                 |
+
+  @KnownIssue
+  Scenario: Section with prefix single line indented
+    And the following template named "Section_Prefix_single_line_indented.txt":
+      """
+       -- @XGenTextSection(name="Column" prefix=",")
+       column_name
+      
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "Section_Prefix_single_line_indented.txt" with content:
+      """
+        FirstColumn
+        ,SecondColumn
+        ,ThirdColumn
+      """
