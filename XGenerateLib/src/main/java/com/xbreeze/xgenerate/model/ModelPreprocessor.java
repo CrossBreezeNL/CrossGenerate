@@ -148,10 +148,15 @@ public class ModelPreprocessor {
 					// Set the attribute value, either from XPath or constant value
 					if (mai.getTargetXPath() != null) {
 						// Execute the XPath on the current node.
-						AutoPilot ap_targetValue = new AutoPilot(nv);
-						ap_targetValue.selectXPath(mai.getTargetXPath());
-						targetValue = ap_targetValue.evalXPathToString();
-						logger.info(String.format("Target XPath defined for attribute injection, value: '%s' => '%s'", mai.getTargetXPath(), targetValue));
+						try {
+							AutoPilot ap_targetValue = new AutoPilot(nv);
+							ap_targetValue.selectXPath(mai.getTargetXPath());
+							targetValue = ap_targetValue.evalXPathToString();
+							logger.info(String.format("Target XPath defined for attribute injection, value: '%s' => '%s'", mai.getTargetXPath(), targetValue));
+						}
+						catch (XPathParseException e) {
+							throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for target XPath %s: %s", mai.getTargetXPath(),  e.getMessage()));			
+						}
 					}
 					else if (mai.getTargetValue() != null) {
 						targetValue = mai.getTargetValue();
@@ -169,7 +174,7 @@ public class ModelPreprocessor {
 		        xm.bind(nv);
 				
 			} catch (XPathParseException | XPathEvalException | NavException | ModifyException | ParseException | TranscodeException | IOException | GeneratorException e) {
-				throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for XPath %s: %s", mai.getModelXPath(),  e.getMessage()));
+				throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for model XPath %s: %s", mai.getModelXPath(),  e.getMessage()));
 			}
 		}
 		

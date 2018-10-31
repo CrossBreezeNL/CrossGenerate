@@ -116,3 +116,81 @@ Feature: Unit_Config_Model_ModelAttributeInjection
 
       """
   
+  
+  Scenario: Inject using target xpath
+  Given the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model>
+          <ModelAttributeInjections>
+            <ModelAttributeInjection modelXPath="//entity" targetAttribute="type" targetXPath="concat('The entity was ',@name)" />
+            <ModelAttributeInjection modelXPath="//entity" targetAttribute="name" targetXPath="concat('New',@name)" />
+            
+          </ModelAttributeInjections>
+        </Model>
+        <TextTemplate rootSectionName="Template">
+          <Output type="single_output" />
+        </TextTemplate>
+        <Binding>
+          <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table" />
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "Unit_Config_Model_ModelAttributeInjection.txt" with content:
+      """
+      NewA -> The entity was A
+      NewB -> The entity was B
+      NewC -> The entity was C
+
+      """
+      
+  Scenario: Inject using incorrect modelXPath
+  Given the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model>
+          <ModelAttributeInjections>
+            <ModelAttributeInjection modelXPath="concats('test','test')" targetAttribute="type" targetXPath="concat('The entity was ',@name)" />
+          </ModelAttributeInjections>
+        </Model>
+        <TextTemplate rootSectionName="Template">
+          <Output type="single_output" />
+        </TextTemplate>
+        <Binding>
+          <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table" />
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect the following error message:
+    """    
+    com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for model XPath concats('test','test'): XPath Syntax error: #8
+    """      
+        
+    Scenario: Inject using incorrect targetXPath
+  	Given the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model>
+          <ModelAttributeInjections>
+            <ModelAttributeInjection modelXPath="//entity" targetAttribute="type" targetXPath="concats('The entity was ',@name)" />
+          </ModelAttributeInjections>
+        </Model>
+        <TextTemplate rootSectionName="Template">
+          <Output type="single_output" />
+        </TextTemplate>
+        <Binding>
+          <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table" />
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect the following error message:
+    """
+    com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for target XPath concats('The entity was ',@name): XPath Syntax error: #8
+    """   

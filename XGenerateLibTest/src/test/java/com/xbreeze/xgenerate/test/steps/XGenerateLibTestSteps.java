@@ -1,6 +1,7 @@
 package com.xbreeze.xgenerate.test.steps;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
@@ -47,6 +48,7 @@ public class XGenerateLibTestSteps {
 	GenerationResults _generationResults;
 	URI _templateFileUri;
 	URI _configFileUri;
+	Exception generatorException;
 	
 	@Before
 	public void beforeScenario(Scenario scenario) {
@@ -92,6 +94,9 @@ public class XGenerateLibTestSteps {
 		String derivedFeatureSupportFileLocation = scenario.getUri().replaceFirst("features", "feature-support-files").replace(".feature", "");
 		logger.info(String.format("The feature-support-file location will be set to '%s'.", derivedFeatureSupportFileLocation));
 		_featureSupportFilesLocation = Paths.get(derivedFeatureSupportFileLocation).toUri();
+		
+		//Clear the exception variable
+		this.generatorException = null;
 		
 		// Initialize the generator.
 		this._generator = new Generator();
@@ -140,26 +145,34 @@ public class XGenerateLibTestSteps {
 	@When("^I run the generator$")
 	public void iRunTheGenerator() throws Throwable {	
 		//check if generator needs to be invoked with files or with template and config string
-		if (this._rawTemplate != null && this._xGenConfig != null) {
-			_generationResults = this._generator.generate(this._rawTemplate, this._xGenConfig, this._outputFolderUri, "");
-		}
-		else if (this._templateFileUri != null && this._configFileUri != null) {
-			_generationResults = this._generator.generateFromFiles(this._templateFileUri, this._configFileUri, this._outputFolderUri, "");
-		}
-		else {
-			throw new GeneratorException ("Template and config should both be specified as either content or file(URI) in the feature.");
-		}
+		try {
+			if (this._rawTemplate != null && this._xGenConfig != null) {
+				_generationResults = this._generator.generate(this._rawTemplate, this._xGenConfig, this._outputFolderUri, "");
+			}
+			else if (this._templateFileUri != null && this._configFileUri != null) {
+				_generationResults = this._generator.generateFromFiles(this._templateFileUri, this._configFileUri, this._outputFolderUri, "");
+			}
+			else {
+				throw new GeneratorException ("Template and config should both be specified as either content or file(URI) in the feature.");
+			}
 		
-		// If there was an error during generation, throw the exception.
-		for (GenerationResult generationResult : _generationResults.getGenerationResults()) {
-			if (generationResult.getStatus().equals(GenerationStatus.ERROR)) {
-				throw generationResult.getException();
+			// If there was an error during generation, store the exception.
+			for (GenerationResult generationResult : _generationResults.getGenerationResults()) {
+				if (generationResult.getStatus().equals(GenerationStatus.ERROR)) {
+					//throw generationResult.getException();
+					this.generatorException = generationResult.getException();
+				}
 			}
 		}
+		catch(GeneratorException exc) {
+			this.generatorException = exc;
+		}
+		
 	}
 
 	@Then("^I expect (\\d+) generation results?$")
 	public void iExpectGenerationResults(int expectedNrOfResults) throws Throwable {
+		checkForError();
 		int actualNrOfResults = this._generationResults.getGenerationResults().size();
 		// Assume the expected number equals the actual number.
 		assertEquals(
@@ -169,8 +182,17 @@ public class XGenerateLibTestSteps {
 		);	
 	}
 	
+	@Then("^I expect the following error message:$")
+	public void iExpectTheFollowingErrorMessage(String errorMessage) throws Throwable {
+		assertNotNull("There is no exception thrown", this.generatorException);
+		assertEquals(errorMessage, this.generatorException.getMessage());
+		
+		
+	}
+	
 	@Then("^an output named \"(.*)\" with contents equal to file: \"(.*)\"$")
 	public void anOutputNamed(String outputName, String expectedOutputFileUri) throws Throwable {
+		checkForError();
 		//Open the expected output file and read to string
 		FileInputStream fis = new FileInputStream(Paths.get(resolveSupportFile(expectedOutputFileUri)).toFile());
 		BOMInputStream bomInputStream = new BOMInputStream(fis);		
@@ -180,6 +202,7 @@ public class XGenerateLibTestSteps {
 	
 	@Then("^an output named \"(.*)\" with content:$")
 	public void andAnOutputNamedWithContents(String outputName, String expectedResultContent) throws Throwable {
+		checkForError();
 		this.compareActualAndExpectedOutput(outputName, expectedResultContent);
 	}
 	
@@ -210,5 +233,12 @@ public class XGenerateLibTestSteps {
 	
 	private String uriEncode(String uriPart) {
 		return new URIBuilder().setPath(uriPart).toString();
+	}
+	
+	// if an exception was thrown this method is invoked, throw the exception
+	private void checkForError() throws Throwable {
+		if (this.generatorException != null) 
+			throw this.generatorException;
+	
 	}
 }
