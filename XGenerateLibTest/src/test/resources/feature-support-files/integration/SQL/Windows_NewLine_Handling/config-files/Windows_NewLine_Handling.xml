@@ -2,6 +2,7 @@
 <XGenConfig>
   <Model/>
   <TextTemplate rootSectionName="Columns">
+    <FileFormat childAccessor="$" />
     <Output type="single_output" />
   </TextTemplate>
   <Binding>
