@@ -143,6 +143,9 @@ public class NamedTemplateSection extends TemplateSection {
 				// Store the template content in a local variable.
 				String placeholderProcessedTemplateContent = rawTemplateSection.getContent();
 				
+				// Replace the carriage return character with the XML encoded version so it's processed correctly in the XSLT engine.
+				placeholderProcessedTemplateContent = placeholderProcessedTemplateContent.replace("\r", "&#13;");
+				
 				// Process the placeholder-name placeholder.
 				// This placeholder is injected during TemplatePlaceholderInjection in XML templates.
 				// TODO Maybe handle this a bit smarter during injection of the placeholder somehow?
