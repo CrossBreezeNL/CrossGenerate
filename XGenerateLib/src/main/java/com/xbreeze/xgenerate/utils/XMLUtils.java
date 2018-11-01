@@ -231,7 +231,7 @@ public class XMLUtils {
 		if (e instanceof XPathParseException && ((XPathParseException) e).getOffset() > 0) {
 			int substringEnd = ((XPathParseException) e).getOffset();
 			int substringStart = (substringEnd <= 10) ? 0 : substringEnd - 10;
-			exceptionMessage = String.format("Syntax error after or around the end of ´%s´", xPath.substring(substringStart, substringEnd));
+			exceptionMessage = String.format("Syntax error after or around the end of Â´%sÂ´", xPath.substring(substringStart, substringEnd));
 		}
 		// Return the exception message.
 		return exceptionMessage;
