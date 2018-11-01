@@ -30,6 +30,7 @@ Click on the header of a version number to go to the documentation of that speci
 >     * [ ] Template
 >         * [ ] Text template
 >             - [X] With sections with a prefix the leading whitespace is included twice for first repetition.
+>             - [X] Carriage return with line-feed (CRLF) in template are converted into LF and removed from placeholder value.
 > !!! info "Enhanced features"
 >     * [X] Improved error message on XPath parse error for Model & XML Template XPath expressions.
 
