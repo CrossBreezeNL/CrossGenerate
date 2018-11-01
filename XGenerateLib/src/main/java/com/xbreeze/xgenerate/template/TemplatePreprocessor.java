@@ -206,6 +206,7 @@ public abstract class TemplatePreprocessor {
 				
 				// If the templateAnnotation start index is not the next number after the previous section end, we add a RawTemplateSection to the parent NamedTemplateSection.
 				// Let's check whether there is some template section which is after the last section and before the next (a raw template section).
+				// Also go into the if if the index is the same, for sections which end on the same index.
 				if (nextSectionBeginIndex >= previousSectionEndIndex) {
 					
 					// Let's check whether the current parent section ends before the next annotation.
@@ -269,9 +270,13 @@ public abstract class TemplatePreprocessor {
 					}
 					// The end of section wasn't found, so all before the new section is raw template of the parent.
 					else {
-						addRawTemplate(parentTemplateSection, rawTemplateContent, previousSectionEndIndex, nextSectionBeginIndex);
-						// Set the end index to the end of the raw template.
-						previousSectionEndIndex = nextSectionBeginIndex;
+						// If there is some template between the previous end and next begin, add a raw template.
+						if (previousSectionEndIndex != nextSectionBeginIndex) {
+							addRawTemplate(parentTemplateSection, rawTemplateContent, previousSectionEndIndex, nextSectionBeginIndex);
+						
+							// Set the end index to the end of the raw template.
+							previousSectionEndIndex = nextSectionBeginIndex;
+						}
 						
 						// When the templateAnnotation is null, this is the last piece of raw template.
 						// So return the index of the end here.
@@ -353,8 +358,11 @@ public abstract class TemplatePreprocessor {
 	 * @param rawTemplateContent The raw template content
 	 * @param startIndex The starting index of the raw template.
 	 * @param endIndex The ending index of the raw template.
+	 * @throws TemplatePreprocessorException 
 	 */
-	private void addRawTemplate(NamedTemplateSection parentTemplateSection, String rawTemplateContent, int startIndex, int endIndex) {
+	private void addRawTemplate(NamedTemplateSection parentTemplateSection, String rawTemplateContent, int startIndex, int endIndex) throws TemplatePreprocessorException {
+		if (startIndex == endIndex)
+			throw new TemplatePreprocessorException(String.format("A raw template was added with a length of 0 (index -> %d:%d)", startIndex, endIndex));
 		// Escape XML chars, since the raw template will be put in an XSLT transformation.
 		String rawTemplateSectionContent = XMLUtils.excapeXMLChars(doubleEntityEncode(rawTemplateContent.substring(startIndex, endIndex)));
 		logger.fine(String.format("Found a raw template section in section '%s' between index %d and %d: '%s'", parentTemplateSection.getSectionName(), startIndex, endIndex, rawTemplateSectionContent));
