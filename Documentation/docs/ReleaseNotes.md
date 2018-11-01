@@ -26,7 +26,10 @@ Click on the header of a version number to go to the documentation of that speci
 > !!! warning "Bug fixes"
 >     * [ ] Model
 >         * [ ] Model Attribute injection
->             - [X] Error message when applying incorrect XPath in targetXPath attribute was misleading, suggesting incorrect modelXPath instead of targetXPath
+>             - [X] Error message when applying incorrect XPath in targetXPath attribute was misleading, suggesting incorrect modelXPath instead of targetXPath.
+>     * [ ] Template
+>         * [ ] Text template
+>             - [X] With sections with a prefix the leading whitespace is included twice for first repetition.
 > !!! info "Enhanced features"
 >     * [X] Improved error message on XPath parse error for Model & XML Template XPath expressions.
 
