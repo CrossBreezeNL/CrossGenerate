@@ -29,8 +29,8 @@ Click on the header of a version number to go to the documentation of that speci
 >             - [X] Error message when applying incorrect XPath in targetXPath attribute was misleading, suggesting incorrect modelXPath instead of targetXPath.
 >     * [ ] Template
 >         * [ ] Text template
->             - [X] With sections with a prefix the leading whitespace is included twice for first repetition.
->             - [X] Carriage return with line-feed (CRLF) in template are converted into LF and removed from placeholder value.
+>             - [X] With sections with a prefix the leading whitespace was included twice for first repetition.
+>             - [X] Carriage return with line-feed (CRLF) in template were converted into LF and removed from placeholder value.
 > !!! info "Enhanced features"
 >     * [X] Improved error message on XPath parse error for Model & XML Template XPath expressions.
 
@@ -39,7 +39,7 @@ Click on the header of a version number to go to the documentation of that speci
 > !!! warning "Bug fixes"
 >     * [ ] Template
 >         * [ ] XML Template
->             - [X] TemplatePlaceholderInjection ignores namespace part of template node
+>             - [X] TemplatePlaceholderInjection ignored namespace part of template node
 
 - [ ] 2.3 <sup>25-07-2018</sup>
 >
@@ -50,7 +50,7 @@ Click on the header of a version number to go to the documentation of that speci
 > !!! warning "Bug fixes"
 >     * [ ] Template
 >         * [ ] XML Template
->             - [X] Wrong section bounds found for XML nodes when template contains special characters
+>             - [X] Wrong section bounds found for XML nodes when template contained special characters
 
 ## [Version 2.2](../2.1/)
 
@@ -74,10 +74,10 @@ Click on the header of a version number to go to the documentation of that speci
 > !!! warning "Bug fixes"
 >     * [ ] Template
 >         * [ ] Text Template
->             - [X] Issue with adjecant placeholders in section based template
->             - [X] Suffix are on next line when section includes newline
+>             - [X] Adjecant placeholders were not resolved in section based template
+>             - [X] Suffix was on next line when section includes newline
 >         * [ ] XML Template
->             - [X] XML Output formatting is not same as input
+>             - [X] XML Output formatting was not same as input
 
 ## [Version 2.0](../2.0/)
 
