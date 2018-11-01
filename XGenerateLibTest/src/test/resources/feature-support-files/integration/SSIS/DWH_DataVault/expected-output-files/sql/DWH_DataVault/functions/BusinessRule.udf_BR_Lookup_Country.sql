@@ -19,6 +19,6 @@ RETURN
     [Country_Continent]
   FROM [Source_CTE]
   WHERE
-        [Country_Code] = @Country_Code
+    [Country_Code] = @Country_Code
 ;
 GO

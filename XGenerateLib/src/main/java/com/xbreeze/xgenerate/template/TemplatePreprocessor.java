@@ -160,6 +160,8 @@ public abstract class TemplatePreprocessor {
 				addRawTemplate(parentTemplateSection, rawTemplateContent, whitespaceStartIndex, whitespaceEndIndex);
 				// Add the repetition template section for the prefix.
 				addRepetitionTemplate(parentTemplateSection, textSectionAnnotaton.getPrefix(), whitespaceEndIndex, RepetitionType.prefix, textSectionAnnotaton.getPrefixStyle(), textSectionAnnotaton.getPrefixAction());
+				// Update the previous section end index, so the next raw template starts after the whitespace.
+				previousSectionEndIndex  = whitespaceEndIndex;
 			}
 			// No whitespace found, so add the prefix to the start.
 			else {
@@ -367,7 +369,7 @@ public abstract class TemplatePreprocessor {
 	 * @param endIndex The ending index of the raw template.
 	 */
 	private void addRepetitionTemplate(NamedTemplateSection parentTemplateSection, String repetitionContent, int sectionIndex, RepetitionType repetitionType, RepetitionStyle repetitionStyle, RepetitionAction repetitionAction) {
-		logger.fine(String.format("Found a repetition template section in section '%s' at index %d: %s", parentTemplateSection.getSectionName(), sectionIndex, repetitionType.name()));
+		logger.fine(String.format("Found a repetition template section in section '%s' at index %d: '%s'", parentTemplateSection.getSectionName(), sectionIndex, repetitionContent));
 		parentTemplateSection.addTemplateSection(new RepetitionTemplateSection(repetitionContent, sectionIndex, repetitionType, repetitionStyle, repetitionAction));
 	}
 	

@@ -79,13 +79,12 @@ Feature: Unit_TextTemplate_Section_Prefix
       | allButFirst | /** not first */ | FirstColumn                | /** not first */SecondColumn | /** not first */ThirdColumn |
       | allButLast  | /** not last */  | /** not last */FirstColumn | /** not last */SecondColumn  | ThirdColumn                 |
 
-  @KnownIssue
-  Scenario: Section with prefix single line indented
+  Scenario: Section with prefix single line with whitespace
     And the following template named "Section_Prefix_single_line_indented.txt":
       """
-       -- @XGenTextSection(name="Column" prefix=",")
-       column_name
-      
+        -- @XGenTextSection(name="Column" prefix=",")
+        column_name
+
       """
     When I run the generator
     Then I expect 1 generation result
@@ -94,4 +93,22 @@ Feature: Unit_TextTemplate_Section_Prefix
         FirstColumn
         ,SecondColumn
         ,ThirdColumn
+
+      """
+
+  Scenario: Section with suffix single line with whitespace
+    And the following template named "Section_Prefix_single_line_indented.txt":
+      """
+        -- @XGenTextSection(name="Column" suffix=",")
+        column_name  
+
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "Section_Prefix_single_line_indented.txt" with content:
+      """
+        FirstColumn,  
+        SecondColumn,  
+        ThirdColumn  
+
       """
