@@ -23,6 +23,10 @@ Click on the header of a version number to go to the documentation of that speci
 ## [Version 2.3](../2.3/)
 - [ ] 2.3.2 <sup>dd-mm-2018</sup>
 >
+> !!! success "New features"
+>     * [ ] Binding
+>         * [ ] Bind a model element on a template section (SectionModelBinding)
+>             - [X] Specify a variable name for the current element within a SectionModelBinding (variableName).
 > !!! warning "Bug fixes"
 >     * [ ] Model
 >         * [ ] Model Attribute injection
