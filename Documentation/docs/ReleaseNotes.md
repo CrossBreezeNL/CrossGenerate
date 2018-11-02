@@ -26,13 +26,13 @@ Click on the header of a version number to go to the documentation of that speci
 > !!! warning "Bug fixes"
 >     * [ ] Model
 >         * [ ] Model Attribute injection
->             - [X] Error message when applying incorrect XPath in targetXPath attribute was misleading, suggesting incorrect modelXPath instead of targetXPath.
+>             - [X] Error message when applying incorrect XPath in targetXPath attribute was misleading, suggesting incorrect modelXPath instead of targetXPath
 >     * [ ] Template
 >         * [ ] Text template
->             - [X] With sections with a prefix the leading whitespace was included twice for first repetition.
->             - [X] Carriage return with line-feed (CRLF) in template were converted into LF and removed from placeholder value.
+>             - [X] With sections with a prefix the leading whitespace was included twice for first repetition
+>             - [X] Carriage return with line-feed (CRLF) in template were converted into LF and removed from placeholder value
 > !!! info "Enhanced features"
->     * [X] Improved error message on XPath parse error for Model & XML Template XPath expressions.
+>     * [X] Improved error message on XPath parse error for Model & XML Template XPath expressions
 
 - [ ] 2.3.1 <sup>11-09-2018</sup>
 > 
