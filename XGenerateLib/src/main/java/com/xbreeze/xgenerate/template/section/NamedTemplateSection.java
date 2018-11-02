@@ -78,16 +78,18 @@ public class NamedTemplateSection extends TemplateSection {
 		xsltTemplate.append("<!-- Section begin: %s -->", this.getSectionName());
 		
 		// If the variable name is set for the section model binding, inject the xsl-variable part.
-		if (parentBindingConfig.getVariableName() != null && parentBindingConfig.getVariableName().length() > 0) {
+		if (parentBindingConfig.hasVariableName()) {
 			logger.info(String.format("Creating variable '%s' for SectionModelBinding '%s'.", parentBindingConfig.getVariableName(), parentBindingConfig.getSectionName()));
 			xsltTemplate.append("<xsl:variable name=\"%s\" select=\".\" />", parentBindingConfig.getVariableName());
 		}
 		
 		// Add a variable for each placeholder which has a variableName defined.
-		// TODO: If a variable is defined for a placeholder, we could use the variable i.s.o. replacing the placeholders with the modelXPath.
-		for (PlaceholderConfig placeholderWithVariable : parentBindingConfig.getPlaceholderConfigs().stream().filter(placeholder -> (placeholder.getVariableName() != null && placeholder.getVariableName().length() > 0)).collect(Collectors.toList())) {
-			logger.info(String.format("Creating variable '%s' for Placeholder '%s'.", placeholderWithVariable.getVariableName(), placeholderWithVariable.getName()));
-			xsltTemplate.append("<xsl:variable name=\"%s\" select=\"%s\" />", placeholderWithVariable.getVariableName(), placeholderWithVariable.getModelXPath());
+		// If a variable is defined for a placeholder, we use the variable i.s.o. replacing the placeholders with the modelXPath in XsltTemplate.processPlaceholders().
+		if (parentBindingConfig.getPlaceholderConfigs() != null) {
+			for (PlaceholderConfig placeholderWithVariable : parentBindingConfig.getPlaceholderConfigs().stream().filter(placeholder -> placeholder.hasVariableName()).collect(Collectors.toList())) {
+				logger.info(String.format("Creating variable '%s' for Placeholder '%s'.", placeholderWithVariable.getVariableName(), placeholderWithVariable.getName()));
+				xsltTemplate.append("<xsl:variable name=\"%s\" select=\"%s\" />", placeholderWithVariable.getVariableName(), placeholderWithVariable.getModelXPath());
+			}
 		}
 		
 		// Loop through the template sections and add the needed parts to the pre-processed template (XSLT).

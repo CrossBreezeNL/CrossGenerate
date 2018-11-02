@@ -91,4 +91,12 @@ public class SectionModelBindingConfig extends BindingContainer {
 	public void setVariableName(String variableName) {
 		this._variableName = variableName;
 	}
+	
+	/**
+	 * Check whether the variable name is set.
+	 * @return Whether the variable name is set.
+	 */
+	public boolean hasVariableName() {
+		return (_variableName != null && _variableName.length() > 0);
+	}
 }

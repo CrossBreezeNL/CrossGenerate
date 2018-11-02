@@ -67,4 +67,12 @@ public class PlaceholderConfig {
 	public void setVariableName(String variableName) {
 		this.variableName = variableName;
 	}
+	
+	/**
+	 * Check whether the variable name is set.
+	 * @return Whether the variable name is set.
+	 */
+	public boolean hasVariableName() {
+		return (variableName != null && variableName.length() > 0);
+	}
 }
