@@ -231,7 +231,8 @@ public class XsltTemplate {
 		}
 		
 		// Group 1: The attribute name.
-		String placeholderReplacement = String.format(placeholderFormat, modelXPath);
+		// Replace the $ in a modelXPath with \\$ so it's escape in the regex while executing the replaceAll.
+		String placeholderReplacement = String.format(placeholderFormat, modelXPath.replace("$", "\\$"));
 
 		// Perform the replacement for the placeholder.
 		//logger.info(String.format("Processing placeholder '%s' -> %s", placeholderRegex, placeholderReplacement));

@@ -75,6 +75,12 @@ public class NamedTemplateSection extends TemplateSection {
 		// Add a comment in the XSLT marking the section start.
 		xsltTemplate.append("<!-- Section begin: %s -->", this.getSectionName());
 		
+		// If the variable name is set for the section model binding, inject the xsl-variable part.
+		if (parentBindingConfig.getVariableName() != null && parentBindingConfig.getVariableName().length() > 0) {
+			logger.info(String.format("Creating variable '%s' for SectionModelBinding '%s'.", parentBindingConfig.getVariableName(), parentBindingConfig.getSectionName()));
+			xsltTemplate.append("<xsl:variable name=\"%s\" select=\".\" />", parentBindingConfig.getVariableName());
+		}
+		
 		// Loop through the template sections and add the needed parts to the pre-processed template (XSLT).
 		for (TemplateSection templateSection : this.getTemplateSections()) {
 			

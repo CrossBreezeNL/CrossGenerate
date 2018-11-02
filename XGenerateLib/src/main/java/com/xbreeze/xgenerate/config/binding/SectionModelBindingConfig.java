@@ -25,6 +25,11 @@ public class SectionModelBindingConfig extends BindingContainer {
 	private String _placeholderName;
 	
 	/**
+	 * The variable name which is bound to the current element within a for-each for the section model binding.
+	 */
+	private String _variableName;
+	
+	/**
 	 * @return the _section
 	 */
 	@XmlAttribute(name="section", required=true)
@@ -70,5 +75,20 @@ public class SectionModelBindingConfig extends BindingContainer {
 	 */
 	public void setPlaceholderName(String placeholderName) {
 		this._placeholderName = placeholderName;
+	}
+
+	/**
+	 * @return the variableName
+	 */
+	@XmlAttribute
+	public String getVariableName() {
+		return _variableName;
+	}
+
+	/**
+	 * @param variableName the variableName to set
+	 */
+	public void setVariableName(String variableName) {
+		this._variableName = variableName;
 	}
 }
