@@ -50,7 +50,7 @@ Feature: Unit_Config_Binding_SectionModelBinding_Placeholder
       | relative | nextTable       | following-sibling::entity[1] | A -> B ;        | B -> C ;        | C ->  ;         |
       | absolute | firstTable      | //entity[1]                  | A -> A ;        | B -> A ;        | C -> A ;        |
       | variable | primary         | $tableNode                   | A -> A ;        | B -> B ;        | C -> C ;        |
-      
+
   Scenario: Placeholders using variable
     Given the following config:
       """
@@ -71,15 +71,15 @@ Feature: Unit_Config_Binding_SectionModelBinding_Placeholder
       """
     And the following template named "Unit_Config_Binding_SectionModelBinding_Placeholder.txt":
       """
-      table_name -> secondPlaceholder_name ;
+      table_name -> firstPlaceholder_name -> secondPlaceholder_name ;
 
       """
     When I run the generator
     Then I expect 1 generation result
     And an output named "Unit_Config_Binding_SectionModelBinding_Placeholder.txt" with content:
       """
-      A -> A ;
-      B -> A ;
-      C -> A ;
+      A -> A -> A ;
+      B -> A -> A ;
+      C -> A -> A ;
 
       """
