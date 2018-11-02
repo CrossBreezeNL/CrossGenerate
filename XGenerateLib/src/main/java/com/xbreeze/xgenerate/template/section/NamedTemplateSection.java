@@ -3,8 +3,10 @@ package com.xbreeze.xgenerate.template.section;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.xbreeze.xgenerate.config.XGenConfig;
+import com.xbreeze.xgenerate.config.binding.PlaceholderConfig;
 import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.XsltTemplate;
@@ -79,6 +81,13 @@ public class NamedTemplateSection extends TemplateSection {
 		if (parentBindingConfig.getVariableName() != null && parentBindingConfig.getVariableName().length() > 0) {
 			logger.info(String.format("Creating variable '%s' for SectionModelBinding '%s'.", parentBindingConfig.getVariableName(), parentBindingConfig.getSectionName()));
 			xsltTemplate.append("<xsl:variable name=\"%s\" select=\".\" />", parentBindingConfig.getVariableName());
+		}
+		
+		// Add a variable for each placeholder which has a variableName defined.
+		// TODO: If a variable is defined for a placeholder, we could use the variable i.s.o. replacing the placeholders with the modelXPath.
+		for (PlaceholderConfig placeholderWithVariable : parentBindingConfig.getPlaceholderConfigs().stream().filter(placeholder -> (placeholder.getVariableName() != null && placeholder.getVariableName().length() > 0)).collect(Collectors.toList())) {
+			logger.info(String.format("Creating variable '%s' for Placeholder '%s'.", placeholderWithVariable.getVariableName(), placeholderWithVariable.getName()));
+			xsltTemplate.append("<xsl:variable name=\"%s\" select=\"%s\" />", placeholderWithVariable.getVariableName(), placeholderWithVariable.getModelXPath());
 		}
 		
 		// Loop through the template sections and add the needed parts to the pre-processed template (XSLT).
@@ -156,7 +165,7 @@ public class NamedTemplateSection extends TemplateSection {
 				// This placeholder is injected during TemplatePlaceholderInjection in XML templates.
 				// TODO Maybe handle this a bit smarter during injection of the placeholder somehow?
 				// ^ This is bit of chicken - egg problem where you can have multiple placeholder names?
-				// ^ Bit if placeholder names would differ the template would probably not work right?
+				// ^ But if placeholder names would differ the template would probably not work right?
 				// ^ Cause the sections are repeated, but placeholder can't be different for same section.
 				// ^ Maybe with this information we can check the unique placeholder names upfront and store
 				// ^ Them in this object to be used in the XMLPreprocessor.

@@ -17,6 +17,11 @@ public class PlaceholderConfig {
 	 * The XPath of the model the placeholder points to.
 	 */
 	private String modelXPath;
+	
+	/**
+	 * The variable name which is bound to the element the modelXPath points to.
+	 */
+	private String variableName;
 
 	/**
 	 * @return the name
@@ -46,5 +51,20 @@ public class PlaceholderConfig {
 	 */
 	public void setModelXPath(String modelXPath) {
 		this.modelXPath = modelXPath;
+	}
+
+	/**
+	 * @return the variableName
+	 */
+	@XmlAttribute
+	public String getVariableName() {
+		return variableName;
+	}
+
+	/**
+	 * @param variableName the variableName to set
+	 */
+	public void setVariableName(String variableName) {
+		this.variableName = variableName;
 	}
 }

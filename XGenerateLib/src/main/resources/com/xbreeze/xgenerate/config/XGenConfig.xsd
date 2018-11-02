@@ -222,6 +222,7 @@
     <xs:sequence/>
     <xs:attribute name="modelXPath" type="xs:string" use="required"/>
     <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="variableName" type="xs:string"/>
   </xs:complexType>
 
   <xs:complexType name="sectionModelBindingConfig">
