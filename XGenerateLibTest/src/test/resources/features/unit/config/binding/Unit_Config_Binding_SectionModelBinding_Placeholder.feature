@@ -6,7 +6,7 @@ Feature: Unit_Config_Binding_SectionModelBinding_Placeholder
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <entities>
+      <entities primary="A">
         <entity name="A"/>
         <entity name="B"/>
         <entity name="C"/>
@@ -22,7 +22,7 @@ Feature: Unit_Config_Binding_SectionModelBinding_Placeholder
           <Output type="single_output" />
         </TextTemplate>
         <Binding>
-          <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table">
+          <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table" variableName="tableNode">
             <Placeholders>
               <Placeholder name="<placeholderName>" modelXPath="<modelXPath>" />
             </Placeholders>
@@ -49,3 +49,4 @@ Feature: Unit_Config_Binding_SectionModelBinding_Placeholder
       | Scenario | placeholderName | modelXPath                   | expectedResultA | expectedResultB | expectedResultC |
       | relative | nextTable       | following-sibling::entity[1] | A -> B ;        | B -> C ;        | C ->  ;         |
       | absolute | firstTable      | //entity[1]                  | A -> A ;        | B -> A ;        | C -> A ;        |
+      | variable | primary         | $tableNode                   | A -> A ;        | B -> B ;        | C -> C ;        |

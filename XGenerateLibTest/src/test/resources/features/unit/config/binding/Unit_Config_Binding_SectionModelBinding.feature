@@ -6,7 +6,7 @@ Feature: Unit_Config_Binding_SectionModelBinding
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <entities>
+      <entities primary="A">
         <entity name="A"/>
         <entity name="B"/>
         <entity name="C"/>
@@ -81,7 +81,7 @@ Feature: Unit_Config_Binding_SectionModelBinding
           <Output type="single_output" />
         </TextTemplate>
         <Binding>
-          <SectionModelBinding section="Template" modelXPath="<rootModelXPath>" placeholderName="root">
+          <SectionModelBinding section="Template" modelXPath="<rootModelXPath>" placeholderName="root" variableName="<variableName>">
             <SectionModelBinding section="Section" modelXPath="<childModelXPath>" placeholderName="<childPlaceholderName>" />
           </SectionModelBinding>
         </Binding>
@@ -100,6 +100,7 @@ Feature: Unit_Config_Binding_SectionModelBinding
       """
 
     Examples: 
-      | Scenario | rootModelXPath | childModelXPath   | childPlaceholderName | expectedResultA | expectedResultB | expectedResultC |
-      | simple   | /entities      | entity            | table                | A               | B               | C               |
-      | filtered | /entities      | entity[@name='A'] | table                | A               |                 |                 |
+      | Scenario                | rootModelXPath | variableName | childModelXPath                  | childPlaceholderName | expectedResultA | expectedResultB | expectedResultC |
+      | simple                  | /entities      |              | entity                           | table                | A               | B               | C               |
+      | filtered                | /entities      |              | entity[@name='A']                | table                | A               |                 |                 |
+      | filtered using variable | /entities      | rootNode     | entity[@name=$rootNode/@primary] | table                | A               |                 |                 |
