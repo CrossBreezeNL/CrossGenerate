@@ -25,6 +25,7 @@ A SectionModelBinding defines how the model should be mapped to the template.
   section="..."
   modelXPath="..."
   placeholderName="..."
+  variableName="..."
 >
   <Placeholders>
     <Placeholder ... />
@@ -55,6 +56,7 @@ A SectionModelBinding defines how the model should be mapped to the template.
 <Placeholder
   name="..."
   modelXPath="..."
+  variableName="..."
 />
 ```
 
@@ -64,6 +66,7 @@ A SectionModelBinding defines how the model should be mapped to the template.
 |:---                                |:--- |:--- |:--- |
 | name[^1]                           | The name of the placeholder. | | |
 | modelXPath[^1]                     | The XPath expression which can be applied on the current element to get the element for the placeholder. | | See [XPath](./XPath). |
+| variableName                       | The variable name which is bound to the node the modelXPath points to. | | This variable can be used in any XPath expression in a following element of the SectionModelBinding the placeholder is defined in. When using the varibale in a XPath it must be prefixed with a $, for example the variable with name 'someVariable' can be accessed in a XPath expression using $someVariable. |
 
 
 [comment]: Footnotes

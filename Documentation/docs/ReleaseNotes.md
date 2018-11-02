@@ -26,7 +26,9 @@ Click on the header of a version number to go to the documentation of that speci
 > !!! success "New features"
 >     * [ ] Binding
 >         * [ ] Bind a model element on a template section (SectionModelBinding)
->             - [X] Specify a variable name for the current element within a SectionModelBinding (variableName).
+>             - [X] Specify a variable name for the current element within a SectionModelBinding (variableName)
+>         * [ ] Define a placeholder for a model element within a section binding (Placeholder)
+>             - [X] Specify a variable name for the element the modelXPath of the placeholder points to (variableName)
 > !!! warning "Bug fixes"
 >     * [ ] Model
 >         * [ ] Model Attribute injection
