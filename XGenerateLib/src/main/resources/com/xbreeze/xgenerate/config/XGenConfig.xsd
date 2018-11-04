@@ -207,6 +207,13 @@
 
   <xs:complexType name="bindingContainer" abstract="true">
     <xs:sequence>
+      <xs:element name="Literals" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Literal" type="literalConfig" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="Placeholders" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
@@ -216,6 +223,12 @@
       </xs:element>
       <xs:element name="SectionModelBinding" type="sectionModelBindingConfig" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="literalConfig">
+    <xs:sequence/>
+    <xs:attribute name="literal" type="xs:string" use="required"/>
+    <xs:attribute name="modelXPath" type="xs:string" use="required"/>
   </xs:complexType>
 
   <xs:complexType name="placeholderConfig">

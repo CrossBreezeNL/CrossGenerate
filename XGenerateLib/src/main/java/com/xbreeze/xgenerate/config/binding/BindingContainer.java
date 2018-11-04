@@ -25,6 +25,11 @@ public abstract class BindingContainer {
 	protected ArrayList<PlaceholderConfig> _placeholderConfigs;
 	
 	/**
+	 * A list of literals which can be found inside the section of this binding.
+	 */
+	private ArrayList<LiteralConfig> _literalConfigs;
+	
+	/**
 	 * Get the list of placeholder config's.
 	 * @return The list of placeholder config's.
 	 */
@@ -87,5 +92,23 @@ public abstract class BindingContainer {
 			return placeholderName;
 		}
 		return null;
+	}
+
+	/**
+	 * Get the literal configs for this section.
+	 * @return the literalConfigs
+	 */
+	@XmlElement(name="Literal")
+	@XmlElementWrapper(name="Literals")
+	public ArrayList<LiteralConfig> getLiteralConfigs() {
+		return _literalConfigs;
+	}
+
+	/**
+	 * Set the literal configs for this section.
+	 * @param literalConfigs the literalConfigs to set
+	 */
+	public void setLiteralConfigs(ArrayList<LiteralConfig> literalConfigs) {
+		this._literalConfigs = literalConfigs;
 	}
 }

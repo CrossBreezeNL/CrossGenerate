@@ -158,10 +158,10 @@ public class NamedTemplateSection extends TemplateSection {
 				RawTemplateSection rawTemplateSection = (RawTemplateSection) templateSection;
 				
 				// Store the template content in a local variable.
-				String placeholderProcessedTemplateContent = rawTemplateSection.getContent();
+				String processedRawTemplateContent = rawTemplateSection.getContent();
 				
 				// Replace the carriage return character with the XML encoded version so it's processed correctly in the XSLT engine.
-				placeholderProcessedTemplateContent = placeholderProcessedTemplateContent.replace("\r", "&#13;");
+				processedRawTemplateContent = processedRawTemplateContent.replace("\r", "&#13;");
 				
 				// Process the placeholder-name placeholder.
 				// This placeholder is injected during TemplatePlaceholderInjection in XML templates.
@@ -171,7 +171,7 @@ public class NamedTemplateSection extends TemplateSection {
 				// ^ Cause the sections are repeated, but placeholder can't be different for same section.
 				// ^ Maybe with this information we can check the unique placeholder names upfront and store
 				// ^ Them in this object to be used in the XMLPreprocessor.
-				if (placeholderProcessedTemplateContent.indexOf(PLACEHOLDER_PLACEHOLDER_NAME) != -1) {
+				if (processedRawTemplateContent.indexOf(PLACEHOLDER_PLACEHOLDER_NAME) != -1) {
 					logger.fine("Placeholder name placeholder found, replacing with right name");
 					/**
 					 * TODO: This is a simple way to inject a if for placeholder injections. Should be designed properly later.
@@ -209,20 +209,23 @@ public class NamedTemplateSection extends TemplateSection {
 							Pattern.quote(PLACEHOLDER_PLACEHOLDER_NAME),
 							Pattern.quote(config.getTemplateConfig().getFileFormatConfig().getCurrentAccessor())
 					);
-					placeholderProcessedTemplateContent = placeholderProcessedTemplateContent.replaceAll(placeholderRegex, String.format("</xsl:text><xsl:if test=\"./@$6\"><xsl:text>$1$2%s$5$6$7</xsl:text></xsl:if><xsl:text>", parentBindingConfig.getPlaceholderName()));
+					processedRawTemplateContent = processedRawTemplateContent.replaceAll(placeholderRegex, String.format("</xsl:text><xsl:if test=\"./@$6\"><xsl:text>$1$2%s$5$6$7</xsl:text></xsl:if><xsl:text>", parentBindingConfig.getPlaceholderName()));
 					
 					// When the placeholder wasn't replaced in the previous replacement, its due to it not being an attribute (probably).
 					// So we replace only the placeholder now.
-					placeholderProcessedTemplateContent = placeholderProcessedTemplateContent.replaceAll(Pattern.quote(PLACEHOLDER_PLACEHOLDER_NAME), parentBindingConfig.getPlaceholderName());
+					processedRawTemplateContent = processedRawTemplateContent.replaceAll(Pattern.quote(PLACEHOLDER_PLACEHOLDER_NAME), parentBindingConfig.getPlaceholderName());
 				}
 				
 				// Process the placeholder of this section.
-				placeholderProcessedTemplateContent = XsltTemplate.processPlaceholders(placeholderProcessedTemplateContent, parentBindingConfig, config.getTemplateConfig());
+				processedRawTemplateContent = XsltTemplate.processPlaceholders(processedRawTemplateContent, parentBindingConfig, config.getTemplateConfig());
+				
+				// Process the literals defined for this section.
+				processedRawTemplateContent = XsltTemplate.processLiterals(processedRawTemplateContent, parentBindingConfig, config.getTemplateConfig());
 				
 				// Append the raw template section into the pre-processed template.
 				xsltTemplate.append("<!-- Raw begin -->");
 				xsltTemplate.append("<xsl:text>");
-				xsltTemplate.append(placeholderProcessedTemplateContent);
+				xsltTemplate.append(processedRawTemplateContent);
 				xsltTemplate.append("</xsl:text>");
 				xsltTemplate.append("<!-- Raw end -->");
 			}
