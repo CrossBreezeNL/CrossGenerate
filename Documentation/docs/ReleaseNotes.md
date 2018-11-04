@@ -20,8 +20,8 @@ Click on the header of a version number to go to the documentation of that speci
 [//]: # (>     * [ ] Binding)
 [//]: # (>         * [X] Some issue...)
 
-## [Version 2.3](../2.3/)
-- [ ] 2.3.2 <sup>dd-mm-2018</sup>
+## [Version 2.4](../2.4/)
+- [ ] 2.4.0 <sup>dd-mm-2018</sup>
 >
 > !!! success "New features"
 >     * [ ] Binding
@@ -29,6 +29,9 @@ Click on the header of a version number to go to the documentation of that speci
 >             - [X] Specify a variable name for the current element within a SectionModelBinding (variableName)
 >         * [ ] Define a placeholder for a model element within a section binding (Placeholder)
 >             - [X] Specify a variable name for the element the modelXPath of the placeholder points to (variableName)
+>         * [X] Define a literal (placeholder) for a model element within a section binding (Literal)
+> !!! info "Enhanced features"
+>     * [X] Improved error message on XPath parse error for Model & XML Template XPath expressions
 > !!! warning "Bug fixes"
 >     * [ ] Model
 >         * [ ] Model Attribute injection
@@ -37,8 +40,8 @@ Click on the header of a version number to go to the documentation of that speci
 >         * [ ] Text template
 >             - [X] With sections with a prefix the leading whitespace was included twice for first repetition
 >             - [X] Carriage return with line-feed (CRLF) in template were converted into LF and removed from placeholder value
-> !!! info "Enhanced features"
->     * [X] Improved error message on XPath parse error for Model & XML Template XPath expressions
+
+## [Version 2.3](../2.3/)
 
 - [ ] 2.3.1 <sup>11-09-2018</sup>
 > 
