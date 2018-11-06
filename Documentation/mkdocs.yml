@@ -43,8 +43,8 @@ pages:
     - 'Configuration'   : 'Config/index.md'
     - 'Model'           : 'Config/Model.md'
     - 'Template':
-        - 'XmlTemplate'           : 'Config/Template/XmlTemplate.md'
-        - 'TextTemplate'          : 'Config/Template/TextTemplate.md'
+        - 'XML Template'           : 'Config/Template/XmlTemplate.md'
+        - 'Text Template'          : 'Config/Template/TextTemplate.md'
         - 'Generic options'   : 'Config/Template/GenericTemplate.md'
     - 'Binding'         : 'Config/Binding.md'
     - 'XPath'           : 'Config/XPath.md'

@@ -46,7 +46,7 @@ The App section contains all folders which will be used while generating. When r
 
 
 ## License
-In the license section the license information is specified. Most fields can be filled using the license information given by CrossBreeze.
+In the license section the license information is specified. Most fields can be filled using the license information given by CrossBreeze. 
 
 ### Syntax
 ``` xml
@@ -66,7 +66,14 @@ In the license section the license information is specified. Most fields can be 
 | ContractId[^2]                      | The contract key. | | |
 | Tag                                 | An optional tag that can be supplied to track generation cycles. | | |
 | Url[^2]                             | The url used to validate license info. | | |
-| Version[^2] | The version of the software that is loaded. | | |
+| Version[^2] | The [version](#crossgenerate-versions) of the software that is loaded. | | |
+
+### CrossGenerate versions
+CrossGenerate is released using a three level release numbering, x.y.z, where x indicates a major release, y a feature release and z a bugfix release. When specifying a version number in the license section of the configuration, you can:
+
+- Specify a full release number, for example 2.4.0. In this case you ensure that you always generate using a specific (sub)release
+- Specify major and feature release only, for example 2.4. In this case you will automatically use the most recent bugfix release within the specified feature release.
+- Specify major release only, for example 2. In this case you will automatically use the most recent feature/bugfix release within the specified major release.
 
 
 [comment]: Footnotes
