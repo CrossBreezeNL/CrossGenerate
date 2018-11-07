@@ -1,0 +1,5 @@
+When you want to publish a new version of CrossGenerate with its documentation, make sure to:
+1. Build the documentation with mkdocs_build.cmd.
+2. Create a new folder in ftp://x-breeze.com/generate.x-breeze.com/docs/ for the version (or re-use the existing).
+3. Upload the documentation into the version folder.
+4. Update the version number in the latest/.htaccess file and upload it to ftp://x-breeze.com/generate.x-breeze.com/docs/latest/
