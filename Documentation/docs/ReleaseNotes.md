@@ -21,7 +21,7 @@ Click on the header of a version number to go to the documentation of that speci
 [//]: # (>         * [X] Some issue...)
 
 ## [Version 2.4](../2.4/)
-- [ ] 2.4.0 <sup>dd-mm-2018</sup>
+- [ ] 2.4.0 <sup>07-11-2018</sup>
 >
 > !!! success "New features"
 >     * [ ] Binding

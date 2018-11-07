@@ -1,4 +1,4 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteRule ^(.*) ../2.3/$1 [L]
+RewriteRule ^(.*) ../2.4/$1 [L]
 </IfModule>
