@@ -6,7 +6,6 @@
 Feature: Integration_SQL_Simple_staging
   This feature file contains the features when using SQL in your template.
 
-
   Scenario: Simple staging example
 
 		Given I have the following model:
@@ -75,12 +74,12 @@ Feature: Integration_SQL_Simple_staging
 			  </TextTemplate>
 			  <Binding>
 			    <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
-			    <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system">
+			    <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system" variableName="system">
 			        <!-- Bind the 'CreateTable' template section on the mappableObjects/entity elements in the model. -->
 			        <SectionModelBinding section="CreateTable" modelXPath="mappableObjects/entity" placeholderName="entity">
 			          <Placeholders>
 			            <!-- For the placeholder the modelXPath is relative to its section model XPath. -->
-			            <Placeholder name="system" modelXPath="../.." />
+			            <Placeholder name="system" modelXPath="$system" />
 			          </Placeholders>
 			          <!-- Bind the 'TableColumn' template section on the attributes/attribute elements in the model. -->
 			          <SectionModelBinding section="TableColumn" modelXPath="attributes/attribute" placeholderName="attribute" />

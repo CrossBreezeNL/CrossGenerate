@@ -118,7 +118,7 @@ public class XsltTemplate {
 		// If the current section has a variable name defined, we use the variable i.s.o. a XPath expression.
 		// The path of the placeholder of the current section is always the local element (so '.') if were are within the binded section.
 		// If not bounded, we use the model XPath.
-		String parentPlaceholderXPath = (parentBindingConfig.hasVariableName()) ? String.format("$%s", parentBindingConfig.getVariableName()) : (isBounded) ? "." : parentBindingConfig.getModelXPath();
+		String parentPlaceholderXPath = (!isBounded) ? parentBindingConfig.getModelXPath() : (parentBindingConfig.hasVariableName()) ? String.format("$%s", parentBindingConfig.getVariableName()) : ".";
 		
 		// Process the placeholder of this section.
 		processedTemplatePart = XsltTemplate.processPlaceholder(
