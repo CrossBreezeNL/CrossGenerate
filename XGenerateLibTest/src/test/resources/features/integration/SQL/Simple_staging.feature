@@ -78,7 +78,8 @@ Feature: Integration_SQL_Simple_staging
 			        <!-- Bind the 'CreateTable' template section on the mappableObjects/entity elements in the model. -->
 			        <SectionModelBinding section="CreateTable" modelXPath="mappableObjects/entity" placeholderName="entity">
 			          <Placeholders>
-			            <!-- For the placeholder the modelXPath is relative to its section model XPath. -->
+		             <!-- For the placeholder the modelXPath is relative to its section model XPath and can use variables defined in the parent section or it's ancestors.-->  
+		             <!--	In the example below, modelXPath refers to variable system, which resolves to the modelXPath of the previously defined section named "System". -->
 			            <Placeholder name="system" modelXPath="$system" />
 			          </Placeholders>
 			          <!-- Bind the 'TableColumn' template section on the attributes/attribute elements in the model. -->
