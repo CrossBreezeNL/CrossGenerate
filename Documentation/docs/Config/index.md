@@ -33,7 +33,7 @@ The configuration for CrossGenerate is designed to be the glue between model and
 
 ## Config re-use
 CrossGenerate supports splitting a config into multiple XML files to enable re-use. For this the XML feature XML Inclusions is used.
-In order to use XML inclusion, the appropriate XML namespace, xmlns:xi="http://www.w3.org/2001/XInclude", needs to be declared in each XML file that includes an other XML file. XML files that are included in a config file can also include other XML files, which enables nested includes of configuration elements. The path to the XML file being included can be absolute or relative to the current file.
+In order to use XML inclusion, the appropriate XML namespace, xmlns:xi="http://www.w3.org/2001/XInclude", needs to be declared in each XML file that includes an other XML file. XML files that are included in a config file can also include other XML files, which enables nested includes of configuration elements. The path to the XML file being included can be absolute or relative to config file where the include is defined.
 
 ### Example config with re-use
 As can be seen in this example, parts of the config can be stored in a separate file. In this case, the bindings declaration could be used in multiple config files.
