@@ -133,7 +133,7 @@ public class XGenerateLibTestSteps {
 	
 	@And("^the following config:$")
 	public void theFollowingConfig(String configContent) throws Throwable {
-		this._xGenConfig = XGenConfig.fromString(configContent);
+		this._xGenConfig = XGenConfig.fromString(configContent, _featureSupportFilesLocation);
 	}
 
 	@And("^the following config file: \"(.*)\"$")

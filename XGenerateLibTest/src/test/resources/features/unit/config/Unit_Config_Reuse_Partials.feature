@@ -19,7 +19,7 @@ Feature: Unit_Config_Reuse_Partials
       table_name -> system_name;
 
       """
-@Debug
+
   Scenario Outline: Reuse of binding <Scenario>
     Given the following config:
       """
@@ -45,6 +45,6 @@ Feature: Unit_Config_Reuse_Partials
 
     Examples: 
       | Scenario                                 | bindingFile                  | path                                                                                                                                                   | expectedResultA | expectedResultB |  |
-      | No Nesting                               | entityBinding.xml            | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Reuse_Partials | A -> sys;       | B -> sys;       |  |
-      | Nested include for placeholders absolute | entityBindingWithInclude.xml | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Reuse_Partials | A -> sys;       | B -> sys;       |  |
+      | No Nesting                               | entityBinding.xml            | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials | A -> sys;       | B -> sys;       |  |
+      | Nested include for placeholders absolute | entityBindingWithInclude.xml | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials | A -> sys;       | B -> sys;       |  |
       | Nested include for placeholders relative | entityBindingWithIncludeRelative.xml | .                                                                              | A -> sys;       | B -> sys;       |  |
