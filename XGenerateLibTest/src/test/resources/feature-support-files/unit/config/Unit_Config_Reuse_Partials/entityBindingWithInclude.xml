@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <SectionModelBinding section="Template" modelXPath ="/system" placeholderName="system"  xmlns:xi="http://www.w3.org/2001/XInclude">
 	<SectionModelBinding section="Tables" modelXPath="./entities/entity" placeholderName="table">
 		<Placeholders>

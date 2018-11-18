@@ -273,6 +273,10 @@ public class XGenConfig {
 					//get file contents, recursively processing any includes found
 					try {
 					String includeContents = getConfigWithResolvedIncludes(FileUtils.getFileContent(includeFileUri), includeFileUri, resolvedIncludes);
+					//If the file contains an XML declaration, remove it
+					if (includeContents.startsWith("<?xml")) {
+						includeContents = includeContents.replaceFirst("^<\\?xml.*\\?>", "");
+					}
 					//Replace the node with the include contents
 					vm.insertAfterElement(includeContents);
 					//then remove the include node

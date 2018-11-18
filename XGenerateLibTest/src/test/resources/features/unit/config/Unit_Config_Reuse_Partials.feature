@@ -19,7 +19,7 @@ Feature: Unit_Config_Reuse_Partials
       table_name -> system_name;
 
       """
-
+@Debug
   Scenario Outline: Reuse of binding <Scenario>
     Given the following config:
       """
