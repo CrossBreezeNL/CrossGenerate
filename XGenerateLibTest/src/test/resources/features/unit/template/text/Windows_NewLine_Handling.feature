@@ -2,7 +2,7 @@
 #Keywords Summary : CrossGenerate Windows NewLine Handling
 
 @Unit
-Feature: Integration_SQL_Windows_NewLine_Handling
+Feature: Unit_SQL_Windows_NewLine_Handling
   This feature file contains the features when using Windows NewLines (CRLF) in your template.
   In the results pane click on 'Show Whitespace Characters' to view the CRLF vs LF.
 
@@ -21,6 +21,7 @@ Feature: Integration_SQL_Windows_NewLine_Handling
     
     Then I expect 1 generation results
     And an output named "Windows_NewLine_Handling.sql" with contents equal to file: "expected-output-files/Windows_NewLine_Template.sql"
+
 
   Scenario: Windows new line in placeholder encoded
     Given I have the following model:
