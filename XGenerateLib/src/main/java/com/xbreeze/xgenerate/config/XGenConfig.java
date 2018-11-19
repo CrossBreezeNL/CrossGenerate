@@ -12,7 +12,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
@@ -141,9 +143,9 @@ public class XGenConfig {
 	public static XGenConfig fromString(String configFileContent, URI basePath) throws ConfigException {		
 		XGenConfig xGenConfig;
 		// Before validating against the XSD, resolve any includes first
-		LinkedList<URI> resolvedIncludes = new LinkedList<>();
+		HashMap<URI, Integer> resolvedIncludes = new HashMap<>();
 		logger.info(String.format("Reading config from %s and resolving includes when found.", basePath.toString()));
-		String resolvedInputSource = getConfigWithResolvedIncludes(configFileContent, basePath, resolvedIncludes);
+		String resolvedInputSource = getConfigWithResolvedIncludes(configFileContent, basePath, 0, resolvedIncludes);
 		// Create a resource on the schema file.
 		// Schema file generated using following tutorial: https://examples.javacodegeeks.com/core-java/xml/bind/jaxb-schema-validation-example/
 		String xGenConfigXsdFileName = String.format("%s.xsd", XGenConfig.class.getSimpleName());
@@ -230,9 +232,16 @@ public class XGenConfig {
 	 * @return The inputSource with resolved includes 
 	 * @throws ConfigException
 	 */
-	private static String getConfigWithResolvedIncludes(String xGenConfig, URI configFileUri, LinkedList<URI> resolvedIncludes) throws ConfigException{
+	private static String getConfigWithResolvedIncludes(String xGenConfig, URI configFileUri, int level,  HashMap<URI, Integer> resolvedIncludes) throws ConfigException{
 		logger.fine(String.format("Scanning config file %s for includes", configFileUri.toString()));
-	
+		//Check for cycle detection, e.g. an include that is already included previously
+		if (resolvedIncludes.containsKey(configFileUri) && resolvedIncludes.get(configFileUri) != level) {
+			throw new ConfigException(String.format("Config include cycle detected at level %d, file %s is already included previously", level, configFileUri.toString()));
+		}
+		if (!resolvedIncludes.containsKey(configFileUri)) {
+			resolvedIncludes.put(configFileUri, level);						
+		}
+		
 		//Get basePath of configFile. If the provided URI refers to a file, us its parent path, if it refers to a folder use it as base path
 		try {
 			URI basePath  = new URI("file:///../");			
@@ -245,6 +254,12 @@ public class XGenConfig {
 					basePath = Paths.get(parentPath).toUri();	
 				}
 			}
+			//Resolve basePath to absolute/real path
+			try {
+				basePath = Paths.get(basePath).toRealPath(LinkOption.NOFOLLOW_LINKS).toUri();
+			} catch (IOException e) {
+				throw new ConfigException(String.format("Error resolving config basePath %s to canonical path", basePath.toString()), e);
+			} 
 			
 			//	Open the config file and look for includes		
 			VTDNav nav = XMLUtils.getVTDNav(xGenConfig);
@@ -263,16 +278,17 @@ public class XGenConfig {
 					//resolve include to a valid path against the basePath
 					logger.fine(String.format("base path %s", basePath.toString()));
 					Path p = Paths.get(basePath);
-					URI includeFileUri = p.resolve(Paths.get(includeFileLocation)).toAbsolutePath().toUri();
+					URI includeFileUri = null;
+					try {
+						includeFileUri = p.resolve(Paths.get(includeFileLocation)).toRealPath(LinkOption.NOFOLLOW_LINKS).toUri();
+					} catch (IOException e) {
+						throw new ConfigException(String.format("Error resolving found include %s to canonical path", includeFileLocation), e);
+					} 
 					logger.fine(String.format("Resolved include to %s", includeFileUri.toString()));
-					//Check for cycle detection, e.g. an include that is already included previously
-					if (resolvedIncludes.contains(includeFileUri)) {
-						throw new ConfigException(String.format("Config include cycle detected, file %s is already included in a file that includes %s", includeFileUri.toString(), configFileUri.toString()));
-					}
-					resolvedIncludes.add(includeFileUri);
+					
 					//get file contents, recursively processing any includes found
 					try {
-					String includeContents = getConfigWithResolvedIncludes(FileUtils.getFileContent(includeFileUri), includeFileUri, resolvedIncludes);
+					String includeContents = getConfigWithResolvedIncludes(FileUtils.getFileContent(includeFileUri), includeFileUri, level + 1, resolvedIncludes);
 					//If the file contains an XML declaration, remove it
 					if (includeContents.startsWith("<?xml")) {
 						includeContents = includeContents.replaceFirst("^<\\?xml.*\\?>", "");
@@ -285,7 +301,7 @@ public class XGenConfig {
 						throw new ConfigException(String.format("Could not read contents of included config file %s", includeFileUri.toString()), e);
 					}	
 					includeCount++;
-				}
+				}				
 				logger.fine(String.format("Found %d includes in config file %s", includeCount, configFileUri.toString()));
 				//if includes were found, output and parse the modifier and return it, otherwise return the original one
 				if (includeCount > 0) {

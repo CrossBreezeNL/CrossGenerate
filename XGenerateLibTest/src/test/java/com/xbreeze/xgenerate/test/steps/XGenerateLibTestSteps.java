@@ -20,6 +20,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.http.client.utils.URIBuilder;
 
+import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.generator.GenerationResult;
 import com.xbreeze.xgenerate.generator.GenerationResult.GenerationStatus;
@@ -133,7 +134,11 @@ public class XGenerateLibTestSteps {
 	
 	@And("^the following config:$")
 	public void theFollowingConfig(String configContent) throws Throwable {
-		this._xGenConfig = XGenConfig.fromString(configContent, _featureSupportFilesLocation);
+		try {
+			this._xGenConfig = XGenConfig.fromString(configContent, _featureSupportFilesLocation);
+		} catch(ConfigException exc) {
+			this.generatorException = exc;
+		}
 	}
 
 	@And("^the following config file: \"(.*)\"$")
@@ -144,6 +149,7 @@ public class XGenerateLibTestSteps {
 
 	@When("^I run the generator$")
 	public void iRunTheGenerator() throws Throwable {	
+		checkForError();
 		//check if generator needs to be invoked with files or with template and config string
 		try {
 			if (this._rawTemplate != null && this._xGenConfig != null) {
