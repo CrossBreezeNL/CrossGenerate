@@ -1,10 +1,10 @@
 <SectionModelBinding section="Template" modelXPath ="/system" placeholderName="system"  xmlns:xi="http://www.w3.org/2001/XInclude">
-	<SectionModelBinding section="TableA" modelXPath="./entities/entity[@name='A']" placeholderName="table">
+	<SectionModelBinding section="Tables" modelXPath="./entities/entity[@name='A']" placeholderName="table">
 		<Placeholders>
 			<xi:include href=".\sub-configs\placeholders.xml"/>			
 		</Placeholders>
 	</SectionModelBinding>
-	<SectionModelBinding section="TableB" modelXPath="./entities/entity[@name='B']" placeholderName="table">
+	<SectionModelBinding section="Tables" modelXPath="./entities/entity[@name='B']" placeholderName="table">
 		<Placeholders>
 			<xi:include href=".\sub-configs\placeholders.xml"/>			
 		</Placeholders>

@@ -1,0 +1,5 @@
+<SectionModelBinding section="Tables" modelXPath="./entities/entity[@name='A']" placeholderName="table">
+		<Placeholders>
+			<xi:include href="placeholders.xml"/>			
+		</Placeholders>
+</SectionModelBinding>
