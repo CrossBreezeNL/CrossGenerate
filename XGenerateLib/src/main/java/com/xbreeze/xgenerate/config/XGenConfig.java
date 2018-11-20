@@ -1,21 +1,15 @@
 package com.xbreeze.xgenerate.config;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.nio.file.Paths;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.logging.Logger;
 
 import javax.xml.XMLConstants;
@@ -36,8 +30,6 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.apache.commons.codec.binary.StringUtils;
-import org.apache.commons.io.IOUtils;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -51,8 +43,13 @@ import com.xbreeze.xgenerate.config.template.XMLTemplateConfig;
 import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.utils.FileUtils;
 import com.xbreeze.xgenerate.utils.XMLUtils;
-import com.ximpleware.*;
-import com.ximpleware.xpath.*;
+import com.ximpleware.AutoPilot;
+import com.ximpleware.ModifyException;
+import com.ximpleware.NavException;
+import com.ximpleware.VTDNav;
+import com.ximpleware.XMLModifier;
+import com.ximpleware.XPathEvalException;
+import com.ximpleware.XPathParseException;
 
 /**
  * The XGenConfig class represents the configuration object for CrossGenerate.
