@@ -178,10 +178,12 @@ public class XMLUtils {
 			AutoPilot ap = new AutoPilot(nav);
 			ap.selectXPath(xPath);
 			FastLongBuffer flb = new FastLongBuffer();
+			//Store the record identifiers from matching elements
 			while ((ap.evalXPath()) != -1) {
 				flb.append(nav.getElementFragment());				
 			}
 			logger.fine(String.format("Found %d matches", flb.size()));
+			//Process matched elements by extracting them from xml and appending to stringbuilder.
 			byte[] xml = nav.getXML().getBytes();
 			for (int i = 0; i < flb.size(); i++) {
 				sb.append(new String(xml, flb.lower32At(i), flb.upper32At(i)));
