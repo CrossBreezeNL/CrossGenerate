@@ -286,17 +286,27 @@ public class XGenConfig {
 					} 
 					logger.fine(String.format("Resolved include to %s", includeFileUri.toString()));
 					
-					//get file contents, recursively processing any includes found
 					try {
-					String includeContents = getConfigWithResolvedIncludes(FileUtils.getFileContent(includeFileUri), includeFileUri, level + 1, resolvedIncludes);
-					//If the file contains an XML declaration, remove it
-					if (includeContents.startsWith("<?xml")) {
-						includeContents = includeContents.replaceFirst("^<\\?xml.*\\?>", "");
-					}
-					//Replace the node with the include contents
-					vm.insertAfterElement(includeContents);
-					//then remove the include node
-					vm.remove();					
+						//get file contents, recursively processing any includes found
+						String includeContents = getConfigWithResolvedIncludes(FileUtils.getFileContent(includeFileUri), includeFileUri, level + 1, resolvedIncludes);
+
+						//Check for xpointer and apply if found
+						AutoPilot ap_xpoint = new AutoPilot(nav);
+						ap_xpoint.selectXPath("@xpointer");
+						String xPoint = ap_xpoint.evalXPathToString();
+						if (xPoint != null && !xPoint.equals("")) {
+							logger.fine(String.format("Found xpointer in include: %s", xPoint));
+							includeContents = XMLUtils.getXmlFragment(includeContents, xPoint);
+						}
+						//If the file contains an XML declaration, remove it			
+						if (includeContents.startsWith("<?xml")) {
+							includeContents = includeContents.replaceFirst("^<\\?xml.*\\?>", "");
+						}
+						
+						//Replace the node with the include contents
+						vm.insertAfterElement(includeContents);
+						//then remove the include node
+						vm.remove();					
 					} catch (IOException e) {
 						throw new ConfigException(String.format("Could not read contents of included config file %s", includeFileUri.toString()), e);
 					}	

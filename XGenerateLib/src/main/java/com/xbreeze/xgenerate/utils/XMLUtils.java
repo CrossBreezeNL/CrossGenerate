@@ -12,8 +12,11 @@ import javax.xml.transform.ErrorListener;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
 
+import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
+import com.ximpleware.AutoPilot;
+import com.ximpleware.FastLongBuffer;
 import com.ximpleware.ModifyException;
 import com.ximpleware.NavException;
 import com.ximpleware.ParseException;
@@ -21,6 +24,7 @@ import com.ximpleware.TranscodeException;
 import com.ximpleware.VTDGen;
 import com.ximpleware.VTDNav;
 import com.ximpleware.XMLModifier;
+import com.ximpleware.XPathEvalException;
 import com.ximpleware.XPathParseException;
 
 import net.sf.saxon.s9api.Processor;
@@ -159,6 +163,39 @@ public class XMLUtils {
         return modifiedTemplate;
 	}
 	
+	/**
+	 * Apply a XPath expression on a XML document and return the resulting nodes as a XML fragment in a string
+	 * @param xmlDoc a String object containing a XML document
+	 * @param xPath the XPath expression to evaluate
+	 * @return a String object containing the result of the Xpath evaluated against xmlDoc
+	 * @throws ConfigException
+	 */
+	public static String getXmlFragment(String xmlDoc, String xPath) throws ConfigException {
+		try {
+			logger.fine(String.format("Applying xpointer %s on config file %s", xPath, xmlDoc));
+			StringBuilder sb = new StringBuilder();
+			VTDNav nav = getVTDNav(xmlDoc);
+			AutoPilot ap = new AutoPilot(nav);
+			ap.selectXPath(xPath);
+			FastLongBuffer flb = new FastLongBuffer();
+			while ((ap.evalXPath()) != -1) {
+				flb.append(nav.getElementFragment());				
+			}
+			logger.fine(String.format("Found %d matches", flb.size()));
+			byte[] xml = nav.getXML().getBytes();
+			for (int i = 0; i < flb.size(); i++) {
+				sb.append(new String(xml, flb.lower32At(i), flb.upper32At(i)));
+			}
+			return sb.toString();
+		} catch (GeneratorException e) {
+			throw new ConfigException(String.format("Error parsing %s as XML", xmlDoc), e);
+		} catch (XPathParseException | XPathEvalException e) {
+			throw new ConfigException(getAutopilotExceptionMessage(xPath, e),e);		
+		} catch (NavException e) {
+			throw new ConfigException(String.format("Error navigating %s", xmlDoc), e);
+		}		
+	}
+	
 	public static XsltTransformer getXsltTransformer(String xsltTemplateContent, String modelFileContent, URI outputFolderUri) throws GeneratorException {
 		// Create a string reader on the pre-processed template.
 		StringReader xslStringReader = new StringReader(xsltTemplateContent);
@@ -236,4 +273,6 @@ public class XMLUtils {
 		// Return the exception message.
 		return exceptionMessage;
 	}
+	
+	
 }
