@@ -24,8 +24,14 @@ Click on the header of a version number to go to the documentation of that speci
 - [ ] 2.4.1 <sup>dd-12-2018</sup>
 >
 > !!! info "Enhanced features"
->     * [X] Include directive in config now better supports relative includes (relative to the referencing file instead of application folder)
->     * [X] Include directive in config supports including parts of another config file with the xpointer function
+>     * [ ] Config
+>         * [ ] Config re-use    
+>             - [X] Include directive in config now better supports relative includes (relative to the referencing file instead of application folder)
+>             - [X] Include directive in config supports including parts of another config file with the xpointer function
+> !!! warning "Bug fixes"
+>     * [ ] Config
+>         * [ ] Text and XML sections
+>             - [X] Reduced severity of sections defined in config but not found in template to informational. This can be a result of applying a more generic config, in which case it is intended behaviour.
 
 - [ ] 2.4.0 <sup>07-11-2018</sup>
 >
