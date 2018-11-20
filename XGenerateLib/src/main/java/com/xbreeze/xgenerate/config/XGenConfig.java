@@ -282,7 +282,7 @@ public class XGenConfig {
 					try {
 						includeFileUri = p.resolve(Paths.get(includeFileLocation)).toRealPath(LinkOption.NOFOLLOW_LINKS).toUri();
 					} catch (IOException e) {
-						throw new ConfigException(String.format("Error resolving found include %s to canonical path", includeFileLocation), e);
+						throw new ConfigException(String.format("Error resolving found include %s for %s to canonical path", includeFileLocation, configFileUri.toString()), e);
 					} 
 					logger.fine(String.format("Resolved include to %s", includeFileUri.toString()));
 					
