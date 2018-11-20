@@ -21,6 +21,12 @@ Click on the header of a version number to go to the documentation of that speci
 [//]: # (>         * [X] Some issue...)
 
 ## [Version 2.4](../2.4/)
+- [ ] 2.4.1 <sup>dd-12-2018</sup>
+>
+> !!! info "Enhanced features"
+>     * [X] Include directive in config now better supports relative includes (relative to the referencing file instead of application folder)
+>     * [X] Include directive in config supports including parts of another config file with the xpointer function
+
 - [ ] 2.4.0 <sup>07-11-2018</sup>
 >
 > !!! success "New features"
