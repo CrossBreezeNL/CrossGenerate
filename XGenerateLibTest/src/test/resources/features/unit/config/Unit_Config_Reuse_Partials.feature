@@ -14,7 +14,6 @@ Feature: Unit_Config_Reuse_Partials
       </system>
       """
 
-  @Debug
   Scenario Outline: Reuse of binding <Scenario>
     Given the following config:
       """
