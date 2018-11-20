@@ -58,3 +58,36 @@ Feature: Unit_Config_XmlTemplate_Section
       | Simple   | /Database/Tables/Table                      | <Table name="Order"/>       |
       | Filtered | /Database/Tables/Table[@name='entity_name'] | <Table name="Order"/>       |
       | Invalid  | /Database/Tables/Table[@name='incorrect']   | <Table name="entity_name"/> |
+
+@Debug
+	Scenario: section defined in config but not in template
+  	Given the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <XmlTemplate rootSectionName="Database">
+          <FileFormat currentAccessor="_" />
+          <Output type="output_per_element" />
+          <XmlSections>
+            <XmlSection name="Tables" templateXPath="//Table[@name='entity_name']" />
+            <XmlSection name="OtherTables" templateXPath="//Table[@name='dummy']" />
+          </XmlSections>
+        </XmlTemplate>
+        <Binding>
+          <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="system">
+            <SectionModelBinding section="Tables" modelXPath="./entity" placeholderName="entity"/>
+          </SectionModelBinding>           
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "ExampleTemplate.xml" with content:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database name="ExampleSource">
+        <Tables>
+          <Table name="Order"/>
+        </Tables>
+      </Database>
+      """
