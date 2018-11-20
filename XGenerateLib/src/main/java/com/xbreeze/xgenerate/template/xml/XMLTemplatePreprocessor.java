@@ -147,9 +147,9 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 						throw new TemplatePreprocessorException(String.format("Error while processing template section annotation for XPath ´%s´: %s", xmlSectionAnnotation.getTemplateXPath(), XMLUtils.getAutopilotExceptionMessage(xmlSectionAnnotation.getTemplateXPath(), e)));
 					}
 					
-					// If there are no nodes found for this section, log a severe error.
+					// If there are no nodes found for this section, log a informational message.
 					if (sectionNodesFound == 0)
-						logger.warning(String.format("No template nodes found for section '%s' using XPath '%s'", xmlSectionAnnotation.getName(), xmlSectionAnnotation.getTemplateXPath()));
+						logger.info(String.format("No template nodes found for section '%s' using XPath '%s'", xmlSectionAnnotation.getName(), xmlSectionAnnotation.getTemplateXPath()));
 				}
 				// If the section annotation is of a different type, throw an exception.
 				else {
