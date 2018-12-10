@@ -10,7 +10,8 @@ Feature: Unit_TextTemplate_Placeholder
         <attribute name="FirstColumn" property="SomeProperty" />
       </modeldefinition>
       """
- 
+
+
   Scenario Outline: Placeholder handling
     And the following template named "Unit_TextTemplate_Placeholder.sql":
       """
@@ -40,20 +41,21 @@ Feature: Unit_TextTemplate_Placeholder
       | Scenario | Template                    | ExpectedOutput           |
       | Single   | column_name                 | FirstColumn              |
       | Double   | column_name column_property | FirstColumn SomeProperty |
-
- @Debug
+  
+  @Debug
   Scenario Outline: Overridden placeholder <Scenario>
-    And the following template named "Unit_TextTemplate_Placeholder.sql":
+    And the following template named "Unit_TextTemplate_PlaceholderOverride.sql":
       """
-       -- @XGenTextSection(name="Columns" <Placeholder>)
-       <TemplateLine>
+      -- @XGenTextSection(name="Columns" <Placeholder>)
+      <TemplateLine>
+      
       """
     And the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
         <Model/>
-        <TextTemplate rootSectionName="Template">
+        <TextTemplate rootSectionName="TemplateFile">
          <FileFormat
             singleLineCommentPrefix="--" 
             annotationPrefix="@XGen" 
@@ -63,7 +65,7 @@ Feature: Unit_TextTemplate_Placeholder
           <Output type="single_output" />
         </TextTemplate>
         <Binding>
-          <SectionModelBinding section="Template" modelXPath="/modeldefinition">
+          <SectionModelBinding section="TemplateFile" modelXPath="/modeldefinition">
           	<SectionModelBinding section="Columns" modelXPath="attribute" placeholderName="column"/>
           </SectionModelBinding>
         </Binding>
@@ -71,13 +73,14 @@ Feature: Unit_TextTemplate_Placeholder
       """
     When I run the generator
     Then I expect 1 generation result
-    And an output named "Unit_TextTemplate_Placeholder.sql" with content:
+    And an output named "Unit_TextTemplate_PlaceholderOverride.sql" with content:
       """
       <ExpectedOutput>
+      
       """
 
     Examples: 
-      | Scenario                                               | Placeholder | TemplateLine  | ExpectedOutput |
-      | No placeholder override                                |             | column_name   | FirstColumn    |
-      | overridden placeholder                                 | placeholderName = "property"    | property_name | FirstColumn    |
-      | overriden placeholder, but use placeholder from config | placeholderName ="property"    | column_name   | column_name    |
+      | Scenario                                               | Placeholder                  | TemplateLine  | ExpectedOutput |
+      | No placeholder override                                |                              | column_name   | FirstColumn    |
+      | overridden placeholder                                 | placeholderName = "property" | property_name | FirstColumn    |
+      | overriden placeholder, but use placeholder from config | placeholderName ="property"  | column_name   | column_name    |
