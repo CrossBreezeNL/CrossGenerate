@@ -163,6 +163,11 @@ public class NamedTemplateSection extends TemplateSection {
 				// Replace the carriage return character with the XML encoded version so it's processed correctly in the XSLT engine.
 				processedRawTemplateContent = processedRawTemplateContent.replace("\r", "&#13;");
 				
+				//Determine the appropriate placeholderName to use (from parent binding config or from section annotation if specified)
+				String placeholderName = parentBindingConfig.getPlaceholderName();
+				if (this._templateSectionAnnotation.getPlaceholderName() != null) {
+					placeholderName = this._templateSectionAnnotation.getPlaceholderName();
+				}
 				// Process the placeholder-name placeholder.
 				// This placeholder is injected during TemplatePlaceholderInjection in XML templates.
 				// TODO Maybe handle this a bit smarter during injection of the placeholder somehow?
@@ -209,15 +214,15 @@ public class NamedTemplateSection extends TemplateSection {
 							Pattern.quote(PLACEHOLDER_PLACEHOLDER_NAME),
 							Pattern.quote(config.getTemplateConfig().getFileFormatConfig().getCurrentAccessor())
 					);
-					processedRawTemplateContent = processedRawTemplateContent.replaceAll(placeholderRegex, String.format("</xsl:text><xsl:if test=\"./@$6\"><xsl:text>$1$2%s$5$6$7</xsl:text></xsl:if><xsl:text>", parentBindingConfig.getPlaceholderName()));
+					processedRawTemplateContent = processedRawTemplateContent.replaceAll(placeholderRegex, String.format("</xsl:text><xsl:if test=\"./@$6\"><xsl:text>$1$2%s$5$6$7</xsl:text></xsl:if><xsl:text>", placeholderName));
 					
 					// When the placeholder wasn't replaced in the previous replacement, its due to it not being an attribute (probably).
 					// So we replace only the placeholder now.
-					processedRawTemplateContent = processedRawTemplateContent.replaceAll(Pattern.quote(PLACEHOLDER_PLACEHOLDER_NAME), parentBindingConfig.getPlaceholderName());
+					processedRawTemplateContent = processedRawTemplateContent.replaceAll(Pattern.quote(PLACEHOLDER_PLACEHOLDER_NAME), placeholderName);
 				}
 				
 				// Process the placeholder of this section.
-				processedRawTemplateContent = XsltTemplate.processPlaceholders(processedRawTemplateContent, parentBindingConfig, config.getTemplateConfig());
+				processedRawTemplateContent = XsltTemplate.processPlaceholders(processedRawTemplateContent, parentBindingConfig, config.getTemplateConfig(), placeholderName);
 				
 				// Process the literals defined for this section.
 				processedRawTemplateContent = XsltTemplate.processLiterals(processedRawTemplateContent, parentBindingConfig, config.getTemplateConfig());

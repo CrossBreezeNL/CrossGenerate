@@ -41,4 +41,10 @@ public class TemplateXmlSectionAnnotation extends TemplateSectionAnnotation {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	@Override
+	public void setPlaceholderName(String placeholderName) {
+		this.placeholderName = placeholderName;
+	}
+	
 }

@@ -18,6 +18,11 @@ abstract public class TemplateSectionAnnotation extends TemplateAnnotation {
 	protected String name;
 	
 	/**
+	 * When specified, the overridden placeholderName
+	 */
+	protected String placeholderName;
+	
+	/**
 	 * Indicator whether the section name was set by the user.
 	 */
 	protected boolean userDefinedSectionName = true;
@@ -29,12 +34,24 @@ abstract public class TemplateSectionAnnotation extends TemplateAnnotation {
 	public String getName() {
 		return this.name;
 	}
+	
+	/**
+	 * @return the placeHolderName
+	 */
+	@XmlAttribute(required=false)
+	public String getPlaceholderName() {
+		return this.placeholderName;
+	}
+	
 
 	/**
 	 * @param name the name to set
 	 * This must be implemented by the child classes so we can deviate set methods available in annotations from other set methods.
 	 */
 	abstract public void setName(String name);
+	
+	
+	abstract public void setPlaceholderName(String placeHolderName);
 	
 	/**
 	 * @return Return whether the section name is user defined.

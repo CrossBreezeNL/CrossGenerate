@@ -136,6 +136,12 @@ public class TemplateTextSectionAnnotation extends TemplateSectionAnnotation {
 		this.name = name;
 	}
 	
+	
+	@Override
+	public void setPlaceholderName(String placeholderName) {
+		this.placeholderName = placeholderName;
+	}
+	
 	/**
 	 * @return the begin
 	 */

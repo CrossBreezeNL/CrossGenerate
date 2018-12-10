@@ -87,9 +87,9 @@ public class XsltTemplate {
 		// Configure the result document.
 		// See: https://www.saxonica.com/html/documentation/xsl-elements/result-document.html
 		// If this is the root section, add the output document info.
-		// If the output type is output_per_element, add the result-document directive.
+		// If the output type is output_per_element, add the result-document directive.	
 		// TODO Use full template location (without config part)
-		String fileNamePlaceholder = processPlaceholders(Paths.get(relativeOutputFileUri).resolve(templateId).toString(), rootSectionModelBindingConfig, templateConfig, PlaceholderType.XSL_INLINE, _outputType.equals(OutputType.output_per_element));
+		String fileNamePlaceholder = processPlaceholders(Paths.get(relativeOutputFileUri).resolve(templateId).toString(), rootSectionModelBindingConfig, templateConfig, PlaceholderType.XSL_INLINE, _outputType.equals(OutputType.output_per_element), rootSectionModelBindingConfig.getPlaceholderName());
 		// Add the for-each part on the model node to match the template on.
 		String rootForEach = String.format("<xsl:for-each select=\"%s\">", rootSectionModelBindingConfig.getModelXPath());
 		
@@ -107,11 +107,11 @@ public class XsltTemplate {
 		}
 	}
 	
-	public static String processPlaceholders(String templatePart, SectionModelBindingConfig parentBindingConfig, RootTemplateConfig templateConfig) {
-		return processPlaceholders(templatePart, parentBindingConfig, templateConfig, PlaceholderType.XSL_VALUE_OF, true);
+	public static String processPlaceholders(String templatePart, SectionModelBindingConfig parentBindingConfig, RootTemplateConfig templateConfig, String placeholderName) {
+		return processPlaceholders(templatePart, parentBindingConfig, templateConfig, PlaceholderType.XSL_VALUE_OF, true, placeholderName);
 	}
 	
-	public static String processPlaceholders(String templatePart, SectionModelBindingConfig parentBindingConfig, RootTemplateConfig templateConfig, PlaceholderType placeholderType, boolean isBounded) {
+	public static String processPlaceholders(String templatePart, SectionModelBindingConfig parentBindingConfig, RootTemplateConfig templateConfig, PlaceholderType placeholderType, boolean isBounded, String placeholderName) {
 		// Store the result in a local String.
 		String processedTemplatePart = templatePart;
 		
@@ -122,7 +122,7 @@ public class XsltTemplate {
 		
 		// Process the placeholder of this section.
 		processedTemplatePart = XsltTemplate.processPlaceholder(
-				parentBindingConfig.getPlaceholderName(),
+				placeholderName,
 				parentPlaceholderXPath,
 				processedTemplatePart,
 				templateConfig,
