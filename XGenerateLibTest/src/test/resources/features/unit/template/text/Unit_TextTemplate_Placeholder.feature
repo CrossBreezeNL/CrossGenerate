@@ -42,7 +42,6 @@ Feature: Unit_TextTemplate_Placeholder
       | Single   | column_name                 | FirstColumn              |
       | Double   | column_name column_property | FirstColumn SomeProperty |
   
-  @Debug
   Scenario Outline: Overridden placeholder <Scenario>
     And the following template named "Unit_TextTemplate_PlaceholderOverride.sql":
       """

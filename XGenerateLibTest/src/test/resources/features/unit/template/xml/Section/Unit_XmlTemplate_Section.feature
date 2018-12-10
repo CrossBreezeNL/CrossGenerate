@@ -191,7 +191,7 @@ Feature: Unit_XmlTemplate_Section
         </MoreTables>
       </Database>
       """
-      
+
   Scenario: Implicit root and explicit consequtive recurring section
     Given I have the following model:
       """
@@ -372,3 +372,60 @@ Feature: Unit_XmlTemplate_Section
         </Tables>
       </Database>
       """
+
+  @Debug
+  Scenario Outline: Section with placeholder - <Scenario>
+    Given I have the following model:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <modeldefinition>
+        <system name="ExampleSource" id="29e17cc2-efd2-4013-8f9a-5714081874b3">
+          <entity name="Order"/>          
+        </system>
+      </modeldefinition>
+      """
+    And the following template named "ExampleTemplate.xml":
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="system_id" name="system_name">
+        <Tables>
+          <Table name="<TemplateTableName>">
+          	<description someAttr="someValue">@XGenXmlSection(name=&quot;Tables&quot; <PlaceHolder>)</description>
+          </Table>
+        </Tables>
+      </Database>
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <XmlTemplate rootSectionName="Database">
+          <FileFormat currentAccessor="_" commentNodeXPath="./description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="output_per_element" />
+        </XmlTemplate>
+        <Binding>
+          <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="system">
+            <SectionModelBinding section="Tables" modelXPath="./entity" placeholderName="entity"/>
+          </SectionModelBinding>           
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "ExampleTemplate.xml" with content:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
+        <Tables>
+          <Table name="<ExpectedOutput>">
+          	<description someAttr="someValue"></description>
+          </Table>
+        </Tables>
+      </Database>
+      """
+
+    Examples: 
+      | Scenario                                             | PlaceHolder | TemplateTableName | ExpectedOutput |
+      | No placeholder override                              |             | entity_name       | Order          |
+      | overridden placeholder                               | placeholderName='object'      | object_name       | Order          |
+      | overridden placeholder but using default in template | placeholderName='object'      | entity_name       | entity_name    |
