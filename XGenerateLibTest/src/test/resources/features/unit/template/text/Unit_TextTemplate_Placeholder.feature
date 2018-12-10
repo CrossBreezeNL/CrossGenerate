@@ -2,7 +2,7 @@
 Feature: Unit_TextTemplate_Placeholder
   In this feature we will describe the placeholder feature in text templates.
 
-  Scenario Outline: Placeholder handling
+  Background: 
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -10,6 +10,8 @@ Feature: Unit_TextTemplate_Placeholder
         <attribute name="FirstColumn" property="SomeProperty" />
       </modeldefinition>
       """
+ 
+  Scenario Outline: Placeholder handling
     And the following template named "Unit_TextTemplate_Placeholder.sql":
       """
       <Template>
@@ -38,3 +40,44 @@ Feature: Unit_TextTemplate_Placeholder
       | Scenario | Template                    | ExpectedOutput           |
       | Single   | column_name                 | FirstColumn              |
       | Double   | column_name column_property | FirstColumn SomeProperty |
+
+ @Debug
+  Scenario Outline: Overridden placeholder <Scenario>
+    And the following template named "Unit_TextTemplate_Placeholder.sql":
+      """
+       -- @XGenTextSection(name="Columns" <Placeholder>)
+       <TemplateLine>
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model/>
+        <TextTemplate rootSectionName="Template">
+         <FileFormat
+            singleLineCommentPrefix="--" 
+            annotationPrefix="@XGen" 
+            annotationArgsPrefix="(" 
+            annotationArgsSuffix=")"
+          />
+          <Output type="single_output" />
+        </TextTemplate>
+        <Binding>
+          <SectionModelBinding section="Template" modelXPath="/modeldefinition">
+          	<SectionModelBinding section="Columns" modelXPath="attribute" placeholderName="column"/>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "Unit_TextTemplate_Placeholder.sql" with content:
+      """
+      <ExpectedOutput>
+      """
+
+    Examples: 
+      | Scenario                                               | Placeholder | TemplateLine  | ExpectedOutput |
+      | No placeholder override                                |             | column_name   | FirstColumn    |
+      | overridden placeholder                                 | placeholderName = "property"    | property_name | FirstColumn    |
+      | overriden placeholder, but use placeholder from config | placeholderName ="property"    | column_name   | column_name    |

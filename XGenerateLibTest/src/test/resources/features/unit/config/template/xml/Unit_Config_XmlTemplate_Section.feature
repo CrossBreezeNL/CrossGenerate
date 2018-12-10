@@ -59,7 +59,6 @@ Feature: Unit_Config_XmlTemplate_Section
       | Filtered | /Database/Tables/Table[@name='entity_name'] | <Table name="Order"/>       |
       | Invalid  | /Database/Tables/Table[@name='incorrect']   | <Table name="entity_name"/> |
 
-@Debug
 	Scenario: section defined in config but not in template
   	Given the following config:
       """
