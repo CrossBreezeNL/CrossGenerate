@@ -24,6 +24,9 @@ Click on the header of a version number to go to the documentation of that speci
 - [ ] 2.4.1 <sup>dd-12-2018</sup>
 >
 > !!! info "Enhanced features"
+>     * [ ] Template
+>         * [ ] Text and XML template section annotations
+>             - [X] Within a section annotation, the placeholderName from the ModelSectionBinding can be overridden with a specific placeholderName for the section.
 >     * [ ] Config
 >         * [ ] Config re-use    
 >             - [X] Include directive in config now better supports relative includes (relative to the referencing file instead of application folder)

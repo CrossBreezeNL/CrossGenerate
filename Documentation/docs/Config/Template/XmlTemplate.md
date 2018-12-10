@@ -65,6 +65,9 @@ The XmlSection configuration defines a section in a XML template. This can eithe
 ``` xml
 <XmlSection
   name="..."
+  [
+    placeholderName="..."
+  ]
   templateXPath="..."
 />
 ```
@@ -73,6 +76,7 @@ The XmlSection configuration defines a section in a XML template. This can eithe
 | Parameter                  | Description | Default | Remark |
 |:---                        |:--- |:--- |:--- |
 | name[^1]                   | The name of the section. | | This can only contain a-z, A-Z, 0-9, _ and - characters. |
+| placeholderName            | An optional override for the placeholderName coming from the SectionModelBinding. | | Can be used to provide a specific placeholder name to use within the section.
 | templateXPath[^1]          | The XPath which needs to be executed on the template document to get the element which resembles the section element. | | See [XPath](../XPath). |
 
 
