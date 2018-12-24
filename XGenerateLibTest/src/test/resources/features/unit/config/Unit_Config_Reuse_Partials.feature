@@ -44,13 +44,13 @@ Feature: Unit_Config_Reuse_Partials
       """
 
     Examples: 
-      | Scenario                                       | bindingFile                          | path                                                                                                                                                | expectedResultA | expectedResultB |  |
-      | No Nesting                                     | entityBinding.xml                    | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials | A -> sys;       | B -> sys;       |  |
-      | Nested include for placeholders absolute       | entityBindingWithInclude.xml         | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials | A -> sys;       | B -> sys;       |  |
-      | Nested include for placeholders relative       | entityBindingWithIncludeRelative.xml | .                                                                                                                                                   | A -> sys;       | B -> sys;       |  |
-      | Nested include for placeholders multiple times | entityBindingWithIncludeMultiple.xml | .                                                                                                                                                   | A -> sys;       | B -> sys;       |  |
-      | Nested include and multiple include files      | entityBindingWithMultipleInclude.xml | .                                                                                                                                                   | A -> sys;       | B -> sys;       |  |
-      | Nested include using xpointer                  | entityBindingWithXPointer.xml        | .                                                                                                                                                   | A -> sys;       | B -> sys;       |  |
+      | Scenario                                       | bindingFile                          | path                                                                                                                                                               | expectedResultA | expectedResultB |
+      | No Nesting                                     | entityBinding.xml                    | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials | A -> sys;       | B -> sys;       |
+      | Nested include for placeholders absolute       | entityBindingWithInclude.xml         | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials | A -> sys;       | B -> sys;       |
+      | Nested include for placeholders relative       | entityBindingWithIncludeRelative.xml | .                                                                                                                                                                  | A -> sys;       | B -> sys;       |
+      | Nested include for placeholders multiple times | entityBindingWithIncludeMultiple.xml | .                                                                                                                                                                  | A -> sys;       | B -> sys;       |
+      | Nested include and multiple include files      | entityBindingWithMultipleInclude.xml | .                                                                                                                                                                  | A -> sys;       | B -> sys;       |
+      | Nested include using xpointer                  | entityBindingWithXPointer.xml        | .                                                                                                                                                                  | A -> sys;       | B -> sys;       |
 
   Scenario: using the same include twice, nested
     Given the following config:
@@ -73,5 +73,5 @@ Feature: Unit_Config_Reuse_Partials
       """
     Then I expect the following error message:
       """
-      Config include cycle detected at level 3, file file:///C:/GIT/Repos/CrossBreeze/CrossGenerate/XGenerateLibTest/src/test/resources/feature-support-files/unit/config/Unit_Config_Reuse_Partials/entityBindingWithIncludeNested.xml is already included previously
+      Config include cycle detected at level 3, file file:///C:/GIT/Repos/CrossBreeze/CrossGenerate/CrossGenerate/XGenerateLibTest/src/test/resources/feature-support-files/unit/config/Unit_Config_Reuse_Partials/entityBindingWithIncludeNested.xml is already included previously
       """
