@@ -11,7 +11,6 @@ Feature: Unit_TextTemplate_Placeholder
       </modeldefinition>
       """
 
-
   Scenario Outline: Placeholder handling
     And the following template named "Unit_TextTemplate_Placeholder.sql":
       """
@@ -41,13 +40,13 @@ Feature: Unit_TextTemplate_Placeholder
       | Scenario | Template                    | ExpectedOutput           |
       | Single   | column_name                 | FirstColumn              |
       | Double   | column_name column_property | FirstColumn SomeProperty |
-  
+
   Scenario Outline: Overridden placeholder <Scenario>
     And the following template named "Unit_TextTemplate_PlaceholderOverride.sql":
       """
       -- @XGenTextSection(name="Columns" <Placeholder>)
       <TemplateLine>
-      
+
       """
     And the following config:
       """
@@ -75,11 +74,11 @@ Feature: Unit_TextTemplate_Placeholder
     And an output named "Unit_TextTemplate_PlaceholderOverride.sql" with content:
       """
       <ExpectedOutput>
-      
+
       """
 
     Examples: 
-      | Scenario                                               | Placeholder                  | TemplateLine  | ExpectedOutput |
-      | No placeholder override                                |                              | column_name   | FirstColumn    |
-      | overridden placeholder                                 | placeholderName = "property" | property_name | FirstColumn    |
-      | overriden placeholder, but use placeholder from config | placeholderName ="property"  | column_name   | column_name    |
+      | Scenario                                               | Placeholder                | TemplateLine  | ExpectedOutput |
+      | No placeholder override                                |                            | column_name   | FirstColumn    |
+      | overridden placeholder                                 | placeholderName="property" | property_name | FirstColumn    |
+      | overriden placeholder, but use placeholder from config | placeholderName="property" | column_name   | column_name    |

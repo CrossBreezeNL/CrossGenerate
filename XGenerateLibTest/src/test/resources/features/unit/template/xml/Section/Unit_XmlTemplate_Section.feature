@@ -373,7 +373,6 @@ Feature: Unit_XmlTemplate_Section
       </Database>
       """
 
-  @Debug
   Scenario Outline: Section with placeholder - <Scenario>
     Given I have the following model:
       """
@@ -425,7 +424,7 @@ Feature: Unit_XmlTemplate_Section
       """
 
     Examples: 
-      | Scenario                                             | PlaceHolder | TemplateTableName | ExpectedOutput |
-      | No placeholder override                              |             | entity_name       | Order          |
-      | overridden placeholder                               | placeholderName='object'      | object_name       | Order          |
-      | overridden placeholder but using default in template | placeholderName='object'      | entity_name       | entity_name    |
+      | Scenario                                             | PlaceHolder              | TemplateTableName | ExpectedOutput |
+      | No placeholder override                              |                          | entity_name       | Order          |
+      | overridden placeholder                               | placeholderName='object' | object_name       | Order          |
+      | overridden placeholder but using default in template | placeholderName='object' | entity_name       | entity_name    |
