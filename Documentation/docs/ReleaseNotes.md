@@ -20,8 +20,9 @@ Click on the header of a version number to go to the documentation of that speci
 [//]: # (>     * [ ] Binding)
 [//]: # (>         * [X] Some issue...)
 
-## [Version 2.4](../2.4/)
-- [ ] 2.4.1 <sup>dd-12-2018</sup>
+## [Version 2.5](../2.5/)
+
+- [ ] 2.5.0 <sup>dd-12-2018</sup>
 >
 > !!! info "Enhanced features"
 >     * [ ] Template
@@ -35,6 +36,8 @@ Click on the header of a version number to go to the documentation of that speci
 >     * [ ] Config
 >         * [ ] Text and XML sections
 >             - [X] Reduced severity of sections defined in config but not found in template to informational. This can be a result of applying a more generic config, in which case it is intended behaviour.
+
+## [Version 2.4](../2.4/)
 
 - [ ] 2.4.0 <sup>07-11-2018</sup>
 >
