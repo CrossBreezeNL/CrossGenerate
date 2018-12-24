@@ -83,7 +83,7 @@ The TextSection configuration defines a section in a text template. This can eit
 | Parameter                  | Description | Default | Remark |
 |:---                        |:--- |:--- |:--- |
 | name[^1]                   | The name of the section. | | This can only contain a-z, A-Z, 0-9, _ and - characters. |
-| placeholderName            | An optional override for the placeholderName coming from the SectionModelBinding. | | Can be used to provide a specific placeholder name to use within the section.
+| placeholderName            | An optional override for the placeholderName coming from the SectionModelBinding. | | Can be used to provide a specific placeholder name to use within the section. |
 | begin[^3]                  | Character sequence which defines the beginning of the section. | | If begin is not specified, it will automatically start on the first line after the annotation. This can thus only be done with an inline annotation. |
 | includeBegin               | Whether to include the characters specified in `begin` in the output | true |
 | end[^3]                    | Character sequence which defines the end of the section. | | Cannot be used in conjunction with `nrOfLines`. |
