@@ -62,7 +62,7 @@ Feature: Unit_Config_Reuse_Partials
           <Output type="single_output" />
         </TextTemplate>              
         <Binding>        
-          <xi:include href=".\entityBindingWithIncludeNested.xml"/>
+          <xi:include href="entityBindingWithIncludeNested.xml"/>
         </Binding>          
       </XGenConfig>
       """

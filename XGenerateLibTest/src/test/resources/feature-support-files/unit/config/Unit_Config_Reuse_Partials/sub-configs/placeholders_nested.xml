@@ -1,4 +1,4 @@
 <Placeholders xmlns:xi="http://www.w3.org/2001/XInclude">
-    <Placeholder name="system" modelXPath="../.." />
-    <xi:include href="../entityBindingWithIncludeNested.xml"/>
+  <Placeholder name="system" modelXPath="../.." />
+  <xi:include href="../entityBindingWithIncludeNested.xml"/>
 </Placeholders>

@@ -9,5 +9,4 @@
 			<xi:include href=".\sub-configs\placeholders.xml"/>			
 		</Placeholders>
 	</SectionModelBinding>
- </SectionModelBinding>
-				
+</SectionModelBinding>				
