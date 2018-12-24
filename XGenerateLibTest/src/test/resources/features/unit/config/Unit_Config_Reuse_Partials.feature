@@ -51,6 +51,7 @@ Feature: Unit_Config_Reuse_Partials
       | Nested include for placeholders multiple times | entityBindingWithIncludeMultiple.xml | .                                                                                                                                                                  | A -> sys;       | B -> sys;       |
       | Nested include and multiple include files      | entityBindingWithMultipleInclude.xml | .                                                                                                                                                                  | A -> sys;       | B -> sys;       |
       | Nested include using xpointer                  | entityBindingWithXPointer.xml        | .                                                                                                                                                                  | A -> sys;       | B -> sys;       |
+      | Nested include using xpointer twice            | entityBindingWithXPointerTwice.xml   | .                                                                                                                                                                  | A -> sys;       | B -> sys;       |
 
   Scenario: using the same include twice, nested
     Given the following config:

@@ -259,10 +259,11 @@ public class XGenConfig {
 			} 
 			
 			//	Open the config file and look for includes		
-			VTDNav nav = XMLUtils.getVTDNav(xGenConfig);
-			AutoPilot ap = new AutoPilot(nav); 
-			//@TODO Make this XPath namespace aware so it actually lookes for xi:include instead of include in all namespaces
-			ap.selectXPath("//include");
+			// Make this XPath namespace aware so it actually lookes for xi:include instead of include in all namespaces
+			VTDNav nav = XMLUtils.getVTDNav(xGenConfig, true);
+			AutoPilot ap = new AutoPilot(nav);
+			ap.declareXPathNameSpace("xi", "http://www.w3.org/2001/XInclude");
+			ap.selectXPath("//xi:include");
 			int includeCount = 0;		
 			try {
 				XMLModifier vm = new XMLModifier (nav);

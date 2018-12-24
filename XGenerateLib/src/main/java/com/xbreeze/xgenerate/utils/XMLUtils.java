@@ -50,12 +50,23 @@ public class XMLUtils {
 	
 	/**
 	 * Get the VTDNav object for a XML document.
-	 * See: https://vtd-xml.sourceforge.io/javadoc/.
 	 * @param xmlDocument The XML document as a String.
 	 * @return The VTDNav.
 	 * @throws GeneratorException
 	 */
 	public static VTDNav getVTDNav(String xmlDocument) throws GeneratorException {
+		return  getVTDNav(xmlDocument, false);
+	}
+	
+	/**
+	 * Get the VTDNav object for a XML document.
+	 * See: https://vtd-xml.sourceforge.io/javadoc/.
+	 * @param xmlDocument The XML document as a String.
+	 * @param namespaceAware Whether the parser is namespace aware.
+	 * @return The VTDNav.
+	 * @throws GeneratorException
+	 */
+	public static VTDNav getVTDNav(String xmlDocument, boolean namespaceAware) throws GeneratorException {
 		// Create a VTGGen object.
 		VTDGen vg = new VTDGen();
 		
@@ -68,10 +79,9 @@ public class XMLUtils {
 		// https://stackoverflow.com/questions/51507388/vtd-xml-element-fragment-incorrect
 		vg.setDoc(xmlDocument.getBytes(StandardCharsets.US_ASCII));
 		
-		// Parse without namespace.
 		// When enabling namespace awareness, you must map the URLs of all used namespaces here.
 		try {
-			vg.parse(false);
+			vg.parse(namespaceAware);
 		} catch (ParseException e) {
 			throw new GeneratorException(String.format("Error while reading file as XML document: %s.", e.getMessage()), e);
 		}

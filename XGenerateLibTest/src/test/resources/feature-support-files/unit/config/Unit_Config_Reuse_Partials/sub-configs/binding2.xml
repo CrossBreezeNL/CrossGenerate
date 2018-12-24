@@ -1,4 +1,4 @@
-<SectionModelBinding section="Tables" modelXPath="./entities/entity[@name='B']" placeholderName="table">
+<SectionModelBinding section="Tables" modelXPath="./entities/entity[@name='B']" placeholderName="table" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<Placeholders>
 		<xi:include href="placeholders.xml"/>			
 	</Placeholders>
