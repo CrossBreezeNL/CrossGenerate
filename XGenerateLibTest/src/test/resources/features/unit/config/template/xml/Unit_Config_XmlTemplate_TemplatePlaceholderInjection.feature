@@ -2,6 +2,8 @@
 Feature: Unit_Config_XmlTemplate_TemplatePlaceholderInjection
   In this feature we will describe the TemplatePlaceholderInjection feature in the template config.
 
+  @Debug
+  @KnownIssue See scenario examples.
   Scenario Outline: Single <Scenario> template placeholder injection
     Given I have the following model:
       """
@@ -53,6 +55,7 @@ Feature: Unit_Config_XmlTemplate_TemplatePlaceholderInjection
       | filter current              | someProperty    | //table[@filter='yes']/@someProperty | property      | current | <table name="A" filter="yes" someProperty="something"/>       | <table name="A" filter="no" someProperty="Bla2"/>            |
       | simple child                | someProperty    | //table/@someProperty                | childProperty | child   | <table name="A" filter="yes" someProperty="Something child"/> | <table name="A" filter="no" someProperty="Something child"/> |
       | filter child                | someProperty    | //table[@filter='yes']/@someProperty | childProperty | child   | <table name="A" filter="yes" someProperty="Something child"/> | <table name="A" filter="no" someProperty="Bla2"/>            |
-      #| namespace all      | xb:someProperty | //table/@xb:someProperty             | property      | current | <table name="A" filter="yes" xb:someProperty="something"/>    | <table name="A" filter="no" xb:someProperty="something"/>    |
       | namespace template          | xb:someProperty | //table/@someProperty                | property      | current | <table name="A" filter="yes" xb:someProperty="something"/>    | <table name="A" filter="no" xb:someProperty="something"/>    |
       | namespace template no value | xb:someProperty | //table/@someProperty                | unknown       | current | <table name="A" filter="yes"/>                                | <table name="A" filter="no"/>                                |
+      # Current XG cannot handle the XPath itself to contain the namespace part, cause the namespace must then be declared. If this would work the previous 2 tests probably need to be discusses whether they also require namespace prefix in the XPath.
+      | namespace prefixed template | xb:someProperty | //table/@xb:someProperty             | property      | current | <table name="A" filter="yes" xb:someProperty="something"/>    | <table name="A" filter="no" xb:someProperty="something"/>    |
