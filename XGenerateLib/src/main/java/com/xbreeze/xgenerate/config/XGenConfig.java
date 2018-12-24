@@ -292,7 +292,7 @@ public class XGenConfig {
 						AutoPilot ap_xpoint = new AutoPilot(nav);
 						ap_xpoint.selectXPath("@xpointer");
 						String xPoint = ap_xpoint.evalXPathToString();
-						if (xPoint != null && !xPoint.equals("")) {
+						if (xPoint != null && xPoint.length() > 0) {
 							logger.fine(String.format("Found xpointer in include: %s", xPoint));
 							includeContents = XMLUtils.getXmlFragment(includeContents, xPoint);
 						}
