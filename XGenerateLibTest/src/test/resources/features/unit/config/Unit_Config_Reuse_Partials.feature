@@ -24,7 +24,7 @@ Feature: Unit_Config_Reuse_Partials
           <Output type="single_output" />
         </TextTemplate>              
         <Binding>        
-          <xi:include href="<path>\<bindingFile>"/>
+          <xi:include href="<includeHref>" <xpointer> />
         </Binding>          
       </XGenConfig>
       """
@@ -44,14 +44,16 @@ Feature: Unit_Config_Reuse_Partials
       """
 
     Examples: 
-      | Scenario                                       | bindingFile                          | path                                                                                                                                                               | expectedResultA | expectedResultB |
-      | No Nesting                                     | entityBinding.xml                    | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials | A -> sys;       | B -> sys;       |
-      | Nested include for placeholders absolute       | entityBindingWithInclude.xml         | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials | A -> sys;       | B -> sys;       |
-      | Nested include for placeholders relative       | entityBindingWithIncludeRelative.xml | .                                                                                                                                                                  | A -> sys;       | B -> sys;       |
-      | Nested include for placeholders multiple times | entityBindingWithIncludeMultiple.xml | .                                                                                                                                                                  | A -> sys;       | B -> sys;       |
-      | Nested include and multiple include files      | entityBindingWithMultipleInclude.xml | .                                                                                                                                                                  | A -> sys;       | B -> sys;       |
-      | Nested include using xpointer                  | entityBindingWithXPointer.xml        | .                                                                                                                                                                  | A -> sys;       | B -> sys;       |
-      | Nested include using xpointer twice            | entityBindingWithXPointerTwice.xml   | .                                                                                                                                                                  | A -> sys;       | B -> sys;       |
+      | Scenario                                       | includeHref                                                                                                                                                                                      | xpointer                                                            | expectedResultA | expectedResultB |
+      | No Nesting                                     | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials\\entityBinding.xml            |                                                                     | A -> sys;       | B -> sys;       |
+      | Nested include for placeholders absolute       | C:\\GIT\\Repos\\CrossBreeze\\CrossGenerate\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials\\entityBindingWithInclude.xml |                                                                     | A -> sys;       | B -> sys;       |
+      | Nested include for placeholders relative       | entityBindingWithIncludeRelative.xml                                                                                                                                                             |                                                                     | A -> sys;       | B -> sys;       |
+      | Nested include for placeholders multiple times | entityBindingWithIncludeMultiple.xml                                                                                                                                                             |                                                                     | A -> sys;       | B -> sys;       |
+      | Nested include and multiple include files      | entityBindingWithMultipleInclude.xml                                                                                                                                                             |                                                                     | A -> sys;       | B -> sys;       |
+      | Nested include using xpointer                  | entityBindingWithXPointer.xml                                                                                                                                                                    |                                                                     | A -> sys;       | B -> sys;       |
+      | Nested include using xpointer twice            | entityBindingWithXPointerTwice.xml                                                                                                                                                               |                                                                     | A -> sys;       | B -> sys;       |
+      | Using xpointer with global accessor                                 | modelBindingWithParentElement.xml                                                                                                                                                                | xpointer="//SectionModelBinding[@section='Template']" | A -> sys;       | B -> sys;       |
+      | Using xpointer with root accessor                                 | modelBindingWithParentElement.xml                                                                                                                                                                | xpointer="/SomeRootElement/SectionModelBinding[@section='Template']" | A -> sys;       | B -> sys;       |
 
   Scenario: using the same include twice, nested
     Given the following config:

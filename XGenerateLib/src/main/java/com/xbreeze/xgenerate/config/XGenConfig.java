@@ -231,49 +231,52 @@ public class XGenConfig {
 	 */
 	private static String getConfigWithResolvedIncludes(String xGenConfig, URI configFileUri, int level,  HashMap<URI, Integer> resolvedIncludes) throws ConfigException{
 		logger.fine(String.format("Scanning config file %s for includes", configFileUri.toString()));
-		//Check for cycle detection, e.g. an include that is already included previously
+		// Check for cycle detection, e.g. an include that is already included previously
 		if (resolvedIncludes.containsKey(configFileUri) && resolvedIncludes.get(configFileUri) != level) {
 			throw new ConfigException(String.format("Config include cycle detected at level %d, file %s is already included previously", level, configFileUri.toString()));
 		}
-		if (!resolvedIncludes.containsKey(configFileUri)) {
+		else if (!resolvedIncludes.containsKey(configFileUri)) {
 			resolvedIncludes.put(configFileUri, level);						
 		}
 		
-		//Get basePath of configFile. If the provided URI refers to a file, us its parent path, if it refers to a folder use it as base path
+		// Get basePath of configFile. If the provided URI refers to a file, us its parent path, if it refers to a folder use it as base path
 		try {
 			URI basePath  = new URI("file:///../");			
 			File configFile = new File(configFileUri.getPath());
-			if (configFile.isDirectory())
-					basePath = configFileUri;
-			if (configFile.isFile()) {
-				String parentPath =configFile.getParent();
+			if (configFile.isDirectory()) {
+				basePath = configFileUri;
+			}
+			else if (configFile.isFile()) {
+				String parentPath = configFile.getParent();
 				if (parentPath != null) {			
 					basePath = Paths.get(parentPath).toUri();	
 				}
 			}
-			//Resolve basePath to absolute/real path
+			// Resolve basePath to absolute/real path
 			try {
 				basePath = Paths.get(basePath).toRealPath(LinkOption.NOFOLLOW_LINKS).toUri();
 			} catch (IOException e) {
 				throw new ConfigException(String.format("Error resolving config basePath %s to canonical path", basePath.toString()), e);
 			} 
 			
-			//	Open the config file and look for includes		
-			// Make this XPath namespace aware so it actually lookes for xi:include instead of include in all namespaces
+			// Open the config file and look for includes		
+			// Make this XPath namespace aware so it actually looks for xi:include instead of include in all namespaces
 			VTDNav nav = XMLUtils.getVTDNav(xGenConfig, true);
 			AutoPilot ap = new AutoPilot(nav);
+			// Declare the XInclude namespace.
 			ap.declareXPathNameSpace("xi", "http://www.w3.org/2001/XInclude");
+			// Search for all xi:include elements.
 			ap.selectXPath("//xi:include");
 			int includeCount = 0;		
 			try {
 				XMLModifier vm = new XMLModifier (nav);
 				while ((ap.evalXPath()) != -1) {
-					//obtain the filename of include
+					// Obtain the filename of include
 					AutoPilot ap_href = new AutoPilot(nav);
 					ap_href.selectXPath("@href");
 					String includeFileLocation = ap_href.evalXPathToString();
 					logger.fine(String.format("Found include for %s in config file %s", includeFileLocation, configFileUri.toString()));
-					//resolve include to a valid path against the basePath
+					// Resolve include to a valid path against the basePath
 					logger.fine(String.format("base path %s", basePath.toString()));
 					Path p = Paths.get(basePath);
 					URI includeFileUri = null;
@@ -285,10 +288,10 @@ public class XGenConfig {
 					logger.fine(String.format("Resolved include to %s", includeFileUri.toString()));
 					
 					try {
-						//get file contents, recursively processing any includes found
+						// get file contents, recursively processing any includes found
 						String includeContents = getConfigWithResolvedIncludes(FileUtils.getFileContent(includeFileUri), includeFileUri, level + 1, resolvedIncludes);
 
-						//Check for xpointer and apply if found
+						// Check for xpointer and apply if found
 						AutoPilot ap_xpoint = new AutoPilot(nav);
 						ap_xpoint.selectXPath("@xpointer");
 						String xPoint = ap_xpoint.evalXPathToString();
@@ -296,14 +299,15 @@ public class XGenConfig {
 							logger.fine(String.format("Found xpointer in include: %s", xPoint));
 							includeContents = XMLUtils.getXmlFragment(includeContents, xPoint);
 						}
-						//If the file contains an XML declaration, remove it			
+						
+						// If the file contains an XML declaration, remove it			
 						if (includeContents.startsWith("<?xml")) {
 							includeContents = includeContents.replaceFirst("^<\\?xml.*\\?>", "");
 						}
 						
-						//Replace the node with the include contents
+						// Replace the node with the include contents
 						vm.insertAfterElement(includeContents);
-						//then remove the include node
+						// Then remove the include node
 						vm.remove();					
 					} catch (IOException e) {
 						throw new ConfigException(String.format("Could not read contents of included config file %s", includeFileUri.toString()), e);
