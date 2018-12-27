@@ -105,6 +105,47 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       | escaped     | &quot;     |
       | no quotes   |            |
 
+
+  Scenario: TextTemplate with XPath node in XMLTemplate
+    Given the following template named "ExampleTemplate.xml":
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="system_id" name="system_name">
+        -- @XGenTextSection(name=&quot;Tables&quot;)
+        entity_name
+      </Database>
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <XmlTemplate rootSectionName="Database">
+          <FileFormat currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="output_per_element" />
+          <TextTemplates>
+            <TextTemplate node="//*[contains(text(), '@XGenTextSection')]">
+              <FileFormat currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+            </TextTemplate>
+          </TextTemplates>
+        </XmlTemplate>
+        <Binding>
+          <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="system">
+            <SectionModelBinding section="Tables" modelXPath="entity" placeholderName="entity"/>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "ExampleTemplate.xml" with content:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database id="29e17cc2-efd2-4013-8f9a-5714081874b3" name="ExampleSource">
+        Order
+        Customer
+      </Database>
+      """
+
   Scenario: TextTemplate with single configured section in XMLTemplate
     Given the following template named "ExampleTemplate.xml":
       """
