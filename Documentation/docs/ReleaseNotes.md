@@ -28,14 +28,17 @@ Click on the header of a version number to go to the documentation of that speci
 >     * [ ] Template
 >         * [ ] Text and XML template section annotations
 >             - [X] Within a section annotation, the placeholderName from the ModelSectionBinding can be overridden with a specific placeholderName for the section.
+>             - [X] Within a section annotation, the placeholderName from the ModelSectionBinding can be overridden with a specific placeholderName for the section.
 >     * [ ] Config
 >         * [ ] Config re-use    
 >             - [X] Include directive in config now better supports relative includes (relative to the referencing file instead of application folder)
 >             - [X] Include directive in config supports including parts of another config file with the xpointer function
+>         * [ ] Text and XML sections
+>             - [X] A section can be marked as optional. When the section is not found in the template, an informational message will be given instead of a warning.
 > !!! warning "Bug fixes"
 >     * [ ] Config
 >         * [ ] Text and XML sections
->             - [X] Reduced severity of sections defined in config but not found in template to informational. This can be a result of applying a more generic config, in which case it is intended behaviour.
+>             - [X] Reduced severity of sections defined in config but not found in template to warning or informational. This can be a result of applying a more generic config, in which case it is intended behaviour.
 
 ## [Version 2.4](../2.4/)
 
