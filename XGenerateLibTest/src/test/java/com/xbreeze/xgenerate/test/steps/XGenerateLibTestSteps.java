@@ -4,10 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.logging.ConsoleHandler;
@@ -16,12 +17,9 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import java.util.logging.StreamHandler;
-import java.util.logging.SimpleFormatter;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.http.client.utils.URIBuilder;
 
 import com.xbreeze.xgenerate.config.ConfigException;
@@ -33,8 +31,10 @@ import com.xbreeze.xgenerate.generator.Generator;
 import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.model.Model;
 import com.xbreeze.xgenerate.template.RawTemplate;
+import com.xbreeze.xgenerate.test.util.CapturedConsolePrintStream;
 
 import cucumber.api.Scenario;
+import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -54,10 +54,24 @@ public class XGenerateLibTestSteps {
 	URI _templateFileUri;
 	URI _configFileUri;
 	Exception generatorException;
-	ByteArrayOutputStream _logOutputStream;
+	private ByteArrayOutputStream baos;
+	private PrintStream stdOut;
+	private PrintStream stdErr;
 	
 	@Before
 	public void beforeScenario(Scenario scenario) {
+		
+		//Create a arraybuffer and capturedConsolePrintStreams for out and err printstreams
+		baos = new ByteArrayOutputStream();
+		stdOut = System.out;
+		stdErr = System.err;
+		CapturedConsolePrintStream newOut = new CapturedConsolePrintStream(baos, stdOut);
+		CapturedConsolePrintStream newErr = new CapturedConsolePrintStream(baos, stdErr);
+		
+		//Redirect std and err out to the new captured streams
+		System.setOut(newOut);
+		System.setErr(newErr);
+		
 		LogManager logManager = LogManager.getLogManager();
 		// Read the logging configuration from the resource file.
 		try {
@@ -96,13 +110,6 @@ public class XGenerateLibTestSteps {
 		});
 		logger.addHandler(outputConsoleHandler);
 		
-		//Add a stream handler to enable checking for log entries after generation
-		_logOutputStream = new ByteArrayOutputStream();
-		SimpleFormatter fm = new SimpleFormatter();		
-		StreamHandler outputStreamHandler = new StreamHandler(_logOutputStream, fm);
-		outputStreamHandler.setLevel(logLevel);
-		logger.addHandler(outputStreamHandler);
-		
 		// Set the feature support file location using the scenario location.
 		// The support file location is the same as the feature file location, but without the .feature extention and the directory 'features' is replaced with 'feature-support-files'.
 		String derivedFeatureSupportFileLocation = scenario.getUri().replaceFirst("features", "feature-support-files").replace(".feature", "");
@@ -121,6 +128,13 @@ public class XGenerateLibTestSteps {
 			logger.info("Enabling debug mode");
 			this._generator.setDebugMode(true);
 		}
+	}
+	
+	@After
+	private void RestoreSystemStreams() {
+		//Restore std and err output streams
+		System.setOut(stdOut);
+		System.setErr(stdErr);
 	}
 
 	@Given("^I have the following model:$")
@@ -163,6 +177,7 @@ public class XGenerateLibTestSteps {
 	@When("^I run the generator$")
 	public void iRunTheGenerator() throws Throwable {	
 		checkForError();
+		
 		//check if generator needs to be invoked with files or with template and config string
 		try {
 			if (this._rawTemplate != null && this._xGenConfig != null) {
@@ -186,7 +201,6 @@ public class XGenerateLibTestSteps {
 		catch(GeneratorException exc) {
 			this.generatorException = exc;
 		}
-		
 	}
 
 	@Then("^I expect (\\d+) generation results?$")
@@ -209,9 +223,9 @@ public class XGenerateLibTestSteps {
 		
 	}
 	
-	@Then("^I expect the following log message:$")
+	@Then("^I expect the following console message:$")
 	public void iExpectTheFollowingLogMessage(String logMessage) throws Throwable {
-		String logOutput = this._logOutputStream.toString(java.nio.charset.StandardCharsets.UTF_8);
+		String logOutput = this.baos.toString();
 		assertTrue(String.format("Log entry containing %s is not found", logMessage), logOutput.contains(logMessage));
 	}
 	

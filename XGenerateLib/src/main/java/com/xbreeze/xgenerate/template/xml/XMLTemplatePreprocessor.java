@@ -148,15 +148,16 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 					}
 					
 					// If there are no nodes found for this section, log a informational message.
-					if (sectionNodesFound == 0) 
+					if (sectionNodesFound == 0) {
 						if (xmlSectionAnnotation.isOptional())
 							logger.info(String.format("No template nodes found for section '%s' using XPath '%s'", xmlSectionAnnotation.getName(), xmlSectionAnnotation.getTemplateXPath()));
 						else 
 							logger.warning(String.format("No template nodes found for section '%s' using XPath '%s'", xmlSectionAnnotation.getName(), xmlSectionAnnotation.getTemplateXPath()));
+					}
 				}
 				// If the section annotation is of a different type, throw an exception.
 				else {
-					
+					throw new TemplatePreprocessorException(String.format("Unknown Xml Section type for section '%s': %s", sa.getName(), sa.getClass().getName()));
 				}
 			}
 		}

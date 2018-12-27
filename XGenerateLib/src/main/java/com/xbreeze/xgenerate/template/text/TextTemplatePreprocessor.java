@@ -84,32 +84,26 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 			// If the begin index isn't found yet, and the annotation was defined in the template, throw an exception.
 			if (sectionBeginCharIndex == -1)
 			{
-				if (textSectionAnnotation.isDefinedInTemplate())
+				if (textSectionAnnotation.isDefinedInTemplate()) {
 					throw new TemplatePreprocessorException(String.format("The begin of the section '%s' can't be found", textSectionAnnotation.getName()));
-				else
+				}
+				else {
 					if (textSectionAnnotation.isOptional())
 						logger.info(String.format("The begin of the section '%s' can't be found", textSectionAnnotation.getName()));
 					else 
 						logger.warning(String.format("The begin of the section '%s' can't be found", textSectionAnnotation.getName()));
+				}
 			}
 			else {
-				//Look for end index but only if begin was found
+				// Look for end index, but only if begin was found
 				int sectionEndCharIndex = findSectionEndIndex(textSectionAnnotation, rawTemplateContent, sectionBeginCharIndex, endIndex);
 
-				//If the end index isn't found yet, and the annotation was defined in the template, throw an exception.
-				if (sectionEndCharIndex == -1) {
-					if (textSectionAnnotation.isDefinedInTemplate())
-						throw new TemplatePreprocessorException(String.format("The end of the section '%s' can't be found", textSectionAnnotation.getName()));
-					else
-						if (textSectionAnnotation.isOptional())
-							logger.info(String.format("The end of the section '%s' can't be found", textSectionAnnotation.getName()));
-						else
-							logger.warning(String.format("The end of the section '%s' can't be found", textSectionAnnotation.getName()));
-				}
-				else {
-					logger.info(String.format("Found section bounds for '%s' (begin: %d; end: %d", textSectionAnnotation.getName(), sectionBeginCharIndex, sectionEndCharIndex));
-					templateAnnotations.add(new TemplateSectionBoundsAnnotation(textSectionAnnotation, sectionBeginCharIndex, sectionEndCharIndex));
-				}
+				// If the end index isn't found yet, throw a exception.
+				if (sectionEndCharIndex == -1)
+					throw new TemplatePreprocessorException(String.format("The end of the section '%s' can't be found", textSectionAnnotation.getName()));
+				
+				logger.info(String.format("Found section bounds for '%s' (begin: %d; end: %d", textSectionAnnotation.getName(), sectionBeginCharIndex, sectionEndCharIndex));
+				templateAnnotations.add(new TemplateSectionBoundsAnnotation(textSectionAnnotation, sectionBeginCharIndex, sectionEndCharIndex));
 			}
 		}
 
@@ -143,22 +137,13 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 			
 			// If the result is -1 or larger then the endIndex, then the begin wasn't found.
 			if (sectionBeginCharIndex == -1 || sectionBeginCharIndex > searchEndIndex) {
-				String msg = String.format("The begin part of the section '%s' can't be found (begin: '%s')", textSectionAnnotation.getName(), textSectionAnnotation.getBegin());
-				// If the section was defined in the template, throw an exception, otherwise log an informational message and return -1
-				if (textSectionAnnotation.isDefinedInTemplate())
-					throw new TemplatePreprocessorException(msg);
-				else {
-					if (textSectionAnnotation.isOptional()) 
-						logger.info(msg);
-					else 
-						logger.warning(msg);
-					return -1;
-				}
+				return -1;
 			}
-			else
-			// If the section does not need to include the begin, than add the length of the begin to remove begin characters from section.
-			if (!textSectionAnnotation.isIncludeBegin())
-				sectionBeginCharIndex += textSectionAnnotation.getBegin().length();
+			else {
+				// If the section does not need to include the begin, than add the length of the begin to remove begin characters from section.
+				if (!textSectionAnnotation.isIncludeBegin())
+					sectionBeginCharIndex += textSectionAnnotation.getBegin().length();
+			}
 		}
 		// If literalOnFirstLine is specified, we use literalOnFirstLine
 		else if (textSectionAnnotation.getLiteralOnFirstLine() != null && textSectionAnnotation.getLiteralOnFirstLine().length() > 0) {

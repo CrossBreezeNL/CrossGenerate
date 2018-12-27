@@ -86,7 +86,7 @@ The TextSection configuration defines a section in a text template. This can eit
 | Parameter                  | Description | Default | Remark |
 |:---                        |:--- |:--- |:--- |
 | name[^1]                   | The name of the section. | | This can only contain a-z, A-Z, 0-9, _ and - characters. |
-| optional                   | Indicates if the section is optional (true/false). | false | Can be used to suppress warnings in case of a reused config, where sections defined in the config do not occur in each template the config is used with. |
+| optional[^4]               | Indicates if the section is optional (true/false). | false | Can be used to suppress warnings in case of a reused config, where sections defined in the config do not occur in each template the config is used with. |
 | placeholderName            | An optional override for the placeholderName coming from the SectionModelBinding. | | Can be used to provide a specific placeholder name to use within the section. |
 | begin[^3]                  | Character sequence which defines the beginning of the section. | | If begin is not specified, it will automatically start on the first line after the annotation. This can thus only be done with an inline annotation. |
 | includeBegin               | Whether to include the characters specified in `begin` in the output | true |
@@ -117,3 +117,4 @@ The TextSection configuration defines a section in a text template. This can eit
 [^1]: required parameter
 [^2]: required child section
 [^3]: At least one of these parameters must be specified when using this annotation in the template section of the config file. When using this annotation inline in a template and none of these parameters are specified, the default value for nrOfLines will be used and the section will start at the first line after the annotation.
+[^4]: An option which can only be specified in the config.

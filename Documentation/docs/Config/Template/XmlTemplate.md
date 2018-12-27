@@ -76,7 +76,7 @@ The XmlSection configuration defines a section in a XML template. This can eithe
 | Parameter                  | Description | Default | Remark |
 |:---                        |:--- |:--- |:--- |
 | name[^1]                   | The name of the section. | | This can only contain a-z, A-Z, 0-9, _ and - characters. |
-| optional                   | Indicates if the section is optional (true/false). | false | Can be used to suppress warnings in case of a reused config, where sections defined in the config do not occur in each template the config is used with. |
+| optional[^3]               | Indicates if the section is optional (true/false). | false | Can be used to suppress warnings in case of a reused config, where sections defined in the config do not occur in each template the config is used with. |
 | placeholderName            | An optional override for the placeholderName coming from the SectionModelBinding. | | Can be used to provide a specific placeholder name to use within the section. |
 | templateXPath[^1]          | The XPath which needs to be executed on the template document to get the element which resembles the section element. | | See [XPath](../XPath). |
 
@@ -170,3 +170,4 @@ A XML template can contain elements or attribute which in itself contain a text 
 [comment]: Footnotes
 [^1]: required parameter
 [^2]: required child section
+[^3]: An option which can only be specified in the config.

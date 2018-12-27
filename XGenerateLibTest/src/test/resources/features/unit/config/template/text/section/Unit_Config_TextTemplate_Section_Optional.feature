@@ -1,5 +1,5 @@
 @Unit
-Feature: Unit_Config_TextTemplate_Section_Configured_But_Missing
+Feature: Unit_Config_TextTemplate_Section_Optional
   In this feature we will describe the scenario of a section that is defined in the config but missing in the template.
 
   Background: 
@@ -15,7 +15,7 @@ Feature: Unit_Config_TextTemplate_Section_Configured_But_Missing
       </modeldefinition>
       """
 
-  Scenario Outline: Config with section defined not present in template, optional is <Optional>
+  Scenario Outline: Config with section defined not present in template, optional is <Scenario>
     Given the following template named "Template.txt":
       """
       -- Begin of template
@@ -37,7 +37,7 @@ Feature: Unit_Config_TextTemplate_Section_Configured_But_Missing
           <Output type="single_output" />
           <TextSections>
             <TextSection name="entity" begin="entity" includeBegin="true"/>
-            <TextSection name="missing" begin="dummy" optional="<Optional>" />
+            <TextSection name="missing" begin="dummy" <Optional> />
           </TextSections>
         </TextTemplate>
         <Binding>
@@ -56,12 +56,13 @@ Feature: Unit_Config_TextTemplate_Section_Configured_But_Missing
       Customer
       -- End of template
       """
-    And I expect the following log message:
+    And I expect the following console message:
       """
-      <ErrorLevel> The begin part of the section 'missing' can't be found (begin: 'dummy') 
+      <ErrorLevel> The begin of the section 'missing' can't be found 
       """
 
     Examples: 
-      | Optional | ErrorLevel |
-      | false    | [WARNING]  |
-      | true     | [INFO   ]  |
+      | Scenario  | Optional         | ErrorLevel |
+      | undefined |                  | [WARNING]  |
+      | false     | optional="false" | [WARNING]  |
+      | true      | optional="true"  | [INFO   ]  |

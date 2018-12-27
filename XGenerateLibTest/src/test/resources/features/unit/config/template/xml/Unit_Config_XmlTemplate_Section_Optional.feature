@@ -1,7 +1,7 @@
 @Unit
-Feature: Unit_Config_XmlTemplate_Section
-  In this feature we will describe the section feature for XML templates specified in config.
-
+Feature: Unit_Config_XmlTemplate_Section_Optional
+  In this feature we will describe the optional section feature for XML templates specified in config.
+  
   Background: 
     Given I have the following model:
       """
@@ -21,8 +21,8 @@ Feature: Unit_Config_XmlTemplate_Section
         </Tables>
       </Database>
       """
-
-  Scenario Outline: Implicit root and explicit section <Scenario>
+      
+  Scenario Outline: section defined in config but not in template, optional is <Scenario>
     Given the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -31,7 +31,8 @@ Feature: Unit_Config_XmlTemplate_Section
           <FileFormat currentAccessor="_" />
           <Output type="output_per_element" />
           <XmlSections>
-            <XmlSection name="Tables" templateXPath="<templateXPath>" />
+            <XmlSection name="Tables" templateXPath="//Table[@name='entity_name']" />
+            <XmlSection name="OtherTables" templateXPath="//Table[@name='dummy']" <Optional> />
           </XmlSections>
         </XmlTemplate>
         <Binding>
@@ -48,13 +49,17 @@ Feature: Unit_Config_XmlTemplate_Section
       <?xml version="1.0" encoding="UTF-8"?>
       <Database name="ExampleSource">
         <Tables>
-          <expectedResult>
+          <Table name="Order"/>
         </Tables>
       </Database>
       """
+    And I expect the following console message:
+      """
+      <ErrorLevel> No template nodes found for section 'OtherTables' using XPath '//Table[@name='dummy']'
+      """
 
     Examples: 
-      | Scenario | templateXPath                               | expectedResult              |
-      | Simple   | /Database/Tables/Table                      | <Table name="Order"/>       |
-      | Filtered | /Database/Tables/Table[@name='entity_name'] | <Table name="Order"/>       |
-      | Invalid  | /Database/Tables/Table[@name='incorrect']   | <Table name="entity_name"/> |
+      | Scenario  | Optional         | ErrorLevel |
+      | undefined |                  | [WARNING]  |
+      | false     | optional="false" | [WARNING]  |
+      | true      | optional="true"  | [INFO   ]  |
