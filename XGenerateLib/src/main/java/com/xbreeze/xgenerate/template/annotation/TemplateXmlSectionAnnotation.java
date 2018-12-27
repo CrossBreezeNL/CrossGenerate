@@ -47,4 +47,9 @@ public class TemplateXmlSectionAnnotation extends TemplateSectionAnnotation {
 		this.placeholderName = placeholderName;
 	}
 	
+	@Override
+	public void setOptional(Boolean optional) {
+		this.optional = optional;
+	}
+	
 }

@@ -82,25 +82,34 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 			// Get the section begin index.
 			int sectionBeginCharIndex = findSectionBeginIndex(textSectionAnnotation, rawTemplateContent, beginIndex, endIndex);
 			// If the begin index isn't found yet, and the annotation was defined in the template, throw an exception.
-			if (sectionBeginCharIndex == -1 && textSectionAnnotation.isDefinedInTemplate())
-				throw new TemplatePreprocessorException(String.format("The begin of the section '%s' can't be found", textSectionAnnotation.getName()));
-			
-			int sectionEndCharIndex = -1;
-			//Look for end index but only if begin was found
-			if (sectionBeginCharIndex != -1)
-				sectionEndCharIndex = findSectionEndIndex(textSectionAnnotation, rawTemplateContent, sectionBeginCharIndex, endIndex);
-
-			//If the end index isn't found yet, and the annotation was defined in the template, throw an exception.
-			if (sectionEndCharIndex == -1 && textSectionAnnotation.isDefinedInTemplate())
-				throw new TemplatePreprocessorException(String.format("The end of the section '%s' can't be found", textSectionAnnotation.getName()));
-			
-			// If begin and end charIndex where found, store the begin index in a new template bounds annotation object.
-			if (sectionBeginCharIndex != -1 && sectionEndCharIndex != -1) {
-				logger.info(String.format("Found section bounds for '%s' (begin: %d; end: %d", textSectionAnnotation.getName(), sectionBeginCharIndex, sectionEndCharIndex));
-				templateAnnotations.add(new TemplateSectionBoundsAnnotation(textSectionAnnotation, sectionBeginCharIndex, sectionEndCharIndex));
+			if (sectionBeginCharIndex == -1)
+			{
+				if (textSectionAnnotation.isDefinedInTemplate())
+					throw new TemplatePreprocessorException(String.format("The begin of the section '%s' can't be found", textSectionAnnotation.getName()));
+				else
+					if (textSectionAnnotation.isOptional())
+						logger.info(String.format("The begin of the section '%s' can't be found", textSectionAnnotation.getName()));
+					else 
+						logger.warning(String.format("The begin of the section '%s' can't be found", textSectionAnnotation.getName()));
 			}
 			else {
-				logger.info(String.format("Either begin (%d) or end (%d) of section %s defined in config is not found, ignoring section definition", sectionBeginCharIndex, sectionEndCharIndex, textSectionAnnotation.getName()));
+				//Look for end index but only if begin was found
+				int sectionEndCharIndex = findSectionEndIndex(textSectionAnnotation, rawTemplateContent, sectionBeginCharIndex, endIndex);
+
+				//If the end index isn't found yet, and the annotation was defined in the template, throw an exception.
+				if (sectionEndCharIndex == -1) {
+					if (textSectionAnnotation.isDefinedInTemplate())
+						throw new TemplatePreprocessorException(String.format("The end of the section '%s' can't be found", textSectionAnnotation.getName()));
+					else
+						if (textSectionAnnotation.isOptional())
+							logger.info(String.format("The end of the section '%s' can't be found", textSectionAnnotation.getName()));
+						else
+							logger.warning(String.format("The end of the section '%s' can't be found", textSectionAnnotation.getName()));
+				}
+				else {
+					logger.info(String.format("Found section bounds for '%s' (begin: %d; end: %d", textSectionAnnotation.getName(), sectionBeginCharIndex, sectionEndCharIndex));
+					templateAnnotations.add(new TemplateSectionBoundsAnnotation(textSectionAnnotation, sectionBeginCharIndex, sectionEndCharIndex));
+				}
 			}
 		}
 
@@ -139,7 +148,10 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				if (textSectionAnnotation.isDefinedInTemplate())
 					throw new TemplatePreprocessorException(msg);
 				else {
-					logger.info(msg);
+					if (textSectionAnnotation.isOptional()) 
+						logger.info(msg);
+					else 
+						logger.warning(msg);
 					return -1;
 				}
 			}
@@ -166,16 +178,9 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 			 if (matcher.find()) {
 				sectionBeginCharIndex = matcher.start();
 			 } 
-			 else {
-				 //If pattern is not found then either throw an exception (when section was defined in template, otherwise log info message and return -1
-				 String msg = String.format("The literal on first line of the section '%s' can't be found (literalOnFirstLine: '%s')", textSectionAnnotation.getName(), textSectionAnnotation.getLiteralOnFirstLine());
-				 if (textSectionAnnotation.isDefinedInTemplate())
-					 throw new TemplatePreprocessorException(msg);
-				 else {
-					 logger.info(msg);
-					 return -1;
-				 }
-			}
+			 else 
+				 return -1;		
+			
 		}
 		// If begin is not specified and the annotation was specified in the template, we use the end position of the annotation.
 		else if (annotationInTemplate) {

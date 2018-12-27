@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,9 +16,12 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import java.util.logging.StreamHandler;
+import java.util.logging.SimpleFormatter;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.http.client.utils.URIBuilder;
 
 import com.xbreeze.xgenerate.config.ConfigException;
@@ -50,6 +54,7 @@ public class XGenerateLibTestSteps {
 	URI _templateFileUri;
 	URI _configFileUri;
 	Exception generatorException;
+	ByteArrayOutputStream _logOutputStream;
 	
 	@Before
 	public void beforeScenario(Scenario scenario) {
@@ -80,6 +85,7 @@ public class XGenerateLibTestSteps {
 				super.setOutputStream(System.out);
 			}
 		};
+		
 		outputConsoleHandler.setLevel(logLevel);
 		// Only log message with a lower level then warning.
 		outputConsoleHandler.setFilter(new Filter() {
@@ -89,6 +95,13 @@ public class XGenerateLibTestSteps {
 			}
 		});
 		logger.addHandler(outputConsoleHandler);
+		
+		//Add a stream handler to enable checking for log entries after generation
+		_logOutputStream = new ByteArrayOutputStream();
+		SimpleFormatter fm = new SimpleFormatter();		
+		StreamHandler outputStreamHandler = new StreamHandler(_logOutputStream, fm);
+		outputStreamHandler.setLevel(logLevel);
+		logger.addHandler(outputStreamHandler);
 		
 		// Set the feature support file location using the scenario location.
 		// The support file location is the same as the feature file location, but without the .feature extention and the directory 'features' is replaced with 'feature-support-files'.
@@ -194,6 +207,12 @@ public class XGenerateLibTestSteps {
 		assertEquals(errorMessage, this.generatorException.getMessage());
 		
 		
+	}
+	
+	@Then("^I expect the following log message:$")
+	public void iExpectTheFollowingLogMessage(String logMessage) throws Throwable {
+		String logOutput = this._logOutputStream.toString(java.nio.charset.StandardCharsets.UTF_8);
+		assertTrue(String.format("Log entry containing %s is not found", logMessage), logOutput.contains(logMessage));
 	}
 	
 	@Then("^an output named \"(.*)\" with contents equal to file: \"(.*)\"$")

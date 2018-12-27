@@ -2,7 +2,6 @@
 Feature: Unit_Config_XmlTemplate_TemplatePlaceholderInjection
   In this feature we will describe the TemplatePlaceholderInjection feature in the template config.
 
-  @Debug
   @KnownIssue See scenario examples.
   Scenario Outline: Single <Scenario> template placeholder injection
     Given I have the following model:

@@ -59,8 +59,9 @@ Feature: Unit_Config_XmlTemplate_Section
       | Filtered | /Database/Tables/Table[@name='entity_name'] | <Table name="Order"/>       |
       | Invalid  | /Database/Tables/Table[@name='incorrect']   | <Table name="entity_name"/> |
 
-	Scenario: section defined in config but not in template
-  	Given the following config:
+  @Debug
+  Scenario Outline: section defined in config but not in template, optional is <Optional>
+    Given the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
@@ -69,7 +70,7 @@ Feature: Unit_Config_XmlTemplate_Section
           <Output type="output_per_element" />
           <XmlSections>
             <XmlSection name="Tables" templateXPath="//Table[@name='entity_name']" />
-            <XmlSection name="OtherTables" templateXPath="//Table[@name='dummy']" />
+            <XmlSection name="OtherTables" templateXPath="//Table[@name='dummy']" optional="<Optional>" />
           </XmlSections>
         </XmlTemplate>
         <Binding>
@@ -90,3 +91,12 @@ Feature: Unit_Config_XmlTemplate_Section
         </Tables>
       </Database>
       """
+    And I expect the following log message:
+      """
+      <ErrorLevel> No template nodes found for section 'OtherTables' using XPath '//Table[@name='dummy']'
+      """
+
+    Examples: 
+      | Optional | ErrorLevel |
+      | false    | [WARNING]  |
+      | true     | [INFO   ]  |

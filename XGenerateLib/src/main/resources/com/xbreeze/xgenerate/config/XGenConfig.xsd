@@ -93,6 +93,8 @@
         <xs:attribute name="literalOnLastLine" type="xs:string"/>
         <xs:attribute name="name" type="xs:string" use="required"/>
         <xs:attribute name="nrOfLines" type="xs:int"/>
+        <xs:attribute name="optional" type="xs:boolean"/>
+        <xs:attribute name="placeholderName" type="xs:string"/>
         <xs:attribute name="prefix" type="xs:string"/>
         <xs:attribute name="prefixAction" type="repetitionAction"/>
         <xs:attribute name="prefixStyle" type="repetitionStyle"/>
@@ -155,6 +157,8 @@
       <xs:extension base="templateAnnotation">
         <xs:sequence/>
         <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="optional" type="xs:boolean"/>
+        <xs:attribute name="placeholderName" type="xs:string"/>
         <xs:attribute name="templateXPath" type="xs:string"/>
       </xs:extension>
     </xs:complexContent>

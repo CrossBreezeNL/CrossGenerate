@@ -142,6 +142,11 @@ public class TemplateTextSectionAnnotation extends TemplateSectionAnnotation {
 		this.placeholderName = placeholderName;
 	}
 	
+	@Override
+	public void setOptional(Boolean optional) {
+		this.optional = optional;
+	}
+	
 	/**
 	 * @return the begin
 	 */
