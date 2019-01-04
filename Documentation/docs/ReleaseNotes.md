@@ -22,7 +22,7 @@ Click on the header of a version number to go to the documentation of that speci
 
 ## [Version 2.5](../2.5/)
 
-- [ ] 2.5.0 <sup>dd-12-2018</sup>
+- [ ] 2.5.0 <sup>04-01-2019</sup>
 >
 > !!! info "Enhanced features"
 >     * [ ] Template
