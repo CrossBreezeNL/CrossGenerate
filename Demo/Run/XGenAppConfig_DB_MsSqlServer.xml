@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <XGenAppConfig>
   <App>
-    <ConfigFolder>..\XGenerateLib\src\com\xbreeze\xgenerate\test\microsoft\config</ConfigFolder>
-    <ModelFolder>..\XGenerateLib\src\com\xbreeze\xgenerate\test\common\model</ModelFolder>
-    <OutputFolder>C:\CrossGenerate\Output</OutputFolder>
-    <TemplateFolder>..\XGenerateLib\src\com\xbreeze\xgenerate\test\microsoft\template\staging</TemplateFolder>
+    <ConfigFolder>..\Config\DB\MsSqlServer</ConfigFolder>
+    <ModelFolder>..\Model</ModelFolder>
+    <OutputFolder>..\Output\DB</OutputFolder>
+    <TemplateFolder>..\Template\DB\MsSqlServer</TemplateFolder>
   </App>
   <License>
     <ContractId>25446228607107072</ContractId>

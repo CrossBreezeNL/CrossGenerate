@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig>
+  <Model/>
+  <TextTemplate rootSectionName="owner">
+    <FileFormat currentAccessor="_" childAccessor="$" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <Output type="output_per_element" />
+  </TextTemplate>
+  <Binding>
+    <!-- Select the last entity with a certain @owner value. This is automatically the distinct owners list. -->
+    <SectionModelBinding section="owner" modelXPath="/modeldefinition/system/mappableObjects/entity[@owner != 'dbo' and not(@owner = preceding-sibling::entity/@owner)]" placeholderName="table">
+      <Placeholders>
+        <Placeholder name="system" modelXPath="../.." />
+      </Placeholders>
+    </SectionModelBinding>
+  </Binding>
+</XGenConfig>

@@ -1,0 +1,1 @@
+﻿CREATE SCHEMA [table_owner];

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig>
+  <Model>
+    <ModelAttributeInjections>
+      <!-- Create a new model attribute named projectGuid and populate it with the internalId, enclosed in brackets. -->
+      <ModelAttributeInjection modelXPath="/modeldefinition/system" targetAttribute="projectGuid" targetXPath="concat('{', @internalId, '}')"/>
+      <!-- Override the owner attribute with dbo, since it is now filled with the database name. -->
+      <ModelAttributeInjection modelXPath="//system[@name='AVS']/mappableObjects/entity" targetAttribute="owner" targetValue="dbo"/>
+      <!-- Flip the name and the code column for AVS. -->
+      <ModelAttributeInjection modelXPath="//system[@name='AVS']/mappableObjects/entity" targetAttribute="originalName" targetXPath="@id"/>
+      <ModelAttributeInjection modelXPath="//system[@name='AVS']/mappableObjects/entity" targetAttribute="id" targetXPath="@name"/>
+      <ModelAttributeInjection modelXPath="//system[@name='AVS']/mappableObjects/entity" targetAttribute="name" targetXPath="@originalName"/>
+      <ModelAttributeInjection modelXPath="//system[@name='AVS']/mappableObjects/entity/attributes/attribute" targetAttribute="originalName" targetXPath="@id"/>
+      <ModelAttributeInjection modelXPath="//system[@name='AVS']/mappableObjects/entity/attributes/attribute" targetAttribute="id" targetXPath="@name"/>
+      <ModelAttributeInjection modelXPath="//system[@name='AVS']/mappableObjects/entity/attributes/attribute" targetAttribute="name" targetXPath="@originalName"/>
+    </ModelAttributeInjections>
+  </Model>
+  <XmlTemplate rootSectionName="system">
+    <FileFormat currentAccessor="_" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <Output type="single_output" />
+    <XmlSections>
+      <XmlSection name="uniqueTableOwner" templateXPath="//Build[@Include='Schemas\table_owner.sql']" />
+      <XmlSection name="table" templateXPath="//Build[@Include='Tables\table_owner.H_table_name.sql']" />
+      <XmlSection name="table" templateXPath="//Build[@Include='Tables\table_owner.HS_table_name.sql']" />
+      <XmlSection name="table" templateXPath="//Build[@Include='Stored Procedures\table_owner.usp_Load_H_table_name.sql']" />
+      <XmlSection name="table" templateXPath="//Build[@Include='Stored Procedures\table_owner.usp_Load_HS_table_name.sql']" />
+      <XmlSection name="table" templateXPath="//Build[@Include='Functions\table_owner.ACTR_table_id.sql']" />
+      <XmlSection name="table" templateXPath="//Build[@Include='Functions\table_owner.ACTR_table_id_HSK.sql']" />
+      <XmlSection name="table" templateXPath="//Build[@Include='Functions\table_owner.ACTS_table_id.sql']" />
+      <XmlSection name="table" templateXPath="//Build[@Include='Functions\table_owner.HIST_table_id.sql']" />
+      <XmlSection name="table" templateXPath="//Build[@Include='Functions\table_owner.PITR_table_id.sql']" />
+      <XmlSection name="table" templateXPath="//Build[@Include='Functions\table_owner.PITR_table_id_HSK.sql']" />
+      <XmlSection name="table" templateXPath="//Build[@Include='Functions\table_owner.PITS_table_id.sql']" />
+      <XmlSection name="uniqueKey" templateXPath="//Build[@Include='Functions\EntryPoints\table_owner.ACTR_table_id_uniqueKey_id.sql']" />
+      <XmlSection name="uniqueKey" templateXPath="//Build[@Include='Functions\EntryPoints\table_owner.PITR_table_id_uniqueKey_id.sql']" />      
+      <XmlSection name="supportObject" templateXPath="//*[starts-with(@Include, '_support-objects')]" />
+    </XmlSections>
+    <TemplatePlaceholderInjections>
+      <!-- Inject a placeholder for the ID property for the packages. -->
+      <TemplatePlaceholderInjection templateXPath="/Project/PropertyGroup/ProjectGuid" modelNode="projectGuid" scope="current" />
+    </TemplatePlaceholderInjections>
+  </XmlTemplate>
+  <Binding>
+    <SectionModelBinding section="system" modelXPath="/modeldefinition/system">
+      <SectionModelBinding section="uniqueTableOwner" modelXPath="mappableObjects/entity[@owner != 'dbo' and not(@owner = preceding-sibling::entity/@owner)]" placeholderName="table" />
+      <SectionModelBinding section="table" modelXPath="mappableObjects/entity" />
+      <SectionModelBinding section="uniqueKey" modelXPath="mappableObjects/entity/keys/uniqueKey">
+      <Placeholders>
+        <Placeholder name="table" modelXPath="../.." />        
+  		</Placeholders>
+      </SectionModelBinding>
+      <!-- Map the SupportObjects on a false xpath so it's never outputted. -->
+      <SectionModelBinding section="supportObject" modelXPath="mappableObjects[0=1]" />
+    </SectionModelBinding>
+  </Binding>
+</XGenConfig>

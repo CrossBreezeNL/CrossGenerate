@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig>
+  <Model/>
+  <TextTemplate rootSectionName="system">
+    <FileFormat currentAccessor="_" />
+    <Output type="single_output" />
+  </TextTemplate>
+  <Binding>
+    <SectionModelBinding section="system" modelXPath="/modeldefinition/system" />
+  </Binding>
+</XGenConfig>
