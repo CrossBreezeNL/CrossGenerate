@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>CrossBreeze.CrossGenerate</id>
+    <version>2.0.0</version>
+    <title>CrossGenerate</title>
+    <authors>CrossBreeze</authors>
+    <owners>CrossBreeze</owners>
+    <license type="file">LICENSE.txt</license>
+    <projectUrl>http://www.x-generate.nl</projectUrl>
+    <iconUrl>http://x-generate.nl/logo/x-generate-icon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>CrossGenerate enables organizations to realize their data solutions faster and better by automating the development process and relying on model-driven principles.
+
+CrossGenerate generates software using:
+- Any model that can be exported to XML
+- Templates developed in well known ETL and DB tools</description>
+    <releaseNotes>Initial version.</releaseNotes>
+    <copyright>Copyright CrossBreeze 2019</copyright>
+    <tags>Development Automation Generate Database DWH BI SQL T-SQL SSIS SSAS MDX DAX ETL DDL</tags>
+  </metadata>
+  <files>
+    <file src="LICENSE.txt" target="" />
+    <file src="XGenerate.jar" target="" />
+  </files>
+</package>
