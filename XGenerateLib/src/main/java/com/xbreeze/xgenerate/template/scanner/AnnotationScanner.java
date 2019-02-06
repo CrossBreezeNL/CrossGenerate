@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.xbreeze.xgenerate.UnhandledException;
+import com.xbreeze.xgenerate.config.template.AbstractTemplateConfig;
 import com.xbreeze.xgenerate.config.template.FileFormatConfig;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
@@ -186,9 +187,16 @@ public class AnnotationScanner {
 	 * @return The list of annotations found.
 	 * @throws TemplatePreprocessorException
 	 */
-	public static ArrayList<TemplateAnnotation> collectTextAnnotations(String templateContent, FileFormatConfig fileFormatConfig, int beginIndex, int endIndex) throws TemplatePreprocessorException {
+	public static ArrayList<TemplateAnnotation> collectTextAnnotations(String templateContent, AbstractTemplateConfig templateConfig, int beginIndex, int endIndex) throws TemplatePreprocessorException {
 		// Initialize a collection for the template annotations.
 		ArrayList<TemplateAnnotation> annotations = new ArrayList<TemplateAnnotation>();
+		FileFormatConfig fileFormatConfig = templateConfig.getFileFormatConfig();
+		
+		//Set an identifier for the config, used in log messages
+		String configIdentifier = templateConfig.getRootSectionName();
+		if (configIdentifier == null) {
+			configIdentifier ="(no rootsection)";
+		}
 		
 		// First search for single-line comment sections and scan for annotations in there.
 		if (fileFormatConfig.getSingleLineCommentPrefix() != null && fileFormatConfig.getSingleLineCommentPrefix().length() > 0) {
@@ -215,6 +223,11 @@ public class AnnotationScanner {
 			// Collect the annotation for the single-line comment sections.
 			collectCommentAnnotations(templateContent, fileFormatConfig, singleLinePattern, 1, annotations, beginIndex, endIndex);
 		}
+		else
+		{			
+			logger.info(String.format("No singleLineCommentPrefix specified in fileFormat for template with root section: %s. Skipped scanning for single line comment annotations.", configIdentifier));
+		}
+		
 		
 		// Second search for multi-line comment sections and scan for annotations in there.
 		if (fileFormatConfig.getMultiLineCommentPrefix() != null
@@ -250,7 +263,11 @@ public class AnnotationScanner {
 			// Collect the annotation for the single-line comment sections.
 			collectCommentAnnotations(templateContent, fileFormatConfig, multiLinePattern, 1, annotations, beginIndex, endIndex);
 		}
-		
+		else
+		{			
+			logger.info(String.format("No multiLineCommentPrefix or suffix specified in fileFormat for template with root section: %s. Skipped scanning for multi-line comment annotations.", configIdentifier));
+		}
+				
 		return annotations;
 	}
 

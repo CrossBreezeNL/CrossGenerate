@@ -69,7 +69,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	public static ArrayList<TemplateAnnotation> getTemplateAnnotations(String rawTemplateContent, AbstractTemplateConfig templateConfig, int beginIndex, int endIndex) throws TemplatePreprocessorException {
 	
 		// Find the annotations in the template and add them to the templateAnnotations set.
-		ArrayList<TemplateAnnotation> templateAnnotations = AnnotationScanner.collectTextAnnotations(rawTemplateContent, templateConfig.getFileFormatConfig(), beginIndex, endIndex);
+		ArrayList<TemplateAnnotation> templateAnnotations = AnnotationScanner.collectTextAnnotations(rawTemplateContent, templateConfig, beginIndex, endIndex);
 	
 		// Add all template section annotations from the config file.
 		if (templateConfig.getSectionAnnotations() != null
