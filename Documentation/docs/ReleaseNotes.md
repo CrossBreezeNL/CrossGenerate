@@ -22,6 +22,13 @@ Click on the header of a version number to go to the documentation of that speci
 
 ## [Version 2.5](../2.5/)
 
+- [ ] 2.5.1 <sup>xx-02-2019</sup>
+>
+> !!! info "Enhanced features"
+>     * [ ] Config
+>         * [ ] Text sections
+>             - [X] When no single or multiline comment prefix or suffix markers have been specified in the fileFormat a log message is given (INFO level) to support troubleshooting.
+
 - [ ] 2.5.0 <sup>04-01-2019</sup>
 >
 > !!! info "Enhanced features"
