@@ -18,6 +18,7 @@ Feature: Unit_Config_Model_ModelAttributeInjection
 
       """
 
+@KnownIssue replace function is not implemented in vtd-xml
   Scenario Outline: Single <Scenario> attribute injection
     Given the following config:
       """
@@ -47,11 +48,12 @@ Feature: Unit_Config_Model_ModelAttributeInjection
       """
 
     Examples: 
-      | Scenario     | modelXPath          | targetType | targetValue | expectedResultA | expectedResultB | expectedResultC |
-      | simple value | //entity            | Value      | simple      | simple          | simple          | simple          |
-      | filter value | //entity[@name='B'] | Value      | simple      |                 | simple          |                 |
-      | simple XPath | //entity            | XPath      | ./@name     | A               | B               | C               |
-      | filter XPath | //entity[@name='B'] | XPath      | ./@name     |                 | B               |                 |
+      | Scenario      | modelXPath          | targetType | targetValue                | expectedResultA | expectedResultB | expectedResultC |
+      | simple value  | //entity            | Value      | simple                     | simple          | simple          | simple          |
+      | filter value  | //entity[@name='B'] | Value      | simple                     |                 | simple          |                 |
+      | simple XPath  | //entity            | XPath      | ./@name                    | A               | B               | C               |
+      | filter XPath  | //entity[@name='B'] | XPath      | ./@name                    |                 | B               |                 |
+      | replace XPath | //entity[@name='B'] | XPath      | replace(./@name, 'B', 'b') |                 | B               |                 |
 
   Scenario: Multiple attribute injection
     Given the following config:

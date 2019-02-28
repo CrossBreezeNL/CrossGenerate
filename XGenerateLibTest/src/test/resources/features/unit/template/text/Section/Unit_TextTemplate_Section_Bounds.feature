@@ -403,6 +403,7 @@ Feature: Unit_TextTemplate_Section_Bounds
       
       """
   
+  @Debug
   Scenario: Section with multi-line comment multi-line annotation
     Given the following template named "DropTables.sql":
       """
