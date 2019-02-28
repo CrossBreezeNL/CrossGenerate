@@ -46,14 +46,14 @@ public class AnnotationScanner {
 	 * If there is nothing but empty characters between line start and the comment start we take it into the match.
 	 * ^?              -> The beginning of a line (optionally)
 	 * [ \t]*          -> Any space or tab characters (optionally)
-	 * %s              -> 1st parameter for String.format, the single-line comment prefix
+	 * %s              -> 1st parameter for String.format, the (single-line or multi-line) comment prefix
 	 * [ \t]*          -> Again, any space or tab characters
-	 * (.*%s.+)        -> The content of the comment section, any character but the annotation prefix must occur (2nd parameter for String.format). (region 1)
+	 * (.*?%s.+?)      -> The content of the comment section, any character but the annotation prefix must occur (2nd parameter for String.format). (region 1)
 	 * [ \t]*          -> Again, any space or tab characters 
 	 * The remainder of the pattern is specified per single or multi-line comment pattern.
 	 */
 	private static String COMMENT_REGEX(String commentPrefix, String annotationPrefix) {
-		return String.format("^?[ \\t]*%s[ \\t]*(.*%s.*)[ \\t]*",
+		return String.format("^?[ \\t]*%s[ \\t]*(.*?%s.+?)[ \\t]*",
 				Pattern.quote(commentPrefix),
 				Pattern.quote(annotationPrefix)
 		);
@@ -85,10 +85,17 @@ public class AnnotationScanner {
 		/**
 		 * [ \t]*       -> Any space or tab characters before the annotation.
 		 * %s           -> The annotation regex.
+		 * Optionally include the everything to the new-line of there is no other annotation on this line.
+		 * (
+		 *  [ \t]*       -> Any space or tab characters after the annotation.
+		 *  $            -> The end of the line (optionally)
+		 *  \r?          -> Include the carriage return (optionally)
+		 *  \n           -> Include the new line. (optionally)
+		 * )?
 		 */
 		Pattern annotationPattern = Pattern.compile(
 				String.format(
-						"[ \\t]*%s",
+						"[ \\t]*%s([ \\t]*\\r?\\n)?",
 						ANNOTATION_REGEX(
 								fileFormatConfig.getAnnotationPrefix(), 
 								fileFormatConfig.getAnnotationArgsPrefix(), 
@@ -155,7 +162,7 @@ public class AnnotationScanner {
 			ArrayList<TemplateAnnotation> foundCommentAnnotations = collectInlineAnnotations(templateContent, fileFormatConfig, commentMatcher.start(commentContentRegion), commentMatcher.end(commentContentRegion));
 			if (foundCommentAnnotations.size() == 1) {
 				TemplateAnnotation onlyAnnotationInComment = foundCommentAnnotations.get(0);
-				logger.fine(String.format("Only annotation found: '%s'", templateContent.substring(onlyAnnotationInComment.getAnnotationBeginIndex(), onlyAnnotationInComment.getAnnotationEndIndex())));
+				logger.fine(String.format("Only one annotation found in comment: '%s'", templateContent.substring(onlyAnnotationInComment.getAnnotationBeginIndex(), onlyAnnotationInComment.getAnnotationEndIndex())));
 				// If the annotation is the only thing on the line, we take the whole line as begin and end index to make sure its not in the result.
 				if (
 						// If the regions of the annotation are the same as the comment content bounds.
@@ -192,7 +199,7 @@ public class AnnotationScanner {
 		ArrayList<TemplateAnnotation> annotations = new ArrayList<TemplateAnnotation>();
 		FileFormatConfig fileFormatConfig = templateConfig.getFileFormatConfig();
 		
-		//Set an identifier for the config, used in log messages
+		// Set an identifier for the config, used in log messages
 		String configIdentifier = templateConfig.getRootSectionName();
 		if (configIdentifier == null) {
 			configIdentifier ="(no rootsection)";
@@ -202,6 +209,7 @@ public class AnnotationScanner {
 		if (fileFormatConfig.getSingleLineCommentPrefix() != null && fileFormatConfig.getSingleLineCommentPrefix().length() > 0) {
 			// Single line comments can start anywhere on a line (beginning or after some code), but always end with line-end.
 			/**
+			 * %s              -> 1st parameter for String.format, the common comment regex part.
 			 * $               -> The end of the line.
 			 * \r?             -> Include the carriage return (optionally)
 			 * \n?             -> Include the new line. (optionally)
@@ -237,7 +245,8 @@ public class AnnotationScanner {
 		{
 			/**
 			 * If there is nothing but empty characters between line start and the comment start we take it into the match.
-			 * %s              -> 3st parameter for String.format, the multi-line comment suffix.
+			 * %s              -> 1st parameter for String.format, the common comment regex part.
+			 * %s          	   -> 2nd parameter for String.format, the multi-line comment suffix. ({1} to match only once and ? to match lazy.)
 			 * [ \t]*          -> Again, any space or tab characters
 			 * $?              -> The end of the line. (optionally)
 			 * \r?             -> Include the carriage return (optionally)
@@ -265,7 +274,7 @@ public class AnnotationScanner {
 		}
 		else
 		{			
-			logger.info(String.format("No multiLineCommentPrefix or suffix specified in fileFormat for template with root section: %s. Skipped scanning for multi-line comment annotations.", configIdentifier));
+			logger.info(String.format("No multiLineCommentPrefix and/or suffix specified in fileFormat for template with root section: %s. Skipped scanning for multi-line comment annotations.", configIdentifier));
 		}
 				
 		return annotations;

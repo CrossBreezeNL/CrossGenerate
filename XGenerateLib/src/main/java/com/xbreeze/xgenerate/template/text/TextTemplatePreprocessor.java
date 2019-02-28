@@ -102,7 +102,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				if (sectionEndCharIndex == -1)
 					throw new TemplatePreprocessorException(String.format("The end of the section '%s' can't be found", textSectionAnnotation.getName()));
 				
-				logger.info(String.format("Found section bounds for '%s' (begin: %d; end: %d", textSectionAnnotation.getName(), sectionBeginCharIndex, sectionEndCharIndex));
+				logger.info(String.format("Found section bounds for '%s' (begin: %d; end: %d)", textSectionAnnotation.getName(), sectionBeginCharIndex, sectionEndCharIndex));
 				templateAnnotations.add(new TemplateSectionBoundsAnnotation(textSectionAnnotation, sectionBeginCharIndex, sectionEndCharIndex));
 			}
 		}
