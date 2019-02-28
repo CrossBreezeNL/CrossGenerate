@@ -126,13 +126,12 @@ Feature: Unit_TextTemplate_Comment
       /*
       <Output-comment-1>
       <Output-comment-2>
-      <Output-comment-3>
        */
       """
 
     Examples: 
-      | Scenario           | Input-comment-1         | Input-comment-2         | Input-comment-3 | Output-comment-1 | Output-comment-2 | Output-comment-3 |
-      | AnnotationOnly     | @XGenComment(Something) |                         |                 |                  |                  |                  |
-      | CommentBefore      | Some comment            | @XGenComment(Something) |                 | Some comment     |                  |                  |
-      | CommentAfter       |                         | @XGenComment(Something) | Some comment    |                  |                  | Some comment     |
-      | CommentBeforeAfter | Some comment 1.         | @XGenComment(Something) | Some comment 2. | Some comment 1.  |                  | Some comment 2.  |
+      | Scenario           | Input-comment-1         | Input-comment-2         | Input-comment-3 | Output-comment-1 | Output-comment-2 |
+      | AnnotationOnly     | @XGenComment(Something) |                         |                 |                  |                  |
+      | CommentBefore      | Some comment            | @XGenComment(Something) |                 | Some comment     |                  |
+      | CommentAfter       |                         | @XGenComment(Something) | Some comment    |                  | Some comment     |
+      | CommentBeforeAfter | Some comment 1.         | @XGenComment(Something) | Some comment 2. | Some comment 1.  | Some comment 2.  |

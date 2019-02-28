@@ -71,9 +71,9 @@ Feature: Unit_Config_TextTemplate_CommentFormat
     Examples: 
       | Scenario             | multiLineCommentPrefix | multiLineCommentSuffix | Template                              | ExpectedResult |
       | one line SQL         | /*                     | */                     | /* @XGenComment(Some comment) */      |                |
-      | multiples lines SQL  | /*                     | */                     | /*\n@XGenComment(Some comment)\n*/    | /*\n\n*/       |
+      | multiples lines SQL  | /*                     | */                     | /*\n@XGenComment(Some comment)\n*/    | /*\n*/       |
       | one line Java        | /**                    | */                     | /** @XGenComment(Some comment) */     |                |
-      | multiples lines Java | /**                    | */                     | /**\n@XGenComment(Some comment)\n*/   | /**\n\n*/      |
+      | multiples lines Java | /**                    | */                     | /**\n@XGenComment(Some comment)\n*/   | /**\n*/      |
       # The < and > are entity encoded, but are evaluated by cucumber before passing into CrossGenerate.
       | one line HTML        | &lt;!--                | --&gt;                 | <!-- @XGenComment(Some comment) -->   |                |
-      | multiple lines HTML  | &lt;!--                | --&gt;                 | <!--\n@XGenComment(Some comment)\n--> | <!--\n\n-->    |
+      | multiple lines HTML  | &lt;!--                | --&gt;                 | <!--\n@XGenComment(Some comment)\n--> | <!--\n-->    |

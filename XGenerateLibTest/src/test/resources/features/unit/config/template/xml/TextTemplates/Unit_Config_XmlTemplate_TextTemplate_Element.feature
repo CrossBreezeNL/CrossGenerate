@@ -105,7 +105,6 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       | escaped     | &quot;     |
       | no quotes   |            |
 
-
   Scenario: TextTemplate with XPath node in XMLTemplate
     Given the following template named "ExampleTemplate.xml":
       """
@@ -145,12 +144,12 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
         Customer
       </Database>
       """
-	  And I expect the following console message: 
-	   """
-	   No multiLineCommentPrefix or suffix specified in fileFormat for template with root section: (no rootsection). Skipped scanning for multi-line comment annotations.
-	   """
-   
-Scenario: TextTemplate without singleLinecommentPrefix in XMLTemplate
+    And I expect the following console message:
+      """
+      No multiLineCommentPrefix and/or suffix specified in fileFormat for template with root section: (no rootsection). Skipped scanning for multi-line comment annotations.
+      """
+
+  Scenario: TextTemplate without singleLinecommentPrefix in XMLTemplate
     Given the following template named "ExampleTemplate.xml":
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -189,15 +188,14 @@ Scenario: TextTemplate without singleLinecommentPrefix in XMLTemplate
         entity_name
       </Database>
       """
-	  And I expect the following console message: 
-	   """
-	   No singleLineCommentPrefix specified in fileFormat for template with root section: (no rootsection). Skipped scanning for single line comment annotations.
-	   """
-	
-		And I expect the following console message: 
-	   """
-	   No multiLineCommentPrefix or suffix specified in fileFormat for template with root section: (no rootsection). Skipped scanning for multi-line comment annotations.
-	   """
+    And I expect the following console message:
+      """
+      No singleLineCommentPrefix specified in fileFormat for template with root section: (no rootsection). Skipped scanning for single line comment annotations.
+      """
+    And I expect the following console message:
+      """
+      No multiLineCommentPrefix and/or suffix specified in fileFormat for template with root section: (no rootsection). Skipped scanning for multi-line comment annotations.
+      """
 
   Scenario: TextTemplate with single configured section in XMLTemplate
     Given the following template named "ExampleTemplate.xml":
