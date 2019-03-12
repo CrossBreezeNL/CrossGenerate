@@ -111,6 +111,7 @@ The TextSection configuration defines a section in a text template. This can eit
 | allButFirst        | Apply the suffix or prefix on all repetition of the section, except the first. |
 | allButLast         | Apply the suffix or prefix on all repetition of the section, except the last. |
 | allButFirstAndLast | Apply the suffix or prefix on all repetition of the section, except the first and last. |
+| all                | Apply the suffix or prefix on all repetition of the section. |
 
 
 [comment]: Footnotes
