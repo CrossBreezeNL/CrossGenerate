@@ -95,8 +95,15 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 				}
 			}
 			else {
+				
+				// We should start searching for the end of the section from the beginning of the section.
+				int sectionSearchEndCharStartIndex = sectionBeginCharIndex;
+				// If the begin part of the section is include in the section, the end part should be search after the begin.
+				if (textSectionAnnotation.isIncludeBegin() && textSectionAnnotation.getBegin() != null)
+					sectionSearchEndCharStartIndex += textSectionAnnotation.getBegin().length();
+				
 				// Look for end index, but only if begin was found
-				int sectionEndCharIndex = findSectionEndIndex(textSectionAnnotation, rawTemplateContent, sectionBeginCharIndex, endIndex);
+				int sectionEndCharIndex = findSectionEndIndex(textSectionAnnotation, rawTemplateContent, sectionSearchEndCharStartIndex, endIndex);
 
 				// If the end index isn't found yet, throw a exception.
 				if (sectionEndCharIndex == -1)
