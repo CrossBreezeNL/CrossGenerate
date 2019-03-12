@@ -342,7 +342,7 @@ Feature: Unit_TextTemplate_Section_Bounds
   Scenario: Section with multiple sections and annotations on one line
     Given the following template named "DropTables.sql":
       """
-      -- @XGenTextSection(name="Entity" begin="DROP INDEX" includeBegin="true" end="DROP TABLE" includeEnd="false") @XGenTextSection(name="entity" begin='DROP TABLE' includeBegin="true" end='TABLE entity_name;' includeEnd="true")    
+      -- @XGenTextSection(name="Entity" begin="DROP INDEX" includeBegin="true" end="DROP TABLE" includeEnd="false") @XGenTextSection(name="Entity" begin="DROP TABLE" includeBegin="true" end="entity_name;" includeEnd="true")    
       DROP INDEX IDX_entity_name; DROP TABLE entity_name;
       """
     And the following config:
@@ -403,7 +403,6 @@ Feature: Unit_TextTemplate_Section_Bounds
       
       """
   
-  @Debug
   Scenario: Section with multi-line comment multi-line annotation
     Given the following template named "DropTables.sql":
       """

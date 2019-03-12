@@ -61,6 +61,44 @@ Feature: Unit_Config_TextTemplate_Section_Bounds
       | including end only   | false        | true       | DROP TABLE Order; | GO;Customer;            | GO;           |
       | excluding both       | false        | false      | DROP TABLE Order; | Customer;               | GO;           |
 
+  Scenario: Section with equal begin and end character sequence
+    Given the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model/>
+        <TextTemplate rootSectionName="System">
+          <FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="single_output" />
+          <TextSections>
+            <TextSection name="Entity" begin=" Entity_name=&quot;" end="&quot;" />
+          </TextSections>
+        </TextTemplate>
+        <Binding>
+          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
+          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
+            <SectionModelBinding section="Order" modelXPath="mappableObjects/entity[@name='Order']" />
+            <SectionModelBinding section="Customer" modelXPath="mappableObjects/entity[@name='Customer']" />
+            <SectionModelBinding section="Entity" modelXPath="mappableObjects/entity" />
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    And the following template named "TwoEqualSections.sql":
+      """
+      -- Begin of template
+       Entity_name="..."
+      -- End of template
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "TwoEqualSections.sql" with content:
+      """
+      -- Begin of template
+       Order="..." Customer="..."
+      -- End of template
+      """
+
   Scenario: Section with begin character sequence and nr of lines
     And the following config:
       """
