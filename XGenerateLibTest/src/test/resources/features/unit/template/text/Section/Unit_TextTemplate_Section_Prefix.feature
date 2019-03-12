@@ -54,6 +54,7 @@ Feature: Unit_TextTemplate_Section_Prefix
       | lastOnly    | /** last */      | FirstColumn                | SecondColumn                 | /** last */ThirdColumn      |
       | allButFirst | /** not first */ | FirstColumn                | /** not first */SecondColumn | /** not first */ThirdColumn |
       | allButLast  | /** not last */  | /** not last */FirstColumn | /** not last */SecondColumn  | ThirdColumn                 |
+      | all         | /** all */       | /** all */FirstColumn      | /** all */SecondColumn       | /** all */ThirdColumn       |
 
   Scenario Outline: Section with prefix multi line <prefixStyle>
     And the following template named "Section_Prefix_multi_line_<prefixStyle>.txt":
@@ -78,6 +79,7 @@ Feature: Unit_TextTemplate_Section_Prefix
       | lastOnly    | /** last */      | FirstColumn                | SecondColumn                 | /** last */ThirdColumn      |
       | allButFirst | /** not first */ | FirstColumn                | /** not first */SecondColumn | /** not first */ThirdColumn |
       | allButLast  | /** not last */  | /** not last */FirstColumn | /** not last */SecondColumn  | ThirdColumn                 |
+      | all         | /** all */       | /** all */FirstColumn      | /** all */SecondColumn       | /** all */ThirdColumn       |
 
   Scenario: Section with prefix single line with whitespace
     And the following template named "Section_Prefix_single_line_indented.txt":
@@ -110,5 +112,22 @@ Feature: Unit_TextTemplate_Section_Prefix
         FirstColumn,  
         SecondColumn,  
         ThirdColumn  
+
+      """
+  
+  Scenario: Section with whitespace prefix
+    And the following template named "Section_Prefix_single_line_indented.txt":
+      """
+        -- @XGenTextSection(name="Column" prefix="&#160;")
+        column_name
+
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "Section_Prefix_single_line_indented.txt" with content:
+      """
+        FirstColumn
+         SecondColumn
+         ThirdColumn
 
       """

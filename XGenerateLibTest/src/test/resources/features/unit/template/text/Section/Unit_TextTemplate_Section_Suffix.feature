@@ -54,6 +54,7 @@ Feature: Unit_TextTemplate_Section_Suffix
       | lastOnly    | /** last */      | FirstColumn                | SecondColumn                 | ThirdColumn/** last */      |
       | allButFirst | /** not first */ | FirstColumn                | SecondColumn/** not first */ | ThirdColumn/** not first */ |
       | allButLast  | /** not last */  | FirstColumn/** not last */ | SecondColumn/** not last */  | ThirdColumn                 |
+      | all         | /** all */       | FirstColumn/** all */      | SecondColumn/** all */       | ThirdColumn/** all */       |
 
   Scenario Outline: Section with suffix multi line <suffixStyle>
     And the following template named "Section_Suffix_multi_line_<suffixStyle>.txt":
@@ -78,3 +79,4 @@ Feature: Unit_TextTemplate_Section_Suffix
       | lastOnly    | /** last */      | FirstColumn                | SecondColumn                 | ThirdColumn/** last */      |
       | allButFirst | /** not first */ | FirstColumn                | SecondColumn/** not first */ | ThirdColumn/** not first */ |
       | allButLast  | /** not last */  | FirstColumn/** not last */ | SecondColumn/** not last */  | ThirdColumn                 |
+      | all         | /** all */       | FirstColumn/** all */      | SecondColumn/** all */       | ThirdColumn/** all */       |
