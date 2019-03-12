@@ -285,6 +285,7 @@
       <xs:enumeration value="allButFirst"/>
       <xs:enumeration value="allButLast"/>
       <xs:enumeration value="allButFirstAndLast"/>
+      <xs:enumeration value="all"/>
     </xs:restriction>
   </xs:simpleType>
 

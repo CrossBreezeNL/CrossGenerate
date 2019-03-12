@@ -28,7 +28,10 @@ public class TemplateTextSectionAnnotation extends TemplateSectionAnnotation {
 		allButLast,
 
 		// Apply the suffix or prefix on all repetition of the section, except the first and last.
-		allButFirstAndLast
+		allButFirstAndLast,
+		
+		// Apply the suffix or prefix on all repetition of the section.
+		all
 	}
 	
 	/**

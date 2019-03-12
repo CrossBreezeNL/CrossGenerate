@@ -274,6 +274,10 @@ public class NamedTemplateSection extends TemplateSection {
 			case lastOnly:
 				condition = "position() = last()";
 				break;
+			case all:
+				// When the style is 'all' we want the repetition section to always be included. So we have a condition which is always true.
+				condition = "1 = 1";
+				break;
 			default:
 				throw new TemplatePreprocessorException(String.format("Unrecognized repetition style specified: %s", style));
 		}
