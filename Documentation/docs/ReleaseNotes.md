@@ -20,14 +20,21 @@ Click on the header of a version number to go to the documentation of that speci
 [//]: # (>     * [ ] Binding)
 [//]: # (>         * [X] Some issue...)
 
-## [Version 2.5](../2.5/)
+## [Version 2.6](../2.6/)
 
-- [ ] 2.5.1 <sup>xx-02-2019</sup>
+- [ ] 2.6.0 <sup>xx-03-2019</sup>
 >
 > !!! info "Enhanced features"
 >     * [ ] Config
 >         * [ ] Text sections
 >             - [X] When no single or multiline comment prefix or suffix markers have been specified in the fileFormat a log message is given (INFO level) to support troubleshooting.
+>             - [X] Added 'all' prefix and suffix style.
+> !!! warning "Bug fixes"
+>     * [ ] Template
+>         * [ ] Text template
+>             - [X] Fixed issue where end of a section could also be found in the begin part of a section.
+
+## [Version 2.5](../2.5/)
 
 - [ ] 2.5.0 <sup>04-01-2019</sup>
 >
