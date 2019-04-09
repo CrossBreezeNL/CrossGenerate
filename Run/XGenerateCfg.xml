@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <XGenAppConfig>
   <App>
-    <ConfigFolder>..\XGenerateLib\src\com\xbreeze\xgenerate\test\microsoft\config</ConfigFolder>
-    <ModelFolder>..\XGenerateLib\src\com\xbreeze\xgenerate\test\common\model</ModelFolder>
+    <ConfigFolder>..\XGenerateTest\src\test\resources\feature-support-files\Config</ConfigFolder>
+    <ModelFolder>..\XGenerateTest\src\test\resources\feature-support-files\Model</ModelFolder>
     <OutputFolder>C:\CrossGenerate\Output</OutputFolder>
-    <TemplateFolder>..\XGenerateLib\src\com\xbreeze\xgenerate\test\microsoft\template\staging</TemplateFolder>
+    <TemplateFolder>..\XGenerateTest\src\test\resources\feature-support-files\Template</TemplateFolder>
   </App>
   <License>
     <ContractId>25446228607107072</ContractId>

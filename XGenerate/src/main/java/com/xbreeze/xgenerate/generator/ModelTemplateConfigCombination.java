@@ -1,6 +1,8 @@
 package com.xbreeze.xgenerate.generator;
 
 public class ModelTemplateConfigCombination {
+	
+	
 	private String modelFileLocation;
 	private String templateFileLocation;
 	private String configFileLocation;
