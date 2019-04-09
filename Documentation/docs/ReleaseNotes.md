@@ -22,8 +22,11 @@ Click on the header of a version number to go to the documentation of that speci
 
 ## [Version 2.6](../2.6/)
 
-- [ ] 2.6.0 <sup>xx-03-2019</sup>
+- [ ] 2.6.0 <sup>xx-04-2019</sup>
 >
+> !!! success "New features"
+>     * [ ] Commandline options
+>         - [X] Option to enable progress screen
 > !!! info "Enhanced features"
 >     * [ ] Config
 >         * [ ] Text sections
