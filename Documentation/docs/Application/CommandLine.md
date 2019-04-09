@@ -22,6 +22,7 @@ In the following table all options are listed. All options have two keys which c
 | -cll, -ConsoleLogLevel           | The log level for the console. | SEVERE | See [Log levels](#log-levels). |
 | -fll, -FileLogLevel              | The log level for the log file. | INFO | See [Log levels](#log-levels). |
 | -fld, -FileLogDestination        | The destionation for the log file. If not specified, no log file will be written. | | |
+| -ps, -ProgressScreen             | Whether to show the progress screen. | false | true, false |
 
 ### Log levels
 The following log levels are supported.
