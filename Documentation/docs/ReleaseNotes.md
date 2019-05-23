@@ -32,6 +32,8 @@ Click on the header of a version number to go to the documentation of that speci
 >         * [ ] Text sections
 >             - [X] When no single or multiline comment prefix or suffix markers have been specified in the fileFormat a log message is given (INFO level) to support troubleshooting.
 >             - [X] Added 'all' prefix and suffix style.
+>         * [ ] Model
+              - [X] Added support for model XML files with namespaces. Namespaces needed for section model binding can now be specified in the model config. 
 > !!! warning "Bug fixes"
 >     * [ ] Template
 >         * [ ] Text template
