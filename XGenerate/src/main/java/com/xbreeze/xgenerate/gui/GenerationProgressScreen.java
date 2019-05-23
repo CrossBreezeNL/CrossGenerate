@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 import java.time.LocalDateTime;
 
 import javax.swing.BorderFactory;
@@ -193,6 +194,10 @@ public class GenerationProgressScreen extends JFrame implements GenerationObserv
 				_generationProgressBorder.setTitle("Generation done.");
 				addToLog("Generation done.", eventDateTime);
 				refreshUI();
+				
+				// Close the UI.
+				GenerationProgressScreen.this.setVisible(false);
+				GenerationProgressScreen.this.dispose();
 			}
 		});
 	}
