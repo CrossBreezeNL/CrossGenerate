@@ -221,7 +221,7 @@ public class XGenerateStarter extends GenerationObserverSource {
 			for (int generationStepIndex=0; generationStepIndex<modelTemplateConfigCombinations.size(); generationStepIndex++) {
 				ModelTemplateConfigCombination modelTemplateConfigCombination = modelTemplateConfigCombinations.get(generationStepIndex);
 				
-				// Notify tge generation observers the generation step is starting.
+				// Notify the generation observers the generation step is starting.
 				this.notifyGenerationStepStarting(generationStepIndex, modelTemplateConfigCombination.getTemplateFileLocation(), LocalDateTime.now());
 				
 				// Create the full paths to the needed files.
@@ -260,7 +260,7 @@ public class XGenerateStarter extends GenerationObserverSource {
 					throw ge;
 				}
 				
-				// Notify the generation observers the generation step is starting.
+				// Notify the generation observers the generation step is finished.
 				this.notifyGenerationStepFinished(generationStepIndex, modelTemplateConfigCombination.getTemplateFileLocation(), LocalDateTime.now());
 			}
 			
