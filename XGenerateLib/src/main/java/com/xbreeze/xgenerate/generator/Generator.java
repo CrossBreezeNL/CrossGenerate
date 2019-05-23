@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
@@ -17,6 +18,7 @@ import com.xbreeze.xgenerate.UnhandledException;
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.RootTemplateConfig;
+import com.xbreeze.xgenerate.config.model.ModelNameSpace;
 import com.xbreeze.xgenerate.generator.GenerationResult.GenerationStatus;
 import com.xbreeze.xgenerate.model.Model;
 import com.xbreeze.xgenerate.model.ModelPreprocessor;
@@ -213,8 +215,14 @@ public class Generator extends GeneratorStub {
 					logger.info("Begin template pre-processing");
 					// Get the template preprocessor for the template type we are dealing with.
 					TemplatePreprocessor templatePreprocessor = templateConfig.getTemplatePreprocessor(xGenConfig);
-					// Pre-process the raw template into a xslt template.
-					XsltTemplate xsltTemplate = templatePreprocessor.preProcess(rawTemplate, relativeTemplateFolder);
+					
+					//Get the model namespaces if defined, needed to include in the template XSLT.
+					ArrayList<ModelNameSpace> modelNameSpaces = null;
+					if (xGenConfig.getModelConfig() != null) {
+						modelNameSpaces = xGenConfig.getModelConfig().getModelNameSpaces();
+					}
+					// Pre-process the raw template into a xslt template.					
+					XsltTemplate xsltTemplate = templatePreprocessor.preProcess(rawTemplate, relativeTemplateFolder, modelNameSpaces);
 					xsltTemplateString = xsltTemplate.toString();
 					// If in debug mode, write the preprocessed template.
 					if (this.isDebugMode()) {

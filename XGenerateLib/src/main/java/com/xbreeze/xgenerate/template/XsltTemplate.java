@@ -1,6 +1,7 @@
 package com.xbreeze.xgenerate.template;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -11,6 +12,7 @@ import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
 import com.xbreeze.xgenerate.config.template.OutputConfig.OutputType;
 import com.xbreeze.xgenerate.config.template.RootTemplateConfig;
 import com.xbreeze.xgenerate.config.template.XMLTemplateConfig;
+import com.xbreeze.xgenerate.config.model.ModelNameSpace;
 
 public class XsltTemplate {
 	// The logger for this class.
@@ -46,22 +48,28 @@ public class XsltTemplate {
 	 * @param outputFolder
 	 * @param rootSectionModelBindingConfig
 	 */
-	public XsltTemplate(String templateId, String templateFileLocation, RootTemplateConfig templateConfig, String relativeOutputFileUri, SectionModelBindingConfig rootSectionModelBindingConfig) {
+	public XsltTemplate(String templateId, String templateFileLocation, RootTemplateConfig templateConfig, String relativeOutputFileUri, SectionModelBindingConfig rootSectionModelBindingConfig, ArrayList<ModelNameSpace> modelNameSpaces) {
 		this._templateBuffer = new StringBuffer();
 		this._outputType = templateConfig.getOutputConfig().getType();
 		
 		// Initialize the template.
-		initTemplate(templateId, templateFileLocation, templateConfig, relativeOutputFileUri, rootSectionModelBindingConfig);
+		initTemplate(templateId, templateFileLocation, templateConfig, relativeOutputFileUri, rootSectionModelBindingConfig, modelNameSpaces);
 	}
 	
 	/**
 	 * Initialize the template, by creating the starting elements for the XSLT.
 	 */
-	private void initTemplate(String templateId, String templateFileName, RootTemplateConfig templateConfig, String relativeOutputFileUri, SectionModelBindingConfig rootSectionModelBindingConfig) {
+	private void initTemplate(String templateId, String templateFileName, RootTemplateConfig templateConfig, String relativeOutputFileUri, SectionModelBindingConfig rootSectionModelBindingConfig, ArrayList<ModelNameSpace> modelNameSpaces) {
 		appendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		// https://www.w3schools.com/xml/ref_xsl_el_stylesheet.asp
-		appendLine("<xsl:stylesheet id=\"%s\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"3.0\">", templateId);
-		
+		appendLine("<xsl:stylesheet id=\"%s\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"3.0\"", templateId);
+		//Add namespaces if any
+		if (modelNameSpaces != null) {
+			for(ModelNameSpace ns : modelNameSpaces) {
+				appendLine(ns.getNameSpaceDeclaration());
+			}
+		}
+		appendLine(">");
 		// Set the output method based on the template type.
 		// https://www.w3schools.com/xml/ref_xsl_el_output.asp
 		// TODO: Maybe encoding should also be set in the FileFormatConfig.

@@ -23,13 +23,20 @@ public class ModelConfig {
 	private ArrayList<ModelNodeRemoval> _modelNodeRemovals;
 	
 	/**
+	 * The namespaces occurring in the model file that are required for XSLT.
+	 */	
+	private ArrayList<ModelNameSpace> _modelNameSpaces;
+	
+	/**
 	 * Constructor.
 	 */
 	public ModelConfig() {
 		// Initialize the modelAttributeInjections.
 		this._modelAttributeInjections = new ArrayList<ModelAttributeInjection>();
 		// Initialize the modelModelNodeRemovals.
-		this.setModelNodeRemovals(new ArrayList<ModelNodeRemoval>());		
+		this.setModelNodeRemovals(new ArrayList<ModelNodeRemoval>());
+		// Initialize the model namespaces
+		this._modelNameSpaces = new ArrayList<ModelNameSpace>();
 	}
 
 	/**
@@ -62,5 +69,21 @@ public class ModelConfig {
 	 */
 	public void setModelNodeRemovals(ArrayList<ModelNodeRemoval> modelNodeRemovals) {
 		this._modelNodeRemovals = modelNodeRemovals;
+	}
+	
+	/**
+	 * @return the ModelNameSpaces
+	 */
+	@XmlElement(name="ModelNameSpace")
+	@XmlElementWrapper(name="ModelNameSpaces")
+	public ArrayList<ModelNameSpace> getModelNameSpaces() {
+		return this._modelNameSpaces;
+	}
+
+	/**
+	 * @param modelNameSpaces the Model Namespaces to set
+	 */
+	public void setModelNameSpaces(ArrayList<ModelNameSpace> modelNameSpaces) {
+		this._modelNameSpaces = modelNameSpaces;
 	}
 }
