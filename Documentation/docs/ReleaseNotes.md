@@ -22,7 +22,7 @@ Click on the header of a version number to go to the documentation of that speci
 
 ## [Version 2.6](../2.6/)
 
-- [ ] 2.6.0 <sup>xx-04-2019</sup>
+- [ ] 2.6.0 <sup>xx-05-2019</sup>
 >
 > !!! success "New features"
 >     * [ ] Commandline options
@@ -36,6 +36,7 @@ Click on the header of a version number to go to the documentation of that speci
 >     * [ ] Template
 >         * [ ] Text template
 >             - [X] Fixed issue where end of a section could also be found in the begin part of a section.
+>             - [X] Fixed issue where a section can't be created inside a comment.
 
 ## [Version 2.5](../2.5/)
 
