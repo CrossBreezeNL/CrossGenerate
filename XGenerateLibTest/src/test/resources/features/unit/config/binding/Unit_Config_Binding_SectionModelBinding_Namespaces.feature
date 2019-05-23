@@ -7,8 +7,8 @@ Feature: Unit_Config_Binding_SectionModelBinding_Namespaces
     Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <entities xmlns:ns="http://testnamespace.com/a" <DefaultNameSpaceInModel> primary="A">
-        <entity name="A" description="default ns"/>
+      <entities xmlns:ns="http://testnamespace.com/a" primary="A">
+        <entity name="A" description="default ns" <DefaultNameSpaceInModel>/>
         <ns:entity name="A" description="a namespace"/>        
       </entities>
       """
@@ -16,6 +16,11 @@ Feature: Unit_Config_Binding_SectionModelBinding_Namespaces
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <XGenConfig>
+        <Model>
+        	<ModelNameSpaces>
+        		<ModelNameSpace alias="<NameSpaceAliasInConfig>" url="<NameSpaceUrlInConfig>"/>
+        	</ModelNameSpaces>
+        </Model>
         <TextTemplate rootSectionName="tables">
          <FileFormat singleLineCommentPrefix="--" />
           <Output type="single_output" />
@@ -39,8 +44,11 @@ Feature: Unit_Config_Binding_SectionModelBinding_Namespaces
       <Output>
       """
 
+    #in Xpath/XSLT, a default namespace requires a prefix as well, see also https://stackoverflow.com/questions/1344158/xslt-with-xml-source-that-has-a-default-namespace-set-to-xmlns
     Examples: 
-      | Scenario    | DefaultNameSpaceInModel                  | NameSpaceAliasInConfig | NameSpaceUrlInConfig             | Entity               | Output        |
-      | Default     | xmlns="http://testnamespace.com/default" |                        | http://testnamespace.com/default | entity[@name='A']    |               |
-      | No Default  |                                          |                        |                                  | entity[@name='A']    | A default ns  |
-      | A namespace |                                          | ns                     | http://testnamespace.com/a       | ns:entity[@name='A'] | A a namespace |
+      | Scenario                          | DefaultNameSpaceInModel                  | NameSpaceAliasInConfig | NameSpaceUrlInConfig             | Entity               | Output        |
+      | Default defined without alias     | xmlns="http://testnamespace.com/default" |                        | http://testnamespace.com/default | entity[@name='A']    |               |
+      | Default defined with alias        | xmlns="http://testnamespace.com/default" | my                     | http://testnamespace.com/default | my:entity[@name='A'] | A default ns  |
+      | Default but not defined in config | xmlns="http://testnamespace.com/default" |                        |                                  | entity[@name='A']    |               |
+      | No Default in model               |                                          |                        |                                  | entity[@name='A']    | A default ns  |
+      | A namespace                       |                                          | ns                     | http://testnamespace.com/a       | ns:entity[@name='A'] | A a namespace |
