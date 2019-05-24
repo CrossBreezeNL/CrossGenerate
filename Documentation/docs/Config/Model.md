@@ -20,17 +20,17 @@
 ### Child sections
 | Section                            | Description |
 |:---                                |:--- |
-| Namespaces                         | See [Namespaces](#namespaces) |
+| ModelNamespaces                    | See [ModelNamespaces](#modelnamespaces) |
 | ModelAttributeInjection            | See [ModelAttributeInjection](#modelattributeinjection) |
 | ModelNodeRemoval                   | See [ModelNodeRemoval](#modelnoderemoval) |
 
 
-## Namespaces
+## ModelNamespaces
 When a model XML file is used that contains namespaces, the namespaces needed for section model binding need to be specified in the model config.
 
 ### Syntax
 ``` xml
-<Namespace
+<ModelNamespace
   prefix="..."
   namespace="..."  
 />
