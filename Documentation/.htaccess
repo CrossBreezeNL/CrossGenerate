@@ -1,4 +1,4 @@
 <IfModule mod_rewrite.c>
-RewriteEngine on
-RedirectMatch ^/docs/$ /docs/2.3.0/
+RewriteEngine On
+RewriteRule ^(.*) ../2.6/$1 [L]
 </IfModule>
