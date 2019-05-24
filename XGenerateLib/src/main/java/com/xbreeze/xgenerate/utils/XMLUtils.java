@@ -55,7 +55,7 @@ public class XMLUtils {
 	 * @throws GeneratorException
 	 */
 	public static VTDNav getVTDNav(String xmlDocument) throws GeneratorException {
-		return  getVTDNav(xmlDocument, false);
+		return getVTDNav(xmlDocument, false);
 	}
 	
 	/**

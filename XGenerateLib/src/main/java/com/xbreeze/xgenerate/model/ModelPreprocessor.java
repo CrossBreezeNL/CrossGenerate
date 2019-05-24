@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import com.xbreeze.xgenerate.config.NamespaceConfig;
 import com.xbreeze.xgenerate.config.model.ModelAttributeInjection;
 import com.xbreeze.xgenerate.config.model.ModelConfig;
 import com.xbreeze.xgenerate.config.model.ModelNodeRemoval;
@@ -42,12 +43,12 @@ public class ModelPreprocessor {
 		// ModelAttributeInjections
 		// First do attribute injection, in case attributes are used as source that are removed in the next step
 		if (modelConfig != null && modelConfig.getModelAttributeInjections() != null && modelConfig.getModelAttributeInjections().size() > 0) {
-			preprocessedModel = performModelAttributeInjections(preprocessedModel, modelConfig.getModelAttributeInjections());
+			preprocessedModel = performModelAttributeInjections(preprocessedModel, modelConfig.getModelAttributeInjections(), modelConfig.getNamespaces());
 		}
 
 		// ModelNodeRemovals
 		if (modelConfig != null && modelConfig.getModelNodeRemovals() != null && modelConfig.getModelNodeRemovals().size() > 0) {
-			preprocessedModel = performModelNodeRemovals(preprocessedModel, modelConfig.getModelNodeRemovals());
+			preprocessedModel = performModelNodeRemovals(preprocessedModel, modelConfig.getModelNodeRemovals(), modelConfig.getNamespaces());
 		}
 
 		// Store the pre-processed model in the Model object.
@@ -56,13 +57,13 @@ public class ModelPreprocessor {
 		logger.info("End model preprocessing");
 	}
 	
-	private static String performModelNodeRemovals(String preprocessedModel, ArrayList<ModelNodeRemoval> modelModelNodeRemovals) throws ModelPreprocessorException {
+	private static String performModelNodeRemovals(String preprocessedModel, ArrayList<ModelNodeRemoval> modelModelNodeRemovals, ArrayList<NamespaceConfig> namespaces) throws ModelPreprocessorException {
 		logger.fine("Performing model node removals.");
 		
 		// Execute the model XPath on the Document.
 		VTDNav nv;
 		try {
-			nv = XMLUtils.getVTDNav(preprocessedModel);
+			nv = XMLUtils.getVTDNav(preprocessedModel, (namespaces != null && namespaces.size() > 0));
 		} catch (GeneratorException e) {
 			throw new ModelPreprocessorException(String.format("Error while reading model before pre-processing: %s", e.getMessage()), e);
 		}
@@ -79,6 +80,14 @@ public class ModelPreprocessor {
 		for (ModelNodeRemoval mnr : modelModelNodeRemovals) {
 			// Create an AutoPilot for querying the document.
 			AutoPilot ap = new AutoPilot(nv);
+			
+			// If namespaces are defined, register then on the auto pilot.
+			if (namespaces != null && namespaces.size() > 0) {
+				// Register the declared namespaces.
+				for (NamespaceConfig namespace : namespaces) {
+					ap.declareXPathNameSpace(namespace.getPrefix(), namespace.getNamespace());				
+				}
+			}
 			
 			try {
 				// Set the XPath expression from the config.
@@ -110,13 +119,14 @@ public class ModelPreprocessor {
 		}
 	}
 	
-	private static String performModelAttributeInjections(String preprocessedModel, ArrayList<ModelAttributeInjection> modelAttributeInjections) throws ModelPreprocessorException {
+	private static String performModelAttributeInjections(String preprocessedModel, ArrayList<ModelAttributeInjection> modelAttributeInjections, ArrayList<NamespaceConfig> namespaces) throws ModelPreprocessorException {
 		logger.fine("Performing model attribute injections.");
 		
 		// Execute the model XPath on the Document.
 		VTDNav nv;
 		try {
-			nv = XMLUtils.getVTDNav(preprocessedModel);
+			// Set the VTD nav to namespace aware if the namespaces are defined.
+			nv = XMLUtils.getVTDNav(preprocessedModel, (namespaces != null && namespaces.size() > 0));
 		} catch (GeneratorException e) {
 			throw new ModelPreprocessorException(String.format("Error while reading model before performing model attribute injections: %s", e.getMessage()), e);
 		}
@@ -134,6 +144,14 @@ public class ModelPreprocessor {
 		for (ModelAttributeInjection mai : modelAttributeInjections) {
 			// Create an AutoPilot for querying the document.
 			AutoPilot ap = new AutoPilot(nv);
+			
+			// If namespaces are defined, register then on the auto pilot.
+			if (namespaces != null && namespaces.size() > 0) {
+				// Register the declared namespaces.
+				for (NamespaceConfig namespace : namespaces) {
+					ap.declareXPathNameSpace(namespace.getPrefix(), namespace.getNamespace());				
+				}
+			}
 			
 			try {
 				
