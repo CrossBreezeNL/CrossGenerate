@@ -18,7 +18,7 @@ Feature: Unit_Config_Model_ModelAttributeInjection
 
       """
 
-@KnownIssue replace function is not implemented in vtd-xml
+  @KnownIssue
   Scenario Outline: Single <Scenario> attribute injection
     Given the following config:
       """
@@ -53,6 +53,7 @@ Feature: Unit_Config_Model_ModelAttributeInjection
       | filter value  | //entity[@name='B'] | Value      | simple                     |                 | simple          |                 |
       | simple XPath  | //entity            | XPath      | ./@name                    | A               | B               | C               |
       | filter XPath  | //entity[@name='B'] | XPath      | ./@name                    |                 | B               |                 |
+      # KnownIssue: replace function is not implemented in vtd-xml
       | replace XPath | //entity[@name='B'] | XPath      | replace(./@name, 'B', 'b') |                 | B               |                 |
 
   Scenario: Multiple attribute injection

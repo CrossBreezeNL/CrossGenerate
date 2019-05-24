@@ -2,7 +2,6 @@
 Feature: Unit_Config_Binding_SectionModelBinding_Namespaces
   In this feature we will describe the SectionModelBinding feature in the binding config using namespaces in the model.
 
-  @Debug
   Scenario Outline: Binding with namespace <Scenario>
     Given I have the following model:
       """
