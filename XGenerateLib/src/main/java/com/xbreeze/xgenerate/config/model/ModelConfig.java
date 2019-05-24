@@ -47,8 +47,8 @@ public class ModelConfig {
 	/**
 	 * @return the ModelNameSpaces
 	 */
-	@XmlElement(name="Namespace")
-	@XmlElementWrapper(name="Namespaces")
+	@XmlElement(name="ModelNamespace")
+	@XmlElementWrapper(name="ModelNamespaces")
 	public ArrayList<NamespaceConfig> getNamespaces() {
 		return this.namespaces;
 	}
