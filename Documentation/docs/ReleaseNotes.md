@@ -22,7 +22,7 @@ Click on the header of a version number to go to the documentation of that speci
 
 ## [Version 2.6](../2.6/)
 
-- [ ] 2.6.0 <sup>xx-05-2019</sup>
+- [ ] 2.6.0 <sup>24-05-2019</sup>
 >
 > !!! success "New features"
 >     * [ ] Commandline options
@@ -30,10 +30,10 @@ Click on the header of a version number to go to the documentation of that speci
 > !!! info "Enhanced features"
 >     * [ ] Config
 >         * [ ] Text sections
->             - [X] When no single or multiline comment prefix or suffix markers have been specified in the fileFormat a log message is given (INFO level) to support troubleshooting.
+>             - [X] When no single or multiline comment prefix or suffix markers have been specified in the FileFormat a log message is given (INFO level) to support troubleshooting.
 >             - [X] Added 'all' prefix and suffix style.
 >         * [ ] Model
-              - [X] Added support for model XML files with namespaces. Namespaces needed for section model binding can now be specified in the model config. 
+              - [X] Added support for model XML files with namespaces. Namespaces needed for section model binding, model attribute injection and model node removal can now be specified in the model config. 
 > !!! warning "Bug fixes"
 >     * [ ] Template
 >         * [ ] Text template

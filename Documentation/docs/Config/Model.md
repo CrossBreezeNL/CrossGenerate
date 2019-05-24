@@ -4,13 +4,13 @@
 
 ### Syntax
 ``` xml
-<Model>    
+<Model>
+  <ModelNamespaces>
+    <ModelNamespace ... />
+  </ModelNamespaces>
   <ModelAttributeInjections>
     <ModelAttributeInjection ... />
   </ModelAttributeInjections>
-  <ModelNameSpaces>
-    <ModelNameSpace ... />
-  </ModelNameSpaces>
   <ModelNodeRemovals>
     <ModelNodeRemoval ... />
   </ModelNodeRemovals>
@@ -26,7 +26,7 @@
 
 
 ## ModelNamespaces
-When a model XML file is used that contains namespaces, the namespaces needed for section model binding need to be specified in the model config.
+When a model XML file is used that contains namespaces, the namespaces needed for section model binding, model attribute injection and model node removal need to be specified in the model config.
 
 ### Syntax
 ``` xml
