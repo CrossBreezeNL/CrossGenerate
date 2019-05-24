@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
+
+import com.xbreeze.xgenerate.config.NamespaceConfig;
 
 /**
  * The Model configuration object.
@@ -11,32 +14,50 @@ import javax.xml.bind.annotation.XmlElementWrapper;
  *  - ModelAttributeInjection 
  * @author Harmen
  */
+// Set the order of the properties.
+@XmlType(propOrder={"namespaces", "modelAttributeInjections", "modelNodeRemovals"})
 public class ModelConfig {
+	/**
+	 * The namespaces occurring in the model file that are required for model modifications and XSLT.
+	 */	
+	private ArrayList<NamespaceConfig> namespaces;
+	
 	/**
 	 * The ModelAttributeInjection elements specified within this Model configuration.
 	 */
-	private ArrayList<ModelAttributeInjection> _modelAttributeInjections;
+	private ArrayList<ModelAttributeInjection> modelAttributeInjections;
 	
 	/**
 	 * The ModelNodeRemoval elements specified within the Model configuration.
 	 */
-	private ArrayList<ModelNodeRemoval> _modelNodeRemovals;
-	
-	/**
-	 * The namespaces occurring in the model file that are required for XSLT.
-	 */	
-	private ArrayList<ModelNameSpace> _modelNameSpaces;
+	private ArrayList<ModelNodeRemoval> modelNodeRemovals;
 	
 	/**
 	 * Constructor.
 	 */
 	public ModelConfig() {
+		// Initialize the model namespaces
+		this.namespaces = new ArrayList<NamespaceConfig>();
 		// Initialize the modelAttributeInjections.
-		this._modelAttributeInjections = new ArrayList<ModelAttributeInjection>();
+		this.modelAttributeInjections = new ArrayList<ModelAttributeInjection>();
 		// Initialize the modelModelNodeRemovals.
 		this.setModelNodeRemovals(new ArrayList<ModelNodeRemoval>());
-		// Initialize the model namespaces
-		this._modelNameSpaces = new ArrayList<ModelNameSpace>();
+	}
+	
+	/**
+	 * @return the ModelNameSpaces
+	 */
+	@XmlElement(name="Namespace")
+	@XmlElementWrapper(name="Namespaces")
+	public ArrayList<NamespaceConfig> getNamespaces() {
+		return this.namespaces;
+	}
+
+	/**
+	 * @param namespaces the namespaces to set for the model.
+	 */
+	public void setNamespaces(ArrayList<NamespaceConfig> namespaces) {
+		this.namespaces = namespaces;
 	}
 
 	/**
@@ -45,14 +66,14 @@ public class ModelConfig {
 	@XmlElement(name="ModelAttributeInjection")
 	@XmlElementWrapper(name="ModelAttributeInjections")
 	public ArrayList<ModelAttributeInjection> getModelAttributeInjections() {
-		return _modelAttributeInjections;
+		return modelAttributeInjections;
 	}
 
 	/**
 	 * @param modelAttributeInjections the modelAttributeInjections to set
 	 */
 	public void setModelAttributeInjections(ArrayList<ModelAttributeInjection> modelAttributeInjections) {
-		this._modelAttributeInjections = modelAttributeInjections;
+		this.modelAttributeInjections = modelAttributeInjections;
 	}
 
 	/**
@@ -61,29 +82,13 @@ public class ModelConfig {
 	@XmlElement(name="ModelNodeRemoval")
 	@XmlElementWrapper(name="ModelNodeRemovals")
 	public ArrayList<ModelNodeRemoval> getModelNodeRemovals() {
-		return _modelNodeRemovals;
+		return modelNodeRemovals;
 	}
 
 	/**
 	 * @param modelNodeRemovals the modelModelNodeRemovals to set
 	 */
 	public void setModelNodeRemovals(ArrayList<ModelNodeRemoval> modelNodeRemovals) {
-		this._modelNodeRemovals = modelNodeRemovals;
-	}
-	
-	/**
-	 * @return the ModelNameSpaces
-	 */
-	@XmlElement(name="ModelNameSpace")
-	@XmlElementWrapper(name="ModelNameSpaces")
-	public ArrayList<ModelNameSpace> getModelNameSpaces() {
-		return this._modelNameSpaces;
-	}
-
-	/**
-	 * @param modelNameSpaces the Model Namespaces to set
-	 */
-	public void setModelNameSpaces(ArrayList<ModelNameSpace> modelNameSpaces) {
-		this._modelNameSpaces = modelNameSpaces;
+		this.modelNodeRemovals = modelNodeRemovals;
 	}
 }

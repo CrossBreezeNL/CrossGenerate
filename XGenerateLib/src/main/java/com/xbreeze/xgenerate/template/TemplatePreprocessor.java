@@ -7,9 +7,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.xbreeze.xgenerate.UnhandledException;
+import com.xbreeze.xgenerate.config.NamespaceConfig;
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.binding.SectionModelBindingConfig;
-import com.xbreeze.xgenerate.config.model.ModelNameSpace;
 import com.xbreeze.xgenerate.config.template.RootTemplateConfig;
 import com.xbreeze.xgenerate.template.annotation.TemplateAnnotation;
 import com.xbreeze.xgenerate.template.annotation.TemplateCommentAnnotation;
@@ -59,7 +59,7 @@ public abstract class TemplatePreprocessor {
 	 * @throws UnhandledException 
 	 * @throws UnknownAnnotationException 
 	 */
-	public XsltTemplate preProcess(RawTemplate rawTemplate, String relativeOutputFileUri, ArrayList<ModelNameSpace> modelNameSpaces) throws TemplatePreprocessorException, UnhandledException {
+	public XsltTemplate preProcess(RawTemplate rawTemplate, String relativeOutputFileUri, ArrayList<NamespaceConfig> modelNamespaces) throws TemplatePreprocessorException, UnhandledException {
 		RootTemplateConfig templateConfig = _config.getTemplateConfig();
 		
 		// Perform the specific sectionizing for the current template.
@@ -85,7 +85,7 @@ public abstract class TemplatePreprocessor {
 		SectionedTemplate sectionizedTemplate = this.sectionizeTemplate(preprocessedTemplate);
 		
 		// Now the templates are pre-processed by their specific preprocessor, we can perform the generic pre-processing here.
-		XsltTemplate xsltTemplate = new XsltTemplate(rawTemplate.getRawTemplateFileName(), rawTemplate.getRawTemplateFileLocation(), templateConfig, relativeOutputFileUri, rootSectionModelBinding, modelNameSpaces);
+		XsltTemplate xsltTemplate = new XsltTemplate(rawTemplate.getRawTemplateFileName(), rawTemplate.getRawTemplateFileLocation(), templateConfig, relativeOutputFileUri, rootSectionModelBinding, modelNamespaces);
 		
 		// Append the Xslt from the section to the pre-processed template.
 		sectionizedTemplate.appendTemplateXslt(xsltTemplate, _config, rootSectionModelBinding);

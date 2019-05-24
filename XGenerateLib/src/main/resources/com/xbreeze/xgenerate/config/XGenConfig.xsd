@@ -16,17 +16,17 @@
 
   <xs:complexType name="modelConfig">
     <xs:sequence>
+      <xs:element name="Namespaces" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Namespace" type="namespaceConfig" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="ModelAttributeInjections" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
             <xs:element name="ModelAttributeInjection" type="modelAttributeInjection" minOccurs="0" maxOccurs="unbounded"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="ModelNameSpaces" minOccurs="0">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="ModelNameSpace" type="modelNameSpace" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -40,18 +40,18 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="namespaceConfig">
+    <xs:sequence/>
+    <xs:attribute name="prefix" type="xs:string" use="required"/>
+    <xs:attribute name="namespace" type="xs:string" use="required"/>
+  </xs:complexType>
+
   <xs:complexType name="modelAttributeInjection">
     <xs:sequence/>
     <xs:attribute name="modelXPath" type="xs:string" use="required"/>
     <xs:attribute name="targetAttribute" type="xs:string" use="required"/>
     <xs:attribute name="targetValue" type="xs:string"/>
     <xs:attribute name="targetXPath" type="xs:string"/>
-  </xs:complexType>
-
-  <xs:complexType name="modelNameSpace">
-    <xs:sequence/>
-    <xs:attribute name="alias" type="xs:string" use="required"/>
-    <xs:attribute name="url" type="xs:string" use="required"/>
   </xs:complexType>
 
   <xs:complexType name="modelNodeRemoval">
