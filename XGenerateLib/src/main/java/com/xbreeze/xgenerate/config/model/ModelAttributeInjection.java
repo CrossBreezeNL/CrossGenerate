@@ -1,6 +1,7 @@
 package com.xbreeze.xgenerate.config.model;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 
 public class ModelAttributeInjection {
 
@@ -11,6 +12,8 @@ public class ModelAttributeInjection {
 	private String targetValue;
 	
 	private String targetXPath;
+	
+	private ModelAttributeInjectionValueMappings valueMappings;
 
 	/**
 	 * @return the modelXPath
@@ -62,8 +65,26 @@ public class ModelAttributeInjection {
 		return targetXPath;
 	}
 
+	/**
+	 * @param targetXPath the targetXPath to set
+	 */
 	public void setTargetXPath(String targetXPath) {
 		this.targetXPath = targetXPath;
+	}
+
+	/**
+	 * @return The value mappings for the model attribute injection.
+	 */
+	@XmlElement(name="ValueMappings", required=false)
+	public ModelAttributeInjectionValueMappings getValueMappings() {
+		return valueMappings;
+	}
+
+	/**
+	 * @param valueMappings the valueMappings to set
+	 */
+	public void setValueMappings(ModelAttributeInjectionValueMappings valueMappings) {
+		this.valueMappings = valueMappings;
 	}
 	
 	

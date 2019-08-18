@@ -2,10 +2,13 @@ package com.xbreeze.xgenerate.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import com.xbreeze.xgenerate.config.NamespaceConfig;
 import com.xbreeze.xgenerate.config.model.ModelAttributeInjection;
+import com.xbreeze.xgenerate.config.model.ModelAttributeInjectionValueMapping;
 import com.xbreeze.xgenerate.config.model.ModelConfig;
 import com.xbreeze.xgenerate.config.model.ModelNodeRemoval;
 import com.xbreeze.xgenerate.generator.GeneratorException;
@@ -176,12 +179,43 @@ public class ModelPreprocessor {
 							throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for target XPath ´%s´: %s", mai.getTargetXPath(),  XMLUtils.getAutopilotExceptionMessage(mai.getTargetXPath(), e)));			
 						}
 					}
+					
+					// When the target value is set, write the value.
 					else if (mai.getTargetValue() != null) {
 						targetValue = mai.getTargetValue();
 					}
+					
+					// When the value mappings are set, process them.
+					else if (mai.getValueMappings() != null) {
+						try {
+							AutoPilot ap_targetValue = new AutoPilot(nv);
+							// Get the value of the input node. 
+							ap_targetValue.selectXPath(mai.getValueMappings().getInputNode());
+							String inputNodeValue = ap_targetValue.evalXPathToString();
+							// Using the input node value, find the output value from the value mapping.
+							List<ModelAttributeInjectionValueMapping> foundValueMappings = mai.getValueMappings().getModelAttributeInjectionValueMappings().stream().filter(vm -> vm.getInputValue().equals(inputNodeValue)).collect(Collectors.toList());
+							// There should only be 1 found value mapping.
+							if (foundValueMappings.size() == 1) {
+								targetValue = foundValueMappings.get(0).getOutputValue();
+								logger.info(String.format("Value mappings defined for attribute injection, input node value: ´%s´, target value: ´%s´", inputNodeValue, targetValue));
+							}
+							// If multiple value mappings are found, throw an exception.
+							else if (foundValueMappings.size() > 1) {
+								throw new ModelPreprocessorException(String.format("%d value mappings found for input node value ´%s´, expected exactly 1!", foundValueMappings.size(), inputNodeValue));
+							}
+							// If no value mappings are found, print a warning.
+							else {
+								logger.warning(String.format("%d value mappings found for input node value ´%s´.", foundValueMappings.size(), inputNodeValue));
+							}
+						}
+						catch (XPathParseException e) {
+							throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for target XPath ´%s´: %s", mai.getTargetXPath(),  XMLUtils.getAutopilotExceptionMessage(mai.getTargetXPath(), e)));			
+						}
+					}
 		        	
-		        	// Append the attribute.
-		        	XMLUtils.appendAttribute(nv, xm, mai.getTargetAttribute(), targetValue);
+		        	// Append the attribute (if it is not null, this can happen if a value mapping returns no value).
+					if (targetValue != null)
+						XMLUtils.appendAttribute(nv, xm, mai.getTargetAttribute(), targetValue);
 		        }
 		        
 		        // Output and re-parse the document for the next injection.
