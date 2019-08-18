@@ -53,7 +53,9 @@ Model attribute injection can be used to inject attributes to the model before g
   targetAttribute="..."
   targetValue="..."
   targetXPath="..."
-/>
+>
+  <ValueMappings .. />
+</ModelAttributeInjection>
 ```
 
 ### Parameters
@@ -63,6 +65,48 @@ Model attribute injection can be used to inject attributes to the model before g
 | targetAttribute[^1]                    | The name of the attribute to inject. | |If the target attribute is already present in the model it's value will be overwritten |
 | targetValue[^2]                        | The value of the attribute to inject. | | | 
 | targetXPath[^2]                        | The XPath to apply on the model element to get the target value. | | See [XPath](./XPath). | 
+
+### Child sections
+| Section                            | Description |
+|:---                                |:--- |
+| ValueMappings[^2]                  | See [ValueMappings](#valuemappings) |
+
+
+## ValueMappings
+A ValueMappings element can be used inside a ModelAttributeInjection element to specify the translation from a set of input values to output values. This can be usefull when a certain attribute in de model needs to be translated using a list of possible values, for example a data type translation.
+
+### Syntax
+``` xml
+<ValueMappings inputNode="...">
+  <ValueMapping ... />
+</ValueMappings>
+```
+
+### Parameters
+| Parameter                              | Description | Default | Remark |
+|:---                                    |:--- |:--- |:--- |
+| inputNode[^1]                          | The XPath to apply on the model (relative to the modelXPath of the ModelAttributeInjection) to get to the node which contains the value to apply the value translation on. | | See [XPath](./XPath). |
+
+### Child sections
+| Section                            | Description |
+|:---                                |:--- |
+| ValueMapping                       | See [ValueMapping](#valuemapping) |
+
+
+## ValueMapping
+A ValueMapping element can be used insude a ValueMappings element to specify a translation from a specific output value to one output value.
+
+### Syntax
+``` xml
+<ValueMapping inputValue="..." outputValue="..." />
+```
+
+### Parameters
+| Parameter                              | Description | Default | Remark |
+|:---                                    |:--- |:--- |:--- |
+| inputValue[^1]                         | The input value for this value mapping (the value of the inputNode). | | |
+| outputValue[^1]                        | The output value for this value mapping. | | |
+
 
 ## ModelNodeRemoval
 Model node removal can be used to remove certain elements or attributes from the model before the generation starts. This can be usefull when the model contains more information then should be used in a certain generation step. For example when a source model is automatically extracted from a source system and you don't want to include certain columns in the extraction process, you can remove these nodes from the model before generating.
@@ -82,4 +126,4 @@ Model node removal can be used to remove certain elements or attributes from the
 
 [comment]: Footnotes
 [^1]: required parameter
-[^2]: one of the parameters is required
+[^2]: one of the parameters or child sections is required

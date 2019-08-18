@@ -20,6 +20,15 @@ Click on the header of a version number to go to the documentation of that speci
 [//]: # (>     * [ ] Binding)
 [//]: # (>         * [X] Some issue...)
 
+## [Version 2.7](../2.7/)
+
+- [ ] 2.7.0 <sup>XX-XX-2019</sup>
+>
+> !!! success "New features"
+>     * [ ] Config
+>         * [ ] Model
+              - [X] Added ValueMappings support in ModelAttributeInjection in order to perform a translation on a model node.
+
 ## [Version 2.6](../2.6/)
 
 - [ ] 2.6.0 <sup>24-05-2019</sup>
