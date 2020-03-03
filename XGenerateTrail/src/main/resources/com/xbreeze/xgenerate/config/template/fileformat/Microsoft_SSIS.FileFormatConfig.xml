@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	The Microsoft SQL Server Integration Services specific template configuration.
+	In SSIS the identify fields allowed are @, $, # & _. We use _ for the current and $ for child accessor.
+	The annotations for CrossGenerate are stored in the 'Description' attribute and the annotations are prefixed with @XGen.
+-->
+<FileFormat
+	type="Microsoft_SSIS"
+	version="*"
+	templateType="xml"
+	currentAccessor="_"
+	childAccessor="$"
+	commentNodeXPath="@Description"
+	annotationPrefix="@XGen"
+	annotationArgsPrefix="("
+	annotationArgsSuffix=")"
+/>
