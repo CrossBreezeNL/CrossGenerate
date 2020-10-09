@@ -102,8 +102,8 @@ Feature: Unit_Config_XmlTemplate_TemplatePlaceholderInjection
       """
             
     Examples:
-    | Scenario | templateXPath | ExpectedResult |
-    | Unqualified | //table[@name='table_name']/@id | aa:id="456" bb:id="789" id="111" |
+    | Scenario     | templateXPath                      | ExpectedResult                   |
+    | Unqualified  | //table[@name='table_name']/@id    | aa:id="456" bb:id="789" id="111" |
     | aa namespace | //table[@name='table_name']/@aa:id | aa:id="111" bb:id="789" id="123" |
     | bb namespace | //table[@name='table_name']/@bb:id | aa:id="456" bb:id="111" id="123" |
     

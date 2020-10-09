@@ -2,6 +2,7 @@ package com.xbreeze.xgenerate.generator;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -215,7 +216,7 @@ public class XGenerateStarter extends GenerationObserverSource {
 			// Load generator class from licensed ClassLoader
 			Class<?> c = lcl.loadClass("com.xbreeze.xgenerate.generator.Generator");                                      
             // Instantiate new object
-			GeneratorStub generator = (GeneratorStub)c.newInstance();
+			GeneratorStub generator = (GeneratorStub)c.getConstructor().newInstance();
 
 			// Loop through the model-template-config combinations and perform the generation.
 			for (int generationStepIndex=0; generationStepIndex<modelTemplateConfigCombinations.size(); generationStepIndex++) {
@@ -267,7 +268,7 @@ public class XGenerateStarter extends GenerationObserverSource {
 			// Notify the generation observers the generation is finished.
 			this.notifyGenerationFinished(LocalDateTime.now());
 			logger.info("Generation complete");
-		} catch (GeneratorException | LicenseException | ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+		} catch (GeneratorException | LicenseException | ClassNotFoundException | IllegalAccessException | InstantiationException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			logger.severe("Error occured while generating");
 			logger.severe(e.getMessage());
 			System.err.println("Error occured while generating, see log for more information");

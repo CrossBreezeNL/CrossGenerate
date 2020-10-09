@@ -78,7 +78,7 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 			// Get the class for the annotation name (as subclass of TemplateAnnotation).
 			Class<? extends TemplateAnnotation> annotationTypeClass = Class.forName(annotationTypeClassName).asSubclass(TemplateAnnotation.class);
 			// Instantiate the annotation class.
-			TemplateAnnotation templateAnnotation = annotationTypeClass.newInstance();
+			TemplateAnnotation templateAnnotation = annotationTypeClass.getConstructor().newInstance();
 			// When this method (fromName) is called the annotation was defined in the template.
 			templateAnnotation.setDefinedInTemplate(true);
 			// Set the start and end char index on the template annotation.
@@ -155,11 +155,12 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 		} catch (ClassNotFoundException e) {
 			// When we get into this catch, the user specified an unspecified annotation.
 			throw new UnknownAnnotationException(annotationName, e);
-		} catch (InstantiationException e) {
+		} catch (InstantiationException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new UnhandledException(String.format("Error while initializing class for '%s', maybe default constructor missing?", annotationName), e);
 		} catch (IllegalAccessException | ClassCastException e) {
 			// ClassCastException can only occur when the annotation class is not a subclass of TemplateAnnotation, which shouldn't occur.
 			throw new UnhandledException(e);
+			// This should never happen as long as there is a constructor without parameters.
 		}
 	}
 	
