@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig>  
+   <Model>
+    <ModelAttributeInjections>
+      <!-- Add a all-lower case version of name since azure container names are always lower case only. -->
+      <ModelAttributeInjection modelXPath="/modeldefinition/system" targetAttribute="containername" targetXPath="lower-case(@name)"/>    
+      <!-- set model schema based on name and layer-->
+      <ModelAttributeInjection modelXPath="/modeldefinition/system" targetAttribute="schema" targetXPath="concat(@layer,'_', @name)"/>
+    </ModelAttributeInjections>
+  </Model>
+  <TextTemplate rootSectionName="system">
+    <FileFormat currentAccessor="_" childAccessor="$" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <Output type="output_per_element" />
+  </TextTemplate>
+
+  <Binding>
+		<SectionModelBinding section="system" modelXPath="/modeldefinition/system">
+      <SectionModelBinding section="table" modelXPath="mappableObjects/entity">
+        <Placeholders>
+          <Placeholder name="system" modelXPath="../.." />
+        </Placeholders>
+      </SectionModelBinding>			
+    </SectionModelBinding>			
+  </Binding>
+  
+</XGenConfig>
