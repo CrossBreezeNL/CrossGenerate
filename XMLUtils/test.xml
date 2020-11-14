@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XGenConfig>  
+<XGenConfig xmlns:xi="http://www.w3.org/2001/XInclude">  
    <Model>
     <ModelAttributeInjections>
       <!-- Add a all-lower case version of name since azure container names are always lower case only. -->
@@ -11,16 +11,7 @@
   <TextTemplate rootSectionName="system">
     <FileFormat currentAccessor="_" childAccessor="$" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
     <Output type="output_per_element" />
+    <xi:include src="./bindings.xml"/>  
   </TextTemplate>
-
-  <Binding>
-		<SectionModelBinding section="system" modelXPath="/modeldefinition/system">
-      <SectionModelBinding section="table" modelXPath="mappableObjects/entity">
-        <Placeholders>
-          <Placeholder name="system" modelXPath="../.." />
-        </Placeholders>
-      </SectionModelBinding>			
-    </SectionModelBinding>			
-  </Binding>
-  
+  <xi:include src="./bindings.xml"/>  
 </XGenConfig>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Binding>
+		<SectionModelBinding section="system" modelXPath="/modeldefinition/system">
+      <SectionModelBinding section="table" modelXPath="mappableObjects/entity">
+        <Placeholders>
+          <Placeholder name="system" modelXPath="../.." />
+        </Placeholders>
+      </SectionModelBinding>			
+    </SectionModelBinding>			
+</Binding>

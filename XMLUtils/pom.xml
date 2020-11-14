@@ -11,6 +11,12 @@
 		    <artifactId>xmlbeans</artifactId>
 		    <version>4.0.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE -->
+		<dependency>
+		    <groupId>net.sf.saxon</groupId>
+		    <artifactId>Saxon-HE</artifactId>
+		    <version>10.3</version>
+		</dependency>		
 		</dependencies>
 		<build>
 		<sourceDirectory>src</sourceDirectory>
