@@ -34,10 +34,15 @@ import com.xbreeze.xgenerate.utils.XMLUtils;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XsltTransformer;
 
-public class Generator extends GeneratorStub {
+public class Generator {
 	// The logger for this class.
 	private static final Logger logger =  Logger.getLogger(Generator.class.getName());
 	
+	
+	protected boolean _debugMode = false;
+	
+	protected boolean _testMode = false;
+		
 	/**
 	 * The Model to work with.
 	 */
@@ -74,6 +79,24 @@ public class Generator extends GeneratorStub {
 	public Model getModel() {
 		return this._model;
 	}
+	
+	public boolean isDebugMode() {
+		return _debugMode;
+	}
+
+	public void setDebugMode(boolean debugMode) {
+		this._debugMode = debugMode;
+	}
+	
+	
+	public boolean isTestMode() {
+		return _testMode;
+	}
+
+	public void setTestMode(boolean testMode) {
+		this._testMode = testMode;
+	}
+
 
 	/**
 	 * Generate the output using the raw-template and the config file locations.
@@ -107,7 +130,7 @@ public class Generator extends GeneratorStub {
 		return generate(rawTemplate, xGenConfig, outputFolderUri, relativeTemplateFolderUri);
 	}
 	
-	@Override
+	
 	public void generateFromFilesAndWriteOutput(URI templateFileUri, URI configFileUri, URI outputFolderUri, String relativeTemplateFolderUri) throws GeneratorException {
 		GenerationResults generationResults = generateFromFiles(templateFileUri, configFileUri, outputFolderUri, relativeTemplateFolderUri);
 		

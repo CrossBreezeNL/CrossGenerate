@@ -28,11 +28,10 @@ import org.xml.sax.SAXParseException;
 
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.config.UnmarshallValidationEventHandler;
-import com.xbreeze.license.LicenseConfig;
 
 @XmlRootElement(name="XGenAppConfig")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder={"appConfig", "licenseConfig"})
+@XmlType(propOrder={"appConfig"})
 public class XGenAppConfig {
 	// The logger for this class.
 	private static final Logger logger = Logger.getLogger(XGenAppConfig.class.getName());
@@ -43,13 +42,6 @@ public class XGenAppConfig {
 	 */
 	@XmlElement(name="App")
 	private AppConfig appConfig;
-	
-	/**
-	 * The license configuration
-	 * 
-	 */
-	@XmlElement(name="License")
-	private LicenseConfig licenseConfig;
 	
 	/**
 	 * @return the app
@@ -65,21 +57,6 @@ public class XGenAppConfig {
 		this.appConfig = appConfig;
 	}
 	
-	/**
-	 * return the license config object
-	 * @return
-	 */
-	public LicenseConfig getLicenseConfig() {
-		return licenseConfig;
-	}
-
-	/**
-	 * Set config object for license
-	 * @param licenseConfig
-	 */
-	public void setLicenseConfig(LicenseConfig licenseConfig) {
-		this.licenseConfig = licenseConfig;
-	}
 	
 	/**
 	 * Unmarshal a app config from a String.

@@ -59,7 +59,7 @@ Feature: Unit_Config_XmlTemplate_TemplatePlaceholderInjection
       # Current XG cannot handle the XPath itself to contain the namespace part, cause the namespace must then be declared. If this would work the previous 2 tests probably need to be discusses whether they also require namespace prefix in the XPath.
       | namespace prefixed template | xb:someProperty | //table/@xb:someProperty             | property      | current | <table name="A" filter="yes" xb:someProperty="something"/>    | <table name="A" filter="no" xb:someProperty="something"/>    |
 
-  @Debug    
+  @KnownIssue this is known not to work   
   Scenario Outline: Multi namespace <Scenario> template placeholder injection
   Given I have the following model:
       """

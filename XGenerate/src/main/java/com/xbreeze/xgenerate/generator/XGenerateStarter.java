@@ -17,8 +17,6 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import com.xbreeze.license.LicenseException;
-import com.xbreeze.license.LicensedClassLoader;
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.config.app.XGenAppConfig;
 import com.xbreeze.xgenerate.gui.GenerationProgressScreen;
@@ -209,14 +207,7 @@ public class XGenerateStarter extends GenerationObserverSource {
 		try {
 			// Notify the generation observers the generation is starting.
 			this.notifyGenerationStarting(modelTemplateConfigCombinations.size(), LocalDateTime.now());
-			
-			//Load Generator from licenseClassLoader
-			LicensedClassLoader lcl = new LicensedClassLoader(GeneratorStub.class.getClassLoader(), appConfig.getLicenseConfig(), debugMode);
-			
-			// Load generator class from licensed ClassLoader
-			Class<?> c = lcl.loadClass("com.xbreeze.xgenerate.generator.Generator");                                      
-            // Instantiate new object
-			GeneratorStub generator = (GeneratorStub)c.getConstructor().newInstance();
+			Generator generator = new Generator();
 
 			// Loop through the model-template-config combinations and perform the generation.
 			for (int generationStepIndex=0; generationStepIndex<modelTemplateConfigCombinations.size(); generationStepIndex++) {
@@ -268,7 +259,7 @@ public class XGenerateStarter extends GenerationObserverSource {
 			// Notify the generation observers the generation is finished.
 			this.notifyGenerationFinished(LocalDateTime.now());
 			logger.info("Generation complete");
-		} catch (GeneratorException | LicenseException | ClassNotFoundException | IllegalAccessException | InstantiationException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		} catch (GeneratorException | IllegalArgumentException | SecurityException e) {
 			logger.severe("Error occured while generating");
 			logger.severe(e.getMessage());
 			System.err.println("Error occured while generating, see log for more information");

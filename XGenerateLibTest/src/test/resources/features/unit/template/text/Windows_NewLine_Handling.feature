@@ -2,7 +2,7 @@
 #Keywords Summary : CrossGenerate Windows NewLine Handling
 
 @Unit
-Feature: Unit_SQL_Windows_NewLine_Handling
+Feature: Unit_Windows_NewLine_Handling
   This feature file contains the features when using Windows NewLines (CRLF) in your template.
   In the results pane click on 'Show Whitespace Characters' to view the CRLF vs LF.
 

@@ -11,12 +11,13 @@
 		<junit.version>4.12</junit.version>
 		<saxon.version>9.8.0-8</saxon.version>
 		<surefire.version>2.21.0</surefire.version>
+		<apache-httpclient>4.5.5</apache-httpclient>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.xbreeze.xgenerate</groupId>
-			<artifactId>XGenerateLib</artifactId>
+			<artifactId>XGenerate</artifactId>
 			<version>${xgenerate.version}</version>
 		</dependency>
 		<dependency>
@@ -37,6 +38,15 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <version>${apache-httpclient}</version>
+		</dependency>
+
+		
 	</dependencies>
 
 	<build>
