@@ -22,6 +22,7 @@ nav:
     - 'Introduction'    : 'index.md'
     - 'Release notes'   : 'ReleaseNotes.md'
     - 'Getting started' : 'GettingStarted.md'
+    - 'Setup'        : 'Setup.md'
     - 'Overview'        : 'Overview.md'
 - Application:
     - 'Command line'         : 'Application/CommandLine.md'

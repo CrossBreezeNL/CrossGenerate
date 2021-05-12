@@ -4,7 +4,7 @@
 	<groupId>com.xbreeze.xgenerate</groupId>
 	<artifactId>XGenerate</artifactId>
 	<version>2.2.0-SNAPSHOT</version>
-
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 		    <groupId>javax.xml.bind</groupId>
@@ -61,6 +61,30 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
+			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-assembly-plugin</artifactId>
+			    <executions>
+			        <execution>
+			            <phase>package</phase>
+			            <goals>
+			                <goal>single</goal>
+			            </goals>
+			            <configuration>
+			                <archive>
+			                <manifest>
+			                    <mainClass>
+			                        com.xbreeze.xgenerate.generator.XGenerateStarter
+			                    </mainClass>
+			                </manifest>
+			                </archive>
+			                <descriptorRefs>
+			                    <descriptorRef>jar-with-dependencies</descriptorRef>
+			                </descriptorRefs>
+			            </configuration>
+			        </execution>
+			    </executions>
 			</plugin>
 		</plugins>
 	</build>
