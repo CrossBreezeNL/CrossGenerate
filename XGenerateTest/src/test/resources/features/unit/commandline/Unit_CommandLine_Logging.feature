@@ -38,14 +38,6 @@ Feature: Unit_CommandLine_Logging
          <OutputFolder>C:\CrossGenerate\Test\Output\</OutputFolder>
          <TemplateFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateTest\src\test\resources\feature-support-files\Template\</TemplateFolder>
        </App>
-       <License>
-         <ContractId>0</ContractId>
-         <DeveloperMode>true</DeveloperMode>
-         <LicenseKey>0</LicenseKey>
-         <Tag></Tag>
-         <Url>file:///C:/GIT/Repos/CrossBreeze/CrossGenerate/CrossGenerate/XGenerateLib/target/classes/</Url>
-         <Version>2.0</Version>
-       </License>
       </XGenAppConfig>
       """
     And the log destination directory "C:\CrossGenerate\Test\Log" is empty.

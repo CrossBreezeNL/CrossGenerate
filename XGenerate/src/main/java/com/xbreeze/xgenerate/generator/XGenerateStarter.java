@@ -19,14 +19,13 @@
  *  Contributors:
  *      Willem Otten - CrossBreeze
  *      Harmen Wessels - CrossBreeze
- *      Jacob Siemaszko - Crossbreeze
+ *      Jacob Siemaszko - CrossBreeze
  *  
  *******************************************************************************/
 package com.xbreeze.xgenerate.generator;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;

@@ -19,7 +19,7 @@
  *  Contributors:
  *      Willem Otten - CrossBreeze
  *      Harmen Wessels - CrossBreeze
- *      Jacob Siemaszko - Crossbreeze
+ *      Jacob Siemaszko - CrossBreeze
  *  
  *******************************************************************************/
 package com.xbreeze.xgenerate.config;
