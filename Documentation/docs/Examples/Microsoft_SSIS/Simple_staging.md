@@ -56,7 +56,7 @@ And again the same of the 'OLDE DB Source Error Output' output columns.
 ##### Derived column
 The derived colum transformation does not need any specific configuration for Crossgenerate.
 
-![Template Source Columns](img/derived_column.png)
+![Template Source Columns](img/derived_column.PNG)
 
 ##### Destination
 ###### Connection Manager

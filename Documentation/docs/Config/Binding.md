@@ -12,8 +12,8 @@
 ```
 
 ### Child sections
-| Section                                      | Description |
-|:---                                              |:--- |
+| Section                           | Description |
+|:---                               |:--- |
 | SectionModelBinding               | See [SectionModelBinding](#sectionmodelbinding) |
 
 

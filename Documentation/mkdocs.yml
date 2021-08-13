@@ -1,5 +1,5 @@
 # Project information
-site_name: 'CrossGenerate v2.7'
+site_name: 'CrossGenerate v3.0'
 
 # Copyright
 copyright: 'Copyright &copy; 2021 - CrossBreeze'
@@ -20,9 +20,10 @@ theme:
 nav:
 - Home:
     - 'Introduction'    : 'index.md'
-    - 'Release notes'   : 'ReleaseNotes.md'
-    - 'Getting started' : 'GettingStarted.md'
     - 'Overview'        : 'Overview.md'
+    - 'Setup'           : 'Setup.md'
+    - 'Getting started' : 'GettingStarted.md'
+    - 'Release notes'   : 'ReleaseNotes.md'
 - Application:
     - 'Command line'         : 'Application/CommandLine.md'
     - 'Application config'   : 'Application/XGenAppConfig.md'
@@ -80,6 +81,7 @@ markdown_extensions:
   - codehilite
   - toc:
       permalink: true
+  - attr_list
   - footnotes
   - admonition
   - def_list

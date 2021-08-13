@@ -14,7 +14,7 @@ Feature: Unit_TextTemplate_Section_Bounds
         </system>
       </modeldefinition>
       """
-
+ @Debug
   Scenario: implicit root section only
     And the following template named "CreateSchema.sql":
       """

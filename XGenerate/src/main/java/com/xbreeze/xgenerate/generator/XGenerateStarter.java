@@ -1,8 +1,31 @@
+/*******************************************************************************
+ *   Copyright (c) 2021 CrossBreeze
+ *
+ *   This file is part of CrossGenerate.
+ *
+ *      CrossGenerate is free software: you can redistribute it and/or modify
+ *      it under the terms of the GNU General Public License as published by
+ *      the Free Software Foundation, either version 3 of the License, or
+ *      (at your option) any later version.
+ *
+ *      CrossGenerate is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *      GNU General Public License for more details.
+ *
+ *      You should have received a copy of the GNU General Public License
+ *      along with CrossGenerate.  If not, see <https://www.gnu.org/licenses/>.
+ *     
+ *  Contributors:
+ *      Willem Otten - CrossBreeze
+ *      Harmen Wessels - CrossBreeze
+ *      Jacob Siemaszko - CrossBreeze
+ *  
+ *******************************************************************************/
 package com.xbreeze.xgenerate.generator;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,8 +40,6 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import com.xbreeze.license.LicenseException;
-import com.xbreeze.license.LicensedClassLoader;
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.config.app.XGenAppConfig;
 import com.xbreeze.xgenerate.gui.GenerationProgressScreen;
@@ -209,14 +230,7 @@ public class XGenerateStarter extends GenerationObserverSource {
 		try {
 			// Notify the generation observers the generation is starting.
 			this.notifyGenerationStarting(modelTemplateConfigCombinations.size(), LocalDateTime.now());
-			
-			//Load Generator from licenseClassLoader
-			LicensedClassLoader lcl = new LicensedClassLoader(GeneratorStub.class.getClassLoader(), appConfig.getLicenseConfig(), debugMode);
-			
-			// Load generator class from licensed ClassLoader
-			Class<?> c = lcl.loadClass("com.xbreeze.xgenerate.generator.Generator");                                      
-            // Instantiate new object
-			GeneratorStub generator = (GeneratorStub)c.getConstructor().newInstance();
+			Generator generator = new Generator();
 
 			// Loop through the model-template-config combinations and perform the generation.
 			for (int generationStepIndex=0; generationStepIndex<modelTemplateConfigCombinations.size(); generationStepIndex++) {
@@ -268,7 +282,7 @@ public class XGenerateStarter extends GenerationObserverSource {
 			// Notify the generation observers the generation is finished.
 			this.notifyGenerationFinished(LocalDateTime.now());
 			logger.info("Generation complete");
-		} catch (GeneratorException | LicenseException | ClassNotFoundException | IllegalAccessException | InstantiationException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		} catch (GeneratorException | IllegalArgumentException | SecurityException e) {
 			logger.severe("Error occured while generating");
 			logger.severe(e.getMessage());
 			System.err.println("Error occured while generating, see log for more information");

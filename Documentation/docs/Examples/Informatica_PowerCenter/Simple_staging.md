@@ -263,4 +263,4 @@ For documentation on the configuration, please see [Config](../../Config).
 When running CrossGenerate with the given model, template and config an XML file is generated that contains source and target definitions and mappings for the Order and Customer table.
 When imported in PowerCenter, the customer mapping is as displayed in the screenshot below:
 
-[![mapping_output.PNG](img/mapping_output.PNG)](img/mapping_output.PNG)
+[![mapping_output.PNG](img/Mapping_output.png)](img/Mapping_output.png)

@@ -162,4 +162,4 @@ Please see [Master package](Master_package#output).
 ## Attachments
 The entire DataVault example, including SQL and SSIS templates, can be found in the following zip file:
 
-- [CrossGenerate_Example_SSIS_DWH_DataVault.zip](CrossGenerate_Example_SSIS_DWH_DataVault.zip)
+- [CrossGenerate_Example_SSIS_DWH_Datavault.zip](CrossGenerate_Example_SSIS_DWH_Datavault.zip)

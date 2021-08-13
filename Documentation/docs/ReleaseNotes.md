@@ -20,14 +20,17 @@ Click on the header of a version number to go to the documentation of that speci
 [//]: # (>     * [ ] Binding)
 [//]: # (>         * [X] Some issue...)
 
-## [Version 2.7](../2.7/)
+## [Version 3.0](../3.0/)
 
-- [ ] 2.7.0 <sup>XX-XX-2019</sup>
+- [ ] 3.0.0 <sup>13-08-2021</sup>
 >
 > !!! success "New features"
 >     * [ ] Config
 >         * [ ] Model
               - [X] Added ValueMappings support in ModelAttributeInjection in order to perform a translation on a model node.
+> !!! info "Enhanced features"
+>     * [ ] Application config
+>         - [X] Removed license configuration part, since CrossGenerate is open-source and free now.
 
 ## [Version 2.6](../2.6/)
 
