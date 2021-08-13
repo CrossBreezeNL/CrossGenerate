@@ -54,7 +54,7 @@ Feature: Unit_Config_Model_ModelAttributeInjection
       | simple XPath  | //entity            | XPath      | ./@name                    | A               | B               | C               |
       | filter XPath  | //entity[@name='B'] | XPath      | ./@name                    |                 | B               |                 |
       # KnownIssue: replace function is not implemented in vtd-xml
-      | replace XPath | //entity[@name='B'] | XPath      | replace(./@name, 'B', 'b') |                 | B               |                 |
+      | replace XPath @KnownIssue | //entity[@name='B'] | XPath      | replace(./@name, 'B', 'b') |                 | B               |                 |
 
   Scenario: Multiple attribute injection
     Given the following config:

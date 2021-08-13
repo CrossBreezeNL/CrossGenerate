@@ -56,11 +56,11 @@ Feature: Unit_Config_XmlTemplate_TemplatePlaceholderInjection
       | filter child                | someProperty    | //table[@filter='yes']/@someProperty | childProperty | child   | <table name="A" filter="yes" someProperty="Something child"/> | <table name="A" filter="no" someProperty="Bla2"/>            |
       | namespace template          | xb:someProperty | //table/@someProperty                | property      | current | <table name="A" filter="yes" xb:someProperty="something"/>    | <table name="A" filter="no" xb:someProperty="something"/>    |
       | namespace template no value | xb:someProperty | //table/@someProperty                | unknown       | current | <table name="A" filter="yes"/>                                | <table name="A" filter="no"/>                                |
-      # Current XG cannot handle the XPath itself to contain the namespace part, cause the namespace must then be declared. If this would work the previous 2 tests probably need to be discusses whether they also require namespace prefix in the XPath.
-      | namespace prefixed template | xb:someProperty | //table/@xb:someProperty             | property      | current | <table name="A" filter="yes" xb:someProperty="something"/>    | <table name="A" filter="no" xb:someProperty="something"/>    |
+      # @KnownIssue: Current XG cannot handle the XPath itself to contain the namespace part, cause the namespace must then be declared. If this would work the previous 2 tests probably need to be discusses whether they also require namespace prefix in the XPath.
+      | namespace prefixed template @KnownIssue | xb:someProperty | //table/@xb:someProperty             | property      | current | <table name="A" filter="yes" xb:someProperty="something"/>    | <table name="A" filter="no" xb:someProperty="something"/>    |
 
   @KnownIssue this is known not to work   
-  Scenario Outline: Multi namespace <Scenario> template placeholder injection
+  Scenario Outline: Multi namespace <Scenario> template placeholder injection @KnownIssue
   Given I have the following model:
       """
       <?xml version="1.0" encoding="UTF-8"?>

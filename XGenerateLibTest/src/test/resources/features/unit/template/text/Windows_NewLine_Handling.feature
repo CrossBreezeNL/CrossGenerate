@@ -40,7 +40,7 @@ Feature: Unit_Windows_NewLine_Handling
     And an output named "Windows_NewLine_Handling.sql" with contents equal to file: "expected-output-files/Windows_NewLine_Placeholder.sql"
     
   @KnownIssue
-  Scenario: Windows new line in placeholder not-encoded
+  Scenario: Windows new line in placeholder not-encoded @KnownIssue
     Given I have the following model file: "model-files/Windows_NewLine_Placeholder.xml"
     And the following config file: "config-files/Windows_NewLine_Handling.xml" 
     And the following template file: "template-files/Windows_NewLine_Placeholder.sql"

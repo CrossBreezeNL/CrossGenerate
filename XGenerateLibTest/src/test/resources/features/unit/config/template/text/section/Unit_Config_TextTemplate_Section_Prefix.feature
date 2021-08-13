@@ -141,5 +141,5 @@ Feature: Unit_Config_TextTemplate_Section_Prefix
 
   Examples:
     | Scenario      | Prefix              |
-    | without space | &amp;#10;           |
+    | without space @KnownIssue | &amp;#10;           |
     | with space    | &amp;#160;&amp;#10; |
