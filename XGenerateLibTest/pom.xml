@@ -6,7 +6,7 @@
 	<version>2.0.0-SNAPSHOT</version>
 
 	<properties>
-	  <xgenerate.version>2.2.0-SNAPSHOT</xgenerate.version>
+	  <xgenerate.version>3.0.0</xgenerate.version>
 		<cucumber.version>2.4.0</cucumber.version>
 		<junit.version>4.12</junit.version>
 		<saxon.version>9.8.0-8</saxon.version>
