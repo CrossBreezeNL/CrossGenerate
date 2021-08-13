@@ -80,7 +80,7 @@ The destination needs to be set to the template Hub-Sat table.
 ![Destination connection manager](img/hubsat_destination_connection.png)
 
 ###### Mappings
-![Template Destination Mappings](img/hubsat_destination_mapping.png)
+![Template Destination Mappings](img/hubsat_destination_mapping.PNG)
 
 ### Documentation
 For documentation on templates, please see [Template](../../Template).

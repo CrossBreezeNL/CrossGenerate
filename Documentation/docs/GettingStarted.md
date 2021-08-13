@@ -2,10 +2,10 @@
 
 On this wiki you will find all needed documentation to get started with CrossGenerate.
 
-To get an overview of what CrossGenerate is and how it works on a conceptual level, please read the [Overview](./Overview) page.
+To get an overview of what CrossGenerate is and how it works on a conceptual level, please read the [Overview](../Overview) page.
 
 ## Setting up CrossGenerate 
-To read about how to install CrossGenerate see our [Setup guide](./Setup)
+To read about how to install CrossGenerate see our [Setup guide](../Setup)
 
 ## Concepts
 To get an explanation about the different inputs which need to be passed to CrossGenerate in order to generate the desired output, please consult one of the following pages:
