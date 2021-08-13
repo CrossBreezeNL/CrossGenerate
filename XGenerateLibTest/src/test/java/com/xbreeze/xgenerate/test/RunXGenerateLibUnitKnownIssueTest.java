@@ -16,6 +16,6 @@ import cucumber.api.junit.Cucumber;
 		features = "src/test/resources/features",
 		glue = "com.xbreeze.xgenerate.test.steps",
 		plugin = {"pretty", "json:target/cucumber-unit.json"},
-		tags = {"@Unit"}
+		tags = {"@Unit and @KnownIssue"}
 )
-public class RunXGenerateLibUnitTest { }
+public class RunXGenerateLibUnitKnownIssueTest { }

@@ -18,7 +18,6 @@ Feature: Unit_Config_Model_ModelAttributeInjection_WithNamespace
 
       """
 
-  @KnownIssue
   Scenario Outline: Single <Scenario> attribute injection
     Given the following config:
       """
