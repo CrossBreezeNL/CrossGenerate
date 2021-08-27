@@ -1,7 +1,7 @@
 # SQL - Simple Staging example
 
 ## Model
-In this example we will be generating staging tables for each entity defined in the [Source model](../Model/Source_model).
+In this example we will be generating staging tables for each entity defined in the [Source model](../../Model/Source_model).
 
 ## Template
 We create a template for creating a staging table, in the file name we use the 'system_name' placeholder to have the system name in the resulting output file.
@@ -21,7 +21,7 @@ GO
 ```
 
 ### Documentation
-For documentation on templates, please see [Template](../../Template).
+For documentation on templates, please see [Template](../../../Template).
 
 ## Config
 In the config we:
@@ -57,7 +57,7 @@ In the config we:
 ```
 
 ### Documentation
-For documentation on the configuration, please see [Config](../../Config).
+For documentation on the configuration, please see [Config](../../../Config).
 
 ## Output
 When running CrossGenerate the output using the given Model, Template and Config will be as follows:

@@ -1,9 +1,9 @@
 # SQL - DataVault example
 
-In this example we create a DataVault structure. If you haven't done already, please read the [Simple staging example](./Simple_staging) first for a basic explanation of concepts used in the template and config. The tables implemented in this example are used in the [SSIS DataVault example](../Microsoft_SSIS/DataVault).
+In this example we create a DataVault structure. If you haven't done already, please read the [Simple staging example](../Simple_staging) first for a basic explanation of concepts used in the template and config. The tables implemented in this example are used in the [SSIS DataVault example](../../Microsoft_SSIS/DataVault).
 
 ## Model
-In this example we will be generating DataVault tables for each entity and relation defined in the [DWH model](../Model/DWH_model).
+In this example we will be generating DataVault tables for each entity and relation defined in the [DWH model](../../Model/DWH_model).
 
 ## Templates
 For generating DataVault tables we need multiple templates, namely a SQL template file for each table type (Hub, Link, Hub-Sat and Link-Sat) since each table type is a different technical pattern. 
@@ -78,7 +78,7 @@ GO
 ```
 
 ### Documentation
-For documentation on templates, please see [Template](../../Template).
+For documentation on templates, please see [Template](../../../Template).
 
 ## Config
 To generate the DataVault structure we need two configurations, one for the Hub and Hub-Sat tables that binds on entity and one for the Link and Link-Sat tables that binds on relation.
@@ -133,7 +133,7 @@ The config for Link and Link-Sat is similar to the config for Hub and Hub-Sat ta
 
 
 ### Documentation
-For documentation on the configuration, please see [Config](../../Config).
+For documentation on the configuration, please see [Config](../../../Config).
 
 ## Output
 When running CrossGenerate the output using the given Model, Templates and Configs will be as follows:
@@ -271,4 +271,4 @@ GO
 ```
 
 ## Attachments
-The entire DataVault example, including SQL and SSIS templates, can be found in the [SSIS DataVault example](../Microsoft_SSIS/DataVault#attachments).
+The entire DataVault example, including SQL and SSIS templates, can be found in the [SSIS DataVault example](../../Microsoft_SSIS/DataVault#attachments).

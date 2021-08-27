@@ -1,7 +1,7 @@
 # IBM DataStage - Simple staging example
 
 ## Model
-Refer to the [Source model](../Model/Source_model).
+Refer to the [Source model](../../Model/Source_model).
 
 ## Template
 The template consists of the following DataStage job:
@@ -37,7 +37,7 @@ The Columns tab again shows a column attribute_name with a section annotation fo
 [![target2.png](img/target2.png)](img/target2.png)
 
 ### Documentation
-For documentation on templates, please see [Template](../../Template).
+For documentation on templates, please see [Template](../../../Template).
 
 ## Config
 
@@ -148,7 +148,7 @@ As can be seen in the config below, there is a section defined named `Entity` th
 ```
 
 ### Documentation
-For documentation on the configuration, please see [Config](../../Config).
+For documentation on the configuration, please see [Config](../../../Config).
 
 ## Output
 

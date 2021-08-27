@@ -1,7 +1,7 @@
 # Microsoft SSIS - Simple staging example
 
 ## Model
-For this stage package the [Source model](../Model/Source_model) is used.
+For this stage package the [Source model](../../Model/Source_model) is used.
 
 ## Template
 
@@ -76,7 +76,7 @@ In the mappings tab we make sure all columns are mapped. Here the mapping of the
 ![Template Destination Input and Output Properties - Input Columns](img/dest_adv_input_columns.png)
 
 ### Documentation
-For documentation on templates, please see [Template](../../Template).
+For documentation on templates, please see [Template](../../../Template).
 
 
 ## Config
@@ -257,7 +257,7 @@ For each SectionModelBinding, additional placeholders can be specified to access
 ```
 
 ### Documentation
-For documentation on the configuration, please see [Config](../../Config).
+For documentation on the configuration, please see [Config](../../../Config).
 
 ## Output
 When running CrossGenerate the output using the given Model, Template and Config will be the following files:

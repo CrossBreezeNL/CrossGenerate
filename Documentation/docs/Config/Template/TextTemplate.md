@@ -22,7 +22,7 @@
 | Section                          | Description |
 |:---                              |:--- |
 | FileFormat[^2]                   | See [FileFormat](#fileformat) |
-| Output[^2]                       | See [Output](GenericTemplate/#output) |
+| Output[^2]                       | See [Output](../GenericTemplate/#output) |
 | TextSection                      | See [TextSection](#textsection) |
 
 ## FileFormat
@@ -41,14 +41,14 @@
 
 | Parameter                    | Description | Default | Remark |
 |:---                          |:--- |:--- |:--- |
-| ...                          | Click [here](GenericTemplate/#fileformat) to see the generic FileFormat options. |||
+| ...                          | Click [here](../GenericTemplate/#fileformat) to see the generic FileFormat options. |||
 | singleLineCommentPrefix[^1]  | The single line comment prefix. | | | 
 | multiLineCommentPrefix       | The multi-line comment prefix. | | | 
 | multiLineCommentSuffix       | The multi-line comment suffix. | | | 
 
 ## TextSection
 
-The TextSection configuration defines a section in a text template. This can either be defined in the template part of the config or in the template directly. The syntax here is provided for in the configuration, but the same parameters are also available when specifying the section inline in a template using the [TextSection](../Template/Annotation/TextSection) annotation.
+The TextSection configuration defines a section in a text template. This can either be defined in the template part of the config or in the template directly. The syntax here is provided for in the configuration, but the same parameters are also available when specifying the section inline in a template using the [TextSection](../../../Template/Annotation/TextSection) annotation.
 
 ### Syntax
 ``` xml

@@ -1,9 +1,9 @@
 # SQL - Business logic
 
-In this example we create user defined functions implementing business logic. If you haven't done already, please read the [Simple staging example](./Simple_staging) first for a basic explanation of concepts used in the template and config. The functions implemented in this example are used in the [SSIS DataVault example](../Microsoft_SSIS/DataVault).
+In this example we create user defined functions implementing business logic. If you haven't done already, please read the [Simple staging example](../Simple_staging) first for a basic explanation of concepts used in the template and config. The functions implemented in this example are used in the [SSIS DataVault example](../../Microsoft_SSIS/DataVault).
 
 ## Model
-In this example we will be generating the business logic (business rules) defined in the [DWH model](../Model/DWH_model).
+In this example we will be generating the business logic (business rules) defined in the [DWH model](../../Model/DWH_model).
 
 ## Template
 We create a template for each type of business rule. The example model contains two types of rules: a derived field and a lookup.
@@ -66,7 +66,7 @@ GO
 ```
 
 ### Documentation
-For documentation on templates, please see [Template](../../Template).
+For documentation on templates, please see [Template](../../../Template).
 
 ## Config
 Each type of business rule requires it's specific configuration, for this example we therefore have two configs.
@@ -110,7 +110,7 @@ Each type of business rule requires it's specific configuration, for this exampl
 ```
 
 ### Documentation
-For documentation on the configuration, please see [Config](../../Config).
+For documentation on the configuration, please see [Config](../../../Config).
 
 ## Output
 When running CrossGenerate the output using the given Model, Templates and Configs will be as follows:

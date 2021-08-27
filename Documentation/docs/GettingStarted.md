@@ -10,15 +10,15 @@ To read about how to install CrossGenerate see our [Setup guide](../Setup)
 ## Concepts
 To get an explanation about the different inputs which need to be passed to CrossGenerate in order to generate the desired output, please consult one of the following pages:
 
-- [Application](./Application/CommandLine)
-- [Model](./Model)
-- [Template](./Template)
-- [Binding](./Binding)
-- [Config](./Config)
+- [Application](../Application/CommandLine)
+- [Model](../Model)
+- [Template](../Template)
+- [Binding](../Binding)
+- [Config](../Config)
 
 ## Examples
 We have created a set of examples for different scenario's and technologies CrossGenerate is compatible with.
-See our [Examples](./Examples)
+See our [Examples](../Examples)
 
 ## Bugs & issues
 When you encounter an issue while using CrossGenerate please report it by sending an e-mail to [info@x-breeze.com](mailto:info@x-breeze.com?SUBJECT=CrossGenerate%20-%20Bug%20report) with the subject 'CrossGenerate - Bug report'.

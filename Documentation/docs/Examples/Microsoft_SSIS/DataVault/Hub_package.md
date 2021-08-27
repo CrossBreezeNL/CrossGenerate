@@ -1,9 +1,9 @@
 # Microsoft SSIS - DataVault - Hub load package
 
-In this example the Hub load package for the [DataVault](../DataVault) solution is described.
+In this example the Hub load package for the [DataVault](../../DataVault) solution is described.
 
 ## Model
-See [DWH Model](../../Model/DWH_model)
+See [DWH Model](../../../Model/DWH_model)
 
 ## Template
 ### Load_Entity_owner_H_Entity_name.dtsx
@@ -31,7 +31,7 @@ In this example all components are covered that require CrossGenerate specific s
 ##### Source
 
 ###### Connection Manager
-In the connection manager window a SQL statement is constructed that implements the source to target mapping including any business logic that is applied. The functions implementing the business logic are covered in the [Business Logic example](../SQL/Businesslogic). Note that the SQL statement consists of several sections, annotated with the `@XGenTextSection` annotation. The text section functionality of CrossGenerate is nested in an XML template.
+In the connection manager window a SQL statement is constructed that implements the source to target mapping including any business logic that is applied. The functions implementing the business logic are covered in the [Business Logic example](../../../SQL/Businesslogic). Note that the SQL statement consists of several sections, annotated with the `@XGenTextSection` annotation. The text section functionality of CrossGenerate is nested in an XML template.
 
 ![Template Source Connection Manager](img/hub_source_connection.png)
 
@@ -84,7 +84,7 @@ The destination needs to be set to the template Hub table
 ![Template Destination Input and Output Properties - Input Columns](img/hub_destination_input_columns.png)
 
 ### Documentation
-For documentation on templates, please see [Template](../../Template).
+For documentation on templates, please see [Template](../../../../Template).
 
 ## Config
 See config section in [DataVault](./).

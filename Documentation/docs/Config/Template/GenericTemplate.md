@@ -27,7 +27,7 @@ Here the generic template options are described.
 | annotationPrefix             | The prefix for a annotation. | @XGen | | 
 | annotationArgsPrefix         | The prefix for the annotation arguments. | ( | | 
 | annotationArgsSuffix         | The suffix for the annotation arguments. | ) | |
-| ...                          | The template type (Xml or Text) defines the other options, see [XmlTemplate](XmlTemplate/#fileformat) or [TextTemplate](TextTemplate/#fileformat). |||
+| ...                          | The template type (Xml or Text) defines the other options, see [XmlTemplate](../XmlTemplate/#fileformat) or [TextTemplate](../TextTemplate/#fileformat). |||
 
 ### File format types
 The supported file format types are:

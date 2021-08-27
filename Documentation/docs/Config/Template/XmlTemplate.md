@@ -34,7 +34,7 @@
 | Section                          | Description |
 |:---                              |:--- |
 | FileFormat[^2]                   | See [FileFormat](#fileformat) |
-| Output[^2]                       | See [Output](GenericTemplate/#output) |
+| Output[^2]                       | See [Output](../GenericTemplate/#output) |
 | XmlSection                       | See [XmlSection](#xmlsection) |
 | TemplateAttributeInjection       | See [TemplateAttributeInjection](#templateattributeinjection) |
 | TemplateNodeRemoval              | See [TemplateNodeRemoval](#templatenoderemoval) |
@@ -54,8 +54,8 @@
 ### Parameters
 | Parameter                    | Description | Default | Remark |
 |:---                          |:--- |:--- |:--- |
-| ...                          | Click [here](GenericTemplate/#fileformat) to see the generic FileFormat options. |||
-| commentNodeXPath[^1]         | The template comment node XPath, this will be executed on the template and the resulting elements or attributes are inspected for annotations.<br/>The commentNodeXPath expression must be specified relative to the node for which the annotation applies. So for example when the description attribute of an element may contain the annotation the XPath must be '@description'. | | See [XPath](../XPath). | 
+| ...                          | Click [here](../GenericTemplate/#fileformat) to see the generic FileFormat options. |||
+| commentNodeXPath[^1]         | The template comment node XPath, this will be executed on the template and the resulting elements or attributes are inspected for annotations.<br/>The commentNodeXPath expression must be specified relative to the node for which the annotation applies. So for example when the description attribute of an element may contain the annotation the XPath must be '@description'. | | See [XPath](../../XPath). | 
 
 
 ## XmlSection
@@ -78,7 +78,7 @@ The XmlSection configuration defines a section in a XML template. This can eithe
 | name[^1]                   | The name of the section. | | This can only contain a-z, A-Z, 0-9, _ and - characters. |
 | optional[^3]               | Indicates if the section is optional (true/false). | false | Can be used to suppress warnings in case of a reused config, where sections defined in the config do not occur in each template the config is used with. |
 | placeholderName            | An optional override for the placeholderName coming from the SectionModelBinding. | | Can be used to provide a specific placeholder name to use within the section. |
-| templateXPath[^1]          | The XPath which needs to be executed on the template document to get the element which resembles the section element. | | See [XPath](../XPath). |
+| templateXPath[^1]          | The XPath which needs to be executed on the template document to get the element which resembles the section element. | | See [XPath](../../XPath). |
 
 
 ## TemplateAttributeInjection
@@ -95,7 +95,7 @@ The XmlSection configuration defines a section in a XML template. This can eithe
 ### Parameters
 | Parameter                   | Description | Default | Remark |
 |:---                         |:--- |:--- |:--- |
-| templateXPath[^1]           | The XPath for template node where attribute needs to be injected. | | See [XPath](../XPath). |
+| templateXPath[^1]           | The XPath for template node where attribute needs to be injected. | | See [XPath](../../XPath). |
 | attributeName[^1]           | The name of the attribute to inject. | |If the attribute is already present in the template it's value will be overwritten |
 | attributeValue              | Default value for the newly injected attribute. | | |
 
@@ -115,7 +115,7 @@ The TemplateNodeRemoval configuration can be used to remove parts of an XML temp
 ### Parameters
 | Parameter              | Description | Default | Remark |
 |:---                    |:--- |:--- |:--- |
-| templateXPath[^1]      | The XPath to apply on the template to get to the element or attribute which needs to be removed. When the XPath resolves to multiple elements or attributes, all will be removed. | | See [XPath](../XPath). |
+| templateXPath[^1]      | The XPath to apply on the template to get to the element or attribute which needs to be removed. When the XPath resolves to multiple elements or attributes, all will be removed. | | See [XPath](../../XPath). |
 
 
 
@@ -133,7 +133,7 @@ The TemplateNodeRemoval configuration can be used to remove parts of an XML temp
 ### Parameters
 | Parameter              | Description | Default | Remark |
 |:---                    |:--- |:--- |:--- |
-| templateXPath[^1]      | The XPath to evaluate on the template document to find the node on which to inject the placeholder. | | See [XPath](../XPath). |
+| templateXPath[^1]      | The XPath to evaluate on the template document to find the node on which to inject the placeholder. | | See [XPath](../../XPath). |
 | modelNode[^1]          | What node in the model needs to be selected in the placeholder (it will be the right side of the placeholder). | | |
 | scope                  | The template placeholder scope. This is either current or child. | current | |
 
@@ -164,8 +164,8 @@ A XML template can contain elements or attribute which in itself contain a text 
 ### Child sections
 | Section                          | Description |
 |:---                              |:--- |
-| FileFormat[^2]                   | See [FileFormat](TextTemplate/#fileformat) |
-| TextSection                      | See [TextSection](TextTemplate/#textsection) |
+| FileFormat[^2]                   | See [FileFormat](../TextTemplate/#fileformat) |
+| TextSection                      | See [TextSection](../TextTemplate/#textsection) |
 
 [comment]: Footnotes
 [^1]: required parameter
