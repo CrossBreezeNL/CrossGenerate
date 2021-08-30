@@ -69,6 +69,14 @@ nav:
         - 'Simple staging'   : 'Examples/Informatica_PowerCenter/Simple_staging.md'
     - 'IBM DataStage':
         - 'Simple staging'   : 'Examples/IBM_DataStage/Simple_staging.md'
+- Tutorial:
+    - 'Introduction'         : 'Tutorial/index.md'
+    - 'Generate XML model'   : 'Tutorial/GenerateXML.md'
+    - 'Create Config files'  : 'Tutorial/CreateConfigFiles.md'
+    - Create Templates       :
+            - 'Introduction'     : 'Tutorial/CreateTemplates/index.md'
+            - 'Database Project Templates': 'Tutorial/CreateTemplates/DBProjTemplate.md'
+    - 'Create Run files'     : 'Tutorial/CreateRunFile.md'
 
 # Extra
 extra:
