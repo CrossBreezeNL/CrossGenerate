@@ -17,8 +17,7 @@ To get an explanation about the different inputs which need to be passed to Cros
 - [Config](../Config)
 
 ## Examples
-We have created a set of examples for different scenario's and technologies CrossGenerate is compatible with.
-See our [Examples](../Examples)
+This Getting Started section contains some basic examples to illustrate the core concepts of CrossGenerate. For more advanced technology specific examples see our [Examples section](../Examples).
 
 ## Bugs & issues
 When you encounter an issue while using CrossGenerate please report it by sending an e-mail to [info@x-breeze.com](mailto:info@x-breeze.com?SUBJECT=CrossGenerate%20-%20Bug%20report) with the subject 'CrossGenerate - Bug report'.

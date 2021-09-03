@@ -22,8 +22,11 @@ nav:
     - 'Introduction'    : 'index.md'
     - 'Overview'        : 'Overview.md'
     - 'Setup'           : 'Setup.md'
-    - 'Getting started' : 'GettingStarted.md'
     - 'Release notes'   : 'ReleaseNotes.md'
+- Getting started:
+    - 'Overview' : 'GettingStarted/index.md'
+    - 'Hello world': 'GettingStarted/helloworld.md'  
+    - 'Address book': 'GettingStarted/addressbook.md'  
 - Application:
     - 'Command line'         : 'Application/CommandLine.md'
     - 'Application config'   : 'Application/XGenAppConfig.md'
