@@ -2,7 +2,7 @@
 
 This page contains a simple hello world example to get familiar with using CrossGenerate.
 The example illustrates how CrossGenerate combines information from a model and a template to generate output.
-The desired output is a textfile that contains the text 'hello world'.
+The desired output is a text file that contains the text 'hello world'.
 
 The files shown in this example can be [downloaded here](./001_HelloWorld.zip). You need to [download](https://generate.x-breeze.com/download/){target=_blank} CrossGenerate to run the example on your computer.
 
