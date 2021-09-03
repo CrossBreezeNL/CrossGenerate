@@ -18,15 +18,3 @@ To get an explanation about the different inputs which need to be passed to Cros
 
 ## Examples
 This Getting Started section contains some basic examples to illustrate the core concepts of CrossGenerate. For more advanced technology specific examples see our [Examples section](../Examples).
-
-## Bugs & issues
-When you encounter an issue while using CrossGenerate please report it by sending an e-mail to [info@x-breeze.com](mailto:info@x-breeze.com?SUBJECT=CrossGenerate%20-%20Bug%20report) with the subject 'CrossGenerate - Bug report'.
-
-Please provide the following information:
-
-- Steps to reproduce
-    - If possible, including the used model, glue and template.
-- Expected behaviour
-- CrossBreeze version used
-- Impact on your business
-    - This so we can set the priority and severity.

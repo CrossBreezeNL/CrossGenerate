@@ -24,7 +24,7 @@ nav:
     - 'Setup'           : 'Setup.md'
     - 'Release notes'   : 'ReleaseNotes.md'
 - Getting started:
-    - 'Overview' : 'GettingStarted/index.md'
+    - 'Introduction' : 'GettingStarted/index.md'
     - 'Hello world': 'GettingStarted/helloworld.md'  
     - 'Address book': 'GettingStarted/addressbook.md'  
 - Application:
