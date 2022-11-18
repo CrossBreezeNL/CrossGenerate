@@ -40,7 +40,7 @@ Feature: Unit_CommandLine_Logging
        </App>
       </XGenAppConfig>
       """
-    And the log destination directory "C:\CrossGenerate\Test\Log" is empty.
+    And the directory "C:\CrossGenerate\Test\Log" is empty.
 
   Scenario: No logging from commandline
     When I run the generator
@@ -59,7 +59,7 @@ Feature: Unit_CommandLine_Logging
   Scenario Outline: file logging from commandline, scenario <Scenario>
     Given the following additional comma separated commandline arguments:
       """
-      -Debug, true, -<FileLogLevelParam>, <FileLogLevelParamValue>, -<FileLogDestinationParam>, C:\\CrossGenerate\\Test\\Log\\testlog.log
+      -Debug, true, -<FileLogLevelParam>, <FileLogLevelParamValue>, -<FileLogDestinationParam>, C:\CrossGenerate\Test\Log\testlog.log
       """
     When I run the generator
     Then I expect 1 generation result

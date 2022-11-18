@@ -24,6 +24,7 @@
  *******************************************************************************/
 package com.xbreeze.xgenerate.generator;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
@@ -39,6 +40,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
+import org.apache.commons.io.FileUtils;
 
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.config.app.XGenAppConfig;
@@ -182,6 +185,17 @@ public class XGenerateStarter extends GenerationObserverSource {
 			// If the file log destination is set, create a file handler.
 			if (fileLogDestination != null && fileLogDestination.length() > 0) {
 				try {
+					
+					//Create log file destination folder path, including non-existing parent directories, if it does not exist yet.
+					File fileLogDestinationPath = new File(fileLogDestination).getParentFile();
+					if (fileLogDestinationPath.exists() == false) {
+						try {
+							FileUtils.forceMkdir(fileLogDestinationPath);
+						} catch (IOException e) {
+							throw new GeneratorException(String.format("Error creating logfile destination path: %s", e.getMessage()));
+						}
+					}
+					
 					// Create the file handler for the file logger.
 					FileHandler fh = new FileHandler(fileLogDestination, true);
 					if (fileLogLevel != null) {
