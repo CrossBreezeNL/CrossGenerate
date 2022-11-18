@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -50,10 +51,16 @@ public class XGenerateTestSteps {
 		this.modelContent = modelContent;
 	}
 	
-	@And("^the log destination directory \\\"(.*)\\\" is empty.$")
-	public void theLogDestinationFolderIsEmpty(String logFolder) {		
-		this.logFolderName = Paths.get(logFolder).toUri();
+	@And("^the log destination directory is empty.$")
+	public void theLogDestinationDirectoryIsEmpty() throws Throwable {
+		emptyFolder(this.logFolderName);
 	}
+	
+	@And("^the directory \\\"(.*)\\\" is empty.$")
+	public void theDirectoryIsEmpty(String folderPath) throws Throwable {
+		emptyFolder(pathToURI(folderPath));
+	}
+	
 	
 	@And("^the following template named \"(.*)\":$")
 	public void theFollowingTemplateNamed(String templateName, String templateContent) throws Throwable {	
@@ -77,8 +84,27 @@ public class XGenerateTestSteps {
 		//Strip single and double quotes
 		//Split string on comma
 		String[] cmdLineArgs = commandLineArgs.replace("\"", "").replaceAll("'", "").split(",");
+		
+		boolean setLogFilePathOnNextArgument = false;
+		
 		for (int i = 0; i < cmdLineArgs.length;i++) {
-			this.commandLineArgs.add(cmdLineArgs[i].trim());
+			String cmdLineArgument = cmdLineArgs[i].trim();
+			this.commandLineArgs.add(cmdLineArgument);
+			
+			//If the boolean setLogFilePathOnNextArgument has been set to true in the previous iteration,
+			//This parameter should contain the log file path. Store it in the logFolderName attribute.
+			//Also change the boolean to false to avoid rewriting this attribute.
+			if(setLogFilePathOnNextArgument == true){
+				this.logFolderName = pathToURI(new File(cmdLineArgument).getParentFile().toString());
+				setLogFilePathOnNextArgument = false;
+			}
+			
+			//If this parameter is filelogdestination or fld, then the next parameter should be the log file path
+			//set a boolean, so the next iteration will store this path.
+			if(cmdLineArgument.equalsIgnoreCase("-filelogdestination") || cmdLineArgument.equalsIgnoreCase("-fld")) {
+				setLogFilePathOnNextArgument = true;
+			}
+			
 		}		
 	}
 	
@@ -99,19 +125,15 @@ public class XGenerateTestSteps {
 		//Get AppConfig object		
 		AppConfig appConfig = XGenAppConfig.fromString(this.appConfigContent).getAppConfig();
 		
-		
-		URI templateFolder = new URI("file:///" + appConfig.getTemplateFolder().replace("\\", "/"));
-		URI configFolder = new URI("file:///" + appConfig.getConfigFolder().replace("\\", "/"));
-		URI modelFolder = new URI("file:///" + appConfig.getModelFolder().replace("\\", "/"));
-		
+		URI templateFolder = pathToURI(appConfig.getTemplateFolder());
+		URI configFolder = pathToURI(appConfig.getConfigFolder());
+		URI modelFolder = pathToURI(appConfig.getModelFolder());
 		
 		//Save output folder name for later use during output verification
-		this.outputFolderName = new URI("file:///" + appConfig.getOutputFolder().replace("\\", "/"));
+		this.outputFolderName = pathToURI(appConfig.getOutputFolder());
 		
-		//Remove all files from the output and log folder
-		FileUtils.cleanDirectory(new File(this.outputFolderName));
-		FileUtils.cleanDirectory(new File(this.logFolderName));
-
+		//Remove all files from the output folder
+		emptyFolder(this.outputFolderName);
 				
 		//Save the template, config and model files to appropriate locations found in config
 		String modelFileName = this.writeToFile(modelFolder, "model_", ".xml", this.modelContent);
@@ -153,16 +175,34 @@ public class XGenerateTestSteps {
 	
 	@Then("^no log file$")
 	public void andNoLogFile() throws Throwable {
-		File logDir = new File(this.logFolderName);
-		int nrOfLogFiles = logDir.listFiles().length;
+		//
+		int nrOfLogFiles = 0;
+		
+		// If there is a logFolder name set, 
+		// count the files in that folder.
+		if (this.logFolderName != null) {
+			File logDir = new File(this.logFolderName);
+			nrOfLogFiles = logDir.listFiles().length;
+		}
+	
 		//Assume no logfile was created
 		assertEquals(String.format("The expected number of log files is 0, found %s logfiles", nrOfLogFiles), 0, nrOfLogFiles);		
 	}
 	
 	@Then("^a log file containing \"(.*)\" but not containing \"(.*)\"$")
 	public void andALogContaining(String textExpected, String textNotExpected) throws Throwable {
-		File logDir = new File(this.logFolderName);
-		int nrOfLogFiles = logDir.listFiles().length;
+		
+		int nrOfLogFiles;
+		File logDir = null;
+		
+		try {
+			logDir = new File(this.logFolderName);
+			nrOfLogFiles = logDir.listFiles().length;
+		}
+		catch(NullPointerException e){
+			nrOfLogFiles = 0;
+		}
+
 		//Assume only one logfile was created
 		assertEquals(String.format("The expected number of log files is 1, found %s logfiles", nrOfLogFiles), 1, nrOfLogFiles);
 		
@@ -198,13 +238,37 @@ public class XGenerateTestSteps {
 		//Read file into stringbuffer
 		String actualContent = new String(Files.readAllBytes(Paths.get(fileName)));
 		return actualContent.contains(textToFind);
-						
 	}
 	
 	private Boolean findTextInString(String content, String textToFind) throws Throwable {
 		return content.contains(textToFind);
 	}
 		
+	// Create a URI from a provided string path
+	private URI pathToURI(String stringPath) throws Throwable{
+		try {
+			return new URI("file:///" + stringPath.replace("\\", "/"));
+		}
+		catch(URISyntaxException e){
+			System.out.println("Provided string path could not be parsed into an URI!");
+			throw e;
+		}
+	}
+	
+	// Clean a folder and handle the exceptions to avoid duplicate code on exception handling.
+	private void emptyFolder(URI folderPath) throws Throwable {
+		try {
+			FileUtils.cleanDirectory(new File(folderPath));
+		}
+		catch(IOException e){
+			System.out.println("Delete of the folder content failed!");
+			throw e;
+		}
+		catch(IllegalArgumentException e){
+			System.out.println("Illegal folder path provided!");
+			throw e;
+		}
+	}
 }
 
 

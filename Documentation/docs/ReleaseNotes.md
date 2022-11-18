@@ -22,6 +22,12 @@ Click on the header of a version number to go to the documentation of that speci
 
 ## [Version 3.0](../3.0/)
 
+- [ ] 3.0.1 <sup>18-11-2022</sup>
+>
+> !!! warning "Bug fixes"
+>     * [ ] Commandline options
+>         * [X] Fixed creation of the log folder path specified with the -FileLogDestination or -fld option, if it does not exist yet.
+
 - [ ] 3.0.0 <sup>13-08-2021</sup>
 >
 > !!! success "New features"
