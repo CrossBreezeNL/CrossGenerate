@@ -1,7 +1,9 @@
 # Generate XML model
+
 In this tutorial we will use a source-database with two tables Customer and Order. First you need to create the database and fill it and then we will generate XML-file of the source data model based on the source-database structure.
 
 ## Create the source-database 
+
 Run the flowing SQL script to create the source-database and its tables and to fill the tables with some records.
 
 ``` sql
@@ -141,8 +143,9 @@ GO
 ```
 
 ## Generate XML-file
+
 To generate the XML-file based on the database you will need to use the system views of the Information_Schema. To generate the xml file from our source database, connect to the source-database in SQL Server management Studio and execute the following SQL-script. 
-Note: to save the query-result in XML-file you can use CTRL+Shift+F before executing the SQL-script. Then, after executing the script SSMS will ask you to choose the directory in which you will want to save your XML-file. 
+Note: to save the query-result in XML-file you can use CTRL+Shift+F before executing the SQL-script. Then, after executing the script SSMS will ask you to choose the directory in which you will want to save your XML-file.
 
 ```sql
 SELECT (select 'Example_source' as "@name",
@@ -194,4 +197,5 @@ SELECT (select 'Example_source' as "@name",
         for XML path('table'), TYPE) as "tables"
     for XML path('database'), Type ) 
 ```
+
 This query should return an XML text that can be copied and saved in an XML-file for later use in the following steps.

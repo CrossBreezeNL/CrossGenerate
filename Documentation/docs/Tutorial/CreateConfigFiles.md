@@ -1,5 +1,6 @@
 # Create the config file
-After that we generated our XML-file, we can use it as input in , X-generate, our generator to generate the database project and the SSIS project. So now you should crate config-files to configure the annotations of X-generate that will be used later in our templates. in This tutorial we need to create the following config files:
+
+After we generated our model-file, we can use it as input for CrossGenerate to generate the database project and the SSIS project. For this we create CrossGenerate config-files to configure the annotations in the template which will be used later in our templates. in this tutorial we need to create the following config files:
 
 - sql_entity
 - sql_system
@@ -8,6 +9,7 @@ After that we generated our XML-file, we can use it as input in , X-generate, ou
 - system_text
 
 ## sql_entity.xml
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <XGenConfig>
@@ -55,6 +57,7 @@ After that we generated our XML-file, we can use it as input in , X-generate, ou
 ```
 
 ## system.xml
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <XGenConfig>
@@ -88,5 +91,6 @@ After that we generated our XML-file, we can use it as input in , X-generate, ou
 ## Attachments
 The entire tutorial, including all config-files and templates, can be found in the following zip file:
 
-- [Tutorial.zip](CrossGenerate_Tutorial.zip).
-Note: To view all config-files of this tutorial, move to the folder Config.
+- [Tutorial.zip](CrossGenerate_Tutorial.zip)
+
+Note: The config files can be found in the 'Config' folder in the attachment.
