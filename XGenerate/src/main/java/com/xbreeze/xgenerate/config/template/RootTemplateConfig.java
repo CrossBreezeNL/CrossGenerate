@@ -24,8 +24,8 @@
  *******************************************************************************/
 package com.xbreeze.xgenerate.config.template;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;

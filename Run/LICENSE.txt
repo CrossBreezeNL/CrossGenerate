@@ -1,6 +1,6 @@
 CrossGenerate is developed and maintained by CrossBreeze.
-CrossGenerate is licensed by CrossBreeze. For running CrossGenerate you will need a license token, which you can request from CrossBreeze.
+CrossTest is licensed under the GNU Lesser General Public License.
 
 Copyright CrossBreeze
 
-http://x-generate.nl
+https://www.gnu.org/copyleft/lesser.html

@@ -24,7 +24,7 @@
  *******************************************************************************/
 package com.xbreeze.xgenerate.config.app;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 
 /**
  * The App part of the CrossGenerate configuration.

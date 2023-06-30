@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>CrossBreeze.CrossGenerate</id>
-    <version>2.6.0</version>
+    <version>3.1.0</version>
     <title>CrossGenerate</title>
     <authors>CrossBreeze</authors>
     <owners>CrossBreeze</owners>
@@ -15,8 +15,8 @@
 CrossGenerate generates software using:
 - Any model that can be exported to XML
 - Templates developed in well known ETL and DB tools</description>
-    <releaseNotes>Initial version.</releaseNotes>
-    <copyright>Copyright CrossBreeze 2019</copyright>
+    <releaseNotes>Dependency updates</releaseNotes>
+    <copyright>Copyright CrossBreeze 2023</copyright>
     <tags>Development Automation Generate Database DWH BI SQL T-SQL SSIS SSAS MDX DAX ETL DDL</tags>
   </metadata>
   <files>

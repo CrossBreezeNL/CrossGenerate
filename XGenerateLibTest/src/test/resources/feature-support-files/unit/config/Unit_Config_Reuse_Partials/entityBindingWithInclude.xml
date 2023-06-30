@@ -2,7 +2,7 @@
 <SectionModelBinding section="Template" modelXPath ="/system" placeholderName="system"  xmlns:xi="http://www.w3.org/2001/XInclude">
 	<SectionModelBinding section="Tables" modelXPath="./entities/entity" placeholderName="table">
 		<Placeholders>
-			<xi:include href="C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateLibTest\src\test\resources\feature-support-files\unit\config\Unit_Config_Reuse_Partials\sub-configs\placeholders.xml"/>			
+			<xi:include href="C:\git\CrossBreeze\CrossGenerateJava\CrossGenerateJava\XGenerateLibTest\src\test\resources\feature-support-files\unit\config\Unit_Config_Reuse_Partials\sub-configs\placeholders.xml"/>			
 		</Placeholders>
 	</SectionModelBinding>
  </SectionModelBinding>

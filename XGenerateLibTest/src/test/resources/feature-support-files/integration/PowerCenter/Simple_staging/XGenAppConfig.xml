@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <XGenAppConfig>
     <App>
-        <ConfigFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateLibTest\src\test\resources\feature-support-files\integration\PowerCenter\Simple_staging\config-files</ConfigFolder>
-        <ModelFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateLibTest\src\test\resources\feature-support-files\common\</ModelFolder>
+        <ConfigFolder>C:\git\CrossBreeze\CrossGenerateJava\CrossGenerateJava\XGenerateLibTest\src\test\resources\feature-support-files\integration\PowerCenter\Simple_staging\config-files</ConfigFolder>
+        <ModelFolder>C:\git\CrossBreeze\CrossGenerateJava\CrossGenerateJava\XGenerateLibTest\src\test\resources\feature-support-files\common\</ModelFolder>
         <OutputFolder>C:\CrossGenerate\Output\INFA</OutputFolder>
-        <TemplateFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateLibTest\src\test\resources\feature-support-files\integration\PowerCenter\Simple_staging\template-files</TemplateFolder>
+        <TemplateFolder>C:\git\CrossBreeze\CrossGenerateJava\CrossGenerateJava\XGenerateLibTest\src\test\resources\feature-support-files\integration\PowerCenter\Simple_staging\template-files</TemplateFolder>
     </App>
     <License>
         <ContractId>0</ContractId>
