@@ -1,8 +1,8 @@
 package com.xbreeze.xgenerate.test.steps;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URI;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Filter;
@@ -21,6 +22,7 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.http.client.utils.URIBuilder;
+
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.generator.GenerationResult;
@@ -32,13 +34,13 @@ import com.xbreeze.xgenerate.model.Model;
 import com.xbreeze.xgenerate.template.RawTemplate;
 import com.xbreeze.xgenerate.test.util.CapturedConsolePrintStream;
 
-import cucumber.api.Scenario;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class XGenerateLibTestSteps {
 	private final URI _outputFolderUri = URI.create("file:///C:/CrossGenerate/Output/");
@@ -58,7 +60,7 @@ public class XGenerateLibTestSteps {
 	private PrintStream stdErr;
 	
 	@Before
-	public void beforeScenario(Scenario scenario) {
+	public void beforeScenario(Scenario scenario) throws Exception {
 		
 		//Create a arraybuffer and capturedConsolePrintStreams for out and err printstreams
 		baos = new ByteArrayOutputStream();
@@ -109,11 +111,17 @@ public class XGenerateLibTestSteps {
 		});
 		logger.addHandler(outputConsoleHandler);
 		
+		// Get the class loader.
+		final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		// Get the feature-file location.
+		String featureFileLocation = loader.getResource(scenario.getUri().getRawSchemeSpecificPart()).toString();
+		logger.info(String.format("Feature file location: '%s'.", featureFileLocation));
+		
 		// Set the feature support file location using the scenario location.
-		// The support file location is the same as the feature file location, but without the .feature extention and the directory 'features' is replaced with 'feature-support-files'.
-		String derivedFeatureSupportFileLocation = scenario.getUri().replaceFirst("features", "feature-support-files").replace(".feature", "");
+		// The support file location is the same as the feature file location, but without the .feature extension and the directory 'features' is replaced with 'feature-support-files'.
+		String derivedFeatureSupportFileLocation = featureFileLocation.replaceFirst("features", "feature-support-files").replace(".feature", "");
 		logger.info(String.format("The feature-support-file location will be set to '%s'.", derivedFeatureSupportFileLocation));
-		_featureSupportFilesLocation = Paths.get(derivedFeatureSupportFileLocation).toUri();
+		_featureSupportFilesLocation = URI.create(derivedFeatureSupportFileLocation);
 		
 		//Clear the exception variable
 		this.generatorException = null;
@@ -208,15 +216,15 @@ public class XGenerateLibTestSteps {
 		int actualNrOfResults = this._generationResults.getGenerationResults().size();
 		// Assume the expected number equals the actual number.
 		assertEquals(
-				String.format("The expected number of results is then the actual (%s : %s)", expectedNrOfResults, actualNrOfResults),
 				expectedNrOfResults,
-				actualNrOfResults
+				actualNrOfResults,
+				String.format("The expected number of results is then the actual (%s : %s)", expectedNrOfResults, actualNrOfResults)
 		);	
 	}
 	
 	@Then("^I expect the following error message:$")
 	public void iExpectTheFollowingErrorMessage(String errorMessage) throws Throwable {
-		assertNotNull("There is no exception thrown", this.generatorException);
+		assertNotNull(this.generatorException, "There is no exception thrown");
 		assertEquals(errorMessage, this.generatorException.getMessage());
 		
 		
@@ -225,7 +233,7 @@ public class XGenerateLibTestSteps {
 	@Then("^I expect the following console message:$")
 	public void iExpectTheFollowingLogMessage(String logMessage) throws Throwable {
 		String logOutput = this.baos.toString();
-		assertTrue(String.format("Log entry containing %s is not found", logMessage), logOutput.contains(logMessage));
+		assertTrue(logOutput.contains(logMessage), String.format("Log entry containing %s is not found", logMessage));
 	}
 	
 	@Then("^an output named \"(.*)\" with contents equal to file: \"(.*)\"$")
@@ -233,7 +241,7 @@ public class XGenerateLibTestSteps {
 		checkForError();
 		//Open the expected output file and read to string
 		FileInputStream fis = new FileInputStream(Paths.get(resolveSupportFile(expectedOutputFileUri)).toFile());
-		BOMInputStream bomInputStream = new BOMInputStream(fis);		
+		BOMInputStream bomInputStream = BOMInputStream.builder().setInputStream(fis).get();		
 		String expectedResultContent = IOUtils.toString(bomInputStream, bomInputStream.getBOMCharsetName());
 		this.compareActualAndExpectedOutput(outputName, expectedResultContent);
 	}
@@ -250,9 +258,9 @@ public class XGenerateLibTestSteps {
 			if (generationResult.getOutputFileLocation() != null && uriEncode(outputName).equals(generationResult.getOutputFileLocation())) {
 				outputFound = true;
 				assertEquals(
-						"The expected and actual result content is different",
 						expectedResultContent,
-						generationResult.getOutputFileContent()
+						generationResult.getOutputFileContent(),
+						"The expected and actual result content is different"
 				);
 				//Break out of for loop when result is found
 				break;
@@ -260,13 +268,13 @@ public class XGenerateLibTestSteps {
 		}
 		//Assume the output with given name was found
 		assertTrue(
-			"The expected result with name " + outputName + " was not found in the actual results",				
-			outputFound
+			outputFound,
+			"The expected result with name " + outputName + " was not found in the actual results"				
 		);		
 	}
 	
 	private URI resolveSupportFile(String relativeFileLocation) {
-		return this._featureSupportFilesLocation.resolve(relativeFileLocation);
+		return Path.of(this._featureSupportFilesLocation).resolve(relativeFileLocation).toUri();
 	}
 	
 	private String uriEncode(String uriPart) {

@@ -1,8 +1,8 @@
 package com.xbreeze.xgenerate.test.steps;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -21,11 +21,11 @@ import com.xbreeze.xgenerate.config.app.XGenAppConfig;
 import com.xbreeze.xgenerate.generator.XGenerateStarter;
 import com.xbreeze.xgenerate.test.util.CapturedConsolePrintStream;
 
-import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class XGenerateTestSteps {
 	
@@ -167,9 +167,9 @@ public class XGenerateTestSteps {
 		int actualNrOfResults = new File(this.outputFolderName).listFiles().length;
 		// Assume the expected number equals the actual number.
 		assertEquals(
-				String.format("The expected number of results is then the actual (%s : %s)", expectedNrOfResults, actualNrOfResults),
 				expectedNrOfResults,
-				actualNrOfResults
+				actualNrOfResults,
+				String.format("The expected number of results is then the actual (%s : %s)", expectedNrOfResults, actualNrOfResults)
 		);	
 	}
 	
@@ -186,7 +186,7 @@ public class XGenerateTestSteps {
 		}
 	
 		//Assume no logfile was created
-		assertEquals(String.format("The expected number of log files is 0, found %s logfiles", nrOfLogFiles), 0, nrOfLogFiles);		
+		assertEquals(0, nrOfLogFiles, String.format("The expected number of log files is 0, found %s logfiles", nrOfLogFiles));		
 	}
 	
 	@Then("^a log file containing \"(.*)\" but not containing \"(.*)\"$")
@@ -204,15 +204,15 @@ public class XGenerateTestSteps {
 		}
 
 		//Assume only one logfile was created
-		assertEquals(String.format("The expected number of log files is 1, found %s logfiles", nrOfLogFiles), 1, nrOfLogFiles);
+		assertEquals(1, nrOfLogFiles, String.format("The expected number of log files is 1, found %s logfiles", nrOfLogFiles));
 		
 		//Check for expected content
 		Boolean found = this.findTextInLog(logDir.listFiles()[0].getAbsolutePath(), textExpected);
-		assertTrue(String.format("Did not found %s in log file while expected", textExpected), found);
+		assertTrue(found, String.format("Did not found %s in log file while expected", textExpected));
 		
 		//Check for unexpected content		
 		found = this.findTextInLog(logDir.listFiles()[0].getAbsolutePath(), textNotExpected);
-		assertFalse(String.format("Found %s in log file while not expected", textNotExpected), found);
+		assertFalse(found, String.format("Found %s in log file while not expected", textNotExpected));
 	}
 	
 	@Then("^a console output containing \"(.*)\" but not containing \"(.*)\"$")
@@ -220,11 +220,11 @@ public class XGenerateTestSteps {
 		
 		//Check for expected content
 		Boolean found = this.findTextInString(baos.toString(), textExpected);
-		assertTrue(String.format("Did not found %s in console output while expected", textExpected), found);
+		assertTrue(found, String.format("Did not found %s in console output while expected", textExpected));
 		
 		//Check for unexpected content		
 		found = this.findTextInString(baos.toString(), textNotExpected);
-		assertFalse(String.format("Found %s in console output while not expected", textNotExpected), found);		
+		assertFalse(found, String.format("Found %s in console output while not expected", textNotExpected));		
 	}	
 	
 	private String writeToFile(URI location, String filePrefix, String fileSuffix, String fileContents) throws IOException {

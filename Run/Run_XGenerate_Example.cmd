@@ -12,7 +12,7 @@ REM  - Config     : ExampleSQLConfig
 %xgenerate% ^
  -config .\XGenerateCfg.xml ^
  -ps true ^
- -mtc ExampleModel.xml::sql/Staging_Tables_system_name.sql::ExampleSQLConfig.xml
+ -mtc model_1.xml::Unit_Config_Template_OutputType_table_name.txt1::config_1.xml
 
 echo.
 pause

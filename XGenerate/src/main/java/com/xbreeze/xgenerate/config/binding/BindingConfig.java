@@ -24,7 +24,7 @@
  *******************************************************************************/
 package com.xbreeze.xgenerate.config.binding;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlAttribute;
 
 /**
  * The Binding part of the CrossGenerate configuration.

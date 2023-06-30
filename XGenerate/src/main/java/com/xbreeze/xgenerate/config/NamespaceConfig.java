@@ -24,8 +24,8 @@
  *******************************************************************************/
 package com.xbreeze.xgenerate.config;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlType;
 
 /**
  * A namespace existing in the model that is needed to perform XSLT on the model.

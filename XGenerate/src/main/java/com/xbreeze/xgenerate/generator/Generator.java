@@ -33,7 +33,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.io.FileUtils;

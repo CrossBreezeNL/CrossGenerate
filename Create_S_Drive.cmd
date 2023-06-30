@@ -1,1 +1,1 @@
-subst S: C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate
+subst S: C:\git\CrossBreeze\CrossGenerateJava\CrossGenerateJava

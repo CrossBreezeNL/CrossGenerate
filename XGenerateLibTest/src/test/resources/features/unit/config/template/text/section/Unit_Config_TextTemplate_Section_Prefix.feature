@@ -106,7 +106,7 @@ Feature: Unit_Config_TextTemplate_Section_Prefix
       | allButLast  | /** not last */  | /** not last */FirstColumn | /** not last */SecondColumn  | ThirdColumn                 |
       | all         | /** all */       | /** all */FirstColumn      | /** all */SecondColumn       | /** all */ThirdColumn       |
 
-  # For some reason only a new line (&#10; or &#xa;) will not be outputted, but in combination with a space (&#160;) is will.
+  # For some reason only a new line (&#10; or &#xa;) will not be outputted, but in combination with a space (&#160;) it will.
   @KnownIssue
   Scenario Outline: Section with whitespace prefix single line <Scenario>
     And the following config:

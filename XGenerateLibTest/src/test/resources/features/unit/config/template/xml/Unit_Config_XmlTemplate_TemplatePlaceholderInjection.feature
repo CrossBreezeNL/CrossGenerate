@@ -2,7 +2,7 @@
 Feature: Unit_Config_XmlTemplate_TemplatePlaceholderInjection
   In this feature we will describe the TemplatePlaceholderInjection feature in the template config.
 
-  @KnownIssue See scenario examples.
+  @KnownIssue # See scenario examples.
   Scenario Outline: Single <Scenario> template placeholder injection
     Given I have the following model:
       """
@@ -56,10 +56,10 @@ Feature: Unit_Config_XmlTemplate_TemplatePlaceholderInjection
       | filter child                | someProperty    | //table[@filter='yes']/@someProperty | childProperty | child   | <table name="A" filter="yes" someProperty="Something child"/> | <table name="A" filter="no" someProperty="Bla2"/>            |
       | namespace template          | xb:someProperty | //table/@someProperty                | property      | current | <table name="A" filter="yes" xb:someProperty="something"/>    | <table name="A" filter="no" xb:someProperty="something"/>    |
       | namespace template no value | xb:someProperty | //table/@someProperty                | unknown       | current | <table name="A" filter="yes"/>                                | <table name="A" filter="no"/>                                |
-      # @KnownIssue: Current XG cannot handle the XPath itself to contain the namespace part, cause the namespace must then be declared. If this would work the previous 2 tests probably need to be discusses whether they also require namespace prefix in the XPath.
+      # @KnownIssue # Current XG cannot handle the XPath itself to contain the namespace part, cause the namespace must then be declared. If this would work the previous 2 tests probably need to be discusses whether they also require namespace prefix in the XPath.
       | namespace prefixed template @KnownIssue | xb:someProperty | //table/@xb:someProperty             | property      | current | <table name="A" filter="yes" xb:someProperty="something"/>    | <table name="A" filter="no" xb:someProperty="something"/>    |
 
-  @KnownIssue this is known not to work   
+  @KnownIssue # this is known not to work   
   Scenario Outline: Multi namespace <Scenario> template placeholder injection @KnownIssue
   Given I have the following model:
       """

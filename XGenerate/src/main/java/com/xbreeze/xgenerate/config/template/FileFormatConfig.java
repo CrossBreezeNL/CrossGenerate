@@ -24,7 +24,7 @@
  *******************************************************************************/
 package com.xbreeze.xgenerate.config.template;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlAttribute;
 
 /**
  * The FileFormat represents the configuration of the template its file format.

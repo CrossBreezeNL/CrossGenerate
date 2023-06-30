@@ -33,10 +33,10 @@ Feature: Unit_CommandLine_Logging
       <?xml version="1.0" encoding="utf-8"?>
       <XGenAppConfig>
        <App>
-         <ConfigFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateTest\src\test\resources\feature-support-files\Config\</ConfigFolder>
-         <ModelFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateTest\src\test\resources\feature-support-files\Model\</ModelFolder>
+         <ConfigFolder>C:\git\CrossBreeze\CrossGenerateJava\CrossGenerateJava\XGenerateTest\src\test\resources\feature-support-files\Config\</ConfigFolder>
+         <ModelFolder>C:\git\CrossBreeze\CrossGenerateJava\CrossGenerateJava\XGenerateTest\src\test\resources\feature-support-files\Model\</ModelFolder>
          <OutputFolder>C:\CrossGenerate\Test\Output\</OutputFolder>
-         <TemplateFolder>C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\XGenerateTest\src\test\resources\feature-support-files\Template\</TemplateFolder>
+         <TemplateFolder>C:\git\CrossBreeze\CrossGenerateJava\CrossGenerateJava\XGenerateTest\src\test\resources\feature-support-files\Template\</TemplateFolder>
        </App>
       </XGenAppConfig>
       """

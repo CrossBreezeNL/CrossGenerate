@@ -24,7 +24,7 @@
  *******************************************************************************/
 package com.xbreeze.xgenerate.template.annotation;
 
-import javax.xml.bind.annotation.XmlEnum;
+import jakarta.xml.bind.annotation.XmlEnum;
 
 /**
  * The scope in the placeholder injection defines at what level placeholder will be resolved.
