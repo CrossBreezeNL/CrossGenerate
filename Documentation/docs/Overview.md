@@ -6,9 +6,9 @@ For this the following three inputs need to be provided to CrossGenerate:
 
 | Input                  | Description |
 |:---                    |:---         |
-| [Model](./Model)[^1]       | Specifying the functional specification of the software to be generated. |
-| [Template](./Template)[^1] | Specifying a technical pattern that needs to be applied to parts of the model. |
-| [Config](./Config)[^1]     | Specifying how the model and template need to be combined for the desired result. |
+| [Model](../Model)[^1]       | Specifying the functional specification of the software to be generated. |
+| [Template](../Template)[^1] | Specifying a technical pattern that needs to be applied to parts of the model. |
+| [Config](../Config)[^1]     | Specifying how the model and template need to be combined for the desired result. |
 
 ## Features
 What distinguishes CrossGenerate from other automation products is that:

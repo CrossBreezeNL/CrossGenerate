@@ -1,8 +1,8 @@
 # Microsoft SSIS - DataVault - Master package
-In this example the master package for the [DataVault](../DataVault) solution is described.
+In this example the master package for the [DataVault](../../DataVault) solution is described.
 
 ## Model
-See [DWH Model](../../Model/DWH_model).
+See [DWH Model](../../../Model/DWH_model).
 
 ## Template
 ### Load_DWH_DataVault.dtsx
@@ -23,7 +23,7 @@ Each execute package task refers to one of the template packages, for instance t
 ![Execute Package Task](img/master_execute_package_link.png)
 
 ### Documentation
-For documentation on templates, please see [Template](../../Template).
+For documentation on templates, please see [Template](../../../../Template).
 
 ## Config
 For generating a master package less config is needed when compared to generating Hub and Hub-Sat packages. This is due to the fact that less information from the model is needed to generate the master package. As can be seen in the config below we:

@@ -1,7 +1,7 @@
 # PowerCenter - Simple staging example
 
 ## Model
-For this example the [Source model](../Model/Source_model) is used as a model input.
+For this example the [Source model](../../Model/Source_model) is used as a model input.
 
 ## Template
 As a template a simple mapping is created that copies the data from source to stage table, adding only a stagedatetime field populated with the session start time.
@@ -92,7 +92,7 @@ Now the template mapping is created in PowerDesigner. In order to use it with Cr
 ```
 
 ### Documentation
-For documentation on templates, please see [Template](../../Template).
+For documentation on templates, please see [Template](../../../Template).
 
 
 ## Config
@@ -256,11 +256,11 @@ This is done through the config since connectors cannot be annotated with a sect
 ```
 
 ### Documentation
-For documentation on the configuration, please see [Config](../../Config).
+For documentation on the configuration, please see [Config](../../../Config).
 
 
 ## Output
 When running CrossGenerate with the given model, template and config an XML file is generated that contains source and target definitions and mappings for the Order and Customer table.
 When imported in PowerCenter, the customer mapping is as displayed in the screenshot below:
 
-[![mapping_output.PNG](img/mapping_output.PNG)](img/mapping_output.PNG)
+[![mapping_output.PNG](img/Mapping_output.png)](img/Mapping_output.png)

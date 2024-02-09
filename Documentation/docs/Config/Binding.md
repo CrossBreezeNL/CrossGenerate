@@ -12,8 +12,8 @@
 ```
 
 ### Child sections
-| Section                                      | Description |
-|:---                                              |:--- |
+| Section                           | Description |
+|:---                               |:--- |
 | SectionModelBinding               | See [SectionModelBinding](#sectionmodelbinding) |
 
 
@@ -42,7 +42,7 @@ A SectionModelBinding defines how the model should be mapped to the template.
 | Parameter                          | Description | Default | Remark |
 |:---                                |:--- |:--- |:--- |
 | section[^1]                        | The name of the section as defined in the template or in the config. For each section name there can only be one binding specified. | | |
-| modelXPath[^1]                     | The XPath expression which can be applied on the model to get to the XML element to bind to the section. | | See [XPath](./XPath). |
+| modelXPath[^1]                     | The XPath expression which can be applied on the model to get to the XML element to bind to the section. | | See [XPath](../XPath). |
 | placeholderName                    | The name of the placeholder of the current element. | The same as `section` | |
 | variableName                       | The variable name which is bound to the current element within a section. | | This variable can be used in any XPath expression in a child element of this SectionModelBinding. When using the varibale in a XPath it must be prefixed with a $, for example the variable with name 'someVariable' can be accessed in a XPath expression using $someVariable. |
 
@@ -70,7 +70,7 @@ A literal configuration within a SectionModelBinding can be used to replace a li
 | Parameter                          | Description | Default | Remark |
 |:---                                |:--- |:--- |:--- |
 | literal[^1]                        | The literal to find in the template. | | |
-| modelXPath[^1]                     | The XPath expression which can be applied on the current element to get the value for the literal. | | See [XPath](./XPath). |
+| modelXPath[^1]                     | The XPath expression which can be applied on the current element to get the value for the literal. | | See [XPath](../XPath). |
 
 
 ## Placeholder
@@ -89,7 +89,7 @@ A literal configuration within a SectionModelBinding can be used to replace a li
 | Parameter                          | Description | Default | Remark |
 |:---                                |:--- |:--- |:--- |
 | name[^1]                           | The name of the placeholder. | | |
-| modelXPath[^1]                     | The XPath expression which can be applied on the current element to get the element for the placeholder. | | See [XPath](./XPath). |
+| modelXPath[^1]                     | The XPath expression which can be applied on the current element to get the element for the placeholder. | | See [XPath](../XPath). |
 | variableName                       | The variable name which is bound to the node the modelXPath points to. | | This variable can be used in any XPath expression in a following element of the SectionModelBinding the placeholder is defined in. When using the varibale in a XPath it must be prefixed with a $, for example the variable with name 'someVariable' can be accessed in a XPath expression using $someVariable. |
 
 

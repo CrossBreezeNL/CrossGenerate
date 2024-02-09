@@ -1,42 +1,70 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xbreeze.xgenerate</groupId>
 	<artifactId>XGenerateTestLib</artifactId>
-	<version>2.0.0-SNAPSHOT</version>
+	<version>3.1.0</version>
 
 	<properties>
-	  <xgenerate.version>2.2.0-SNAPSHOT</xgenerate.version>
-		<cucumber.version>2.4.0</cucumber.version>
-		<junit.version>4.12</junit.version>
-		<saxon.version>9.8.0-8</saxon.version>
-		<surefire.version>2.21.0</surefire.version>
+  		<xgenerate.version>3.1.0</xgenerate.version>
+		<java.version>1.8</java.version>
+		<cucumber.version>7.11.2</cucumber.version>
+		<junit.version>5.9.2</junit.version>
+		<surefire.version>3.0.0</surefire.version>
+		<apache-httpclient>4.5.5</apache-httpclient>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>${junit.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.cucumber</groupId>
+				<artifactId>cucumber-bom</artifactId>
+				<version>${cucumber.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.xbreeze.xgenerate</groupId>
-			<artifactId>XGenerateLib</artifactId>
+			<artifactId>XGenerate</artifactId>
 			<version>${xgenerate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-java8</artifactId>
-			<version>${cucumber.version}</version>
+			<artifactId>cucumber-java</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-junit</artifactId>
-			<version>${cucumber.version}</version>
+			<artifactId>cucumber-junit-platform-engine</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-suite</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <version>${apache-httpclient}</version>
+		</dependency>	
 	</dependencies>
 
 	<build>
@@ -52,10 +80,10 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.11.0</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>

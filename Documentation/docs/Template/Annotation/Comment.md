@@ -14,5 +14,5 @@ Comment(<comment>)
 
 ## Example
 
-- [Text](../TextTemplate/#comment-example)
-- [Xml](../XmlTemplate/#comment-example)
+- [Text](../../TextTemplate/#comment-example)
+- [Xml](../../XmlTemplate/#comment-example)

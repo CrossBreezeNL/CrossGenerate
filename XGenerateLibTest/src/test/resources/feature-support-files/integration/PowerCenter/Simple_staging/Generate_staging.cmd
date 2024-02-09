@@ -1,6 +1,6 @@
 @echo off
 REM Set the location of the CrossGenerate jar.
-set XG="C:\GIT\Repos\CrossBreeze\CrossGenerate\CrossGenerate\Run\XGenerate.jar"
+set XG="C:\git\CrossBreeze\CrossGenerateJava\CrossGenerateJava\Run\XGenerate.jar"
 REM Set the output directory.
 set OutputDir=C:\CrossGenerate\Output\INFA
 REM Get a locale independent date and time.

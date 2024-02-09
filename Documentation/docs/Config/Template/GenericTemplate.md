@@ -8,6 +8,7 @@ Here the generic template options are described.
 <FileFormat
   type="..."
   version="..."
+  lineSeparator="..."
   currentAccessor="..."
   childAccessor="..."
   annotationPrefix="..."
@@ -22,12 +23,13 @@ Here the generic template options are described.
 |:---                          |:--- |:--- |:--- |
 | type                         | The file format type, see [File format types](#file-format-types). | | |
 | version                      | The version of the file format  type. | | |
+| lineSeparator                | The regular expression which represents a line separator. By default we take an optional carriage return (\r?) and a line feed (\n). | \r?\n | |
 | currentAccessor              | The placeholder part for accessing a current attribute. | _ | | 
 | childAccessor                | The placeholder part for accessing a child element. | | | 
 | annotationPrefix             | The prefix for a annotation. | @XGen | | 
 | annotationArgsPrefix         | The prefix for the annotation arguments. | ( | | 
 | annotationArgsSuffix         | The suffix for the annotation arguments. | ) | |
-| ...                          | The template type (Xml or Text) defines the other options, see [XmlTemplate](XmlTemplate/#fileformat) or [TextTemplate](TextTemplate/#fileformat). |||
+| ...                          | The template type (Xml or Text) defines the other options, see [XmlTemplate](../XmlTemplate/#fileformat) or [TextTemplate](../TextTemplate/#fileformat). |||
 
 ### File format types
 The supported file format types are:

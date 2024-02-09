@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="unqualified"
+           version="1.0">
+   <xs:element name="XGenConfig" type="xGenConfig"/>
+   <xs:complexType name="xGenConfig">
+      <xs:annotation>
+         <xs:documentation>The XGenConfig class represents the configuration object for CrossGenerate.
+It contains the model, template and binding configuration.
+
+(author): Harmen</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element minOccurs="0" name="Model" type="modelConfig">
+            <xs:annotation>
+               <xs:documentation>The model configuration.
+
+(see): ModelConfig</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:choice minOccurs="0">
+            <xs:element name="TextTemplate" type="textTemplateConfig"/>
+            <xs:element name="XmlTemplate" type="xmlTemplateConfig"/>
+         </xs:choice>
+         <xs:element minOccurs="0" name="Binding" type="bindingConfig">
+            <xs:annotation>
+               <xs:documentation>The binding configuration.
+
+(see): BindingConfig</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="modelConfig">
+      <xs:annotation>
+         <xs:documentation>The Model configuration object.
+Here the following configuration can be set on the model:
+ - ModelAttributeInjection
+
+(author): Harmen</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element minOccurs="0" name="ModelNamespaces">
+            <xs:annotation>
+               <xs:documentation>(return): the ModelNameSpaces</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="ModelNamespace"
+                              type="namespaceConfig"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element minOccurs="0" name="ModelAttributeInjections">
+            <xs:annotation>
+               <xs:documentation>The ModelAttributeInjection elements specified within this Model configuration.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="ModelAttributeInjection"
+                              type="modelAttributeInjection"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element minOccurs="0" name="ModelNodeRemovals">
+            <xs:annotation>
+               <xs:documentation>The ModelNodeRemoval elements specified within the Model configuration.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="ModelNodeRemoval"
+                              type="modelNodeRemoval"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="namespaceConfig">
+      <xs:sequence/>
+      <xs:attribute name="prefix" type="xs:string" use="required"/>
+      <xs:attribute name="namespace" type="xs:string" use="required"/>
+   </xs:complexType>
+   <xs:complexType name="modelAttributeInjection">
+      <xs:sequence>
+         <xs:element minOccurs="0"
+                     name="ValueMappings"
+                     type="modelAttributeInjectionValueMappings"/>
+      </xs:sequence>
+      <xs:attribute name="modelXPath" type="xs:string" use="required"/>
+      <xs:attribute name="targetAttribute" type="xs:string" use="required"/>
+      <xs:attribute name="targetValue" type="xs:string"/>
+      <xs:attribute name="targetXPath" type="xs:string"/>
+   </xs:complexType>
+   <xs:complexType name="modelAttributeInjectionValueMappings">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded"
+                     minOccurs="0"
+                     name="ValueMapping"
+                     type="modelAttributeInjectionValueMapping">
+            <xs:annotation>
+               <xs:documentation>(return): The value mapping elements within this value mappings element.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="inputNode" type="xs:string" use="required"/>
+   </xs:complexType>
+   <xs:complexType name="modelAttributeInjectionValueMapping">
+      <xs:sequence/>
+      <xs:attribute name="inputValue" type="xs:string" use="required"/>
+      <xs:attribute name="outputValue" type="xs:string" use="required"/>
+   </xs:complexType>
+   <xs:complexType name="modelNodeRemoval">
+      <xs:sequence/>
+      <xs:attribute name="modelXPath" type="xs:string" use="required">
+         <xs:annotation>
+            <xs:documentation>The XPath to execute on the model document to find the node to remove.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="textTemplateConfig">
+      <xs:annotation>
+         <xs:documentation>A text template
+This is plain text and doesn't contain an explicit hierarchy.
+Examples: SQL
+
+(author): Harmen</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element minOccurs="0" name="FileFormat" type="fileFormatConfig"/>
+         <xs:element name="Output" type="outputConfig"/>
+         <xs:element minOccurs="0" name="TextSections">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="TextSection"
+                              type="templateTextSectionAnnotation"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="rootSectionName" type="xs:string"/>
+   </xs:complexType>
+   <xs:complexType name="fileFormatConfig">
+      <xs:annotation>
+         <xs:documentation>The FileFormat represents the configuration of the template its file format.
+One can specify the type and version of a file format.
+
+(author): Harmen</xs:documentation>
+      </xs:annotation>
+      <xs:sequence/>
+      <xs:attribute name="annotationArgsPrefix" type="xs:string"/>
+      <xs:attribute name="annotationArgsSuffix" type="xs:string"/>
+      <xs:attribute name="annotationPrefix" type="xs:string"/>
+      <xs:attribute name="childAccessor" type="xs:string"/>
+      <xs:attribute name="commentNodeXPath" type="xs:string"/>
+      <xs:attribute name="currentAccessor" type="xs:string"/>
+      <xs:attribute name="lineSeparator" type="xs:string"/>
+      <xs:attribute name="multiLineCommentPrefix" type="xs:string"/>
+      <xs:attribute name="multiLineCommentSuffix" type="xs:string"/>
+      <xs:attribute name="singleLineCommentPrefix" type="xs:string"/>
+      <xs:attribute name="type" type="fileFormatType"/>
+      <xs:attribute name="version" type="xs:string"/>
+   </xs:complexType>
+   <xs:complexType name="outputConfig">
+      <xs:annotation>
+         <xs:documentation>The Output part of the Template configuration.
+One can specify the output type here.
+
+(author): Harmen</xs:documentation>
+      </xs:annotation>
+      <xs:sequence/>
+      <xs:attribute name="type" type="outputType" use="required"/>
+   </xs:complexType>
+   <xs:complexType name="templateTextSectionAnnotation">
+      <xs:complexContent>
+         <xs:extension base="templateAnnotation">
+            <xs:sequence/>
+            <xs:attribute name="begin" type="xs:string"/>
+            <xs:attribute name="end" type="xs:string"/>
+            <xs:attribute name="includeBegin" type="xs:boolean"/>
+            <xs:attribute name="includeEnd" type="xs:boolean"/>
+            <xs:attribute name="lineSeparator" type="xs:string"/>
+            <xs:attribute name="literalOnFirstLine" type="xs:string"/>
+            <xs:attribute name="literalOnLastLine" type="xs:string"/>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="nrOfLines" type="xs:int"/>
+            <xs:attribute name="optional" type="xs:boolean"/>
+            <xs:attribute name="placeholderName" type="xs:string"/>
+            <xs:attribute name="prefix" type="xs:string"/>
+            <xs:attribute name="prefixAction" type="repetitionAction"/>
+            <xs:attribute name="prefixStyle" type="repetitionStyle"/>
+            <xs:attribute name="suffix" type="xs:string"/>
+            <xs:attribute name="suffixAction" type="repetitionAction"/>
+            <xs:attribute name="suffixStyle" type="repetitionStyle"/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType abstract="true" name="templateAnnotation">
+      <xs:sequence/>
+   </xs:complexType>
+   <xs:complexType name="xmlTemplateConfig">
+      <xs:annotation>
+         <xs:documentation>A xml template
+This is a xml template which contains an explicit hierarchy.
+Examples: Microsoft SSIS (DTSX), Informatica PowerCenter &amp; IBM DataStage.
+The Template part of CrossBreeze configuration.
+It contains configuration for:
+ - TemplatePlaceholderInjections (TemplatePlaceholderInjection)
+ - TextTemplates (XMLNodeTextTemplate)
+
+(author): Harmen</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element minOccurs="0" name="FileFormat" type="fileFormatConfig"/>
+         <xs:element name="Output" type="outputConfig"/>
+         <xs:element minOccurs="0" name="XmlSections">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="XmlSection"
+                              type="templateXmlSectionAnnotation"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element minOccurs="0" name="TemplateAttributeInjections">
+            <xs:annotation>
+               <xs:documentation>(return): the templateAttributeInjections</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="TemplateAttributeInjection"
+                              type="xmlTemplateAttributeInjection"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element minOccurs="0" name="TemplateNodeRemovals">
+            <xs:annotation>
+               <xs:documentation>(return): the _templateNodeRemovals</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="TemplateNodeRemoval"
+                              type="xmlTemplateNodeRemoval"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element minOccurs="0" name="TemplatePlaceholderInjections">
+            <xs:annotation>
+               <xs:documentation>(return): the templatePlaceholderInjections</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="TemplatePlaceholderInjection"
+                              type="xmlTemplatePlaceholderInjection"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element minOccurs="0" name="TextTemplates">
+            <xs:annotation>
+               <xs:documentation>(return): the xmlNodeTextTemplates</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="TextTemplate"
+                              type="xmlNodeTextTemplateConfig"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="rootSectionName" type="xs:string"/>
+   </xs:complexType>
+   <xs:complexType name="templateXmlSectionAnnotation">
+      <xs:complexContent>
+         <xs:extension base="templateAnnotation">
+            <xs:sequence/>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="optional" type="xs:boolean"/>
+            <xs:attribute name="placeholderName" type="xs:string"/>
+            <xs:attribute name="templateXPath" type="xs:string"/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="xmlTemplateAttributeInjection">
+      <xs:sequence/>
+      <xs:attribute name="attributeName" type="xs:string"/>
+      <xs:attribute name="attributeValue" type="xs:string"/>
+      <xs:attribute name="templateXPath" type="xs:string"/>
+   </xs:complexType>
+   <xs:complexType name="xmlTemplateNodeRemoval">
+      <xs:sequence/>
+      <xs:attribute name="templateXPath" type="xs:string" use="required">
+         <xs:annotation>
+            <xs:documentation>The XPath to execute on the template document to find the node to remove.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="xmlTemplatePlaceholderInjection">
+      <xs:sequence/>
+      <xs:attribute name="modelNode" type="xs:string">
+         <xs:annotation>
+            <xs:documentation>What node in the model needs to be selected in the placeholder (it will be the right side of the placeholder).</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="scope" type="templatePlaceholderScope">
+         <xs:annotation>
+            <xs:documentation>The template placeholder scope.
+
+(see): TemplatePlaceholderScope</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="templateXPath" type="xs:string">
+         <xs:annotation>
+            <xs:documentation>The XPath to evaluate on the template document to find the node on which to inject the placeholder.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="xmlNodeTextTemplateConfig">
+      <xs:annotation>
+         <xs:documentation>The XMLNodeTextTemplateConfig configuration within a RootTemplateConfig.
+This element can be specified when the parent template fileformat is XML.
+XML can sometimes contain elements where its text part is a template in itself.
+Where this TextTemplate resides is specified using the 'node' property of the element.
+It contains configuration for:
+ - FileFormat
+ - Sections (TemplateSectionAnnotation)
+
+(author): Harmen</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element minOccurs="0" name="FileFormat" type="fileFormatConfig"/>
+         <xs:element minOccurs="0" name="TextSections">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="TextSection"
+                              type="templateTextSectionAnnotation"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="node" type="xs:string"/>
+      <xs:attribute name="rootSectionName" type="xs:string"/>
+   </xs:complexType>
+   <xs:complexType name="bindingConfig">
+      <xs:annotation>
+         <xs:documentation>The Binding part of the CrossGenerate configuration.
+The Binding configuration can contain:
+ - SectionModelBinding's
+ - Placeholder's.
+
+(author): Harmen</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="bindingContainer">
+            <xs:sequence/>
+            <xs:attribute name="implicitPlaceholderPrefix" type="xs:string"/>
+            <xs:attribute name="implicitPlaceholderSuffix" type="xs:string"/>
+            <xs:attribute name="implicitPlaceholders" type="xs:boolean">
+               <xs:annotation>
+                  <xs:documentation>(return): the implicitPlaceholders</xs:documentation>
+               </xs:annotation>
+            </xs:attribute>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType abstract="true" name="bindingContainer">
+      <xs:annotation>
+         <xs:documentation>The BindingContainer can contains a list of SectionModelBindingConfig's and PlaceholderConfig's.
+
+(author): Harmen</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element minOccurs="0" name="Literals">
+            <xs:annotation>
+               <xs:documentation>Get the literal configs for this section.
+
+(return): the literalConfigs</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="Literal"
+                              type="literalConfig"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element minOccurs="0" name="Placeholders">
+            <xs:annotation>
+               <xs:documentation>Get the list of placeholder config's.
+
+(return): The list of placeholder config's.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="Placeholder"
+                              type="placeholderConfig"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element maxOccurs="unbounded"
+                     minOccurs="0"
+                     name="SectionModelBinding"
+                     type="sectionModelBindingConfig">
+            <xs:annotation>
+               <xs:documentation>(return): the sectionModelBindings</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="literalConfig">
+      <xs:annotation>
+         <xs:documentation>The literal configuration object.
+
+(author): Harmen</xs:documentation>
+      </xs:annotation>
+      <xs:sequence/>
+      <xs:attribute name="literal" type="xs:string" use="required">
+         <xs:annotation>
+            <xs:documentation>The literal to replace.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="modelXPath" type="xs:string" use="required">
+         <xs:annotation>
+            <xs:documentation>The XPath of the model the literal points to.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="placeholderConfig">
+      <xs:annotation>
+         <xs:documentation>The placeholder configuration object.
+
+(author): Harmen</xs:documentation>
+      </xs:annotation>
+      <xs:sequence/>
+      <xs:attribute name="modelXPath" type="xs:string" use="required">
+         <xs:annotation>
+            <xs:documentation>The XPath of the model the placeholder points to.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string" use="required">
+         <xs:annotation>
+            <xs:documentation>The name of the placeholder.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="variableName" type="xs:string">
+         <xs:annotation>
+            <xs:documentation>The variable name which is bound to the element the modelXPath points to.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="sectionModelBindingConfig">
+      <xs:annotation>
+         <xs:documentation>The Section Model Binding configuration which can be specified in the Binding part of the CrossGenerate configuration.
+The binding specifies how a section in the template is bound to an element in the model.
+
+(author): Harmen</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="bindingContainer">
+            <xs:sequence/>
+            <xs:attribute name="modelXPath" type="xs:string" use="required"/>
+            <xs:attribute name="placeholderName" type="xs:string"/>
+            <xs:attribute name="section" type="xs:string" use="required">
+               <xs:annotation>
+                  <xs:documentation>(return): the _section</xs:documentation>
+               </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="variableName" type="xs:string"/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:simpleType name="fileFormatType">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="ANSI_SQL"/>
+         <xs:enumeration value="Microsoft_SQL"/>
+         <xs:enumeration value="Microsoft_SSIS"/>
+         <xs:enumeration value="Informatica_PowerCenter"/>
+         <xs:enumeration value="IBM_DataStage"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="outputType">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="output_per_element"/>
+         <xs:enumeration value="single_output"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="repetitionAction">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="add"/>
+         <xs:enumeration value="remove"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="repetitionStyle">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="firstOnly"/>
+         <xs:enumeration value="lastOnly"/>
+         <xs:enumeration value="allButFirst"/>
+         <xs:enumeration value="allButLast"/>
+         <xs:enumeration value="allButFirstAndLast"/>
+         <xs:enumeration value="all"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="templatePlaceholderScope">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="current"/>
+         <xs:enumeration value="child"/>
+      </xs:restriction>
+   </xs:simpleType>
+</xs:schema>

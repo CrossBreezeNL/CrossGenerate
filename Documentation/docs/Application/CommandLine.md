@@ -16,7 +16,7 @@ In the following table all options are listed. All options have two keys which c
 
 | Parameter                        | Description | Default | Allowed values |
 |:---                              |:--- |:--- |:--- |
-| -c, -Config [^1]                 | The location of the application configuration file. See [Application config](./XGenAppConfig) | | |
+| -c, -Config [^1]                 | The location of the application configuration file. See [Application config](../XGenAppConfig) | | |
 | -mtc, -ModelTemplateConfig [^2]  | A model-template-config combination in the form: "_MODEL_FILE_"::"_TEMPLATE_FILE_"::"_GEN_CONFIG_FILE_". Absolute and relative paths are allowed here. | | |
 | -d, -Debug                       | Whether to run the generator in debug mode. | false | true, false |
 | -cll, -ConsoleLogLevel           | The log level for the console. | SEVERE | See [Log levels](#log-levels). |

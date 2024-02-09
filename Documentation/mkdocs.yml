@@ -1,8 +1,8 @@
 # Project information
-site_name: 'CrossGenerate v2.7'
+site_name: 'CrossGenerate v3.0'
 
 # Copyright
-copyright: 'Copyright &copy; 2019 - CrossBreeze'
+copyright: 'Copyright &copy; 2021 - CrossBreeze'
 
 # Configuration
 theme:
@@ -13,16 +13,20 @@ theme:
   palette:
     primary: 'blue grey'
     accent: 'green'
-  feature:
+  features:
     tabs: true
 
 # Pages
-pages:
+nav:
 - Home:
     - 'Introduction'    : 'index.md'
-    - 'Release notes'   : 'ReleaseNotes.md'
-    - 'Getting started' : 'GettingStarted.md'
     - 'Overview'        : 'Overview.md'
+    - 'Setup'           : 'Setup.md'
+    - 'Release notes'   : 'ReleaseNotes.md'
+- Getting started:
+    - 'Introduction' : 'GettingStarted/index.md'
+    - 'Hello world': 'GettingStarted/helloworld.md'  
+    - 'Address book': 'GettingStarted/addressbook.md'  
 - Application:
     - 'Command line'         : 'Application/CommandLine.md'
     - 'Application config'   : 'Application/XGenAppConfig.md'
@@ -72,14 +76,15 @@ pages:
 # Extra
 extra:
   social:
-    - type: 'twitter'
+    - icon: fontawesome/brands/twitter
       link: 'https://twitter.com/CrossBreeze_NL'
-
+      
 # Extensions
 markdown_extensions:
   - codehilite
   - toc:
       permalink: true
+  - attr_list
   - footnotes
   - admonition
   - def_list

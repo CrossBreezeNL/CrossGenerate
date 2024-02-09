@@ -1,20 +1,17 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# CrossGenerate (Java)
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+CrossGenerate is the free and open-source generator for data solutions. In a model-driven approach, the generator generates the software based on the model and software templates.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Introduction
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+When you are looking for some background information on CrossGenerate, please consult the [Overview](https://generate.crossbreeze.nl/docs/latest/Overview/) page.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://www.visualstudio.com/en-us/docs/git/create-a-readme). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+## Getting started
+
+When you want to start using CrossGenerate, please consult the [Getting Started](https://generate.crossbreeze.nl/docs/latest/GettingStarted/) page.
+
+## Development
+
+When working on CrossGenerate you can use the Eclipse IDE for Java.
+
+Make sure the default file encoding in Eclipse is set the UTF-8 (Window -> Preferences -> General -> Workspace -> Text file encoding; Select Other and choose 'UTF-8').

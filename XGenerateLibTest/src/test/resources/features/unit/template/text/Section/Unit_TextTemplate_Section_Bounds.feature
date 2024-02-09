@@ -8,8 +8,19 @@ Feature: Unit_TextTemplate_Section_Bounds
       <modeldefinition>
         <system name="ExampleSource">
           <mappableObjects>
-            <entity name="Order" />
-            <entity name="Customer" />
+            <entity name="Order">
+            	<attributes>
+            		<attribute name="OrderID" />
+            		<attribute name="OrderDate" />
+            		<attribute name="Amount" />
+            	</attributes>
+            </entity>
+            <entity name="Customer">
+            	<attributes>
+            		<attribute name="CustomerID" />
+            		<attribute name="Name" />
+            	</attributes>
+            </entity>
           </mappableObjects>
         </system>
       </modeldefinition>
@@ -111,6 +122,85 @@ Feature: Unit_TextTemplate_Section_Bounds
       DROP TABLE Customer;
       GO;
       -- End of template
+      """
+  
+  Scenario: Multiline section with literalOnLastLine combined with XGenComment
+    Given the following template named "DropTables.sql":
+      """
+      -- @XGenTextSection(name="Entity" literalOnLastLine="End of Entity section")
+      DROP TABLE entity_name;
+      GO;
+      -- @XGenComment(End of Entity section)
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model/>
+        <TextTemplate rootSectionName="System">
+          <FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="single_output" />
+        </TextTemplate>
+        <Binding>
+          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
+          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
+            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity"/>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "DropTables.sql" with content:
+      """
+      DROP TABLE Order;
+      GO;
+      DROP TABLE Customer;
+      GO;
+      
+      """
+
+  Scenario: Multiline section with literalOnLastLine combined with XGenComment nested
+    Given the following template named "DropTables.sql":
+      """
+      -- @XGenTextSection(name="Entity" literalOnLastLine="End of Entity section")
+      entity_name
+      -- @XGenTextSection(name="Attribute" literalOnLastLine="End of Attribute section")
+        - attribute_name
+      -- @XGenComment(End of Attribute section)
+      -- @XGenComment(End of Entity section)
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model/>
+        <TextTemplate rootSectionName="System">
+          <FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="single_output" />
+        </TextTemplate>
+        <Binding>
+          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
+          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
+            <SectionModelBinding section="Entity" modelXPath="mappableObjects/entity" placeholderName="entity">
+            	<SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="attribute"/>
+            </SectionModelBinding>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "DropTables.sql" with content:
+      """
+      Order
+        - OrderID
+        - OrderDate
+        - Amount
+      Customer
+        - CustomerID
+        - Name
+      
       """
 
   Scenario: Multiline section with nrOfLines
@@ -475,4 +565,34 @@ Feature: Unit_TextTemplate_Section_Bounds
         Order
         Customer
        -->
+      """
+
+  Scenario: Single line section at end of template
+    Given the following template named "DropTables.sql":
+      """
+      -- @XGenTextSection(name="Entity")
+      DROP TABLE entity_name;
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model/>
+        <TextTemplate rootSectionName="System">
+          <FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="single_output" />
+        </TextTemplate>
+        <Binding>
+          <!-- Bind the 'System' template section on the /modeldefinition/system elements in the model. -->
+          <SectionModelBinding section="System" modelXPath="/modeldefinition/system" placeholderName="system"> 
+            <SectionModelBinding section="Entity" modelXPath="/modeldefinition/system/mappableObjects/entity" placeholderName="entity"/>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "DropTables.sql" with content:
+      """
+      DROP TABLE Order;DROP TABLE Customer;
       """

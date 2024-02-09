@@ -1,3 +1,27 @@
+/*******************************************************************************
+ *   Copyright (c) 2021 CrossBreeze
+ *
+ *   This file is part of CrossGenerate.
+ *
+ *      CrossGenerate is free software: you can redistribute it and/or modify
+ *      it under the terms of the GNU General Public License as published by
+ *      the Free Software Foundation, either version 3 of the License, or
+ *      (at your option) any later version.
+ *
+ *      CrossGenerate is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *      GNU General Public License for more details.
+ *
+ *      You should have received a copy of the GNU General Public License
+ *      along with CrossGenerate.  If not, see <https://www.gnu.org/licenses/>.
+ *     
+ *  Contributors:
+ *      Willem Otten - CrossBreeze
+ *      Harmen Wessels - CrossBreeze
+ *      Jacob Siemaszko - CrossBreeze
+ *  
+ *******************************************************************************/
 package com.xbreeze.xgenerate.config.app;
 
 import java.io.File;
@@ -10,15 +34,15 @@ import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 import javax.xml.XMLConstants;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.UnmarshalException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.UnmarshalException;
+import jakarta.xml.bind.Unmarshaller;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
@@ -28,11 +52,10 @@ import org.xml.sax.SAXParseException;
 
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.config.UnmarshallValidationEventHandler;
-import com.xbreeze.license.LicenseConfig;
 
 @XmlRootElement(name="XGenAppConfig")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder={"appConfig", "licenseConfig"})
+@XmlType(propOrder={"appConfig"})
 public class XGenAppConfig {
 	// The logger for this class.
 	private static final Logger logger = Logger.getLogger(XGenAppConfig.class.getName());
@@ -43,13 +66,6 @@ public class XGenAppConfig {
 	 */
 	@XmlElement(name="App")
 	private AppConfig appConfig;
-	
-	/**
-	 * The license configuration
-	 * 
-	 */
-	@XmlElement(name="License")
-	private LicenseConfig licenseConfig;
 	
 	/**
 	 * @return the app
@@ -65,21 +81,6 @@ public class XGenAppConfig {
 		this.appConfig = appConfig;
 	}
 	
-	/**
-	 * return the license config object
-	 * @return
-	 */
-	public LicenseConfig getLicenseConfig() {
-		return licenseConfig;
-	}
-
-	/**
-	 * Set config object for license
-	 * @param licenseConfig
-	 */
-	public void setLicenseConfig(LicenseConfig licenseConfig) {
-		this.licenseConfig = licenseConfig;
-	}
 	
 	/**
 	 * Unmarshal a app config from a String.

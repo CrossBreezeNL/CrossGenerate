@@ -1,6 +1,6 @@
 # Microsoft SSIS - DataVault - Hub-Sat load package
 
-In this example the Hub-Sat load package for the [DataVault](../DataVault) solution is described.
+In this example the Hub-Sat load package for the [DataVault](./DataVault) solution is described.
 
 ## Model
 See [DWH Model](../../Model/DWH_model)
@@ -32,7 +32,7 @@ Again the `Entity_owner` and `Entity_name` placeholders are used.
 
 ![Template Data Flow](img/hubsat_dataflow.png)
 
-Since setting the appropriate section annotation on input/output and extended columns through the advanced editor has been covered in the [Simple Staging](../Simple_staging) and [Hub load package](./Hub_package) examples, we only focus on CrossGenerate settings specific for this Hub-Sat loading pattern.
+Since setting the appropriate section annotation on input/output and extended columns through the advanced editor has been covered in the [Simple Staging](../../Simple_staging) and [Hub load package](../Hub_package) examples, we only focus on CrossGenerate settings specific for this Hub-Sat loading pattern.
 
 ##### Source
 
@@ -80,10 +80,10 @@ The destination needs to be set to the template Hub-Sat table.
 ![Destination connection manager](img/hubsat_destination_connection.png)
 
 ###### Mappings
-![Template Destination Mappings](img/hubsat_destination_mapping.png)
+![Template Destination Mappings](img/hubsat_destination_mapping.PNG)
 
 ### Documentation
-For documentation on templates, please see [Template](../../Template).
+For documentation on templates, please see [Template](../../../Template).
 
 ## Config
 See config section in [DataVault](./).

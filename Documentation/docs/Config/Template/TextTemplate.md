@@ -22,7 +22,7 @@
 | Section                          | Description |
 |:---                              |:--- |
 | FileFormat[^2]                   | See [FileFormat](#fileformat) |
-| Output[^2]                       | See [Output](GenericTemplate/#output) |
+| Output[^2]                       | See [Output](../GenericTemplate/#output) |
 | TextSection                      | See [TextSection](#textsection) |
 
 ## FileFormat
@@ -41,14 +41,14 @@
 
 | Parameter                    | Description | Default | Remark |
 |:---                          |:--- |:--- |:--- |
-| ...                          | Click [here](GenericTemplate/#fileformat) to see the generic FileFormat options. |||
+| ...                          | Click [here](../GenericTemplate/#fileformat) to see the generic FileFormat options. |||
 | singleLineCommentPrefix[^1]  | The single line comment prefix. | | | 
 | multiLineCommentPrefix       | The multi-line comment prefix. | | | 
 | multiLineCommentSuffix       | The multi-line comment suffix. | | | 
 
 ## TextSection
 
-The TextSection configuration defines a section in a text template. This can either be defined in the template part of the config or in the template directly. The syntax here is provided for in the configuration, but the same parameters are also available when specifying the section inline in a template using the [TextSection](../Template/Annotation/TextSection) annotation.
+The TextSection configuration defines a section in a text template. This can either be defined in the template part of the config or in the template directly. The syntax here is provided for in the configuration, but the same parameters are also available when specifying the section inline in a template using the [TextSection](../../../Template/Annotation/TextSection) annotation.
 
 ### Syntax
 ``` xml
@@ -79,6 +79,9 @@ The TextSection configuration defines a section in a text template. This can eit
     suffixStyle="..."
     suffixAction="..."
   ]
+  [
+    lineSeparator="..."
+  ]
 />
 ```
 ### Parameters
@@ -101,6 +104,7 @@ The TextSection configuration defines a section in a text template. This can eit
 | suffix                     | The suffix to append using the `suffxStyle`. |
 | suffixStyle                | The style of the suffix, see [Prefix & suffix styles](#prefix-suffix-styles) | allButLast | Only interpreted when `suffix` is given. |
 | suffixAction               | The action to be performed with the suffix, either add or remove. | add | Only interpreted when `suffix` is given. _Only add is supported at the moment._ |
+| lineSeparator              | The string literal which represents a line separator within this section. | \r?\n | By default this is the line separator as specified in the [FileFormatConfig](../GenericTemplate/#fileformat) which is applicable for the template part this annotation is in. For a text template it will be the main TextTemplate configuration element. For a XML template, it will be the respective TextTemplate element in the TextTemplates collection. |
 
 ### Prefix & suffix styles
 

@@ -5,4 +5,4 @@ Binding means that for CrossGenerate, a template is devided into different secti
 
 Binding is configured using annotations in templates and section and binding specification in the config.
 
-See [Config](..\Config) and [Template Annotation](..\Template\Annotation) for more information.
+See [Config](../Config) and [Template Annotation](../Template/Annotation) for more information.
