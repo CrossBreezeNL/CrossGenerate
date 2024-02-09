@@ -22,13 +22,20 @@ Click on the header of a version number to go to the documentation of that speci
 
 ## [Version 3.1](../3.1/)
 
-- [ ] 3.1.0 <sup>14-07-2023</sup>
+- [ ] 3.1.0 <sup>09-02-2024</sup>
 >
+> !!! info "Enhanced features"
+>     * [ ] Generic
+>         - [X] When CrossGenerate fails with an error the exit code will now be 1 (i.s.o. 0).
+>     * [ ] Config
+>         * [ ] Template
+>             - [X] Added support for specifying line separator in FileFormat and TextSection configuration. Mainly applicable for text templates in xml template, to support encoded newlines.
 > !!! warning "Bug fixes"
 >     * [ ] Commandline options
 >         * [X] Fixed creation of the log folder path specified with the -FileLogDestination or -fld option, if it does not exist yet.
-> !!! info "Enhanced features"
->     * Updated dependencies.
+>     * [ ] Config
+>         * [ ] Text sections
+>             - [X] Section endings at the end of a template are now correctly handled (i.s.o. end of section not found errors).
 
 ## [Version 3.0](../3.0/)
 
@@ -37,7 +44,7 @@ Click on the header of a version number to go to the documentation of that speci
 > !!! success "New features"
 >     * [ ] Config
 >         * [ ] Model
-              - [X] Added ValueMappings support in ModelAttributeInjection in order to perform a translation on a model node.
+>             - [X] Added ValueMappings support in ModelAttributeInjection in order to perform a translation on a model node.
 > !!! info "Enhanced features"
 >     * [ ] Application config
 >         - [X] Removed license configuration part, since CrossGenerate is open-source and free now.

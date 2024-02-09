@@ -58,6 +58,12 @@ public class FileFormatConfig {
 	private String _version;
 	
 	/**
+	 * The string literal which represents a line separator.
+	 * By default this is an optional carriage return (written as \r) and a line-feed (written as \n) character.
+	 */
+	private String _lineSeparator = "\\r?\\n";
+	
+	/**
 	 * The current accessor.
 	 */
 	private String _currentAccessor = "_";
@@ -148,6 +154,22 @@ public class FileFormatConfig {
 		this._version = version;
 	}
 	
+	/**
+	 * Get the line separator character sequence.
+	 * @return The line separator character sequence.
+	 */
+	@XmlAttribute
+	public String getLineSeparator() {
+		return _lineSeparator;
+	}
+
+	/**
+	 * @param lineSeparator The line separator character sequence.
+	 */
+	public void setLineSeparator(String lineSeparator) {
+		this._lineSeparator = lineSeparator;
+	}
+
 	/**
 	 * @return the currentAccessor
 	 */

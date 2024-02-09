@@ -109,22 +109,24 @@ public class AnnotationScanner {
 		/**
 		 * [ \t]*       -> Any space or tab characters before the annotation.
 		 * %s           -> The annotation regex.
-		 * Optionally include the everything to the new-line of there is no other annotation on this line.
+		 * Optionally include everything to the new-line if there is no other annotation on this line.
 		 * (
-		 *  [ \t]*       -> Any space or tab characters after the annotation.
-		 *  $            -> The end of the line (optionally)
-		 *  \r?          -> Include the carriage return (optionally)
-		 *  \n           -> Include the new line. (optionally)
+		 *  	[ \t]*       -> Any space or tab characters after the annotation.
+		 *  	\%s          -> Include the new-line separator character sequence (from the config).
+		 *    |				-> OR
+		 *  	[ \t]*       -> Any space or tab characters after the annotation.
+		 *  	$			 -> End of input (string)
 		 * )?
 		 */
 		Pattern annotationPattern = Pattern.compile(
 				String.format(
-						"[ \\t]*%s([ \\t]*\\r?\\n)?",
+						"[ \\t]*%s([ \\t]*%s|[ \\t]*$)?",
 						ANNOTATION_REGEX(
 								fileFormatConfig.getAnnotationPrefix(), 
 								fileFormatConfig.getAnnotationArgsPrefix(), 
 								fileFormatConfig.getAnnotationArgsSuffix()
-						)
+						),
+						fileFormatConfig.getLineSeparator()
 				),
 				// Match case insensitive.
 				Pattern.CASE_INSENSITIVE
@@ -147,7 +149,7 @@ public class AnnotationScanner {
 				// Get the TemplateAnnotation using the name and the params.
 				TemplateAnnotation templateAnnotation;
 				try {
-					templateAnnotation = TemplateAnnotation.fromName(annotationName, annotationParams, matcher.start(), matcher.end());
+					templateAnnotation = TemplateAnnotation.fromName(annotationName, annotationParams, matcher.start(), matcher.end(), fileFormatConfig);
 				}
 				// When the UnhandledException occurs, wrap it into a TemplatePreprocessorException.
 				catch (UnhandledException e) {
@@ -231,20 +233,23 @@ public class AnnotationScanner {
 		
 		// First search for single-line comment sections and scan for annotations in there.
 		if (fileFormatConfig.getSingleLineCommentPrefix() != null && fileFormatConfig.getSingleLineCommentPrefix().length() > 0) {
-			// Single line comments can start anywhere on a line (beginning or after some code), but always end with line-end.
+			// Single line comments can start anywhere on a line (beginning or after some code), but always end with line-end (or end of input).
 			/**
-			 * %s              -> 1st parameter for String.format, the common comment regex part.
-			 * $               -> The end of the line.
-			 * \r?             -> Include the carriage return (optionally)
-			 * \n?             -> Include the new line. (optionally)
+			 * %s              	-> 1st parameter for String.format, the common comment regex part.
+			 * (               	-> The end of the match should contain: 
+			 *  	%s			-> the newline character sequence from the config.
+			 *   |				-> OR
+			 *   	$			-> end of string (input)
+			 * )
 			 */
 			Pattern singleLinePattern = Pattern.compile(
 					String.format(
-							"%s$\\r?\\n?",
+							"%s(%s|$)",
 							COMMENT_REGEX(
 									fileFormatConfig.getSingleLineCommentPrefix(), 
 									fileFormatConfig.getAnnotationPrefix()
-							)
+							),
+							fileFormatConfig.getLineSeparator()
 					),
 					// Match case insensitive.
 					Pattern.CASE_INSENSITIVE
@@ -270,20 +275,25 @@ public class AnnotationScanner {
 			/**
 			 * If there is nothing but empty characters between line start and the comment start we take it into the match.
 			 * %s              -> 1st parameter for String.format, the common comment regex part.
-			 * %s          	   -> 2nd parameter for String.format, the multi-line comment suffix. ({1} to match only once and ? to match lazy.)
-			 * [ \t]*          -> Again, any space or tab characters
-			 * $?              -> The end of the line. (optionally)
-			 * \r?             -> Include the carriage return (optionally)
-			 * \n?             -> Include the new line. (optionally)
+			 * %s          	   -> 2nd parameter for String.format, the multi-line comment suffix. ({1} to match only once and ? to match lazy).
+			 * Optionally include everything to the new-line if there is no other annotation on this line.
+			 * (
+			 *  	[ \t]*       -> Any space or tab characters after the annotation.
+			 *  	\%s          -> Include the new-line separator character sequence (from the config).
+			 *    |				-> OR
+			 *  	[ \t]*       -> Any space or tab characters after the annotation.
+			 *  	$			 -> End of input (string)
+			 * )?
 			 */
 			Pattern multiLinePattern = Pattern.compile(
 					String.format(
-							"%s%s[ \\t]*$?\\r?\\n?",
+							"%s%s([ \\t]*%s|[ \\t]*$)?",
 							COMMENT_REGEX(
 									fileFormatConfig.getMultiLineCommentPrefix(), 
 									fileFormatConfig.getAnnotationPrefix()
 							),
-							Pattern.quote(fileFormatConfig.getMultiLineCommentSuffix())
+							Pattern.quote(fileFormatConfig.getMultiLineCommentSuffix()),
+							fileFormatConfig.getLineSeparator()
 					),
 					// Match case insensitive.
 					Pattern.CASE_INSENSITIVE

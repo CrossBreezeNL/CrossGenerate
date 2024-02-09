@@ -137,25 +137,38 @@ public class TemplateTextSectionAnnotation extends TemplateSectionAnnotation {
 	private RepetitionAction suffixAction = RepetitionAction.add;
 	
 	/**
-	 * Constructor.
+	 * The string literal which represents a line separator within this section.
+	 * By default this is the line separator as specified in the FileFormatConfig which is applicable for the template part this annotation is in.
+	 * For a text template it will be the main TextTemplate configuration element.
+	 * For a XML template, it will be the respective TextTemplate element in the TextTemplates collection.
+	 * @see FileFormatConfig
+	 */
+	private String lineSeparator;
+	
+	/**
+	 * Constructor (primarily here for XML serialization).
 	 */
 	public TemplateTextSectionAnnotation() { }
 
 	/**
-	 * Constructor.
+	 * Constructor for user defined sections.
 	 * @param name The name of the section.
+	 * @param lineSeparator The line separator to use for the section which is annotated.
 	 */
-	public TemplateTextSectionAnnotation(String name) {
-		this.name = name;
+	public TemplateTextSectionAnnotation(String name, String lineSeparator) {
+		this(name, lineSeparator, true);
 	}
 	
 	/**
 	 * Constructor.
 	 * @param name The name of the section.
+	 * @param lineSeparator The line separator to use for the section which is annotated.
+	 * @param userDefinedSectionName Whether this is a user defined section name.
 	 */
-	public TemplateTextSectionAnnotation(String name, boolean userDefinedSectionName) {
+	public TemplateTextSectionAnnotation(String name, String lineSeparator, boolean userDefinedSectionName) {
 		this.name = name;
 		this.userDefinedSectionName = userDefinedSectionName;
+		this.lineSeparator = lineSeparator;
 	}
 	
 	@Override
@@ -367,6 +380,21 @@ public class TemplateTextSectionAnnotation extends TemplateSectionAnnotation {
 	 */
 	public void setSuffixAction(RepetitionAction suffixAction) {
 		this.suffixAction = suffixAction;
+	}
+	
+	/**
+	 * @return the lineSeparator
+	 */
+	@XmlAttribute
+	public String getLineSeparator() {
+		return lineSeparator;
+	}
+
+	/**
+	 * @param lineSeparator the lineSeparator to set
+	 */
+	public void setLineSeparator(String lineSeparator) {
+		this.lineSeparator = lineSeparator;
 	}
 	
 	/**

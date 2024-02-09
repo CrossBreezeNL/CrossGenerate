@@ -50,8 +50,8 @@ abstract public class TemplateSectionAnnotation extends TemplateAnnotation {
 	 * indicates if the section, when defined in the config, is optional or not	 
 	 * Default value is false
 	 */
-	
 	protected boolean optional = false;
+	
 	/**
 	 * Indicator whether the section name was set by the user.
 	 */
@@ -74,7 +74,7 @@ abstract public class TemplateSectionAnnotation extends TemplateAnnotation {
 	}
 	
 	/**
-	 * @return the optional indicator
+	 * @return the isOptional indicator
 	 */
 	@XmlAttribute(required=false)
 	public Boolean isOptional() {
@@ -86,7 +86,6 @@ abstract public class TemplateSectionAnnotation extends TemplateAnnotation {
 	 * This must be implemented by the child classes so we can deviate set methods available in annotations from other set methods.
 	 */
 	abstract public void setName(String name);
-	
 	
 	abstract public void setPlaceholderName(String placeHolderName);
 	

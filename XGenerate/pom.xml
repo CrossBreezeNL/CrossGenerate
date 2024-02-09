@@ -95,6 +95,38 @@
 					<target>${java.version}</target>
 				</configuration>
 			</plugin>
+
+			<!-- Generate JAX-B schema file -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+				<version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>schemagen</id>
+                        <goals>
+                            <goal>schemagen</goal>
+                        </goals>
+                    </execution>
+                </executions>
+				<configuration>
+					<outputDirectory>${basedir}/src/main/resources/com/xbreeze/xgenerate/config/</outputDirectory>
+					<clearOutputDir>false</clearOutputDir>
+					<generateEpisode>false</generateEpisode>
+					<sources>
+						<source>src/main/java/com/xbreeze/xgenerate/config/XGenConfig.java</source>
+						<source>src/main/java/com/xbreeze/xgenerate/config/binding/</source>
+						<source>src/main/java/com/xbreeze/xgenerate/config/model/</source>
+						<source>src/main/java/com/xbreeze/xgenerate/config/template/</source>
+					</sources>
+<!--					<transformSchemas>-->
+<!--					  <transformSchema>-->
+<!--					    <uri>http://generate.x-breeze.com/config</uri>-->
+<!--					    <toFile>XGenConfig.xsd</toFile>-->
+<!--					  </transformSchema>-->
+<!--					</transformSchemas>-->
+				</configuration>
+            </plugin>
 		</plugins>
 	</build>
 </project>

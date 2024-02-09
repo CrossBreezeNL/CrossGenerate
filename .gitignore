@@ -23,3 +23,4 @@ hs_err_pid*
 
 # Generation output folder.
 /Demo/Output/*
+**/config/META-INF/JAXB/
