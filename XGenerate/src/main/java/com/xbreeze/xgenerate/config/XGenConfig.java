@@ -80,9 +80,9 @@ import com.ximpleware.XPathParseException;
  * It contains the model, template and binding configuration.
  * @author Harmen
  */
-@XmlRootElement(name="XGenConfig") // , namespace="http://generate.x-breeze.com/XGenConfig"
+@XmlRootElement(name="XGenConfig", namespace = XGenConfigNamespace.NAMESPACE)
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder={"modelConfig","templateConfig","bindingConfig"})
+@XmlType(propOrder={"modelConfig","templateConfig","bindingConfig"}, namespace = XGenConfigNamespace.NAMESPACE)
 public class XGenConfig {
 	// The logger for this class.
 	private static final Logger logger = Logger.getLogger(XGenConfig.class.getName());
@@ -205,7 +205,7 @@ public class XGenConfig {
 			 SAXSource saxSource = new SAXSource(xr, new InputSource(new StringReader(resolvedInputSource)));
 			
 			 // Set the event handler.
-			 xGenConfigUnmarshaller.setEventHandler(new UnmarshallValidationEventHandler());			
+			 xGenConfigUnmarshaller.setEventHandler(new UnmarshallValidationEventHandler());
 					 
 			// Unmarshal the config.			
 			xGenConfig = (XGenConfig) xGenConfigUnmarshaller.unmarshal(saxSource);

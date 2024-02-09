@@ -4,22 +4,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Optional;
+
 import org.apache.commons.io.FileUtils;
 
 import com.xbreeze.xgenerate.config.app.AppConfig;
 import com.xbreeze.xgenerate.config.app.XGenAppConfig;
 import com.xbreeze.xgenerate.generator.XGenerateStarter;
-import com.xbreeze.xgenerate.test.util.CapturedConsolePrintStream;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -37,7 +39,8 @@ public class XGenerateTestSteps {
 	private String templateName;	
 	private URI logFolderName;
 	private URI outputFolderName;
-	private ByteArrayOutputStream baos;
+	private String processOutput;
+	private int actualExitCode;
 	
 	@Before
 	public void beforeScenario()
@@ -108,20 +111,7 @@ public class XGenerateTestSteps {
 		}		
 	}
 	
-	@When("^I run the generator$")
-	public void iRunTheGenerator() throws Throwable {	
-		
-		//Create a arraybuffer and capturedConsolePrintStreams for out and err printstreams
-		baos = new ByteArrayOutputStream();
-		PrintStream stdOut = System.out;
-		PrintStream stdErr = System.err;
-		CapturedConsolePrintStream newOut = new CapturedConsolePrintStream(baos, stdOut);
-		CapturedConsolePrintStream newErr = new CapturedConsolePrintStream(baos, stdErr);
-		
-		//Redirect std and err out to the new captured streams
-		System.setOut(newOut);
-		System.setErr(newErr);
-		
+	public URI prepareGenerationAndGetAppConfigFileLocation() throws Throwable {
 		//Get AppConfig object		
 		AppConfig appConfig = XGenAppConfig.fromString(this.appConfigContent).getAppConfig();
 		
@@ -150,17 +140,77 @@ public class XGenerateTestSteps {
 		//Add app config file to commandline arguments
 		this.commandLineArgs.add("-config");
 		this.commandLineArgs.add(fullAppConfigFileURI.toString().replace("file:/", ""));
+		
+		return fullAppConfigFileURI;
+	}
+	
+	@When("^I run the generator$")
+	public void iRunTheGeneratorAndCheckExitCode() throws Throwable {
+		// Add the first part of the command (in reverse order is java is the first argument).
+		Path xgenTargetPath = Paths.get(XGenerateStarter.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
+		PathMatcher xgenJarMatcher = xgenTargetPath.getFileSystem().getPathMatcher("regex:.*XGenerate-[0-9\\.]+-jar-with-dependencies.jar");
+		Optional<Path> optionalXgenJarPath = Files.walk(xgenTargetPath, 1).filter(xgenJarMatcher::matches).findFirst();
+		// Throw an exception if the executable jar isn't found.
+		if (optionalXgenJarPath.isEmpty())
+			throw new Exception("The XGenerate jar with dependencies couldn't be found, make sure the jar is build!");
+		this.commandLineArgs.addFirst(xgenTargetPath.resolve(optionalXgenJarPath.get()).toString());
+		this.commandLineArgs.addFirst("-jar");
+		this.commandLineArgs.addFirst("java");
+		
+		// Prepare generation.
+		URI fullAppConfigFileURI = prepareGenerationAndGetAppConfigFileLocation();
+		
+		// Print the command array.
+		String[] cmdArray = commandLineArgs.toArray(new String[0]);
+		System.out.println(String.format("Command array: %s", Arrays.toString(cmdArray)));
+		
+		// Built and start the process.
+		ProcessBuilder pb = new ProcessBuilder().command(cmdArray);
+		Process xgProcess = pb.start();
 
-		//Invoke generator
-		XGenerateStarter.main(this.commandLineArgs.toArray(new String[0]));
+		// Store the output of the process.
+		this.processOutput = new String(xgProcess.getInputStream().readAllBytes());
+		this.processOutput += new String(xgProcess.getErrorStream().readAllBytes());
+		
+		// Wait for the process to finish.
+		actualExitCode = xgProcess.waitFor();
+		
+		System.out.println("CrossGenerate process output:");
+		System.out.println("==================================================");
+		System.out.println(this.processOutput);
+		System.out.println("==================================================");
 		
 		//Remove app config file		
 		Files.delete(Paths.get(fullAppConfigFileURI));
-
-		//Restore std and err output streams
-		System.setOut(stdOut);
-		System.setErr(stdErr);
 	}
+	
+//	@When("^I run the generator$")
+//	public void iRunTheGenerator() throws Throwable {	
+//		
+//		//Create a arraybuffer and capturedConsolePrintStreams for out and err printstreams
+//		baos = new ByteArrayOutputStream();
+//		PrintStream stdOut = System.out;
+//		PrintStream stdErr = System.err;
+//		CapturedConsolePrintStream newOut = new CapturedConsolePrintStream(baos, stdOut);
+//		CapturedConsolePrintStream newErr = new CapturedConsolePrintStream(baos, stdErr);
+//		
+//		//Redirect std and err out to the new captured streams
+//		System.setOut(newOut);
+//		System.setErr(newErr);
+//		
+//		// Prepare generation.
+//		URI fullAppConfigFileURI = prepareGenerationAndGetAppConfigFileLocation();
+//
+//		//Invoke generator
+//		XGenerateStarter.main(this.commandLineArgs.toArray(new String[0]));
+//		
+//		//Remove app config file		
+//		Files.delete(Paths.get(fullAppConfigFileURI));
+//
+//		//Restore std and err output streams
+//		System.setOut(stdOut);
+//		System.setErr(stdErr);
+//	}
 
 	@Then("^I expect (\\d+) generation results?$")
 	public void iExpectGenerationResults(int expectedNrOfResults) throws Throwable {		
@@ -170,6 +220,15 @@ public class XGenerateTestSteps {
 				expectedNrOfResults,
 				actualNrOfResults,
 				String.format("The expected number of results is then the actual (%s : %s)", expectedNrOfResults, actualNrOfResults)
+		);	
+	}
+	
+	@Then("^I expect exit code (\\d)$")
+	public void iExpectExitCode(int expectedExitCode) throws Throwable {		
+		assertEquals(
+				expectedExitCode,
+				actualExitCode,
+				String.format("The actual exit code (%d) differs from the expected exit code (%d)", actualExitCode, expectedExitCode)
 		);	
 	}
 	
@@ -219,11 +278,11 @@ public class XGenerateTestSteps {
 	public void andAConsoleOutputContaining(String textExpected, String textNotExpected) throws Throwable {
 		
 		//Check for expected content
-		Boolean found = this.findTextInString(baos.toString(), textExpected);
+		Boolean found = this.findTextInString(this.processOutput, textExpected);
 		assertTrue(found, String.format("Did not found %s in console output while expected", textExpected));
 		
 		//Check for unexpected content		
-		found = this.findTextInString(baos.toString(), textNotExpected);
+		found = this.findTextInString(this.processOutput, textNotExpected);
 		assertFalse(found, String.format("Found %s in console output while not expected", textNotExpected));		
 	}	
 	

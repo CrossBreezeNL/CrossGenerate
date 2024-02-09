@@ -46,8 +46,9 @@ Feature: Unit_CommandLine_Logging
     When I run the generator
     Then I expect 1 generation result
     And no log file
+    And I expect exit code 0
 
-  Scenario: logging from commandline, different parameter combinations
+  Scenario: Logging from commandline, different parameter combinations
     Given the following additional comma separated commandline arguments:
       """
       -fll, super, -filelogdestination, C:\CrossGenerate\Test\Log\testlog.log
@@ -55,8 +56,9 @@ Feature: Unit_CommandLine_Logging
     When I run the generator
     Then I expect 0 generation result
     And no log file
+    And I expect exit code 1
 
-  Scenario Outline: file logging from commandline, scenario <Scenario>
+  Scenario Outline: File logging from commandline, scenario <Scenario>
     Given the following additional comma separated commandline arguments:
       """
       -Debug, true, -<FileLogLevelParam>, <FileLogLevelParamValue>, -<FileLogDestinationParam>, C:\CrossGenerate\Test\Log\testlog.log
@@ -64,6 +66,7 @@ Feature: Unit_CommandLine_Logging
     When I run the generator
     Then I expect 1 generation result
     And a log file containing "<ResultContains>" but not containing "<ResultNotContains>"
+    And I expect exit code 0
 
     Examples: 
       | Scenario                                      | FileLogLevelParam | FileLogLevelParamValue | FileLogDestinationParam | ResultContains | ResultNotContains |
@@ -76,7 +79,7 @@ Feature: Unit_CommandLine_Logging
       | Log level is info                             | fll               | info                   | fld                     | [INFO   ]      | [FINE   ]         |
       | log level is fine                             | fll               | fine                   | fld                     | [FINE   ]      | [(nothing)  ]     |
 
-  Scenario Outline: console logging from commandline, scenario <Scenario>
+  Scenario Outline: Console logging from commandline, scenario <Scenario>
     Given the following additional comma separated commandline arguments:
       """
       -Debug, true, -<ConsoleLogLevelParam>, <ConsoleLogLevelParamValue>
@@ -84,12 +87,13 @@ Feature: Unit_CommandLine_Logging
     When I run the generator
     Then I expect 1 generation result
     And a console output containing "<ResultContains>" but not containing "<ResultNotContains>"
+    And I expect exit code 0
 
     Examples: 
       | Scenario                      | ConsoleLogLevelParam | ConsoleLogLevelParamValue | ResultContains | ResultNotContains |
-      | Fullname proper case  warning | consoleLogLevel      | warning                   | [WARNING]      | [INFO   ]         |
-      | Fullname lowercase  warning   | consoleloglevel      | warning                   | [WARNING]      | [INFO   ]         |
-      | Shortname lowercase  warning  | cll                  | warning                   | [WARNING]      | [INFO   ]         |
+      | Fullname proper case warning  | consoleLogLevel      | warning                   | [WARNING]      | [INFO   ]         |
+      | Fullname lowercase warning    | consoleloglevel      | warning                   | [WARNING]      | [INFO   ]         |
+      | Shortname lowercase warning   | cll                  | warning                   | [WARNING]      | [INFO   ]         |
       | Shortname uppercase warning   | CLL                  | warning                   | [WARNING]      | [INFO   ]         |
       | log level is info             | CLL                  | info                      | [INFO   ]      | [FINE   ]         |
       | log level is fine             | CLL                  | fine                      | [FINE   ]      | [(nothing)   ]    |

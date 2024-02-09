@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 
 import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.AbstractTemplateConfig;
+import com.xbreeze.xgenerate.config.template.FileFormatConfig;
 import com.xbreeze.xgenerate.config.template.TextTemplateConfig;
 import com.xbreeze.xgenerate.template.PreprocessedTemplate;
 import com.xbreeze.xgenerate.template.RawTemplate;
@@ -73,7 +74,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		ArrayList<TemplateAnnotation> templateAnnotations = getTemplateAnnotations(rawTemplateContent, _config.getTemplateConfig(), 0, rawTemplateContent.length());
 		
 		// Create a Text Template section annotation for the root section (implicit).
-		TemplateTextSectionAnnotation ttsa = new TemplateTextSectionAnnotation(rootSectionName);
+		TemplateTextSectionAnnotation ttsa = new TemplateTextSectionAnnotation(rootSectionName, _config.getTemplateConfig().getFileFormatConfig().getLineSeparator());
 		// Create the root template section bounds.
 		TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(ttsa, 0, rawTemplateContent.length());
 		
@@ -127,7 +128,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 					sectionSearchEndCharStartIndex += textSectionAnnotation.getBegin().length();
 				
 				// Look for end index, but only if begin was found
-				int sectionEndCharIndex = findSectionEndIndex(textSectionAnnotation, rawTemplateContent, sectionSearchEndCharStartIndex, endIndex);
+				int sectionEndCharIndex = findSectionEndIndex(textSectionAnnotation, rawTemplateContent, sectionSearchEndCharStartIndex, endIndex, templateConfig.getFileFormatConfig());
 
 				// If the end index isn't found yet, throw a exception.
 				if (sectionEndCharIndex == -1)
@@ -216,7 +217,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 	 * @return The position of the end if found, otherwise -1.
 	 * @throws TemplatePreprocessorException
 	 */
-	private static int findSectionEndIndex(TemplateTextSectionAnnotation textSectionAnnotation, String rawTemplateContent, int searchBeginIndex, int searchEndIndex) throws TemplatePreprocessorException {
+	private static int findSectionEndIndex(TemplateTextSectionAnnotation textSectionAnnotation, String rawTemplateContent, int searchBeginIndex, int searchEndIndex, FileFormatConfig fileFormatConfig) throws TemplatePreprocessorException {
 		// The variable to return at the end, if the end is not found this function will return -1.
 		int sectionEndCharIndex = -1;
 		
@@ -235,7 +236,13 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		}
 		// literalOnLastLine
 		else if (textSectionAnnotation.getLiteralOnLastLine() != null && textSectionAnnotation.getLiteralOnLastLine().length() > 0) {
-		    Pattern pattern = Pattern.compile(String.format("%s.*\\r?\\n?", Pattern.quote(textSectionAnnotation.getLiteralOnLastLine())));
+		    Pattern pattern = Pattern.compile(
+		    		String.format(
+		    				"%s.*(%s|$)",
+		    				Pattern.quote(textSectionAnnotation.getLiteralOnLastLine()),
+		    				fileFormatConfig.getLineSeparator()
+    				)
+    		);
 		    Matcher matcher = pattern.matcher(rawTemplateContent);
 		    // Set the region to search in.
 		    matcher.region(searchBeginIndex, searchEndIndex);
@@ -249,20 +256,28 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		else  {
 			// Get the nrOfLines from the annotation.
 			Integer sectionNrOfLines = textSectionAnnotation.getNrOfLines();
-			
-			// Loop through the newlines as of the start of the section.
-			for (int currentNrOfLines = 0; currentNrOfLines < sectionNrOfLines; currentNrOfLines++) {
-				// The end of the section is the first newline we encounter after the begin of the section. We include the newline in the section.
-				sectionEndCharIndex = rawTemplateContent.indexOf('\n', (sectionEndCharIndex == -1) ? searchBeginIndex : sectionEndCharIndex + 1);
-				
-				// If the end of line wasn't found, break out of the loop.
-				if (sectionEndCharIndex == -1)
+
+			// Create a regex pattern to find the separate lines (or end of the file).
+			Pattern newLinePattern = Pattern.compile(String.format("%s|$", fileFormatConfig.getLineSeparator()));
+			Matcher newLineMatcher = newLinePattern.matcher(rawTemplateContent);
+			// The end of the section is the first newline we encounter after the begin of the section. We include the newline in the section.
+			int newLineSearchStartIndex = (sectionEndCharIndex == -1) ? searchBeginIndex : sectionEndCharIndex + 1;
+			newLineMatcher.region(newLineSearchStartIndex, searchEndIndex);
+			// Loop through the newlines within the region of the section and keep track of the nr of lines found.
+			int newLineMatchCount = 0;
+			while(newLineMatcher.find()) {
+				// Increase the newline match count.
+				++newLineMatchCount;
+				// If we found the number of lines of the section. break out of the loop.
+				if (newLineMatchCount == sectionNrOfLines) {
+					sectionEndCharIndex = newLineMatcher.start();
 					break;
+				}
 			}
 			
-			// Add the 1 to the length to compensate for the \n character.
+			// Add the length of the line separator character sequence to the length to compensate for the line separator character(s).
 			if (sectionEndCharIndex != -1)
-				sectionEndCharIndex += 1;
+				sectionEndCharIndex += newLineMatcher.group().length();
 		}
 		// Otherwise, we can't get the end location, leave the return value at the initial -1.
 		
@@ -270,7 +285,7 @@ public class TextTemplatePreprocessor extends TemplatePreprocessor {
 		if (sectionEndCharIndex > searchEndIndex)
 			return -1;
 		
-		// If the find index is before the start index, throw an exception since this shouldn't happen.
+		// If the found index is before the start index, throw an exception since this shouldn't happen.
 		if (sectionEndCharIndex != -1 && sectionEndCharIndex < searchBeginIndex)
 			throw new TemplatePreprocessorException(String.format("The found section end index %d is lower than the starting index %d, this shouldn't happen!", sectionEndCharIndex, searchBeginIndex));
 		

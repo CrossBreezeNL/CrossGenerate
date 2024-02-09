@@ -79,6 +79,9 @@ The TextSection configuration defines a section in a text template. This can eit
     suffixStyle="..."
     suffixAction="..."
   ]
+  [
+    lineSeparator="..."
+  ]
 />
 ```
 ### Parameters
@@ -101,6 +104,7 @@ The TextSection configuration defines a section in a text template. This can eit
 | suffix                     | The suffix to append using the `suffxStyle`. |
 | suffixStyle                | The style of the suffix, see [Prefix & suffix styles](#prefix-suffix-styles) | allButLast | Only interpreted when `suffix` is given. |
 | suffixAction               | The action to be performed with the suffix, either add or remove. | add | Only interpreted when `suffix` is given. _Only add is supported at the moment._ |
+| lineSeparator              | The string literal which represents a line separator within this section. | \r?\n | By default this is the line separator as specified in the [FileFormatConfig](../GenericTemplate/#fileformat) which is applicable for the template part this annotation is in. For a text template it will be the main TextTemplate configuration element. For a XML template, it will be the respective TextTemplate element in the TextTemplates collection. |
 
 ### Prefix & suffix styles
 

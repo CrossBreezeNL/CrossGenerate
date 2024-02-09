@@ -283,7 +283,7 @@ public class XMLTemplatePreprocessor extends TemplatePreprocessor {
 								textTemplateSectionName = String.format("TextTemplate@%s[%d]", textTemplateConfig.getNode(), textTemplateCount);
 								userDefinedSectionName = false;
 							}
-							TemplateTextSectionAnnotation tsa = new TemplateTextSectionAnnotation(textTemplateSectionName, userDefinedSectionName);
+							TemplateTextSectionAnnotation tsa = new TemplateTextSectionAnnotation(textTemplateSectionName, textTemplateConfig.getFileFormatConfig().getLineSeparator(), userDefinedSectionName);
 					    	// Create a new TemplateSectionBoundsAnnotation using the section-annotation and start index.
 					    	TemplateSectionBoundsAnnotation tsba = new TemplateSectionBoundsAnnotation(tsa, textTemplateStartIndex, textTemplateEndIndex);
 					    	// Add the template section bounds annotations to the list of annotations of the parent template.

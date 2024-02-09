@@ -241,6 +241,57 @@ Feature: Unit_Config_XmlTemplate_TextTemplate_Element
       </Database>
       """
 
+  Scenario: TextTemplate with encoded newlines in XMLTemplate
+    Given the following template named "ExampleTemplate.xml":
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database name="system_name">
+      	<Tables>
+      		<Table name="entity_name" description="@XGenXmlSection(name='Tables')"> 
+      			<SqlQuery>SELECT\n  -- @XGenTextSection(name='Columns' suffix=',')\n  attribute_name\nFROM entity_name</SqlQuery>
+    			</Table>
+      	</Tables>
+      </Database>
+      """
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <XmlTemplate rootSectionName="Database">
+        	<FileFormat currentAccessor="_" commentNodeXPath="@description" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+          <Output type="output_per_element" />
+          <TextTemplates>
+            <TextTemplate node="//SqlQuery">
+              <FileFormat lineSeparator="\\n" currentAccessor="_" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+            </TextTemplate>
+          </TextTemplates>
+        </XmlTemplate>
+        <Binding>
+          <SectionModelBinding section="Database" modelXPath="/modeldefinition/system" placeholderName="system">
+            <SectionModelBinding section="Tables" modelXPath="entity" placeholderName="entity">
+              <SectionModelBinding section="Columns" modelXPath="attribute" placeholderName="attribute"/>
+            </SectionModelBinding>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "ExampleTemplate.xml" with content:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <Database name="ExampleSource">
+      	<Tables>
+      		<Table name="Order" description=""> 
+      			<SqlQuery>SELECT\n  OrderId,\n  OrderDate\nFROM Order</SqlQuery>
+    			</Table>
+      		<Table name="Customer" description=""> 
+      			<SqlQuery>SELECT\n  CustomerId,\n  CustomerName\nFROM Customer</SqlQuery>
+    			</Table>
+      	</Tables>
+      </Database>
+      """
+
   Scenario: TextTemplate with multiple sections annotated in template
     # Scenario based on task 220:
     # https://x-breeze.visualstudio.com/CrossGenerate/_workitems/edit/220

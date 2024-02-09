@@ -38,6 +38,7 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 
 import com.xbreeze.xgenerate.UnhandledException;
+import com.xbreeze.xgenerate.config.template.FileFormatConfig;
 import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation.RepetitionAction;
 import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation.RepetitionStyle;
 
@@ -46,7 +47,7 @@ import com.xbreeze.xgenerate.template.annotation.TemplateTextSectionAnnotation.R
  * 
  * @author Harmen
  */
-// Don't create a attribute or element for fields or get methods by default.
+// Don't create an attribute or element for fields or get methods by default.
 // All are explicitly defined.
 @XmlAccessorType(XmlAccessType.NONE)
 public abstract class TemplateAnnotation implements Comparable<TemplateAnnotation> {
@@ -90,7 +91,7 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 	 * @throws AnnotationException When there is something wrong with the annotation
 	 * @throws UnhandledException When something unexpected happened.
 	 */
-	public static TemplateAnnotation fromName(String annotationName, String annotationParams, int charIndexStart, int charIndexEnd) throws AnnotationException, UnhandledException  {
+	public static TemplateAnnotation fromName(String annotationName, String annotationParams, int charIndexStart, int charIndexEnd, FileFormatConfig fileFormatConfig) throws AnnotationException, UnhandledException  {
 		
 		// Construct the class name for the annotation (Template<Name>Annotation).
 		// It expects the class to be in the same package as TemplateAnnotation.
@@ -172,6 +173,13 @@ public abstract class TemplateAnnotation implements Comparable<TemplateAnnotatio
 				if (annotationParams.length() > 0 && previousEndMatchIndex != annotationParams.length())
 					throw new AnnotationException(String.format("Params part of annotation couldn't be parsed: '%s'", annotationParams.substring(previousEndMatchIndex)));
 				
+			}
+			
+			// If the processed template annotation is a text section annotation, and the line separator was not set, set it from the file format config.
+			if (templateAnnotation instanceof TemplateTextSectionAnnotation) {
+				TemplateTextSectionAnnotation tta = (TemplateTextSectionAnnotation)templateAnnotation;
+				if (tta.getLineSeparator() == null)
+					tta.setLineSeparator(fileFormatConfig.getLineSeparator());
 			}
 			
 			// Return the template annotation.

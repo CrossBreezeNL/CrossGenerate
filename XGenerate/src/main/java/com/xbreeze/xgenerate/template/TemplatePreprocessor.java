@@ -171,7 +171,7 @@ public abstract class TemplatePreprocessor {
 			logger.fine(String.format("Prefix is defined for section '%s', searching for whitespace and creating appropriate sections.", parentTemplateSection.getSectionName()));
 			// Store the text template section annotation in a variable.
 			TemplateTextSectionAnnotation textSectionAnnotaton = ((TemplateTextSectionAnnotation)parentSectionBounds.getTemplateSectionAnnotation());
-			// Now we scan for any whitespace at the end of the found raw-template and add the suffix section before the whitespace.
+			// Now we scan for any whitespace at the begin of the found raw-template and add the prefix section after the whitespace.
 			// So <raw-template><prefix>
 			// \A     -> The begin of the input
 			// [ \t]+ -> Any space or tab: [ \t\n\x0B\f\r]
@@ -248,6 +248,7 @@ public abstract class TemplatePreprocessor {
 						// If the parent section end index is later then the expected beginning of the next section we create a raw template with the part between.
 						if (parentSectionEndIndex > previousSectionEndIndex) {
 							// If there is a suffix defined for the parent section, add a repetition section before the newline.
+							// TODO: If there is no white-space after the previous section, will the suffix work? Because the if statement on line 249 won't be true? Meaning suffix will only work if there is some whitespace after the previous section and the end of the parent section.
 							if (parentSectionBounds.getTemplateSectionAnnotation() instanceof TemplateTextSectionAnnotation
 									&& ((TemplateTextSectionAnnotation)parentSectionBounds.getTemplateSectionAnnotation()).getSuffix() != null
 									&& ((TemplateTextSectionAnnotation)parentSectionBounds.getTemplateSectionAnnotation()).getSuffix().length() > 0
@@ -256,9 +257,9 @@ public abstract class TemplatePreprocessor {
 								TemplateTextSectionAnnotation textSectionAnnotation = (TemplateTextSectionAnnotation)parentSectionBounds.getTemplateSectionAnnotation();
 								// Now we scan for any whitespace at the end of the found raw-template and add the suffix section before the whitespace.
 								// So <raw-template><suffix><whitespace>
-								// \s  -> Any whitespace character: [ \t\n\x0B\f\r]
+								// (\s|%s)  -> Any whitespace character [ \t\n\x0B\f\r], or whitespace from the configuration. 
 								// \z  -> The end of the input
-							    Pattern pattern = Pattern.compile(String.format("\\s+\\z"));
+							    Pattern pattern = Pattern.compile(String.format("(\\s|%s)+\\z", textSectionAnnotation.getLineSeparator()));
 							    Matcher matcher = pattern.matcher(rawTemplateContent.substring(0, parentSectionEndIndex));
 								if (matcher.find(previousSectionEndIndex)) {
 									// Get the begin and end position of the whitespace at the end of the section.
@@ -367,6 +368,11 @@ public abstract class TemplatePreprocessor {
 					previousSectionEndIndex = templateAnnotation.getAnnotationEndIndex();
 				}
 			}
+		}
+		
+		// If the last section end-index is exactly the end of the parent section, we can return.
+		if (previousSectionEndIndex == parentMaxSectionEndIndex) {
+			return previousSectionEndIndex;
 		}
 		
 		// If this is the root section, return the end index.

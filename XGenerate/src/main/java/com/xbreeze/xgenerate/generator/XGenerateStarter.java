@@ -227,6 +227,7 @@ public class XGenerateStarter extends GenerationObserverSource {
 		catch (GeneratorException e) {
 			System.err.println(e.getMessage());
 			// Return, so the generator won't start when an error occured uptill here.
+			System.exit(1);
 			return;
 		}
 		
@@ -300,6 +301,12 @@ public class XGenerateStarter extends GenerationObserverSource {
 			logger.severe("Error occured while generating");
 			logger.severe(e.getMessage());
 			System.err.println("Error occured while generating, see log for more information");
+			// Close all existing log handlers
+			for(Handler h : logger.getHandlers())
+			{
+			    h.close();   
+			}
+			System.exit(1);
 		}
 		finally {
 			// Close all existing log handlers
