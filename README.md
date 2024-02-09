@@ -1,4 +1,4 @@
-# CrossGenerate (Java)
+# CrossGenerate
 
 CrossGenerate is the free and open-source generator for data solutions. In a model-driven approach, the generator generates the software based on the model and software templates.
 
