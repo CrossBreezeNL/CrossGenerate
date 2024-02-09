@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<XGenAppConfig>
-  <App>
-    <ConfigFolder>..\XGenerateTest\src\test\resources\feature-support-files\Config</ConfigFolder>
-    <ModelFolder>..\XGenerateTest\src\test\resources\feature-support-files\Model</ModelFolder>
-    <OutputFolder>C:\CrossGenerate\Output</OutputFolder>
-    <TemplateFolder>..\XGenerateTest\src\test\resources\feature-support-files\Template</TemplateFolder>
-  </App>
-</XGenAppConfig>
