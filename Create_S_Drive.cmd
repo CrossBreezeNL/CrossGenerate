@@ -1,1 +1,0 @@
-subst S: C:\git\CrossBreeze\CrossGenerateJava\CrossGenerateJava
