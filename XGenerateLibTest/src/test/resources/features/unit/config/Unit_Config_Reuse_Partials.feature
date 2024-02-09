@@ -45,8 +45,8 @@ Feature: Unit_Config_Reuse_Partials
 
     Examples: 
       | Scenario                                       | includeHref                                                                                                                                                                                      | xpointer                                                            | expectedResultA | expectedResultB |
-      | No Nesting                                     | C:\\git\\CrossBreeze\\CrossGenerateJava\\CrossGenerateJava\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials\\entityBinding.xml            |                                                                     | A -> sys;       | B -> sys;       |
-      | Nested include for placeholders absolute       | C:\\git\\CrossBreeze\\CrossGenerateJava\\CrossGenerateJava\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials\\entityBindingWithInclude.xml |                                                                     | A -> sys;       | B -> sys;       |
+      | No Nesting                                     | C:\\git\\GitHub\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials\\entityBinding.xml            |                                                                     | A -> sys;       | B -> sys;       |
+      | Nested include for placeholders absolute       | C:\\git\\GitHub\\CrossGenerate\\XGenerateLibTest\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials\\entityBindingWithInclude.xml |                                                                     | A -> sys;       | B -> sys;       |
       | Nested include for placeholders relative       | entityBindingWithIncludeRelative.xml                                                                                                                                                             |                                                                     | A -> sys;       | B -> sys;       |
       | Nested include for placeholders multiple times | entityBindingWithIncludeMultiple.xml                                                                                                                                                             |                                                                     | A -> sys;       | B -> sys;       |
       | Nested include and multiple include files      | entityBindingWithMultipleInclude.xml                                                                                                                                                             |                                                                     | A -> sys;       | B -> sys;       |
@@ -76,5 +76,5 @@ Feature: Unit_Config_Reuse_Partials
       """
     Then I expect the following error message:
       """
-      Config include cycle detected at level 3, file file:///C:/git/CrossBreeze/CrossGenerateJava/CrossGenerateJava/XGenerateLibTest/target/test-classes/feature-support-files/unit/config/Unit_Config_Reuse_Partials/entityBindingWithIncludeNested.xml is already included previously
+      Config include cycle detected at level 3, file file:///C:/git/GitHub/CrossGenerate/XGenerateLibTest/target/test-classes/feature-support-files/unit/config/Unit_Config_Reuse_Partials/entityBindingWithIncludeNested.xml is already included previously
       """
