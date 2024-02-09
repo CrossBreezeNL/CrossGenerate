@@ -1,6 +1,0 @@
-CrossGenerate is developed and maintained by CrossBreeze.
-CrossTest is licensed under the GNU Lesser General Public License.
-
-Copyright CrossBreeze
-
-https://www.gnu.org/copyleft/lesser.html
