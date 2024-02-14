@@ -32,3 +32,8 @@ jobs:
       - name: Build with Maven
         run: mvn --batch-mode package assembly:single -PexecutableJar
         working-directory: ./XGenerate
+
+      # Test with Maven
+      - name: Build with Maven
+        run: mvn --batch-mode test
+        working-directory: ./XGenerateLibTest
