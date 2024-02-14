@@ -29,11 +29,16 @@ jobs:
           cache: 'maven'
       
       # Build with Maven
-      - name: Build with Maven
-        run: mvn --batch-mode package assembly:single -PexecutableJar
+      - name: Build
+        run: mvn --batch-mode install -DskipTests
         working-directory: ./XGenerate
 
       # Test with Maven
-      - name: Build with Maven
-        run: mvn --batch-mode test
-        working-directory: ./XGenerateLibTest
+      - name: Run Unit Tests
+        run: mvn --batch-mode test -Dtest="RunXGenerateLibUnitTest"
+        working-directory: ./XGenerate
+
+      # Build single jar
+      - name: Assemble Jar
+        run: mvn --batch-mode assembly:single -DskipTests
+        working-directory: ./XGenerate
