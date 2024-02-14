@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SectionModelBinding section="Template" modelXPath ="/system" placeholderName="system"  xmlns:xi="http://www.w3.org/2001/XInclude">
+	<SectionModelBinding section="Tables" modelXPath="./entities/entity" placeholderName="table">
+		<Placeholders>
+			<xi:include href="C:\git\GitHub\CrossGenerate\XGenerate\src\test\resources\feature-support-files\unit\config\Unit_Config_Reuse_Partials\sub-configs\placeholders.xml"/>			
+		</Placeholders>
+	</SectionModelBinding>
+ </SectionModelBinding>
+				

@@ -1,0 +1,5 @@
+<SectionModelBinding section="Template" modelXPath ="/system" placeholderName="system"  xmlns:xi="http://www.w3.org/2001/XInclude">
+	<xi:include href=".\sub-configs\binding1.xml"/>			
+	<xi:include href=".\sub-configs\binding2.xml"/>			
+ </SectionModelBinding>
+				

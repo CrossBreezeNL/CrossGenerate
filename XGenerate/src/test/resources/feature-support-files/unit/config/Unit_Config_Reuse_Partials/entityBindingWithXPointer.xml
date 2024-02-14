@@ -1,0 +1,3 @@
+<SectionModelBinding section="Template" modelXPath ="/system" placeholderName="system"  xmlns:xi="http://www.w3.org/2001/XInclude">
+	<xi:include href=".\sub-configs\bindings.xml" xpointer="//SectionModelBinding[@section='Tables']"/>				
+</SectionModelBinding>				
