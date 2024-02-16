@@ -205,6 +205,7 @@
 						<include>com.xbreeze.xgenerate.test.RunXGenerateLibIntegrationTest</include>
 						<include>com.xbreeze.xgenerate.test.RunXGenerateLibUnitTest</include>
 					</includes>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 
