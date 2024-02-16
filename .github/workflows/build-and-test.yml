@@ -51,3 +51,9 @@ jobs:
       - name: Assemble Jar
         run: mvn --batch-mode assembly:single -DskipTests
         working-directory: ./XGenerate
+
+      # Publish jars.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: binaries
+          path: XGenerate/target/*.jar
