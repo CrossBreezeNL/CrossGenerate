@@ -44,16 +44,16 @@ Feature: Unit_Config_Reuse_Partials
       """
 
     Examples: 
-      | Scenario                                       | includeHref                                                                                                                                                                                      | xpointer                                                            | expectedResultA | expectedResultB |
-      | No Nesting                                     | C:\\git\\GitHub\\CrossGenerate\\XGenerate\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials\\entityBinding.xml            |                                                                     | A -> sys;       | B -> sys;       |
-      | Nested include for placeholders absolute       | C:\\git\\GitHub\\CrossGenerate\\XGenerate\\src\\test\\resources\\feature-support-files\\unit\\config\\Unit_Config_Reuse_Partials\\entityBindingWithInclude.xml |                                                                     | A -> sys;       | B -> sys;       |
-      | Nested include for placeholders relative       | entityBindingWithIncludeRelative.xml                                                                                                                                                             |                                                                     | A -> sys;       | B -> sys;       |
-      | Nested include for placeholders multiple times | entityBindingWithIncludeMultiple.xml                                                                                                                                                             |                                                                     | A -> sys;       | B -> sys;       |
-      | Nested include and multiple include files      | entityBindingWithMultipleInclude.xml                                                                                                                                                             |                                                                     | A -> sys;       | B -> sys;       |
-      | Nested include using xpointer                  | entityBindingWithXPointer.xml                                                                                                                                                                    |                                                                     | A -> sys;       | B -> sys;       |
-      | Nested include using xpointer twice            | entityBindingWithXPointerTwice.xml                                                                                                                                                               |                                                                     | A -> sys;       | B -> sys;       |
-      | Using xpointer with global accessor            | modelBindingWithParentElement.xml                                                                                                                                                                | xpointer="//SectionModelBinding[@section='Template']" | A -> sys;       | B -> sys;       |
-      | Using xpointer with root accessor              | modelBindingWithParentElement.xml                                                                                                                                                                | xpointer="/SomeRootElement/SectionModelBinding[@section='Template']" | A -> sys;       | B -> sys;       |
+      | Scenario                                       | includeHref                                             | xpointer                                                             | expectedResultA | expectedResultB |
+      | No Nesting                                     | {{support-file-location}}/entityBinding.xml                                       |                                                                      | A -> sys;       | B -> sys;       |
+      | Nested include for placeholders absolute       | {{support-file-location}}/entityBindingWithInclude.xml |                                                                      | A -> sys;       | B -> sys;       |
+      | Nested include for placeholders relative       | entityBindingWithIncludeRelative.xml                    |                                                                      | A -> sys;       | B -> sys;       |
+      | Nested include for placeholders multiple times | entityBindingWithIncludeMultiple.xml                    |                                                                      | A -> sys;       | B -> sys;       |
+      | Nested include and multiple include files      | entityBindingWithMultipleInclude.xml                    |                                                                      | A -> sys;       | B -> sys;       |
+      | Nested include using xpointer                  | entityBindingWithXPointer.xml                           |                                                                      | A -> sys;       | B -> sys;       |
+      | Nested include using xpointer twice            | entityBindingWithXPointerTwice.xml                      |                                                                      | A -> sys;       | B -> sys;       |
+      | Using xpointer with global accessor            | modelBindingWithParentElement.xml                       | xpointer="//SectionModelBinding[@section='Template']"                | A -> sys;       | B -> sys;       |
+      | Using xpointer with root accessor              | modelBindingWithParentElement.xml                       | xpointer="/SomeRootElement/SectionModelBinding[@section='Template']" | A -> sys;       | B -> sys;       |
 
   Scenario: using the same include twice, nested
     Given the following config:
@@ -76,5 +76,5 @@ Feature: Unit_Config_Reuse_Partials
       """
     Then I expect the following error message:
       """
-      Config include cycle detected at level 3, file file:///C:/git/GitHub/CrossGenerate/XGenerate/target/test-classes/feature-support-files/unit/config/Unit_Config_Reuse_Partials/entityBindingWithIncludeNested.xml is already included previously
+      Config include cycle detected at level 3, file {{support-file-location}}/entityBindingWithIncludeNested.xml is already included previously
       """

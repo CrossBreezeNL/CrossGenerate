@@ -106,8 +106,6 @@ Feature: Unit_Config_TextTemplate_Section_Prefix
       | allButLast  | /** not last */  | /** not last */FirstColumn | /** not last */SecondColumn  | ThirdColumn                 |
       | all         | /** all */       | /** all */FirstColumn      | /** all */SecondColumn       | /** all */ThirdColumn       |
 
-  # For some reason only a new line (&#10; or &#xa;) will not be outputted, but in combination with a space (&#160;) it will.
-  @KnownIssue
   Scenario Outline: Section with whitespace prefix single line <Scenario>
     And the following config:
       """
@@ -141,5 +139,41 @@ Feature: Unit_Config_TextTemplate_Section_Prefix
 
   Examples:
     | Scenario      | Prefix              |
-    | without space @KnownIssue | &amp;#10;           |
     | with space    | &amp;#160;&amp;#10; |
+
+  # For some reason only a new line (&#10; or &#xa;) will not be outputted, but in combination with a space (&#160;) it will.
+  @KnownIssue
+  Scenario Outline: Section with whitespace prefix single line <Scenario> @KnownIssue
+    And the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model/>
+        <TextTemplate rootSectionName="Template">
+          <FileFormat />
+          <Output type="single_output" />
+          <TextSections>
+            <TextSection name="Column" literalOnFirstLine="column" end="name" includeEnd="true" prefix="<Prefix>" prefixStyle="allButFirst"/> 
+          </TextSections>
+        </TextTemplate>
+        <Binding>
+          <SectionModelBinding section="Template" modelXPath="/modeldefinition" placeholderName="model"> 
+            <SectionModelBinding section="Column" modelXPath="attributes/attribute" placeholderName="column"/>
+          </SectionModelBinding>
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "Section_Prefix.txt" with content:
+      """
+      -- Begin of template
+      FirstColumn 
+      SecondColumn 
+      ThirdColumn
+      -- End of template
+      """
+
+  Examples:
+    | Scenario      | Prefix              |
+    | without space | &amp;#10;           |
