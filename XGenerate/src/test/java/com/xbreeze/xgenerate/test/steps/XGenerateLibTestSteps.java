@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -169,7 +170,7 @@ public class XGenerateLibTestSteps {
 	@And("^the following config:$")
 	public void theFollowingConfig(String configContent) throws Throwable {
 		try {
-			this._xGenConfig = XGenConfig.fromString(configContent, _featureSupportFilesLocation);
+			this._xGenConfig = XGenConfig.fromString(configContent.replace("{{support-file-location}}", new File(this._featureSupportFilesLocation).toString()), _featureSupportFilesLocation);
 		} catch(ConfigException exc) {
 			this.generatorException = exc;
 		}
@@ -225,7 +226,7 @@ public class XGenerateLibTestSteps {
 	@Then("^I expect the following error message:$")
 	public void iExpectTheFollowingErrorMessage(String errorMessage) throws Throwable {
 		assertNotNull(this.generatorException, "There is no exception thrown");
-		assertEquals(errorMessage, this.generatorException.getMessage());
+		assertEquals(errorMessage.replace("{{support-file-location}}", this._featureSupportFilesLocation.toURL().toString().replace("file:/", "file:///")), this.generatorException.getMessage());
 		
 		
 	}
