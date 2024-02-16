@@ -1,5 +1,5 @@
 <SectionModelBinding section="Template" modelXPath ="/system" placeholderName="system"  xmlns:xi="http://www.w3.org/2001/XInclude">
 	<SectionModelBinding section="Tables" modelXPath="./entities/entity" placeholderName="table">		
-		<xi:include href=".\sub-configs\placeholders_nested.xml"/>					
+		<xi:include href="./sub-configs/placeholders_nested.xml"/>					
 	</SectionModelBinding>
-</SectionModelBinding>				
+</SectionModelBinding>
