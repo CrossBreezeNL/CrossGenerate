@@ -35,7 +35,7 @@ jobs:
 
       # Test with Maven
       - name: Run Unit Tests
-        run: mvn --batch-mode test -Dtest="RunXGenerateLibUnitTest"
+        run: mvn --batch-mode test -Dtest="RunXGenerateLibUnitTest" -Dfile.encoding="UTF-8"
         working-directory: ./XGenerate
 
       - name: Test Report
