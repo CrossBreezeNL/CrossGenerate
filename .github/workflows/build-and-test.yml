@@ -56,10 +56,10 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: jar-without-dependencies
-          path: XGenerate/target/XGenerate-+([0-9.]).jar
+          path: XGenerate/target/XGenerate-+([0-9\.]).jar
           compression-level: 0 # no compression, since jar is already compressed
       - uses: actions/upload-artifact@v4
         with:
           name: jar-with-dependencies
-          path: XGenerate/target/XGenerate-+([0-9.])-with-dependencies.jar
+          path: XGenerate/target/XGenerate-+([0-9\.])-with-dependencies.jar
           compression-level: 0 # no compression, since jar is already compressed
