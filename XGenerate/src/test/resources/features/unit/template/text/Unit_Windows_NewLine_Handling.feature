@@ -22,6 +22,21 @@ Feature: Unit_Windows_NewLine_Handling
     Then I expect 1 generation results
     And an output named "Windows_NewLine_Handling.sql" with contents equal to file: "expected-output-files/Windows_NewLine_Template.sql"
 
+	Scenario: New line in placeholder encoded
+    Given I have the following model:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <modeldefinition>
+        <attribute name="First&#10;Column" property="SomeProperty" />
+      </modeldefinition>
+      """
+    And the following config file: "config-files/Windows_NewLine_Handling.xml" 
+    And the following template file: "template-files/NewLine_Handling.sql"
+      
+    When I run the generator
+    
+    Then I expect 1 generation results
+    And an output named "NewLine_Handling.sql" with contents equal to file: "expected-output-files/NewLine_Placeholder.sql"
 
   Scenario: Windows new line in placeholder encoded
     Given I have the following model:
