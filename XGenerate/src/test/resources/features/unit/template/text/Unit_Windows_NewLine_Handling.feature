@@ -38,6 +38,8 @@ Feature: Unit_Windows_NewLine_Handling
     Then I expect 1 generation results
     And an output named "NewLine_Handling.sql" with contents equal to file: "expected-output-files/NewLine_Placeholder.sql"
 
+	@KnownIssue
+	# In Windows this scenario succeeds, but in linux it fails. This is probably due to Git clone changing the new-lines in the files on checkout.
   Scenario: Windows new line in placeholder encoded
     Given I have the following model:
       """
