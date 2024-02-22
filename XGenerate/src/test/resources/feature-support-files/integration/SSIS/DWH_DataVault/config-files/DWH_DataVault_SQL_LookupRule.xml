@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig>
+  <Model/>
+  <TextTemplate rootSectionName="LookupRule">
+    <FileFormat currentAccessor="_" childAccessor="$" singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+    <Output type="output_per_element" />
+  </TextTemplate>
+  <Binding>
+		<SectionModelBinding section="LookupRule" modelXPath="/modeldefinition/system/mappableObjects/businessRule[@stereotype='lookup']" placeholderName="LookupRule">
+			<SectionModelBinding section="Parameter" modelXPath="attributes/parameter" placeholderName="Parameter" />
+			<SectionModelBinding section="Attribute" modelXPath="attributes/attribute" placeholderName="Attribute" />
+			<SectionModelBinding section="MappableObjectMapping" modelXPath="mappableObjectMappings/mappableObjectMapping" placeholderName="MappableObjectMapping" />
+			<SectionModelBinding section="MappedParameter" modelXPath="mappableObjectMappings/mappableObjectMapping/attributeMappings/attributeMapping[@targetAttributeStereotype='parameter']" placeholderName="MappedParameter" />
+			<SectionModelBinding section="MappedAttribute" modelXPath="mappableObjectMappings/mappableObjectMapping/attributeMappings/attributeMapping[@targetAttributeStereotype='attribute']" placeholderName="MappedAttribute" />
+		</SectionModelBinding>
+  </Binding>
+</XGenConfig>

@@ -1,0 +1,9 @@
+<SomeRootElement>
+  <SectionModelBinding section="Template" modelXPath ="/system" placeholderName="system">
+      <SectionModelBinding section="Tables" modelXPath="./entities/entity" placeholderName="table">
+        <Placeholders>
+          <Placeholder name="system" modelXPath="../.." />
+        </Placeholders>
+      </SectionModelBinding>
+  </SectionModelBinding>
+</SomeRootElement>
