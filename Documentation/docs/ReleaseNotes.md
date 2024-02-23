@@ -20,6 +20,21 @@ Click on the header of a version number to go to the documentation of that speci
 [//]: # (>     * [ ] Binding)
 [//]: # (>         * [X] Some issue...)
 
+## [Version 3.2](../3.2/)
+
+- [ ] 3.2.0 <sup>01-03-2024</sup>
+>
+> !!! info "Enhanced features"
+>     * [ ] Model
+>         * [ ] Model XML Inclusions (XInclude) support
+>             - [X] Added support for XML Inclusions, so the model file can now consist of multiple files (for example decomposed PowerDeComposer files).
+>     * [ ] Config
+>         * [ ] Model
+>             - [X] Added support for specifying whether the model should be parsed namespace aware.
+> !!! warning "Bug fixes"
+>     * [ ] Commandline options
+>         * [X] Fixed writing preprocessed model and template when debug mode is enabled.
+
 ## [Version 3.1](../3.1/)
 
 - [ ] 3.1.0 <sup>09-02-2024</sup>
