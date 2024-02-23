@@ -45,6 +45,7 @@ import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.RootTemplateConfig;
 import com.xbreeze.xgenerate.generator.GenerationResult.GenerationStatus;
 import com.xbreeze.xgenerate.model.Model;
+import com.xbreeze.xgenerate.model.ModelException;
 import com.xbreeze.xgenerate.model.ModelPreprocessor;
 import com.xbreeze.xgenerate.model.ModelPreprocessorException;
 import com.xbreeze.xgenerate.template.RawTemplate;
@@ -86,7 +87,11 @@ public class Generator {
 	 * @throws GeneratorException 
 	 */
 	public void setModelFromFile(URI modelFileUri) throws GeneratorException {
-		this._model = Model.fromFile(modelFileUri);
+		try {
+			this._model = Model.fromFile(modelFileUri);
+		} catch (ModelException me) {
+			throw new GeneratorException(me);
+		}
 	}
 	
 	/**

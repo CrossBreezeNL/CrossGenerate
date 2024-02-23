@@ -24,29 +24,14 @@
  *******************************************************************************/
 package com.xbreeze.xgenerate.config;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
 import javax.xml.XMLConstants;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.UnmarshalException;
-import jakarta.xml.bind.Unmarshaller;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlElements;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlType;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.sax.SAXSource;
@@ -64,16 +49,20 @@ import com.xbreeze.xgenerate.config.model.ModelConfig;
 import com.xbreeze.xgenerate.config.template.RootTemplateConfig;
 import com.xbreeze.xgenerate.config.template.TextTemplateConfig;
 import com.xbreeze.xgenerate.config.template.XMLTemplateConfig;
-import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.utils.FileUtils;
 import com.xbreeze.xgenerate.utils.XMLUtils;
-import com.ximpleware.AutoPilot;
-import com.ximpleware.ModifyException;
-import com.ximpleware.NavException;
-import com.ximpleware.VTDNav;
-import com.ximpleware.XMLModifier;
-import com.ximpleware.XPathEvalException;
-import com.ximpleware.XPathParseException;
+import com.xbreeze.xgenerate.utils.XmlException;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.UnmarshalException;
+import jakarta.xml.bind.Unmarshaller;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElements;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 
 /**
  * The XGenConfig class represents the configuration object for CrossGenerate.
@@ -166,7 +155,12 @@ public class XGenConfig {
 		// Before validating against the XSD, resolve any includes first
 		HashMap<URI, Integer> resolvedIncludes = new HashMap<>();
 		logger.info(String.format("Reading config from %s and resolving includes when found.", basePath.toString()));
-		String resolvedInputSource = getConfigWithResolvedIncludes(configFileContent, basePath, 0, resolvedIncludes);
+		String resolvedInputSource;
+		try {
+			resolvedInputSource = XMLUtils.getXmlWithResolvedIncludes(configFileContent, basePath, 0, resolvedIncludes);
+		} catch (XmlException xec) {
+			throw new ConfigException(xec);
+		}
 		// Create a resource on the schema file.
 		// Schema file generated using following tutorial: https://examples.javacodegeeks.com/core-java/xml/bind/jaxb-schema-validation-example/
 		String xGenConfigXsdFileName = String.format("%s.xsd", XGenConfig.class.getSimpleName());
@@ -242,125 +236,5 @@ public class XGenConfig {
 			throw new ConfigException(String.format("%s (%s)", e.getMessage(), configFileUri.toString()), e.getCause());
 		} 		
 		return xGenConfig;
-	}
-	
-
-	/**
-	 * Recursively resolve XIncludes in the xGenConfig string	 * 
-	 * @param xGenConfig The config that might include XIncludes to resolve
-	 * @param basePath The basePath needed for relative inclusions
-	 * @param resolvedIncludes A collection of previously resolved includes to detect a cycle of inclusions
-	 * @return The inputSource with resolved includes 
-	 * @throws ConfigException
-	 */
-	private static String getConfigWithResolvedIncludes(String xGenConfig, URI configFileUri, int level,  HashMap<URI, Integer> resolvedIncludes) throws ConfigException{
-		logger.fine(String.format("Scanning config file %s for includes", configFileUri.toString()));
-		// Check for cycle detection, e.g. an include that is already included previously
-		if (resolvedIncludes.containsKey(configFileUri) && resolvedIncludes.get(configFileUri) != level) {
-			throw new ConfigException(String.format("Config include cycle detected at level %d, file %s is already included previously", level, configFileUri.toString()));
-		}
-		else if (!resolvedIncludes.containsKey(configFileUri)) {
-			resolvedIncludes.put(configFileUri, level);						
-		}
-		
-		// Get basePath of configFile. If the provided URI refers to a file, us its parent path, if it refers to a folder use it as base path
-		try {
-			URI basePath  = new URI("file:///../");			
-			File configFile = new File(configFileUri.getPath());
-			if (configFile.isDirectory()) {
-				basePath = configFileUri;
-			}
-			else if (configFile.isFile()) {
-				String parentPath = configFile.getParent();
-				if (parentPath != null) {			
-					basePath = Paths.get(parentPath).toUri();	
-				}
-			}
-			// Resolve basePath to absolute/real path
-			try {
-				basePath = Paths.get(basePath).toRealPath(LinkOption.NOFOLLOW_LINKS).toUri();
-			} catch (IOException e) {
-				throw new ConfigException(String.format("Error resolving config basePath %s to canonical path", basePath.toString()), e);
-			} 
-			
-			// Open the config file and look for includes		
-			// Make this XPath namespace aware so it actually looks for xi:include instead of include in all namespaces
-			VTDNav nav = XMLUtils.getVTDNav(xGenConfig, true);
-			AutoPilot ap = new AutoPilot(nav);
-			// Declare the XInclude namespace.
-			ap.declareXPathNameSpace("xi", "http://www.w3.org/2001/XInclude");
-			// Search for all xi:include elements.
-			ap.selectXPath("//xi:include");
-			int includeCount = 0;		
-			try {
-				XMLModifier vm = new XMLModifier (nav);
-				while ((ap.evalXPath()) != -1) {
-					// Obtain the filename of include
-					AutoPilot ap_href = new AutoPilot(nav);
-					ap_href.selectXPath("@href");
-					String includeFileLocation = ap_href.evalXPathToString();
-					logger.fine(String.format("Found include for %s in config file %s", includeFileLocation, configFileUri.toString()));
-					// Resolve include to a valid path against the basePath
-					logger.fine(String.format("base path %s", basePath.toString()));
-					Path p = Paths.get(basePath);
-					URI includeFileUri = null;
-					try {
-						includeFileUri = p.resolve(Paths.get(includeFileLocation)).toRealPath(LinkOption.NOFOLLOW_LINKS).toUri();
-					} catch (IOException e) {
-						throw new ConfigException(String.format("Error resolving found include %s for %s to canonical path", includeFileLocation, configFileUri.toString()), e);
-					} 
-					logger.fine(String.format("Resolved include to %s", includeFileUri.toString()));
-					
-					try {
-						// get file contents, recursively processing any includes found
-						String includeContents = getConfigWithResolvedIncludes(FileUtils.getFileContent(includeFileUri), includeFileUri, level + 1, resolvedIncludes);
-
-						// Check for xpointer and apply if found
-						AutoPilot ap_xpoint = new AutoPilot(nav);
-						ap_xpoint.selectXPath("@xpointer");
-						String xPoint = ap_xpoint.evalXPathToString();
-						if (xPoint != null && xPoint.length() > 0) {
-							logger.fine(String.format("Found xpointer in include: %s", xPoint));
-							includeContents = XMLUtils.getXmlFragment(includeContents, xPoint);
-						}
-						
-						// If the file contains an XML declaration, remove it			
-						if (includeContents.startsWith("<?xml")) {
-							includeContents = includeContents.replaceFirst("^<\\?xml.*\\?>", "");
-						}
-						
-						// Replace the node with the include contents
-						vm.insertAfterElement(includeContents);
-						// Then remove the include node
-						vm.remove();					
-					} catch (IOException e) {
-						throw new ConfigException(String.format("Could not read contents of included config file %s", includeFileUri.toString()), e);
-					}	
-					includeCount++;
-				}				
-				logger.fine(String.format("Found %d includes in config file %s", includeCount, configFileUri.toString()));
-				//if includes were found, output and parse the modifier and return it, otherwise return the original one
-				if (includeCount > 0) {
-					String resolvedXGenConfig = XMLUtils.getResultingXml(vm);					
-					logger.fine(String.format("Config file %s with includes resolved:", configFileUri.toString()));
-					logger.fine("**** Begin of config file ****");
-					logger.fine(resolvedXGenConfig);
-					logger.fine("**** End of config file ****");					
-					return resolvedXGenConfig;
-				} else {
-					return xGenConfig;
-				}
-			} catch (NavException e) {
-				throw new ConfigException(String.format("Error scanning %s for includes", configFileUri.toString()),e);
-			} 	catch (ModifyException e  ) {
-				throw new ConfigException(String.format("Error modifying config file %s", configFileUri.toString()), e);
-			} 
-		} catch (URISyntaxException e) {
-			throw new ConfigException(String.format("Could not extract base path from config file %s", configFileUri.toString()), e);
-		}	catch (GeneratorException e) {
-			throw new ConfigException(String.format("Could not read config from %s", configFileUri.toString()), e);		
-		} catch (XPathParseException | XPathEvalException e) {
-			throw new ConfigException(String.format("XPath error scanning for includes in %s", configFileUri.toString()), e);				
-		}
 	}	
 }

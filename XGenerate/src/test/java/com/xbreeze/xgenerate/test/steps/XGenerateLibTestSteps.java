@@ -147,7 +147,7 @@ public class XGenerateLibTestSteps {
 
 	@Given("^I have the following model:$")
 	public void iHaveTheFollowingModel(String modelContent) throws Throwable {
-		this._generator.setModel(new Model(null, modelContent));
+		this._generator.setModel(Model.fromString(modelContent, this._featureSupportFilesLocation));
 	}
 	
 	@Given("^I have the following model file: \"(.*)\"$")
@@ -170,7 +170,7 @@ public class XGenerateLibTestSteps {
 	@And("^the following config:$")
 	public void theFollowingConfig(String configContent) throws Throwable {
 		try {
-			this._xGenConfig = XGenConfig.fromString(configContent.replace("{{support-file-location}}", new File(this._featureSupportFilesLocation).toString()), _featureSupportFilesLocation);
+			this._xGenConfig = XGenConfig.fromString(configContent.replace("{{support-file-location}}", new File(this._featureSupportFilesLocation).toString()), this._featureSupportFilesLocation);
 		} catch(ConfigException exc) {
 			this.generatorException = exc;
 		}
