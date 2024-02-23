@@ -219,7 +219,7 @@ public class XGenerateTestSteps {
 		assertEquals(
 				expectedNrOfResults,
 				actualNrOfResults,
-				String.format("The expected number of results is then the actual (%s : %s)", expectedNrOfResults, actualNrOfResults)
+				String.format("The expected number of results differs from the actual (%s : %s)", expectedNrOfResults, actualNrOfResults)
 		);	
 	}
 	

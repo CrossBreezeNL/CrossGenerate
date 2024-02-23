@@ -79,7 +79,7 @@ public class Model {
 	 * @return The Model object.
 	 * @throws GeneratorException 
 	 */
-	public static Model fromFile(URI modelFileUri) throws ModelException {
+	public static Model fromFile(URI modelFileUri, boolean namespaceAware) throws ModelException {
 		logger.fine(String.format("Creating Model object from '%s'", modelFileUri));
 		
 		// Read the model file content into a String.
@@ -90,7 +90,7 @@ public class Model {
 			throw new ModelException(String.format("Couldn't read the model file (%s): %s", modelFileUri, e.getMessage()));
 		}
 		
-		return fromString(modelFileContent, modelFileUri);
+		return fromString(modelFileContent, modelFileUri, namespaceAware);
 	}
 	
 	/**
@@ -100,14 +100,14 @@ public class Model {
 	 * @return
 	 * @throws ModelException
 	 */
-	public static Model fromString(String modelFileContents, URI modelFileUri) throws ModelException {
+	public static Model fromString(String modelFileContents, URI modelFileUri, boolean namespaceAware) throws ModelException {
 		String resolvedModelFileContents;
 		try {
 			// Before constructing the model object, resolve any includes first
 			HashMap<URI, Integer> resolvedIncludes = new HashMap<>();
-			resolvedModelFileContents = XMLUtils.getXmlWithResolvedIncludes(modelFileContents, modelFileUri, 0, resolvedIncludes);
+			resolvedModelFileContents = XMLUtils.getXmlWithResolvedIncludes(modelFileContents, modelFileUri, 0, resolvedIncludes, namespaceAware);
 		} catch (XmlException xec) {
-			throw new ModelException(xec);
+			throw new ModelException(String.format("Error while reading model: %s", xec.getMessage()), xec);
 		}
 		
 		// Return the new Model object.

@@ -275,14 +275,14 @@ public class XGenerateStarter extends GenerationObserverSource {
 				if (debugMode) {
 					logger.warning("Debug mode enabled");
 				}
-								
+				
+				// Set the debug mode setting.
 				generator.setDebugMode(debugMode);
-				// Set the model using the file location.
-				generator.setModelFromFile(modelFileLocation);
+				
 				// Wrap the generation in a try-catch so we can inform the observers if something went wrong.
 				try {
 					// Generate the output using the file locations.
-					generator.generateFromFilesAndWriteOutput(templateFileLocation, configFileLocation, outputFolderLocation, relativeTemplateFolder);
+					generator.generateFromFilesAndWriteOutput(modelFileLocation, templateFileLocation, configFileLocation, outputFolderLocation, relativeTemplateFolder);
 				} catch (GeneratorException ge) {
 					// Notify the generation observers the generation step is failed.
 					this.notifyGenerationStepFailed(generationStepIndex, modelTemplateConfigCombination.getTemplateFileLocation(), ge.getMessage(), LocalDateTime.now());

@@ -26,12 +26,13 @@ import org.apache.http.client.utils.URIBuilder;
 
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.config.XGenConfig;
+import com.xbreeze.xgenerate.generator.GenerationOutput;
 import com.xbreeze.xgenerate.generator.GenerationResult;
 import com.xbreeze.xgenerate.generator.GenerationResult.GenerationStatus;
-import com.xbreeze.xgenerate.generator.GenerationResults;
 import com.xbreeze.xgenerate.generator.Generator;
 import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.model.Model;
+import com.xbreeze.xgenerate.model.ModelException;
 import com.xbreeze.xgenerate.template.RawTemplate;
 import com.xbreeze.xgenerate.test.util.CapturedConsolePrintStream;
 
@@ -48,11 +49,12 @@ public class XGenerateLibTestSteps {
 	// Location of the feature support files.
 	private URI _featureSupportFilesLocation;
 	
-	
 	XGenConfig _xGenConfig;
+	Model _model;
 	RawTemplate _rawTemplate;
 	Generator _generator;
-	GenerationResults _generationResults;
+	GenerationResult _generationResults;
+	URI _modelFileUri;
 	URI _templateFileUri;
 	URI _configFileUri;
 	Exception generatorException;
@@ -147,12 +149,19 @@ public class XGenerateLibTestSteps {
 
 	@Given("^I have the following model:$")
 	public void iHaveTheFollowingModel(String modelContent) throws Throwable {
-		this._generator.setModel(Model.fromString(modelContent, this._featureSupportFilesLocation));
+		boolean namespaceAware = false;
+		if (_xGenConfig != null)
+			namespaceAware = _xGenConfig.getModelConfig().isNamespaceAware();
+		try {
+			this._model = Model.fromString(modelContent, this._featureSupportFilesLocation, namespaceAware);
+		} catch (ModelException mex) {
+			this.generatorException = mex;
+		}
 	}
 	
 	@Given("^I have the following model file: \"(.*)\"$")
 	public void iHaveTheFollowingModelFile(String modelFileLocation) throws Throwable {
-		this._generator.setModelFromFile(resolveSupportFile(modelFileLocation));
+		this._modelFileUri = resolveSupportFile(modelFileLocation);
 	}
 
 	@And("^the following template named \"(.*)\":$")
@@ -188,22 +197,19 @@ public class XGenerateLibTestSteps {
 		
 		//check if generator needs to be invoked with files or with template and config string
 		try {
-			if (this._rawTemplate != null && this._xGenConfig != null) {
-				_generationResults = this._generator.generate(this._rawTemplate, this._xGenConfig, this._outputFolderUri, "");
+			if (this._model != null && this._rawTemplate != null && this._xGenConfig != null) {
+				_generationResults = this._generator.generate(this._model, this._rawTemplate, this._xGenConfig, this._outputFolderUri, "");
 			}
-			else if (this._templateFileUri != null && this._configFileUri != null) {
-				_generationResults = this._generator.generateFromFiles(this._templateFileUri, this._configFileUri, this._outputFolderUri, "");
+			else if (this._modelFileUri != null && this._templateFileUri != null && this._configFileUri != null) {
+				_generationResults = this._generator.generateFromFiles(this._modelFileUri, _templateFileUri, this._configFileUri, this._outputFolderUri, "");
 			}
 			else {
-				throw new GeneratorException ("Template and config should both be specified as either content or file(URI) in the feature.");
+				throw new GeneratorException ("Model ,template and config should all be specified as either content or file(URI) in the feature.");
 			}
-		
-			// If there was an error during generation, store the exception.
-			for (GenerationResult generationResult : _generationResults.getGenerationResults()) {
-				if (generationResult.getStatus().equals(GenerationStatus.ERROR)) {
-					//throw generationResult.getException();
-					this.generatorException = generationResult.getException();
-				}
+			
+			if (_generationResults.getStatus().equals(GenerationStatus.ERROR)) {
+				// Store the exception message (for later checking).
+				this.generatorException = _generationResults.getException();
 			}
 		}
 		catch(GeneratorException exc) {
@@ -214,7 +220,7 @@ public class XGenerateLibTestSteps {
 	@Then("^I expect (\\d+) generation results?$")
 	public void iExpectGenerationResults(int expectedNrOfResults) throws Throwable {
 		checkForError();
-		int actualNrOfResults = this._generationResults.getGenerationResults().size();
+		int actualNrOfResults = this._generationResults.getGenerationOutputs().size();
 		// Assume the expected number equals the actual number.
 		assertEquals(
 				expectedNrOfResults,
@@ -227,8 +233,6 @@ public class XGenerateLibTestSteps {
 	public void iExpectTheFollowingErrorMessage(String errorMessage) throws Throwable {
 		assertNotNull(this.generatorException, "There is no exception thrown");
 		assertEquals(errorMessage.replace("{{support-file-location}}", this._featureSupportFilesLocation.toURL().toString().replace("file:/", "file:///")), this.generatorException.getMessage());
-		
-		
 	}
 	
 	@Then("^I expect the following console message:$")
@@ -255,7 +259,7 @@ public class XGenerateLibTestSteps {
 	
 	private void compareActualAndExpectedOutput(String outputName, String expectedResultContent) throws Throwable {
 		Boolean outputFound = false;
-		for(GenerationResult generationResult : this._generationResults.getGenerationResults()) {
+		for(GenerationOutput generationResult : this._generationResults.getGenerationOutputs()) {
 			if (generationResult.getOutputFileLocation() != null && uriEncode(outputName).equals(generationResult.getOutputFileLocation())) {
 				outputFound = true;
 				assertEquals(

@@ -24,24 +24,42 @@
  *******************************************************************************/
 package com.xbreeze.xgenerate.generator;
 
-import java.util.ArrayList;
+public class GenerationOutput {
+	
+	private String _outputFileContent;
+	
+	private String _outputFileLocation;
+	
+	/**
+	 * Constructor.
+	 */
+	public GenerationOutput() {}
 
-public class GenerationResults {
-	
-	private ArrayList<GenerationResult> _generationResults;
-	
-	public GenerationResults() {
-		this._generationResults = new ArrayList<GenerationResult>();
-	}
-	
-	public void addGenerationResult(GenerationResult generationResult) {
-		this._generationResults.add(generationResult);
+	/**
+	 * @return the result
+	 */
+	public String getOutputFileContent() {
+		return _outputFileContent;
 	}
 
 	/**
-	 * @return the generationResults
+	 * @param outputFileContent the result to set
 	 */
-	public ArrayList<GenerationResult> getGenerationResults() {
-		return _generationResults;
+	public void setOutputFileContent(String outputFileContent) {
+		this._outputFileContent = outputFileContent;
+	}
+
+	/**
+	 * @return the outputFileLocation
+	 */
+	public String getOutputFileLocation() {
+		return _outputFileLocation;
+	}
+
+	/**
+	 * @param outputFileLocation the outputFileLocation to set
+	 */
+	public void setOutputFileLocation(String outputFileLocation) {
+		this._outputFileLocation = outputFileLocation;
 	}
 }

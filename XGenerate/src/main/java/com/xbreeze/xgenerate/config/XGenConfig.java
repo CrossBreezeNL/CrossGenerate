@@ -157,7 +157,7 @@ public class XGenConfig {
 		logger.info(String.format("Reading config from %s and resolving includes when found.", basePath.toString()));
 		String resolvedInputSource;
 		try {
-			resolvedInputSource = XMLUtils.getXmlWithResolvedIncludes(configFileContent, basePath, 0, resolvedIncludes);
+			resolvedInputSource = XMLUtils.getXmlWithResolvedIncludes(configFileContent, basePath, 0, resolvedIncludes, true);
 		} catch (XmlException xec) {
 			throw new ConfigException(xec);
 		}

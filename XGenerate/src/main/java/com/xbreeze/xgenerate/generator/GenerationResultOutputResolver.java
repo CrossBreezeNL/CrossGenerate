@@ -38,22 +38,18 @@ import net.sf.saxon.lib.OutputURIResolver;
  * Output resolver class is used to direct xsl:result-document output to an output stream instead of file for testing purposes
  *
  */
-public class GenerationResultsOutputResolver implements OutputURIResolver {
+public class GenerationResultOutputResolver implements OutputURIResolver {
 	
-	private GenerationResults _generationResults;
-	private String _modelFileName;
-	private String _templateFileName;
+	private GenerationResult _generationResult;
 	
-	/**
-	 * 
+	/** 
+	 * @param model The Model object used for generating.
+	 * @param rawTemplate The RawTemplate object used for generating.
+	 * @param xsltTemplate The XsltTemplate object used for generating.
 	 * @param generationResults, the collection of generation results where results are stored 
-	 * @param modelFileName filename of model
-	 * @param templateFileName filename of template
 	 */
-	public GenerationResultsOutputResolver(GenerationResults generationResults, String modelFileName, String templateFileName) {
-		_generationResults = generationResults;
-		_modelFileName = modelFileName;
-		_templateFileName = templateFileName;
+	public GenerationResultOutputResolver(GenerationResult generationResult) {
+		this._generationResult = generationResult;
 	}
 	
 	/**
@@ -62,11 +58,11 @@ public class GenerationResultsOutputResolver implements OutputURIResolver {
 	@Override
 	public void close(Result result) throws TransformerException {
 		try {
-			//TODO add preprocessed output to generationResult
-			GenerationResult newResult = new GenerationResult(_modelFileName, _templateFileName);
-			newResult.setOutputFileContent(((StreamResult)result).getWriter().toString());
-			newResult.setOutputFileLocation(((StreamResult)result).getSystemId());
-			_generationResults.addGenerationResult(newResult);
+			// Create a new GenerationResult object containing the results needed for reporting.
+			GenerationOutput generationResult = new GenerationOutput();
+			generationResult.setOutputFileContent(((StreamResult)result).getWriter().toString());
+			generationResult.setOutputFileLocation(((StreamResult)result).getSystemId());
+			_generationResult.addGenerationOutput(generationResult);
 			((StreamResult)result).getWriter().close();
 		}
 		catch (IOException ex) {
@@ -80,11 +76,11 @@ public class GenerationResultsOutputResolver implements OutputURIResolver {
 	 */
 	@Override
 	public OutputURIResolver newInstance() {		
-		return new GenerationResultsOutputResolver(_generationResults, _modelFileName, _templateFileName);
+		return new GenerationResultOutputResolver(this._generationResult);
 	}
 
 	/**
-	 * Create a new streamresult and attach a writer
+	 * Create a new StreamResult and attach a writer
 	 */
 	@Override
 	public Result resolve(String href, String base) throws TransformerException {
@@ -93,13 +89,4 @@ public class GenerationResultsOutputResolver implements OutputURIResolver {
 		result.setSystemId(href);		
 		return result;
 	}
-
-	/**
-	 * Returns the list of created results
-	 * @return GenerationResults object with the generated output
-	 */
-	public GenerationResults getGenerationResults() {
-		return _generationResults;
-	}	
-
 }

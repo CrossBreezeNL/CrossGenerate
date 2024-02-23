@@ -113,7 +113,7 @@ public class XMLUtils {
 		try {
 			vg.parse(namespaceAware);
 		} catch (ParseException e) {
-			throw new GeneratorException(String.format("Error while reading file as XML document: %s.", e.getMessage()), e);
+			throw new GeneratorException(String.format("Error while parsing file as XML document: %s.", e.getMessage()), e);
 		}
 		
 		// Create a VTDNav for navigating the document.
@@ -325,7 +325,7 @@ public class XMLUtils {
 	 * @return The XML file contents with resolved includes 
 	 * @throws ConfigException
 	 */
-	public static String getXmlWithResolvedIncludes(String xmlFileContents, URI xmlFileUri, int level, HashMap<URI, Integer> resolvedIncludes) throws XmlException {
+	public static String getXmlWithResolvedIncludes(String xmlFileContents, URI xmlFileUri, int level, HashMap<URI, Integer> resolvedIncludes, boolean namespaceAware) throws XmlException {
 		logger.fine(String.format("Scanning file %s for includes", xmlFileUri.toString()));
 		// Check for cycle detection, e.g. an include that is already included previously
 		if (resolvedIncludes.containsKey(xmlFileUri) && resolvedIncludes.get(xmlFileUri) != level) {
@@ -335,15 +335,15 @@ public class XMLUtils {
 			resolvedIncludes.put(xmlFileUri, level);						
 		}
 		
-		// Get basePath of configFile. If the provided URI refers to a file, us its parent path, if it refers to a folder use it as base path
+		// Get basePath of configFile. If the provided URI refers to a file, use its parent path, if it refers to a folder use it as base path
 		try {
 			URI basePath  = new URI("file:///../");			
-			File configFile = new File(xmlFileUri.getPath());
-			if (configFile.isDirectory()) {
+			File xmlFile = new File(xmlFileUri.getPath());
+			if (xmlFile.isDirectory()) {
 				basePath = xmlFileUri;
 			}
-			else if (configFile.isFile()) {
-				String parentPath = configFile.getParent();
+			else if (xmlFile.isFile()) {
+				String parentPath = xmlFile.getParent();
 				if (parentPath != null) {			
 					basePath = Paths.get(parentPath).toUri();	
 				}
@@ -356,13 +356,22 @@ public class XMLUtils {
 			} 
 			
 			// Open the config file and look for includes		
-			// Make this XPath namespace aware so it actually looks for xi:include instead of include in all namespaces
-			VTDNav nav = XMLUtils.getVTDNav(xmlFileContents, true);
+			// Depending on the passed namespaceAware parameter make this XPath namespace aware.
+			// This setting influences whether to looks for xi:include or include elements in all namespaces.
+			VTDNav nav = XMLUtils.getVTDNav(xmlFileContents, namespaceAware);
 			AutoPilot ap = new AutoPilot(nav);
-			// Declare the XInclude namespace.
-			ap.declareXPathNameSpace("xi", "http://www.w3.org/2001/XInclude");
-			// Search for all xi:include elements.
-			ap.selectXPath("//xi:include");
+			// Depending on whether we wan't to resolve the includes namespace aware, we setup VTDNav and have an XPath with or without the namespace.
+			if (namespaceAware) {
+				// Declare the XInclude namespace.
+				ap.declareXPathNameSpace("xi", "http://www.w3.org/2001/XInclude");
+				// Search for all xi:include elements.
+				ap.selectXPath("//xi:include");
+			}
+			else {
+				// Search for all include elements.
+				ap.selectXPath("//include");
+			}
+			
 			int includeCount = 0;		
 			try {
 				XMLModifier vm = new XMLModifier (nav);
@@ -385,7 +394,7 @@ public class XMLUtils {
 					
 					try {
 						// get file contents, recursively processing any includes found
-						String includeContents = getXmlWithResolvedIncludes(FileUtils.getFileContent(includeFileUri), includeFileUri, level + 1, resolvedIncludes);
+						String includeContents = getXmlWithResolvedIncludes(FileUtils.getFileContent(includeFileUri), includeFileUri, level + 1, resolvedIncludes, namespaceAware);
 
 						// Check for xpointer and apply if found
 						AutoPilot ap_xpoint = new AutoPilot(nav);
@@ -430,7 +439,7 @@ public class XMLUtils {
 		} catch (URISyntaxException e) {
 			throw new XmlException(String.format("Could not extract base path from file %s", xmlFileUri.toString()), e);
 		} catch (GeneratorException e) {
-			throw new XmlException(String.format("Could not read from %s", xmlFileUri.toString()), e);		
+			throw new XmlException(e.getMessage(), e);		
 		} catch (XPathParseException | XPathEvalException e) {
 			throw new XmlException(String.format("XPath error scanning for includes in %s", xmlFileUri.toString()), e);				
 		}
