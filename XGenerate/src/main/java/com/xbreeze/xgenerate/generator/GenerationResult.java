@@ -24,6 +24,8 @@
  *******************************************************************************/
 package com.xbreeze.xgenerate.generator;
 
+import java.util.ArrayList;
+
 public class GenerationResult {
 	
 	public enum GenerationStatus {
@@ -31,15 +33,15 @@ public class GenerationResult {
 		ERROR
 	}
 	
+	/**
+	 * The name of the template file.
+	 */
 	private String _templateFileName;
 	
+	/**
+	 * The name of the mode file.
+	 */
 	private String _modelFileName;
-	
-	private String _preprocessedTemplate;
-	
-	private String _outputFileContent;
-	
-	private String _outputFileLocation;
 	
 	/**
 	 * The generation result status.
@@ -52,55 +54,29 @@ public class GenerationResult {
 	private GeneratorException _exception;
 	
 	/**
+	 * The output of the generation cycle.
+	 * This is only populated in test mode (so used for unit testing).
+	 */
+	private ArrayList<GenerationOutput> _generationOutputs;
+	
+	/**
 	 * Constructor.
 	 * @param modelFileName
 	 * @param templateFileName
 	 */
 	public GenerationResult(String modelFileName, String templateFileName) {
-		this._modelFileName = modelFileName;
-		this._templateFileName = templateFileName;
+		this._generationOutputs = new ArrayList<GenerationOutput>();
+	}
+	
+	public void addGenerationOutput(GenerationOutput generationResult) {
+		this._generationOutputs.add(generationResult);
 	}
 
 	/**
-	 * @return the result
+	 * @return the generationOutputs
 	 */
-	public String getOutputFileContent() {
-		return _outputFileContent;
-	}
-
-	/**
-	 * @param outputFileContent the result to set
-	 */
-	public void setOutputFileContent(String outputFileContent) {
-		this._outputFileContent = outputFileContent;
-	}
-
-	/**
-	 * @return the outputFileLocation
-	 */
-	public String getOutputFileLocation() {
-		return _outputFileLocation;
-	}
-
-	/**
-	 * @param outputFileLocation the outputFileLocation to set
-	 */
-	public void setOutputFileLocation(String outputFileLocation) {
-		this._outputFileLocation = outputFileLocation;
-	}
-
-	/**
-	 * @return the preprocessedTemplate
-	 */
-	public String getPreprocessedTemplate() {
-		return _preprocessedTemplate;
-	}
-
-	/**
-	 * @param preprocessedTemplate the preprocessedTemplate to set
-	 */
-	public void setPreprocessedTemplate(String preprocessedTemplate) {
-		this._preprocessedTemplate = preprocessedTemplate;
+	public ArrayList<GenerationOutput> getGenerationOutputs() {
+		return _generationOutputs;
 	}
 
 	/**
@@ -111,24 +87,10 @@ public class GenerationResult {
 	}
 
 	/**
-	 * @param templateFileName the templateFileName to set
-	 */
-	public void setTemplateFileName(String templateFileName) {
-		this._templateFileName = templateFileName;
-	}
-
-	/**
 	 * @return the modelFileName
 	 */
 	public String getModelFileName() {
 		return _modelFileName;
-	}
-
-	/**
-	 * @param modelFileName the modelFileName to set
-	 */
-	public void setModelFileName(String modelFileName) {
-		this._modelFileName = modelFileName;
 	}
 
 	/**

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modeldefinition>
+  <attribute name="First&#13;&#10;Column" property="SomeProperty" />
+</modeldefinition>

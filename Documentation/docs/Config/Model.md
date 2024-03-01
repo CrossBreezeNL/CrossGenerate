@@ -4,7 +4,7 @@
 
 ### Syntax
 ``` xml
-<Model>
+<Model namespaceAware="...">
   <ModelNamespaces>
     <ModelNamespace ... />
   </ModelNamespaces>
@@ -16,6 +16,11 @@
   </ModelNodeRemovals>
 </Model>
 ```
+
+### Parameters
+| Parameter                          | Description | Default | Remark |
+|:---                                |:--- |:--- |:--- |
+| namespaceAware                     | Indicator whether the model file should be parsed aware of namespaces (true or false). | false | This influences how XPath can be used, if it's parsed as namespace aware you CAN use //xi:include. |
 
 ### Child sections
 | Section                            | Description |

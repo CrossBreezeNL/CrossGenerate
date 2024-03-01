@@ -27,10 +27,13 @@ package com.xbreeze.xgenerate.model;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.utils.FileUtils;
+import com.xbreeze.xgenerate.utils.XMLUtils;
+import com.xbreeze.xgenerate.utils.XmlException;
 
 public class Model {
 	// The logger for this class.
@@ -39,7 +42,7 @@ public class Model {
 	/**
 	 * The model file location.
 	 */
-	private String _modelFileName;
+	private URI _modelFileUri;
 	
 	/**
 	 * The model file content.
@@ -55,8 +58,8 @@ public class Model {
 	 * Constructor.
 	 * @param modelFileUri The model file location.
 	 */
-	public Model(String modelFileName, String modelFileContent) {
-		this._modelFileName = modelFileName;
+	private Model(URI modelFileUri, String modelFileContent) {
+		this._modelFileUri = modelFileUri;
 		this._modelFileContent = modelFileContent;
 		// Store the initial model content in the preprocessed model, in case there is no pre-processing.
 		setPreprocessedModel(this._modelFileContent);
@@ -76,7 +79,7 @@ public class Model {
 	 * @return The Model object.
 	 * @throws GeneratorException 
 	 */
-	public static Model fromFile(URI modelFileUri) throws GeneratorException {
+	public static Model fromFile(URI modelFileUri, boolean namespaceAware) throws ModelException {
 		logger.fine(String.format("Creating Model object from '%s'", modelFileUri));
 		
 		// Read the model file content into a String.
@@ -84,24 +87,38 @@ public class Model {
 		try {
 			modelFileContent = FileUtils.getFileContent(modelFileUri);
 		} catch (IOException e) {
-			throw new GeneratorException(String.format("Couldn't read the model file (%s): %s", modelFileUri, e.getMessage()));
+			throw new ModelException(String.format("Couldn't read the model file (%s): %s", modelFileUri, e.getMessage()));
 		}
 		
-		return new Model(Paths.get(modelFileUri).getFileName().toString(), modelFileContent);
+		return fromString(modelFileContent, modelFileUri, namespaceAware);
+	}
+	
+	/**
+	 * Statis function to construct a Model object from a string.
+	 * @param modelFileUri
+	 * @param modelFileContents
+	 * @return
+	 * @throws ModelException
+	 */
+	public static Model fromString(String modelFileContents, URI modelFileUri, boolean namespaceAware) throws ModelException {
+		String resolvedModelFileContents;
+		try {
+			// Before constructing the model object, resolve any includes first
+			HashMap<URI, Integer> resolvedIncludes = new HashMap<>();
+			resolvedModelFileContents = XMLUtils.getXmlWithResolvedIncludes(modelFileContents, modelFileUri, 0, resolvedIncludes, namespaceAware);
+		} catch (XmlException xec) {
+			throw new ModelException(String.format("Error while reading model: %s", xec.getMessage()), xec);
+		}
+		
+		// Return the new Model object.
+		return new Model(modelFileUri, resolvedModelFileContents);
 	}
 
 	/**
 	 * @return the modelFileName
 	 */
 	public String getModelFileName() {
-		return _modelFileName;
-	}
-
-	/**
-	 * @param modelFileName the modelFileName to set
-	 */
-	public void setModelFileName(String modelFileName) {
-		this._modelFileName = modelFileName;
+		return Paths.get(this._modelFileUri).getFileName().toString();
 	}
 
 	/**

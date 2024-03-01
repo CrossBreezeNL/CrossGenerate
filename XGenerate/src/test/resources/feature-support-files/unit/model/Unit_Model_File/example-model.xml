@@ -1,0 +1,5 @@
+ <system name="sys">
+  <entities>
+    <entity name="A"/>      
+  </entities>      
+ </system>

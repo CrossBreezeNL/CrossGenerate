@@ -26,6 +26,7 @@ package com.xbreeze.xgenerate.config.model;
 
 import java.util.ArrayList;
 
+import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlElementWrapper;
 import jakarta.xml.bind.annotation.XmlType;
@@ -39,8 +40,15 @@ import com.xbreeze.xgenerate.config.NamespaceConfig;
  * @author Harmen
  */
 // Set the order of the properties.
-@XmlType(propOrder={"namespaces", "modelAttributeInjections", "modelNodeRemovals"})
+@XmlType(propOrder={"namespaceAware", "namespaces", "modelAttributeInjections", "modelNodeRemovals"})
 public class ModelConfig {
+	/**
+	 * Indicator whether the model file should be parsed aware of namespaces.
+	 * This influences how XPath can be used, if it's parsed as namespace aware you CAN use //xi:include.
+	 * This is disabled by default.
+	 */
+	private Boolean namespaceAware = false;
+	
 	/**
 	 * The namespaces occurring in the model file that are required for model modifications and XSLT.
 	 */	
@@ -66,6 +74,25 @@ public class ModelConfig {
 		this.modelAttributeInjections = new ArrayList<ModelAttributeInjection>();
 		// Initialize the modelModelNodeRemovals.
 		this.setModelNodeRemovals(new ArrayList<ModelNodeRemoval>());
+	}
+	
+	/**
+	 * Check whether the model should be parsed namespace aware.
+	 * The type of this field is Boolean (and not the primitive boolean),
+	 *  cause otherwise the generated XSD will require the attribute to exist in the XML file.
+	 * @return True if the model should be parsed namespace aware, otherwise false.
+	 */
+	@XmlAttribute
+	public Boolean isNamespaceAware() {
+		return namespaceAware;
+	}
+
+	/**
+	 * Set the model parsing to be namespace aware or not.
+	 * @param namespaceAware Whether parsing the model file should be namespace aware.
+	 */
+	public void setNamespaceAware(Boolean namespaceAware) {
+		this.namespaceAware = namespaceAware;
 	}
 	
 	/**

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XGenConfig xmlns:xi="http://www.w3.org/2001/XInclude">
+	<TextTemplate rootSectionName="Template">
+		<FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
+		<Output type="single_output" />
+	</TextTemplate>
+	<Binding>
+		<SectionModelBinding section="Template" modelXPath="/system" placeholderName="system">
+			<SectionModelBinding section="Tables" modelXPath="./entities/entity" placeholderName="table">
+				<Placeholders>
+					<Placeholder name="system" modelXPath="../.." />
+				</Placeholders>
+			</SectionModelBinding>
+		</SectionModelBinding>
+	</Binding>
+</XGenConfig>

@@ -12,15 +12,19 @@ Feature: Unit_CommandLine_Logging
         <entity name="C"/>
       </entities>
       """
+    # In the below template we have an unbounded section to make sure there is a warning in the console/log output.
     And the following template named "Unit_Config_Template_OutputType_table_name.txt":
       """
-      table_name      
+      table_name
+      -- @XGenTextSection(name='UnboundedSection')
+      Unbounded section contents.
       """
     And the following config:
       """
          <XGenConfig>
           <Model/>
           <TextTemplate rootSectionName="Template">
+          	<FileFormat singleLineCommentPrefix="--" />
             <Output type="single_output" />
           </TextTemplate>
           <Binding>
@@ -48,6 +52,17 @@ Feature: Unit_CommandLine_Logging
     And no log file
     And I expect exit code 0
 
+  Scenario: With debug mode from commandline
+    Given the following additional comma separated commandline arguments:
+      """
+      -Debug, true
+      """
+    When I run the generator
+    # We expect 3 results, since we have one output and the preprocessed model and template.
+    Then I expect 3 generation result
+    And no log file
+    And I expect exit code 0
+
   Scenario: Logging from commandline, different parameter combinations
     Given the following additional comma separated commandline arguments:
       """
@@ -61,7 +76,7 @@ Feature: Unit_CommandLine_Logging
   Scenario Outline: File logging from commandline, scenario <Scenario>
     Given the following additional comma separated commandline arguments:
       """
-      -Debug, true, -<FileLogLevelParam>, <FileLogLevelParamValue>, -<FileLogDestinationParam>, C:\CrossGenerate\Test\Log\testlog.log
+      -<FileLogLevelParam>, <FileLogLevelParamValue>, -<FileLogDestinationParam>, C:\CrossGenerate\Test\Log\testlog.log
       """
     When I run the generator
     Then I expect 1 generation result
@@ -82,7 +97,7 @@ Feature: Unit_CommandLine_Logging
   Scenario Outline: Console logging from commandline, scenario <Scenario>
     Given the following additional comma separated commandline arguments:
       """
-      -Debug, true, -<ConsoleLogLevelParam>, <ConsoleLogLevelParamValue>
+      -<ConsoleLogLevelParam>, <ConsoleLogLevelParamValue>
       """
     When I run the generator
     Then I expect 1 generation result
@@ -90,10 +105,10 @@ Feature: Unit_CommandLine_Logging
     And I expect exit code 0
 
     Examples: 
-      | Scenario                      | ConsoleLogLevelParam | ConsoleLogLevelParamValue | ResultContains | ResultNotContains |
-      | Fullname proper case warning  | consoleLogLevel      | warning                   | [WARNING]      | [INFO   ]         |
-      | Fullname lowercase warning    | consoleloglevel      | warning                   | [WARNING]      | [INFO   ]         |
-      | Shortname lowercase warning   | cll                  | warning                   | [WARNING]      | [INFO   ]         |
-      | Shortname uppercase warning   | CLL                  | warning                   | [WARNING]      | [INFO   ]         |
-      | log level is info             | CLL                  | info                      | [INFO   ]      | [FINE   ]         |
-      | log level is fine             | CLL                  | fine                      | [FINE   ]      | [(nothing)   ]    |
+      | Scenario                     | ConsoleLogLevelParam | ConsoleLogLevelParamValue | ResultContains | ResultNotContains |
+      | Fullname proper case warning | consoleLogLevel      | warning                   | [WARNING]      | [INFO   ]         |
+      | Fullname lowercase warning   | consoleloglevel      | warning                   | [WARNING]      | [INFO   ]         |
+      | Shortname lowercase warning  | cll                  | warning                   | [WARNING]      | [INFO   ]         |
+      | Shortname uppercase warning  | CLL                  | warning                   | [WARNING]      | [INFO   ]         |
+      | log level is info            | CLL                  | info                      | [INFO   ]      | [FINE   ]         |
+      | log level is fine            | CLL                  | fine                      | [FINE   ]      | [(nothing)   ]    |

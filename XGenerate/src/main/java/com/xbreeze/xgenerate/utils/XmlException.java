@@ -1,5 +1,5 @@
 /*******************************************************************************
- *   Copyright (c) 2021 CrossBreeze
+ *   Copyright (c) 2024 CrossBreeze
  *
  *   This file is part of CrossGenerate.
  *
@@ -19,29 +19,40 @@
  *  Contributors:
  *      Willem Otten - CrossBreeze
  *      Harmen Wessels - CrossBreeze
- *      Jacob Siemaszko - CrossBreeze
  *  
  *******************************************************************************/
-package com.xbreeze.xgenerate.generator;
+package com.xbreeze.xgenerate.utils;
 
-import java.util.ArrayList;
+import com.xbreeze.xgenerate.CrossGenerateException;
 
-public class GenerationResults {
-	
-	private ArrayList<GenerationResult> _generationResults;
-	
-	public GenerationResults() {
-		this._generationResults = new ArrayList<GenerationResult>();
-	}
-	
-	public void addGenerationResult(GenerationResult generationResult) {
-		this._generationResults.add(generationResult);
-	}
+public class XmlException extends CrossGenerateException {
+	/**
+	 * The serial version uid.
+	 */
+	private static final long serialVersionUID = -2222917882180986246L;
 
 	/**
-	 * @return the generationResults
+	 * Constructor.
+	 * @param message The message of the exception.
 	 */
-	public ArrayList<GenerationResult> getGenerationResults() {
-		return _generationResults;
+	public XmlException(String message) {
+		super(message);
+	}
+	
+	/**
+	 * Constructor.
+	 * @param throwable Throwable of the exception.
+	 */
+	public XmlException(Throwable throwable) {
+		super(throwable);
+	}
+	
+	/**
+	 * Constructor.
+	 * @param message The message of the exception.
+	 * @param throwable The throwable.
+	 */
+	public XmlException(String message, Throwable throwable) {
+		super(message, throwable);
 	}
 }

@@ -45,6 +45,7 @@ import com.xbreeze.xgenerate.config.XGenConfig;
 import com.xbreeze.xgenerate.config.template.RootTemplateConfig;
 import com.xbreeze.xgenerate.generator.GenerationResult.GenerationStatus;
 import com.xbreeze.xgenerate.model.Model;
+import com.xbreeze.xgenerate.model.ModelException;
 import com.xbreeze.xgenerate.model.ModelPreprocessor;
 import com.xbreeze.xgenerate.model.ModelPreprocessorException;
 import com.xbreeze.xgenerate.template.RawTemplate;
@@ -66,11 +67,6 @@ public class Generator {
 	protected boolean _debugMode = false;
 	
 	protected boolean _testMode = false;
-		
-	/**
-	 * The Model to work with.
-	 */
-	private Model _model;
 
 	/**
 	 * Constructor.
@@ -78,30 +74,6 @@ public class Generator {
 	 */	
 	public Generator() {
 		logger.fine("Initializing generator");
-	}
-		
-	/**
-	 * Set the model using a file location.
-	 * @param modelFileUri The model file location.
-	 * @throws GeneratorException 
-	 */
-	public void setModelFromFile(URI modelFileUri) throws GeneratorException {
-		this._model = Model.fromFile(modelFileUri);
-	}
-	
-	/**
-	 * Set the model for generation.
-	 * @param model The model
-	 */
-	public void setModel(Model model) {
-		this._model = model;
-	}
-	
-	/**
-	 * Get the model that is set on the generator.
-	 */
-	public Model getModel() {
-		return this._model;
 	}
 	
 	public boolean isDebugMode() {
@@ -133,13 +105,24 @@ public class Generator {
 	 * @throws UnhandledException 
 	 * @throws UnknownAnnotationException 
 	 */
-	public GenerationResults generateFromFiles(URI templateFileUri, URI configFileUri, URI outputFolderUri, String relativeTemplateFolderUri) throws GeneratorException {
+	public GenerationResult generateFromFiles(URI modelFileUri, URI templateFileUri, URI configFileUri, URI outputFolderUri, String relativeTemplateFolderUri) throws GeneratorException {
 		// Unmarshal the config file into a XGenConfig object.
 		XGenConfig xGenConfig;
 		try {
 			xGenConfig = XGenConfig.fromFile(configFileUri);
 		} catch (ConfigException e) {
 			throw new GeneratorException(e);
+		}
+		
+		// Create the model object from the model file.
+		Model model;
+		try {
+			boolean namespaceAware = false;
+			if (xGenConfig.getModelConfig() != null)
+				namespaceAware = xGenConfig.getModelConfig().isNamespaceAware();
+			model = Model.fromFile(modelFileUri, namespaceAware);
+		} catch (ModelException me) {
+			throw new GeneratorException(me);
 		}
 		
 		// Create a RawTemplate object from the template file.
@@ -150,47 +133,18 @@ public class Generator {
 			throw new GeneratorException(e);
 		}
 		
-		// Generate using the template and config.
-		return generate(rawTemplate, xGenConfig, outputFolderUri, relativeTemplateFolderUri);
+		// Generate using the model, template and config.
+		return generate(model, rawTemplate, xGenConfig, outputFolderUri, relativeTemplateFolderUri);
 	}
 	
 	
-	public void generateFromFilesAndWriteOutput(URI templateFileUri, URI configFileUri, URI outputFolderUri, String relativeTemplateFolderUri) throws GeneratorException {
-		GenerationResults generationResults = generateFromFiles(templateFileUri, configFileUri, outputFolderUri, relativeTemplateFolderUri);
+	public void generateFromFilesAndWriteOutput(URI modelFileUri, URI templateFileUri, URI configFileUri, URI outputFolderUri, String relativeTemplateFolderUri) throws GeneratorException {
+		// Run the generation cycle and get the generation result.
+		GenerationResult generationResult = generateFromFiles(modelFileUri, templateFileUri, configFileUri, outputFolderUri, relativeTemplateFolderUri);
 		
-		// For each generation result, write the results.
-		for (GenerationResult generationResult : generationResults.getGenerationResults()) {
-			
-			// If debug mode is on, also write the pre-processed template to the output.
-			if (this._debugMode) {
-				// Construct the path to the pre-processed model.
-				String preprocessedModelLocation = Paths.get(outputFolderUri).resolve(relativeTemplateFolderUri).resolve(String.format("preprocessed_%s", generationResult.getModelFileName())).toString();
-				logger.info(String.format("Writing preprocessed model to '%s'", preprocessedModelLocation));
-				// Write the pre-processed model.
-				writeToFile(preprocessedModelLocation, _model.getPreprocessedModel());
-				
-				// If there is a pre-processed template, write it to the output folder.
-				if (generationResult.getPreprocessedTemplate() != null) {
-					// Construct the path to the pre-processed template.
-					String preprocessedFileLocation = Paths.get(outputFolderUri).resolve(String.format("preprocessed_%s", generationResult.getTemplateFileName())).toString();
-					logger.info(String.format("Writing preprocessed template to '%s'", preprocessedFileLocation));
-					writeToFile(preprocessedFileLocation, generationResult.getPreprocessedTemplate());
-				}
-			}
-			
-			// If there is output available, write it to the output folder.
-//			if (generationResult.getOutputFileContent() != null) {
-//				// Write the output to a file.
-//				String outputFileLocation = Paths.get(outputFileUri).resolve(generationResult.getOutputFileLocation()).toString();
-//				logger.info(String.format("Writing result to '%s'", outputFileLocation));
-//				// Write the output file content to a file.
-//				writeToFile(outputFileLocation, generationResult.getOutputFileContent());
-//			}
-			
-			// If the generation failed, throw the exception.
-			if (generationResult.getStatus().equals(GenerationStatus.ERROR))
-				throw generationResult.getException();
-		}
+		// If the generation failed, throw the exception.
+		if (generationResult.getStatus().equals(GenerationStatus.ERROR))
+			throw generationResult.getException();
 	}
 	
 	private void writeToFile(String outputFileLocation, String outputFileContent) throws GeneratorException {
@@ -227,6 +181,7 @@ public class Generator {
 	
 	/**
 	 * Generate the output using the raw-template and the config.
+	 * @param model The model.
 	 * @param rawTemplate The raw template.
 	 * @param xGenConfig The configuration.
 	 * @return The GenerationResults.
@@ -235,19 +190,28 @@ public class Generator {
 	 * @throws UnhandledException 
 	 * @throws UnknownAnnotationException 
 	 */
-	public GenerationResults generate(RawTemplate rawTemplate, XGenConfig xGenConfig, URI outputFolderUri, String relativeTemplateFolder) throws GeneratorException {
+	public GenerationResult generate(Model model, RawTemplate rawTemplate, XGenConfig xGenConfig, URI outputFolderUri, String relativeTemplateFolder) throws GeneratorException {
 		
 		// Pre-process the model (if model attribute injections are defined.
 		if (xGenConfig.getModelConfig() != null) {
 			try {
-				ModelPreprocessor.preprocessModel(_model, xGenConfig.getModelConfig());
+				ModelPreprocessor.preprocessModel(model, xGenConfig.getModelConfig());
+
+				// If debug mode is on, write the pre-processed model to the output.
+				if (this.isDebugMode()) {
+					// Construct the path to the pre-processed model.
+					String preprocessedModelLocation = Paths.get(outputFolderUri).resolve(relativeTemplateFolder).resolve(String.format("preprocessed_%s", model.getModelFileName())).toString();
+					logger.info(String.format("Writing preprocessed model to '%s'", preprocessedModelLocation));
+					// Write the pre-processed model.
+					writeToFile(preprocessedModelLocation, model.getPreprocessedModel());
+				}
 			} catch (ModelPreprocessorException e) {
 				throw new GeneratorException(e);
 			}
 		}
 
 		// Initialize GenerationResults object.
-		GenerationResults generationResults = new GenerationResults();
+		GenerationResult generationResult = new GenerationResult(model.getModelFileName(), rawTemplate.getRawTemplateFileName());
 
 		// Perform the pre-processing and XSLT generation.
 		{
@@ -268,16 +232,16 @@ public class Generator {
 					if (xGenConfig.getModelConfig() != null) {
 						modelNamespaces = xGenConfig.getModelConfig().getNamespaces();
 					}
-					// Pre-process the raw template into a xslt template.					
+					// Pre-process the raw template into a XSLT template.					
 					XsltTemplate xsltTemplate = templatePreprocessor.preProcess(rawTemplate, relativeTemplateFolder, modelNamespaces);
 					xsltTemplateString = xsltTemplate.toString();
-					// If in debug mode, write the preprocessed template.
+					// If in debug mode, write the pre-processed template.
 					if (this.isDebugMode()) {
-						logger.fine("---------- Preprocessed template: ----------");
-						logger.fine(xsltTemplateString);
-						logger.fine("--------------------------------------------");
+						// Construct the path to the pre-processed template.
+						String preprocessedFileLocation = Paths.get(outputFolderUri).resolve(String.format("preprocessed_%s", rawTemplate.getRawTemplateFileName())).toString();
+						logger.info(String.format("Writing preprocessed template to '%s'", preprocessedFileLocation));
+						writeToFile(preprocessedFileLocation, xsltTemplateString);
 					}
-					//generationResult.setPreprocessedTemplate(preprocessedTemplateString);
 					logger.info("End template pre-processing");
 				}
 				
@@ -285,12 +249,12 @@ public class Generator {
 				{
 					logger.info("Begin template transformation");
 					
-					XsltTransformer xsltTransformer = XMLUtils.getXsltTransformer(xsltTemplateString, _model.getPreprocessedModel(), outputFolderUri);
+					XsltTransformer xsltTransformer = XMLUtils.getXsltTransformer(xsltTemplateString, model.getPreprocessedModel(), outputFolderUri);
 					
-					// If running in test mode, cast the xslTransformer to net.sf.saxon.jaxp.TransformerImpl and set our custom
+					// If running in test mode, cast the XslTransformer to net.sf.saxon.jaxp.TransformerImpl and set our custom
 					// output resolver to get the output in GenerationResults instead of files					 
 					if (this._testMode) {
-						GenerationResultsOutputResolver outputResolver = new GenerationResultsOutputResolver(generationResults, _model.getModelFileName(), rawTemplate.getRawTemplateFileName());
+						GenerationResultOutputResolver outputResolver = new GenerationResultOutputResolver(generationResult);
 						xsltTransformer.getUnderlyingController().setOutputURIResolver(outputResolver);
 					}
 					
@@ -303,7 +267,7 @@ public class Generator {
 						if (e.getMessage().equals("Result has no system ID, writer, or output stream defined")) {
 							logger.warning("The generation yielded no results because the root node binding has no matches.");
 						}
-						// Rethrow all other errors.
+						// Re-throw all other errors.
 						else {
 							throw e;
 						}
@@ -316,15 +280,14 @@ public class Generator {
 			// If an exception occurs, wrap it in a GeneratorException and set it on a new GenerationResult.
 			catch (TemplatePreprocessorException | UnhandledException | GeneratorException | SaxonApiException e) {
 				logger.severe(String.format("Error while generating: %s", e.getMessage()));
-				GenerationResult generationExeptionResult = new GenerationResult(_model.getModelFileName(), rawTemplate.getRawTemplateFileName());				
-				generationExeptionResult.setException(new GeneratorException(e));
-				generationResults.addGenerationResult(generationExeptionResult);
+				// Store the exception in the generation result.
+				generationResult.setException(new GeneratorException(e));
 			}
 			
 			logger.info("End generator");
 		}
 			
-		// Return the generation results.
-		return generationResults;
+		// Return the generation result.
+		return generationResult;
 	}
 }

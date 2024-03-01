@@ -80,6 +80,13 @@ Here the following configuration can be set on the model:
             </xs:complexType>
          </xs:element>
       </xs:sequence>
+      <xs:attribute name="namespaceAware" type="xs:boolean">
+         <xs:annotation>
+            <xs:documentation>Indicator whether the model file should be parsed aware of namespaces.
+This influences how XPath can be used, if it's parsed as namespace aware you CAN use //xi:include.
+This is disabled by default.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
    </xs:complexType>
    <xs:complexType name="namespaceConfig">
       <xs:sequence/>
