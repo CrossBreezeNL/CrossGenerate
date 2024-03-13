@@ -77,10 +77,11 @@ jobs:
           path: NuGet/bin/Release/CrossBreeze.CrossGenerate.*[0-9].nupkg
           compression-level: 0 # no compression, since nupkg is already compressed
 
-      # Publish NuGet package.
+      # Update the NuGet config to have the GITHUB token in the source configuration.
       - name: Prepare NuGet
-        run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/CrossBreezeNL/index.json"
+        run: dotnet nuget update source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/CrossBreezeNL/index.json"
         working-directory: ./NuGet
+      # Publish NuGet package.
       - name: Publish NuGet package
         run: dotnet nuget push "bin/Release/CrossBreeze.CrossGenerate.*.nupkg" --source "github"
         working-directory: ./NuGet
