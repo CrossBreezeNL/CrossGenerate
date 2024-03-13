@@ -3,7 +3,7 @@ name: cicd-release
 on:
   push:
     tags:
-      - "*"
+      - "v*"
 
 jobs:
 
@@ -13,6 +13,7 @@ jobs:
   release:
     name: Create & publish release
     runs-on: ubuntu-latest
+    needs: build-and-test
     steps:
       # Download jar files.
       - name: Download Jar with dependencies
