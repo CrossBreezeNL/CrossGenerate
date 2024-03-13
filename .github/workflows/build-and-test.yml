@@ -80,5 +80,7 @@ jobs:
       # Publish NuGet package.
       - name: Prepare NuGet
         run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/CrossBreezeNL/index.json"
+        working-directory: ./NuGet
       - name: Publish NuGet package
-        run: dotnet nuget push "NuGet/bin/Release/CrossBreeze.CrossGenerate.*.nupkg" --source "github"
+        run: dotnet nuget push "bin/Release/CrossBreeze.CrossGenerate.*.nupkg" --source "github"
+        working-directory: ./NuGet
