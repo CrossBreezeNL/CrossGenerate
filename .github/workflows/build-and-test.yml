@@ -13,6 +13,9 @@ jobs:
   build-and-test:
     name: Build and test
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
     timeout-minutes: 60
     steps:
       # Checkout the code
