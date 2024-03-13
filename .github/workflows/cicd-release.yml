@@ -11,7 +11,7 @@ jobs:
     uses: ./.github/workflows/build-and-test.yml
 
   release:
-    name: Publish NuGet package
+    name: Create & publish release
     runs-on: ubuntu-latest
     steps:
       # Download jar files.
