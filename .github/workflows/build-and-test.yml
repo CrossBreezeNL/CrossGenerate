@@ -66,7 +66,7 @@ jobs:
           path: XGenerate/target/XGenerate-*[0-9]-jar-with-dependencies.jar
           compression-level: 0 # no compression, since jar is already compressed
 
-      # Create and publish NuPkg.
+      # Create and upload NuPkg.
       - name: Create NuGet Package
         run: dotnet pack --configuration Release
         working-directory: ./NuGet
