@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+      <Title>CrossGenerate</Title>
+      <Authors>CrossBreeze</Authors>
+      <Description>CrossGenerate enables organizations to realize their data solutions faster and better by automating the development process and relying on model-driven principles.
+
+CrossGenerate generates software using:
+- Any model that can be exported to XML
+- Templates developed in well known ETL and DB tools      </Description>
+      <Copyright>Copyright CrossBreeze 2024</Copyright>
+      
+      <TargetFramework>netstandard2.0</TargetFramework>
+      <NoBuild>true</NoBuild>
+      <IncludeBuildOutput>false</IncludeBuildOutput>
+      
+      <PackageId>CrossBreeze.CrossGenerate</PackageId>
+      <PackageProjectUrl>https://generate.crossbreeze.nl</PackageProjectUrl>
+      
+      <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+      <PackageTags>Development Automation Generate Database DWH BI SQL T-SQL SSIS SSAS MDX DAX ETL DDL MDD MDA MDDE</PackageTags>
+      <PackageIconUrl>x-generate-icon.png</PackageIconUrl>
+      <PackageReadmeFile>README.md</PackageReadmeFile>
+      <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+      
+      <PackageVersion>3.2.0</PackageVersion>
+      <PackageReleaseNotes>Added XInclude support for Model file.</PackageReleaseNotes>
+      <PackageIcon>x-generate-icon.png</PackageIcon>
+      <RepositoryUrl>https://github.com/CrossBreezeNL/CrossGenerate</RepositoryUrl>
+    </PropertyGroup>
+    <ItemGroup>
+      <Content Include="x-generate-icon.png" Pack="True" PackagePath="\" />
+      <Content Include="../LICENSE.txt" Pack="True" PackagePath="\" />
+      <Content Include="../README.md" Pack="True" PackagePath="\" />
+      <Content Include="../XGenerate/target/XGenerate-*-jar-with-dependencies.jar" Pack="True" PackagePath="XGenerate.jar" />
+    </ItemGroup>
+  </Project>

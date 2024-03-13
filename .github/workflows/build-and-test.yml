@@ -63,3 +63,13 @@ jobs:
           name: jar-with-dependencies
           path: XGenerate/target/XGenerate-*[0-9]-jar-with-dependencies.jar
           compression-level: 0 # no compression, since jar is already compressed
+
+      # Create NuPkg.
+      - name: Create NuPkg
+        run: dotnet pack --configuration Release
+        working-directory: ./NuGet
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nupkg
+          path: NuGet/bin/Release/CrossBreeze.CrossGenerate.*[0-9].nupkg
+          compression-level: 0 # no compression, since nupkg is already compressed
