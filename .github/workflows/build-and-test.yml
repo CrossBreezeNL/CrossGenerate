@@ -79,7 +79,7 @@ jobs:
 
       # Update the NuGet config to have the GITHUB token in the source configuration.
       - name: Prepare NuGet
-        run: dotnet nuget update source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/CrossBreezeNL/index.json"
+        run: dotnet nuget update source github --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text "https://nuget.pkg.github.com/CrossBreezeNL/index.json"
         working-directory: ./NuGet
       # Publish NuGet package.
       - name: Publish NuGet package
