@@ -53,13 +53,26 @@ jobs:
         working-directory: ./XGenerate
 
       # Publish jars.
-      - uses: actions/upload-artifact@v4
+      - name: Upload Jar without dependencies
+        uses: actions/upload-artifact@v4
         with:
           name: jar-without-dependencies
           path: XGenerate/target/XGenerate-*[0-9].jar
           compression-level: 0 # no compression, since jar is already compressed
-      - uses: actions/upload-artifact@v4
+      - name: Upload Jar with dependencies
+        uses: actions/upload-artifact@v4
         with:
           name: jar-with-dependencies
           path: XGenerate/target/XGenerate-*[0-9]-jar-with-dependencies.jar
           compression-level: 0 # no compression, since jar is already compressed
+
+      # Create and upload NuPkg.
+      - name: Create NuGet Package
+        run: dotnet pack --configuration Release
+        working-directory: ./NuGet
+      - name: Upload NuGet Package
+        uses: actions/upload-artifact@v4
+        with:
+          name: nupkg
+          path: NuGet/bin/Release/CrossBreeze.CrossGenerate.*[0-9].nupkg
+          compression-level: 0 # no compression, since nupkg is already compressed
