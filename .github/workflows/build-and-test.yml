@@ -76,8 +76,3 @@ jobs:
           name: nupkg
           path: NuGet/bin/Release/CrossBreeze.CrossGenerate.*[0-9].nupkg
           compression-level: 0 # no compression, since nupkg is already compressed
-
-      # Publish NuGet package.
-      - name: Publish NuGet package
-        run: dotnet nuget push "bin/Release/CrossBreeze.CrossGenerate.*.nupkg" --source "https://nuget.pkg.github.com/CrossBreezeNL/index.json" --api-key ${{secrets.GITHUB_TOKEN}}
-        working-directory: ./NuGet

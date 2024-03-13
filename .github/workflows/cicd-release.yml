@@ -1,0 +1,41 @@
+name: cicd-release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+
+  build-and-test:
+    uses: ./.github/workflows/build-and-test.yml
+
+  release:
+    name: Publish NuGet package
+    runs-on: ubuntu-latest
+    steps:
+      # Download jar files.
+      - name: Download Jar with dependencies
+        uses: actions/download-artifact@v4
+        with:
+          name: jar-with-dependencies
+      - name: Download Jar without dependencies
+        uses: actions/download-artifact@v4
+        with:
+          name: jar-without-dependencies
+      # Create release
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "*.jar"
+          generateReleaseNotes: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      # Download nupkg file.
+      - name: Download NuGet Package
+        uses: actions/download-artifact@v4
+        with:
+          name: nupkg
+      # Publish NuGet package.
+      - name: Publish NuGet package
+        run: dotnet nuget push "CrossBreeze.CrossGenerate.*.nupkg" --source "https://nuget.pkg.github.com/CrossBreezeNL/index.json" --api-key ${{secrets.GITHUB_TOKEN}}
