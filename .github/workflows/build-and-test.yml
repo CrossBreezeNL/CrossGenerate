@@ -13,9 +13,6 @@ jobs:
   build-and-test:
     name: Build and test
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: write
     timeout-minutes: 60
     steps:
       # Checkout the code
@@ -80,11 +77,7 @@ jobs:
           path: NuGet/bin/Release/CrossBreeze.CrossGenerate.*[0-9].nupkg
           compression-level: 0 # no compression, since nupkg is already compressed
 
-      # Update the NuGet config to have the GITHUB token in the source configuration.
-      - name: Prepare NuGet
-        run: dotnet nuget update source github --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
-        working-directory: ./NuGet
       # Publish NuGet package.
       - name: Publish NuGet package
-        run: dotnet nuget push "bin/Release/CrossBreeze.CrossGenerate.*.nupkg" --source "github"
+        run: dotnet nuget push "bin/Release/CrossBreeze.CrossGenerate.*.nupkg" --source "https://nuget.pkg.github.com/CrossBreezeNL/index.json" --api-key ${{secrets.GITHUB_TOKEN}}
         working-directory: ./NuGet
