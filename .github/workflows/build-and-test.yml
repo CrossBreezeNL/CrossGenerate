@@ -30,7 +30,7 @@ jobs:
       
       # Build with Maven
       - name: Build
-        run: mvn --batch-mode install -DskipTests
+        run: mvn --batch-mode install assembly:single -DskipTests
         working-directory: ./XGenerate
 
       # Test with Maven
@@ -46,11 +46,6 @@ jobs:
           name: test-results
           path: XGenerate/target/surefire-reports/TEST-*.xml
           reporter: java-junit
-
-      # Build single jar
-      - name: Assemble Jar
-        run: mvn --batch-mode assembly:single -DskipTests
-        working-directory: ./XGenerate
 
       # Publish jars.
       - name: Upload Jar without dependencies
