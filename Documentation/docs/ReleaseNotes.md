@@ -20,7 +20,7 @@ Click on the header of a version number to go to the documentation of that speci
 [//]: # (>     * [ ] Binding)
 [//]: # (>         * [X] Some issue...)
 
-## [Version 3.2](../3.2/)
+## [Version 3.2](../../3.2/)
 
 - [ ] 3.2.0 <sup>01-03-2024</sup>
 >
@@ -35,7 +35,7 @@ Click on the header of a version number to go to the documentation of that speci
 >     * [ ] Commandline options
 >         * [X] Fixed writing preprocessed model and template when debug mode is enabled.
 
-## [Version 3.1](../3.1/)
+## [Version 3.1](../../3.1/)
 
 - [ ] 3.1.0 <sup>09-02-2024</sup>
 >
@@ -52,7 +52,7 @@ Click on the header of a version number to go to the documentation of that speci
 >         * [ ] Text sections
 >             - [X] Section endings at the end of a template are now correctly handled (i.s.o. end of section not found errors).
 
-## [Version 3.0](../3.0/)
+## [Version 3.0](../../3.0/)
 
 - [ ] 3.0.0 <sup>13-08-2021</sup>
 >
@@ -64,7 +64,7 @@ Click on the header of a version number to go to the documentation of that speci
 >     * [ ] Application config
 >         - [X] Removed license configuration part, since CrossGenerate is open-source and free now.
 
-## [Version 2.6](../2.6/)
+## [Version 2.6](../../2.6/)
 
 - [ ] 2.6.0 <sup>24-05-2019</sup>
 >
@@ -84,7 +84,7 @@ Click on the header of a version number to go to the documentation of that speci
 >             - [X] Fixed issue where end of a section could also be found in the begin part of a section.
 >             - [X] Fixed issue where a section can't be created inside a comment.
 
-## [Version 2.5](../2.5/)
+## [Version 2.5](../../2.5/)
 
 - [ ] 2.5.0 <sup>04-01-2019</sup>
 >
@@ -104,7 +104,7 @@ Click on the header of a version number to go to the documentation of that speci
 >         * [ ] Text and XML sections
 >             - [X] Reduced severity of sections defined in config but not found in template to warning or informational. This can be a result of applying a more generic config, in which case it is intended behaviour.
 
-## [Version 2.4](../2.4/)
+## [Version 2.4](../../2.4/)
 
 - [ ] 2.4.0 <sup>07-11-2018</sup>
 >
@@ -126,7 +126,7 @@ Click on the header of a version number to go to the documentation of that speci
 >             - [X] With sections with a prefix the leading whitespace was included twice for first repetition
 >             - [X] Carriage return with line-feed (CRLF) in template were converted into LF and removed from placeholder value
 
-## [Version 2.3](../2.3/)
+## [Version 2.3](../../2.3/)
 
 - [ ] 2.3.1 <sup>11-09-2018</sup>
 > 
@@ -146,7 +146,7 @@ Click on the header of a version number to go to the documentation of that speci
 >         * [ ] XML Template
 >             - [X] Wrong section bounds found for XML nodes when template contained special characters
 
-## [Version 2.2](../2.1/)
+## [Version 2.2](../../2.1/)
 
 - [ ] 2.2 <sup>25-06-2018</sup>
 > 
@@ -154,7 +154,7 @@ Click on the header of a version number to go to the documentation of that speci
 >     * [ ] Model
 >         - [X] Remove a node from the model (ModelNodeRemoval)
 
-## [Version 2.1](../2.1/)
+## [Version 2.1](../../2.1/)
 
 - [ ] 2.1 <sup>03-06-2018</sup>
 > 
@@ -173,7 +173,7 @@ Click on the header of a version number to go to the documentation of that speci
 >         * [ ] XML Template
 >             - [X] XML Output formatting was not same as input
 
-## [Version 2.0](../2.0/)
+## [Version 2.0](../../2.0/)
 
 - [ ] 2.0 <sup>22-02-2018</sup>
 > 
