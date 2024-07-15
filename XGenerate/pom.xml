@@ -8,15 +8,18 @@
 	
 	<properties>
 		<java.version>1.8</java.version>
+		<!-- Can't upgrade to Saxon 11 or higher, since it breaks the generation a.t.m. -->
   		<saxon.version>10.9</saxon.version>
   		<vtd-xml.version>2.13.4</vtd-xml.version>
-  		<jakarta-xml-bind.version>4.0.0</jakarta-xml-bind.version>
-  		<sun-xml-bind.version>4.0.3</sun-xml-bind.version>
-  		<commons-io.version>2.13.0</commons-io.version>
-		<cucumber.version>7.11.2</cucumber.version>
-		<junit.version>5.9.2</junit.version>
-		<surefire.version>3.0.0</surefire.version>
-		<apache-httpclient>4.5.5</apache-httpclient>
+  		<jakarta-xml-bind.version>4.0.2</jakarta-xml-bind.version>
+  		<sun-xml-bind.version>4.0.5</sun-xml-bind.version>
+  		<commons-io.version>2.16.1</commons-io.version>
+  		<commons-text.version>1.12.0</commons-text.version>
+		<cucumber.version>7.18.0</cucumber.version>
+		<junit.version>5.10.3</junit.version>
+		<surefire.version>3.3.1</surefire.version>
+		<!-- For some reason when going to 4.5.8 or higher the test start to fail. -->
+		<apache-httpclient>4.5.7</apache-httpclient>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>		
 	</properties>
 
@@ -73,7 +76,7 @@
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-text</artifactId>
-		    <version>1.12.0</version>
+		    <version>${commons-text.version}</version>
 		</dependency>
 		<!-- Test dependencies. -->
 		<dependency>
@@ -127,7 +130,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.11.0</version>
+				<version>3.13.0</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -138,7 +141,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.6.0</version>
+				<version>3.7.1</version>
                 <executions>
                     <execution>
                         <id>execution</id>
@@ -165,7 +168,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>schemagen</id>
