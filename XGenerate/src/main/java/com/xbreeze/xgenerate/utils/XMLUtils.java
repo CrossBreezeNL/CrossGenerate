@@ -42,6 +42,8 @@ import javax.xml.transform.ErrorListener;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.template.TemplatePreprocessor;
@@ -132,6 +134,7 @@ public class XMLUtils {
     	// Only inject attribute if it does not already exist
     	try {
     		int attributeValueIndex = nv.getAttrVal(attributeName);
+    		String encodedAttributeValue = StringEscapeUtils.escapeXml(attributeValue);
     		// If the attribute doesn't exist, create it.
 			if (attributeValueIndex == -1) {
 				// Take the element index and count 2 token per attribute (name and value) to get to the last attribute value index.
@@ -140,12 +143,12 @@ public class XMLUtils {
 				int lastAttributeValueEndIndex = (int)nv.getTokenOffset(lastAttributeValueIndex) + nv.getTokenLength(lastAttributeValueIndex) + 1;
 				logger.info(String.format("Appending attribute '%s' at %d", attributeName, lastAttributeValueEndIndex));
 				// Insert  the new attribute.
-				xm.insertBytesAt(lastAttributeValueEndIndex, String.format(" %s=\"%s\"", attributeName, attributeValue).getBytes());
+				xm.insertBytesAt(lastAttributeValueEndIndex, String.format(" %s=\"%s\"", attributeName, encodedAttributeValue).getBytes());
 			}
 			// If the attribute already exists, update it.
 			else {
 				try {
-					xm.updateToken(attributeValueIndex, attributeValue.getBytes());
+					xm.updateToken(attributeValueIndex, encodedAttributeValue.getBytes());
 				} catch (UnsupportedEncodingException e) {
 					throw new GeneratorException(String.format("Error while updating attribute value (%s)", attributeName), e);
 				}

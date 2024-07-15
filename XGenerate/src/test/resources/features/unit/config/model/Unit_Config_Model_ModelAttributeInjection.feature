@@ -52,6 +52,7 @@ Feature: Unit_Config_Model_ModelAttributeInjection
       | filter value  | //entity[@name='B'] | Value      | simple                     |                 | simple          |                 |
       | simple XPath  | //entity            | XPath      | ./@name                    | A               | B               | C               |
       | filter XPath  | //entity[@name='B'] | XPath      | ./@name                    |                 | B               |                 |
+      | lower-case    | //entity            | XPath      | lower-case(@name)          | a               | b               | c               |
 
   @KnownIssue
   # KnownIssue: replace function is not implemented in vtd-xml
@@ -86,6 +87,47 @@ Feature: Unit_Config_Model_ModelAttributeInjection
     Examples: 
       | Scenario      | modelXPath          | targetType | targetValue                | expectedResultA | expectedResultB | expectedResultC |
       | replace XPath | //entity[@name='B'] | XPath      | replace(./@name, 'B', 'b') |                 | B               |                 |
+
+  Scenario Outline: Single <Scenario> quoted attribute injection
+    Given I have the following model:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <entities>
+        <entity name="&quot;A&quot;"/>
+        <entity name="&quot;B&quot;"/>
+        <entity name="&quot;C&quot;"/>
+      </entities>
+      """
+    Given the following config:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <XGenConfig>
+        <Model>
+          <ModelAttributeInjections>
+            <ModelAttributeInjection modelXPath="<modelXPath>" targetAttribute="type" target<targetType>="<targetValue>" />
+          </ModelAttributeInjections>
+        </Model>
+        <TextTemplate rootSectionName="Template">
+          <Output type="single_output" />
+        </TextTemplate>
+        <Binding>
+          <SectionModelBinding section="Template" modelXPath="/entities/entity" placeholderName="table" />
+        </Binding>
+      </XGenConfig>
+      """
+    When I run the generator
+    Then I expect 1 generation result
+    And an output named "Unit_Config_Model_ModelAttributeInjection.txt" with content:
+      """
+      "A" -> <expectedResultA>
+      "B" -> <expectedResultB>
+      "C" -> <expectedResultC>
+
+      """
+
+    Examples: 
+      | Scenario      | modelXPath          | targetType | targetValue                | expectedResultA | expectedResultB | expectedResultC |
+      | lower-case    | //entity            | XPath      | lower-case(@name)          | "a"             | "b"             | "c"             |
 
   Scenario: Multiple attribute injection
     Given the following config:
