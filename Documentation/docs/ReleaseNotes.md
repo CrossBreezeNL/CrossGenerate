@@ -20,6 +20,18 @@ Click on the header of a version number to go to the documentation of that speci
 [//]: # (>     * [ ] Binding)
 [//]: # (>         * [X] Some issue...)
 
+## [Version 3.3](../../3.3/)
+
+- [ ] 3.3.0 <sup>15-07-2024</sup>
+>
+> !!! info "Enhanced features"
+>     * [ ] Generic
+>         - [X] Dependency updates.
+> !!! warning "Bug fixes"
+>     * [ ] Config
+>         * [ ] Model
+>             - [X] Fixed bug with model attribute injection with special characters.
+
 ## [Version 3.2](../../3.2/)
 
 - [ ] 3.2.0 <sup>01-03-2024</sup>

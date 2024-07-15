@@ -2,13 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>XGenerateTest</groupId>
   <artifactId>XGenerateTest</artifactId>
-  <version>3.2.0</version>
+  <version>3.3.0</version>
  <properties>
-    <xgenerate.version>3.2.0</xgenerate.version>
+    <xgenerate.version>3.3.0</xgenerate.version>
 	<java.version>1.8</java.version>
-	<cucumber.version>7.11.2</cucumber.version>
-	<junit.version>5.9.2</junit.version>
-	<surefire.version>3.0.0</surefire.version>
+	<cucumber.version>7.18.0</cucumber.version>
+	<junit.version>5.10.3</junit.version>
+	<surefire.version>3.3.1</surefire.version>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   
