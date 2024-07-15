@@ -42,7 +42,7 @@ import javax.xml.transform.ErrorListener;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.generator.GeneratorException;
@@ -134,7 +134,7 @@ public class XMLUtils {
     	// Only inject attribute if it does not already exist
     	try {
     		int attributeValueIndex = nv.getAttrVal(attributeName);
-    		String encodedAttributeValue = StringEscapeUtils.escapeXml(attributeValue);
+    		String encodedAttributeValue = StringEscapeUtils.escapeXml11(attributeValue);
     		// If the attribute doesn't exist, create it.
 			if (attributeValueIndex == -1) {
 				// Take the element index and count 2 token per attribute (name and value) to get to the last attribute value index.
