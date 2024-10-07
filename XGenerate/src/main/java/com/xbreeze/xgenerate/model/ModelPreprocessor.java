@@ -50,6 +50,7 @@ import net.sf.saxon.xpath.XPathExpressionImpl;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -118,14 +119,14 @@ public class ModelPreprocessor {
 					modelConfig.getModelAttributeInjections(), modelConfig.getNamespaces());
 		}
 
-		/*
+		
 		// ModelNodeRemovals
 		if (modelConfig != null && modelConfig.getModelNodeRemovals() != null
 				&& modelConfig.getModelNodeRemovals().size() > 0) {
-			preprocessedModel = performModelNodeRemovals(preprocessedModel, modelConfig.getModelNodeRemovals(),
+			doc = performModelNodeRemovals(doc, modelConfig.getModelNodeRemovals(),
 					modelConfig.getNamespaces());
 		}
-		*/
+		
 		String preprocessedModel = null;
 		DOMSource domSource = new DOMSource(doc);
 		StringWriter writer = new StringWriter();
@@ -147,73 +148,45 @@ public class ModelPreprocessor {
 		logger.info("End model preprocessing");
 	}
 
-	private static String performModelNodeRemovals(String preprocessedModel,
+	private static Document performModelNodeRemovals(Document modelDoc,
 			ArrayList<ModelNodeRemoval> modelModelNodeRemovals, ArrayList<NamespaceConfig> namespaces)
 			throws ModelPreprocessorException {
+
 		logger.fine("Performing model node removals.");
 
-		// Execute the model XPath on the Document.
-		VTDNav nv;
-		try {
-			nv = XMLUtils.getVTDNav(preprocessedModel, (namespaces != null && namespaces.size() > 0));
-		} catch (GeneratorException e) {
-			throw new ModelPreprocessorException(
-					String.format("Error while reading model before pre-processing: %s", e.getMessage()), e);
-		}
-
-		// Create a modifier to modify the model document.
-		XMLModifier xm;
-		try {
-			xm = new XMLModifier(nv);
-		} catch (ModifyException e) {
-			throw new ModelPreprocessorException(e);
-		}
-
-		// Loop through the model node removals and process them.
-		for (ModelNodeRemoval mnr : modelModelNodeRemovals) {
-			// Create an AutoPilot for querying the document.
-			AutoPilot ap = new AutoPilot(nv);
-
-			// If namespaces are defined, register then on the auto pilot.
-			if (namespaces != null && namespaces.size() > 0) {
+		XPathFactoryImpl xPathfactory = new XPathFactoryImpl();
+		XPathEvaluator xpath = (XPathEvaluator) xPathfactory.newXPath();
+		//TODO do we need namespace support here?
+		// If namespaces are defined, register then on the auto pilot.
+		/*
+		 * if (namespaces != null && namespaces.size() > 0) {
+			
 				// Register the declared namespaces.
 				for (NamespaceConfig namespace : namespaces) {
 					ap.declareXPathNameSpace(namespace.getPrefix(), namespace.getNamespace());
 				}
 			}
+		 */
 
+		// Loop through the model node removals and process them.
+		for (ModelNodeRemoval mnr : modelModelNodeRemovals) {
 			try {
-				// Set the XPath expression from the config.
-				ap.selectXPath(mnr.getModelXPath());
-
-				// Execute the XPath expression and loop through the results.
-				while ((ap.evalXPath()) != -1) {
-					// Remove the node.
-					xm.remove();
-				}
-
-				// Output and re-parse the document for the next injection.
-				// This is necessary, otherwise exceptions will be thrown when injecting
-				// attributes for the same element.
-				nv = xm.outputAndReparse();
-				// Reset and bind the modifier to the new VTDNav object.
-				xm.reset();
-				xm.bind(nv);
-
-			} catch (XPathParseException | XPathEvalException | NavException | ModifyException | ParseException
-					| TranscodeException | IOException e) {
-				throw new ModelPreprocessorException(
-						String.format("Error while processing model node removal for XPath ´%s´: %s",
-								mnr.getModelXPath(), XMLUtils.getAutopilotExceptionMessage(mnr.getModelXPath(), e)));
+				XPathExpressionImpl expr = (XPathExpressionImpl)xpath.compile(mnr.getModelXPath());			
+				NodeList result = (NodeList) expr.evaluate(modelDoc, XPathConstants.NODESET);
+				for (int i = 0; i < result.getLength(); i++) {
+					Node node = result.item(i);
+					if (node.getNodeType() == Node.ELEMENT_NODE) {
+						node.getParentNode().removeChild(node);
+					} else if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
+						((Attr)node).getOwnerElement().removeAttributeNode((Attr)node);
+					}
+				}	
+			} catch (XPathExpressionException e) {
+				throw new ModelPreprocessorException(String.format("Error processing XPATH expression for node removal %s, %s", mnr.getModelXPath(), e.getMessage()));
 			}
 		}
-
 		// Return the modified XML document.
-		try {
-			return XMLUtils.getResultingXml(xm);
-		} catch (GeneratorException e) {
-			throw new ModelPreprocessorException(e);
-		}
+		return modelDoc;
 	}
 
 	private static Document performModelAttributeInjections(Document modelDoc, 
@@ -223,6 +196,16 @@ public class ModelPreprocessor {
 
 		XPathFactoryImpl xPathfactory = new XPathFactoryImpl();
 		XPathEvaluator xpath = (XPathEvaluator) xPathfactory.newXPath();
+
+		// TODO: Not sure if we need to implement namespace support here?
+		// If namespaces are defined, register then on the auto pilot.
+		/*if (namespaces != null && namespaces.size() > 0) {
+			// Register the declared namespaces.
+			for (NamespaceConfig namespace : namespaces) {
+				ap.declareXPathNameSpace(namespace.getPrefix(), namespace.getNamespace());
+			}
+			}
+	 	*/
 		
 		// Loop through the model attribute injections and process them.
 		for (ModelAttributeInjection mai : modelAttributeInjections) {
@@ -282,113 +265,8 @@ public class ModelPreprocessor {
 			} catch (XPathExpressionException e) {
 				throw new ModelPreprocessorException(String.format("Error evaluating XPATH expression for model selection %s, %s", mai.getModelXPath(), e.getMessage()));				
 			}
-			// If namespaces are defined, register then on the auto pilot.
-			/*if (namespaces != null && namespaces.size() > 0) {
-				// Register the declared namespaces.
-				for (NamespaceConfig namespace : namespaces) {
-					ap.declareXPathNameSpace(namespace.getPrefix(), namespace.getNamespace());
-				}
-			}
-		 	*/
-			/*
-			 * try {
-			 
-
-				// Set the XPath expression from the config.
-				ap.selectXPath(mai.getModelXPath());
-
-				// Execute the XPath expression and loop through the results.
-				while ((ap.evalXPath()) != -1) {
-
-					String targetValue = null;
-
-					// Set the attribute value, either from XPath or constant value
-					if (mai.getTargetXPath() != null) {
-						// Execute the XPath on the current node.
-						try {
-							AutoPilot ap_targetValue = new AutoPilot(nv);
-							ap_targetValue.selectXPath(mai.getTargetXPath());
-							targetValue = ap_targetValue.evalXPathToString();
-							logger.info(
-									String.format("Target XPath defined for attribute injection, value: ´%s´ => ´%s´",
-											mai.getTargetXPath(), targetValue));
-						} catch (XPathParseException e) {
-							throw new ModelPreprocessorException(String.format(
-									"Error while processing model attribute injection for target XPath ´%s´: %s",
-									mai.getTargetXPath(),
-									XMLUtils.getAutopilotExceptionMessage(mai.getTargetXPath(), e)));
-						}
-					}
-
-					// When the target value is set, write the value.
-					else if (mai.getTargetValue() != null) {
-						targetValue = mai.getTargetValue();
-					}
-
-					// When the value mappings are set, process them.
-					else if (mai.getValueMappings() != null) {
-						try {
-							AutoPilot ap_targetValue = new AutoPilot(nv);
-							// Get the value of the input node.
-							ap_targetValue.selectXPath(mai.getValueMappings().getInputNode());
-							String inputNodeValue = ap_targetValue.evalXPathToString();
-							// Using the input node value, find the output value from the value mapping.
-							List<ModelAttributeInjectionValueMapping> foundValueMappings = mai.getValueMappings()
-									.getModelAttributeInjectionValueMappings().stream()
-									.filter(vm -> vm.getInputValue().equals(inputNodeValue))
-									.collect(Collectors.toList());
-							// There should only be 1 found value mapping.
-							if (foundValueMappings.size() == 1) {
-								targetValue = foundValueMappings.get(0).getOutputValue();
-								logger.info(String.format(
-										"Value mappings defined for attribute injection, input node value: ´%s´, target value: ´%s´",
-										inputNodeValue, targetValue));
-							}
-							// If multiple value mappings are found, throw an exception.
-							else if (foundValueMappings.size() > 1) {
-								throw new ModelPreprocessorException(String.format(
-										"%d value mappings found for input node value ´%s´, expected exactly 1!",
-										foundValueMappings.size(), inputNodeValue));
-							}
-							// If no value mappings are found, print a warning.
-							else {
-								logger.warning(String.format("%d value mappings found for input node value ´%s´.",
-										foundValueMappings.size(), inputNodeValue));
-							}
-						} catch (XPathParseException e) {
-							throw new ModelPreprocessorException(String.format(
-									"Error while processing model attribute injection for target XPath ´%s´: %s",
-									mai.getTargetXPath(),
-									XMLUtils.getAutopilotExceptionMessage(mai.getTargetXPath(), e)));
-						}
-					}
-
-					// Append the attribute (if it is not null, this can happen if a value mapping
-					// returns no value).
-					if (targetValue != null)
-						XMLUtils.appendAttribute(nv, xm, mai.getTargetAttribute(), targetValue);
-				}
-
-				// Output and re-parse the document for the next injection.
-				// This is necessary, otherwise exceptions will be thrown when injecting
-				// attributes for the same element.
-				nv = xm.outputAndReparse();
-				// Reset and bind the modifier to the new VTDNav object.
-				xm.reset();
-				xm.bind(nv);
-
-			} catch (XPathParseException | XPathEvalException | NavException | ModifyException | ParseException
-					| TranscodeException | IOException | GeneratorException e) {
-				// Throw a new exception.
-				throw new ModelPreprocessorException(
-						String.format("Error while processing model attribute injection for model XPath ´%s´: %s",
-								mai.getModelXPath(), XMLUtils.getAutopilotExceptionMessage(mai.getModelXPath(), e)));
-			}
-			*/
 		}
-
 		// Return the modified XML document.
 		return modelDoc;
-		
 	}
 }
