@@ -54,9 +54,7 @@ Feature: Unit_Config_Model_ModelAttributeInjection
       | filter XPath  | //entity[@name='B'] | XPath      | ./@name                    |                 | B               |                 |
       | lower-case    | //entity            | XPath      | lower-case(@name)          | a               | b               | c               |
 
-  @KnownIssue
-  # KnownIssue: replace function is not implemented in vtd-xml
-  Scenario Outline: Single <Scenario> attribute injection @KnownIssue
+  Scenario Outline: Single <Scenario> attribute injection
     Given the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -86,7 +84,7 @@ Feature: Unit_Config_Model_ModelAttributeInjection
 
     Examples: 
       | Scenario      | modelXPath          | targetType | targetValue                | expectedResultA | expectedResultB | expectedResultC |
-      | replace XPath | //entity[@name='B'] | XPath      | replace(./@name, 'B', 'b') |                 | B               |                 |
+      | replace XPath | //entity[@name='B'] | XPath      | replace(./@name, 'B', 'b') |                 | b               |                 |
 
   Scenario Outline: Single <Scenario> quoted attribute injection
     Given I have the following model:
