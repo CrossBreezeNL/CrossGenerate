@@ -27,10 +27,12 @@ package com.xbreeze.xgenerate.model;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -42,11 +44,9 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import net.sf.saxon.xpath.XPathFactoryImpl;
-import net.sf.saxon.sxpath.XPathDynamicContext;
-import net.sf.saxon.sxpath.XPathExpression;
-import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.xpath.XPathEvaluator;
 import net.sf.saxon.xpath.XPathExpressionImpl;
+
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -60,17 +60,6 @@ import com.xbreeze.xgenerate.config.model.ModelAttributeInjection;
 import com.xbreeze.xgenerate.config.model.ModelConfig;
 import com.xbreeze.xgenerate.config.model.ModelNodeRemoval;
 import com.xbreeze.xgenerate.config.model.ModelAttributeInjectionValueMapping;
-import com.xbreeze.xgenerate.generator.GeneratorException;
-import com.xbreeze.xgenerate.utils.XMLUtils;
-import com.ximpleware.AutoPilot;
-import com.ximpleware.ModifyException;
-import com.ximpleware.NavException;
-import com.ximpleware.ParseException;
-import com.ximpleware.TranscodeException;
-import com.ximpleware.VTDNav;
-import com.ximpleware.XMLModifier;
-import com.ximpleware.XPathEvalException;
-import com.ximpleware.XPathParseException;
 import java.io.StringWriter;
 
 /**
@@ -96,8 +85,7 @@ public class ModelPreprocessor {
 		DocumentBuilder builder;
 		try {
 			builder = factory.newDocumentBuilder();
-		} catch (ParserConfigurationException exc) {
-			// TODO Auto-generated catch block
+		} catch (ParserConfigurationException exc) {			
 			throw new ModelPreprocessorException(
 					String.format("Error while reading model XML file: %s", exc.getMessage()));
 		}
@@ -106,7 +94,7 @@ public class ModelPreprocessor {
 			doc = builder.parse(new ByteArrayInputStream(model.getModelFileContent().getBytes()));
 		} catch(SAXException | IOException exc) {
 			throw new ModelPreprocessorException(
-				String.format("Error while reading model XML file: %s", exc.getMessage()));				
+				String.format("Error while reading model XML file: %s", exc.getMessage()));
 		}
 		
 		
@@ -127,6 +115,7 @@ public class ModelPreprocessor {
 					modelConfig.getNamespaces());
 		}
 		
+		//Transform the preprocessed document to string and store it in the model object.
 		String preprocessedModel = null;
 		DOMSource domSource = new DOMSource(doc);
 		StringWriter writer = new StringWriter();
@@ -155,23 +144,18 @@ public class ModelPreprocessor {
 		logger.fine("Performing model node removals.");
 
 		XPathFactoryImpl xPathfactory = new XPathFactoryImpl();
-		XPathEvaluator xpath = (XPathEvaluator) xPathfactory.newXPath();
-		//TODO do we need namespace support here?
-		// If namespaces are defined, register then on the auto pilot.
-		/*
-		 * if (namespaces != null && namespaces.size() > 0) {
-			
-				// Register the declared namespaces.
-				for (NamespaceConfig namespace : namespaces) {
-					ap.declareXPathNameSpace(namespace.getPrefix(), namespace.getNamespace());
-				}
-			}
-		 */
+		XPathEvaluator xpath = (XPathEvaluator) xPathfactory.newXPath();		
+		// If namespaces are defined, create a namespace context object and set it on the xpath object.
+		if (namespaces != null && namespaces.size() > 0) {
+			ModelNamespaceContext nsContext = new ModelNamespaceContext(namespaces);
+			xpath.setNamespaceContext(nsContext);
+		}
+		 
 
 		// Loop through the model node removals and process them.
 		for (ModelNodeRemoval mnr : modelModelNodeRemovals) {
 			try {
-				XPathExpressionImpl expr = (XPathExpressionImpl)xpath.compile(mnr.getModelXPath());			
+				XPathExpressionImpl expr = (XPathExpressionImpl)xpath.compile(mnr.getModelXPath());
 				NodeList result = (NodeList) expr.evaluate(modelDoc, XPathConstants.NODESET);
 				for (int i = 0; i < result.getLength(); i++) {
 					Node node = result.item(i);
@@ -197,15 +181,11 @@ public class ModelPreprocessor {
 		XPathFactoryImpl xPathfactory = new XPathFactoryImpl();
 		XPathEvaluator xpath = (XPathEvaluator) xPathfactory.newXPath();
 
-		// TODO: Not sure if we need to implement namespace support here?
-		// If namespaces are defined, register then on the auto pilot.
-		/*if (namespaces != null && namespaces.size() > 0) {
-			// Register the declared namespaces.
-			for (NamespaceConfig namespace : namespaces) {
-				ap.declareXPathNameSpace(namespace.getPrefix(), namespace.getNamespace());
-			}
-			}
-	 	*/
+		// If namespaces are defined, create a namespace context object and set it on the xpath object.
+		if (namespaces != null && namespaces.size() > 0) {
+			ModelNamespaceContext nsContext = new ModelNamespaceContext(namespaces);
+			xpath.setNamespaceContext(nsContext);
+		}
 		
 		// Loop through the model attribute injections and process them.
 		for (ModelAttributeInjection mai : modelAttributeInjections) {
@@ -219,15 +199,15 @@ public class ModelPreprocessor {
 					//If a target xpath is set, evaluate it to get a value
 					if (mai.getTargetXPath() !=null) {
 						try {
-							XPathExpressionImpl targetExpression = (XPathExpressionImpl)xpath.compile(mai.getTargetXPath());							
+							XPathExpressionImpl targetExpression = (XPathExpressionImpl)xpath.compile(mai.getTargetXPath());
 							targetValue = (String)targetExpression.evaluate(node, XPathConstants.STRING);
 						} catch (XPathExpressionException e) {
-							throw new ModelPreprocessorException(String.format("Error evaluating XPATH expression for targetvalue %s, %s", mai.getTargetXPath(), e.getMessage()));
+							throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for target XPath ´%s´: %s", mai.getTargetXPath(), e.getMessage()));
 						}
 					} else if (mai.getTargetValue() != null) {
 						targetValue = mai.getTargetValue();
 					} else if (mai.getValueMappings() != null ) {
-						//Get the input node value to use for finding the mapped output value						
+						//Get the input node value to use for finding the mapped output value
 						try {
 							XPathExpressionImpl valueMappingExpression = (XPathExpressionImpl)xpath.compile(mai.getValueMappings().getInputNode());
 							String inputNodeValue = (String)valueMappingExpression.evaluate(node, XPathConstants.STRING);
@@ -263,10 +243,48 @@ public class ModelPreprocessor {
 					}
 				}
 			} catch (XPathExpressionException e) {
-				throw new ModelPreprocessorException(String.format("Error evaluating XPATH expression for model selection %s, %s", mai.getModelXPath(), e.getMessage()));				
+				throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for model XPath ´%s´: %s", mai.getModelXPath(), e.getMessage()));
 			}
 		}
 		// Return the modified XML document.
 		return modelDoc;
 	}
+	
+	// helper class to deal with namespace aware preprocessing
+	private static class ModelNamespaceContext implements NamespaceContext {
+		
+		private ArrayList<NamespaceConfig> namespaces;
+		
+		public ModelNamespaceContext (ArrayList<NamespaceConfig> namespaces) {
+			this.namespaces = namespaces;
+		}
+		
+		@Override
+		public String getNamespaceURI(String prefix) {
+			for (NamespaceConfig ns: this.namespaces) {
+				if (ns.getPrefix().equalsIgnoreCase(prefix)) {
+					return ns.getNamespace();
+				}
+			}
+			return null;
+		}
+
+		@Override
+		public String getPrefix(String namespaceURI) {
+			for (NamespaceConfig ns: this.namespaces) {
+				if (ns.getNamespace().equalsIgnoreCase(namespaceURI)) {
+					return ns.getPrefix();
+				}
+			} 
+			return null;
+		}
+
+		@Override
+		public Iterator<String> getPrefixes(String namespaceURI) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	}
 }
+

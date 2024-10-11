@@ -243,7 +243,7 @@ Feature: Unit_Config_Model_ModelAttributeInjection
     When I run the generator
     Then I expect the following error message:
       """
-      com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for model XPath ´concats('test','test')´: Syntax error after or around the end of ´concats´
+      com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for model XPath ´concats('test','test')´: net.sf.saxon.trans.XPathException: Cannot find a 2-argument function named Q{http://www.w3.org/2005/xpath-functions}concats()
       """
 
   Scenario: Inject using incorrect targetXPath
@@ -267,5 +267,5 @@ Feature: Unit_Config_Model_ModelAttributeInjection
     When I run the generator
     Then I expect the following error message:
       """
-      com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for target XPath ´concats('The entity was ', @name)´: Syntax error after or around the end of ´concats´
+      com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for target XPath ´concats('The entity was ', @name)´: net.sf.saxon.trans.XPathException: Cannot find a 2-argument function named Q{http://www.w3.org/2005/xpath-functions}concats()
       """
