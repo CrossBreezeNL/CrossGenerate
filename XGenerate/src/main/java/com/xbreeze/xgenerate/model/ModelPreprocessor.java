@@ -27,26 +27,16 @@ package com.xbreeze.xgenerate.model;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
-import net.sf.saxon.xpath.XPathFactoryImpl;
-import net.sf.saxon.xpath.XPathEvaluator;
 import net.sf.saxon.xpath.XPathExpressionImpl;
-
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -55,12 +45,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.xbreeze.xgenerate.config.NamespaceConfig;
 import com.xbreeze.xgenerate.config.model.ModelAttributeInjection;
 import com.xbreeze.xgenerate.config.model.ModelConfig;
 import com.xbreeze.xgenerate.config.model.ModelNodeRemoval;
 import com.xbreeze.xgenerate.config.model.ModelAttributeInjectionValueMapping;
-import java.io.StringWriter;
+import com.xbreeze.xgenerate.utils.SaxonXMLUtils;
+import com.xbreeze.xgenerate.utils.XmlException;
+
 
 /**
  * The model preprocessor.
@@ -83,6 +74,7 @@ public class ModelPreprocessor {
 		// Load the preprocessed model into memory
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
+		
 		try {
 			builder = factory.newDocumentBuilder();
 		} catch (ParserConfigurationException exc) {			
@@ -90,6 +82,9 @@ public class ModelPreprocessor {
 					String.format("Error while reading model XML file: %s", exc.getMessage()));
 		}
 		Document doc;
+		SaxonXMLUtils xmlHelper = new SaxonXMLUtils();
+		xmlHelper.setNamespaces(modelConfig.getNamespaces());
+		
 		try {
 			doc = builder.parse(new ByteArrayInputStream(model.getModelFileContent().getBytes()));
 		} catch(SAXException | IOException exc) {
@@ -103,59 +98,41 @@ public class ModelPreprocessor {
 		// removed in the next step
 		if (modelConfig != null && modelConfig.getModelAttributeInjections() != null
 				&& modelConfig.getModelAttributeInjections().size() > 0) {
-			doc = performModelAttributeInjections(doc,
-					modelConfig.getModelAttributeInjections(), modelConfig.getNamespaces());
+			doc = performModelAttributeInjections(doc, xmlHelper,
+					modelConfig.getModelAttributeInjections());
 		}
 
 		
 		// ModelNodeRemovals
 		if (modelConfig != null && modelConfig.getModelNodeRemovals() != null
 				&& modelConfig.getModelNodeRemovals().size() > 0) {
-			doc = performModelNodeRemovals(doc, modelConfig.getModelNodeRemovals(),
-					modelConfig.getNamespaces());
+			doc = performModelNodeRemovals(doc, xmlHelper, modelConfig.getModelNodeRemovals());
 		}
 		
 		//Transform the preprocessed document to string and store it in the model object.
-		String preprocessedModel = null;
-		DOMSource domSource = new DOMSource(doc);
-		StringWriter writer = new StringWriter();
-		StreamResult result = new StreamResult(writer);
-		TransformerFactory tf = TransformerFactory.newInstance();
-		Transformer transformer;
+		String preprocessedModel;
 		try {
-			transformer = tf.newTransformer();
-			transformer.transform(domSource, result);			
-		} catch (TransformerException e) {
-			throw new ModelPreprocessorException(
-				String.format("Error transforming model XML document to string: %s", e.getMessage())
-				);
+			preprocessedModel = SaxonXMLUtils.XmlDocumentToString(doc);
+		} catch (XmlException e) {
+			throw new ModelPreprocessorException(String.format("Error transforming preprocessed model to string: %s", e.getMessage()));
 		}
-		preprocessedModel = writer.toString();
+		
+		
 		// Store the pre-processed model as string in the Model object.
 		model.setPreprocessedModel(preprocessedModel);
 
 		logger.info("End model preprocessing");
 	}
 
-	private static Document performModelNodeRemovals(Document modelDoc,
-			ArrayList<ModelNodeRemoval> modelModelNodeRemovals, ArrayList<NamespaceConfig> namespaces)
+	private static Document performModelNodeRemovals(Document modelDoc, SaxonXMLUtils xmlHelper,
+			ArrayList<ModelNodeRemoval> modelModelNodeRemovals)
 			throws ModelPreprocessorException {
 
 		logger.fine("Performing model node removals.");
-
-		XPathFactoryImpl xPathfactory = new XPathFactoryImpl();
-		XPathEvaluator xpath = (XPathEvaluator) xPathfactory.newXPath();		
-		// If namespaces are defined, create a namespace context object and set it on the xpath object.
-		if (namespaces != null && namespaces.size() > 0) {
-			ModelNamespaceContext nsContext = new ModelNamespaceContext(namespaces);
-			xpath.setNamespaceContext(nsContext);
-		}
-		 
-
 		// Loop through the model node removals and process them.
 		for (ModelNodeRemoval mnr : modelModelNodeRemovals) {
 			try {
-				XPathExpressionImpl expr = (XPathExpressionImpl)xpath.compile(mnr.getModelXPath());
+				XPathExpressionImpl expr = xmlHelper.getXPathExpression(mnr.getModelXPath());
 				NodeList result = (NodeList) expr.evaluate(modelDoc, XPathConstants.NODESET);
 				for (int i = 0; i < result.getLength(); i++) {
 					Node node = result.item(i);
@@ -173,24 +150,15 @@ public class ModelPreprocessor {
 		return modelDoc;
 	}
 
-	private static Document performModelAttributeInjections(Document modelDoc, 
-			ArrayList<ModelAttributeInjection> modelAttributeInjections, ArrayList<NamespaceConfig> namespaces)
+	private static Document performModelAttributeInjections(Document modelDoc, SaxonXMLUtils xmlHelper,
+			ArrayList<ModelAttributeInjection> modelAttributeInjections)
 			throws ModelPreprocessorException {
 		logger.fine("Performing model attribute injections.");
-
-		XPathFactoryImpl xPathfactory = new XPathFactoryImpl();
-		XPathEvaluator xpath = (XPathEvaluator) xPathfactory.newXPath();
-
-		// If namespaces are defined, create a namespace context object and set it on the xpath object.
-		if (namespaces != null && namespaces.size() > 0) {
-			ModelNamespaceContext nsContext = new ModelNamespaceContext(namespaces);
-			xpath.setNamespaceContext(nsContext);
-		}
 		
 		// Loop through the model attribute injections and process them.
 		for (ModelAttributeInjection mai : modelAttributeInjections) {
 			try {
-				XPathExpressionImpl expr = (XPathExpressionImpl)xpath.compile(mai.getModelXPath());
+				XPathExpressionImpl expr = xmlHelper.getXPathExpression(mai.getModelXPath());
 				
 				NodeList result = (NodeList) expr.evaluate(modelDoc, XPathConstants.NODESET);
 				for (int i = 0; i < result.getLength(); i++) {
@@ -199,7 +167,7 @@ public class ModelPreprocessor {
 					//If a target xpath is set, evaluate it to get a value
 					if (mai.getTargetXPath() !=null) {
 						try {
-							XPathExpressionImpl targetExpression = (XPathExpressionImpl)xpath.compile(mai.getTargetXPath());
+							XPathExpressionImpl targetExpression = xmlHelper.getXPathExpression(mai.getTargetXPath());
 							targetValue = (String)targetExpression.evaluate(node, XPathConstants.STRING);
 						} catch (XPathExpressionException e) {
 							throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for target XPath ´%s´: %s", mai.getTargetXPath(), e.getMessage()));
@@ -209,7 +177,7 @@ public class ModelPreprocessor {
 					} else if (mai.getValueMappings() != null ) {
 						//Get the input node value to use for finding the mapped output value
 						try {
-							XPathExpressionImpl valueMappingExpression = (XPathExpressionImpl)xpath.compile(mai.getValueMappings().getInputNode());
+							XPathExpressionImpl valueMappingExpression = xmlHelper.getXPathExpression(mai.getValueMappings().getInputNode());
 							String inputNodeValue = (String)valueMappingExpression.evaluate(node, XPathConstants.STRING);
 							List<ModelAttributeInjectionValueMapping> foundValueMappings = mai.getValueMappings()
 									.getModelAttributeInjectionValueMappings().stream()
@@ -249,42 +217,4 @@ public class ModelPreprocessor {
 		// Return the modified XML document.
 		return modelDoc;
 	}
-	
-	// helper class to deal with namespace aware preprocessing
-	private static class ModelNamespaceContext implements NamespaceContext {
-		
-		private ArrayList<NamespaceConfig> namespaces;
-		
-		public ModelNamespaceContext (ArrayList<NamespaceConfig> namespaces) {
-			this.namespaces = namespaces;
-		}
-		
-		@Override
-		public String getNamespaceURI(String prefix) {
-			for (NamespaceConfig ns: this.namespaces) {
-				if (ns.getPrefix().equalsIgnoreCase(prefix)) {
-					return ns.getNamespace();
-				}
-			}
-			return null;
-		}
-
-		@Override
-		public String getPrefix(String namespaceURI) {
-			for (NamespaceConfig ns: this.namespaces) {
-				if (ns.getNamespace().equalsIgnoreCase(namespaceURI)) {
-					return ns.getPrefix();
-				}
-			} 
-			return null;
-		}
-
-		@Override
-		public Iterator<String> getPrefixes(String namespaceURI) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-	}
 }
-
