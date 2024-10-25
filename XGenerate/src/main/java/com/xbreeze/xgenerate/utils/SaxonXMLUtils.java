@@ -95,7 +95,7 @@ public class SaxonXMLUtils {
 
 			@Override
 			public Iterator<String> getPrefixes(String namespaceURI) {
-				// TODO Auto-generated method stub
+				// TODO Not implemented/used at the moment.
 				return null;
 			}
 			
