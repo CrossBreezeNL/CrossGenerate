@@ -55,4 +55,17 @@ public class ModelPreprocessorException extends CrossGenerateException {
 	public ModelPreprocessorException(String message, Throwable throwable) {
 		super(message, throwable);
 	}
+	
+	/**
+	 * We override the localized message so we can construct the message ourselves, without listing the cause class names.
+	 */
+	@Override
+	public String getLocalizedMessage() {
+		if (this.getCause() != null) {
+			return String.format("%s: %s", this.getMessage(), this.getCause().getMessage());
+		} else {
+			return this.getMessage();
+		}
+	}
+	
 }

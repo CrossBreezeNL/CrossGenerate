@@ -36,21 +36,22 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
-import net.sf.saxon.xpath.XPathExpressionImpl;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.xbreeze.xgenerate.config.model.ModelAttributeInjection;
+import com.xbreeze.xgenerate.config.model.ModelAttributeInjectionValueMapping;
 import com.xbreeze.xgenerate.config.model.ModelConfig;
 import com.xbreeze.xgenerate.config.model.ModelNodeRemoval;
-import com.xbreeze.xgenerate.config.model.ModelAttributeInjectionValueMapping;
 import com.xbreeze.xgenerate.utils.SaxonXMLUtils;
 import com.xbreeze.xgenerate.utils.XmlException;
+
+import net.sf.saxon.xpath.XPathExpressionImpl;
 
 
 /**
@@ -88,8 +89,7 @@ public class ModelPreprocessor {
 		try {
 			doc = builder.parse(new ByteArrayInputStream(model.getModelFileContent().getBytes()));
 		} catch(SAXException | IOException exc) {
-			throw new ModelPreprocessorException(
-				String.format("Error while reading model XML file: %s", exc.getMessage()));
+			throw new ModelPreprocessorException("Error while reading model XML file", exc.getCause());
 		}
 		
 		
@@ -114,7 +114,7 @@ public class ModelPreprocessor {
 		try {
 			preprocessedModel = SaxonXMLUtils.XmlDocumentToString(doc);
 		} catch (XmlException e) {
-			throw new ModelPreprocessorException(String.format("Error transforming preprocessed model to string: %s", e.getMessage()));
+			throw new ModelPreprocessorException("Error transforming preprocessed model to string", e.getCause());
 		}
 		
 		
@@ -143,7 +143,7 @@ public class ModelPreprocessor {
 					}
 				}	
 			} catch (XPathExpressionException e) {
-				throw new ModelPreprocessorException(String.format("Error processing XPATH expression for node removal %s, %s", mnr.getModelXPath(), e.getMessage()));
+				throw new ModelPreprocessorException(String.format("Error processing XPath expression for node removal %s", mnr.getModelXPath()), e.getCause());
 			}
 		}
 		// Return the modified XML document.
@@ -170,7 +170,7 @@ public class ModelPreprocessor {
 							XPathExpressionImpl targetExpression = xmlHelper.getXPathExpression(mai.getTargetXPath());
 							targetValue = (String)targetExpression.evaluate(node, XPathConstants.STRING);
 						} catch (XPathExpressionException e) {
-							throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for target XPath ´%s´: %s", mai.getTargetXPath(), e.getMessage()));
+							throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for target XPath ´%s´", mai.getTargetXPath()), e.getCause());
 						}
 					} else if (mai.getTargetValue() != null) {
 						targetValue = mai.getTargetValue();
@@ -202,7 +202,7 @@ public class ModelPreprocessor {
 										foundValueMappings.size(), inputNodeValue));
 							}
 						} catch (XPathExpressionException e) {
-							throw new ModelPreprocessorException(String.format("Error evaluating XPATH expression for value mapping %s, %s", mai.getValueMappings().getInputNode(), e.getMessage()));
+							throw new ModelPreprocessorException(String.format("Error evaluating XPath expression for value mapping %s", mai.getValueMappings().getInputNode()), e.getCause());
 						}
 					}
 					
@@ -211,7 +211,7 @@ public class ModelPreprocessor {
 					}
 				}
 			} catch (XPathExpressionException e) {
-				throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for model XPath ´%s´: %s", mai.getModelXPath(), e.getMessage()));
+				throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for model XPath ´%s´", mai.getModelXPath()), e.getCause());
 			}
 		}
 		// Return the modified XML document.
