@@ -54,9 +54,7 @@ Feature: Unit_Config_Model_ModelAttributeInjection
       | filter XPath  | //entity[@name='B'] | XPath      | ./@name                    |                 | B               |                 |
       | lower-case    | //entity            | XPath      | lower-case(@name)          | a               | b               | c               |
 
-  @KnownIssue
-  # KnownIssue: replace function is not implemented in vtd-xml
-  Scenario Outline: Single <Scenario> attribute injection @KnownIssue
+  Scenario Outline: Single <Scenario> attribute injection
     Given the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -86,7 +84,7 @@ Feature: Unit_Config_Model_ModelAttributeInjection
 
     Examples: 
       | Scenario      | modelXPath          | targetType | targetValue                | expectedResultA | expectedResultB | expectedResultC |
-      | replace XPath | //entity[@name='B'] | XPath      | replace(./@name, 'B', 'b') |                 | B               |                 |
+      | replace XPath | //entity[@name='B'] | XPath      | replace(./@name, 'B', 'b') |                 | b               |                 |
 
   Scenario Outline: Single <Scenario> quoted attribute injection
     Given I have the following model:
@@ -243,7 +241,7 @@ Feature: Unit_Config_Model_ModelAttributeInjection
     When I run the generator
     Then I expect the following error message:
       """
-      com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for model XPath ´concats('test','test')´: Syntax error after or around the end of ´concats´
+      com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for model XPath ´concats('test','test')´: Cannot find a 2-argument function named Q{http://www.w3.org/2005/xpath-functions}concats()
       """
 
   Scenario: Inject using incorrect targetXPath
@@ -267,5 +265,5 @@ Feature: Unit_Config_Model_ModelAttributeInjection
     When I run the generator
     Then I expect the following error message:
       """
-      com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for target XPath ´concats('The entity was ', @name)´: Syntax error after or around the end of ´concats´
+      com.xbreeze.xgenerate.model.ModelPreprocessorException: Error while processing model attribute injection for target XPath ´concats('The entity was ', @name)´: Cannot find a 2-argument function named Q{http://www.w3.org/2005/xpath-functions}concats()
       """
