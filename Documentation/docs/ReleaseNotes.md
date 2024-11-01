@@ -20,6 +20,15 @@ Click on the header of a version number to go to the documentation of that speci
 [//]: # (>     * [ ] Binding)
 [//]: # (>         * [X] Some issue...)
 
+## [Version 3.4](../../3.4/)
+
+- [ ] 3.4.0 <sup>01-11-2024</sup>
+>
+> !!! info "Enhanced features"
+>     * [ ] Config
+>         * [ ] Model
+>             - [X] Added support for XPath 2.0 and XPath 3.0 function (including support for XPath 1.0 replace function).
+
 ## [Version 3.3](../../3.3/)
 
 - [ ] 3.3.0 <sup>15-07-2024</sup>

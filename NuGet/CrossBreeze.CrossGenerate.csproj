@@ -23,7 +23,7 @@ CrossGenerate generates software using:
       <PackageReadmeFile>README.md</PackageReadmeFile>
       <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
       
-      <PackageVersion>3.3.0</PackageVersion>
+      <PackageVersion>3.4.0</PackageVersion>
       <PackageReleaseNotes>Dependency updates and fix special characters in model attribute injection.</PackageReleaseNotes>
       <PackageIcon>x-generate-icon.png</PackageIcon>
       <RepositoryUrl>https://github.com/CrossBreezeNL/CrossGenerate</RepositoryUrl>
