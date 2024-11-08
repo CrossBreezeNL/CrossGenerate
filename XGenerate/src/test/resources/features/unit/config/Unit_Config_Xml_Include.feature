@@ -76,5 +76,5 @@ Feature: Unit_Config_Xml_Include
       """
     Then I expect the following error message:
       """
-      com.xbreeze.xgenerate.utils.XmlException: XML include cycle detected at level 3, file {{support-file-location}}/entityBindingWithIncludeNested.xml is already included previously
+      com.xbreeze.xgenerate.utils.XmlException: XML include cycle detected at level 3, file {{support-file-location}}entityBindingWithIncludeNested.xml is already included previously
       """

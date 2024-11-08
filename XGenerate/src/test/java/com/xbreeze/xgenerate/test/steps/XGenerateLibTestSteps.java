@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URI;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Filter;
@@ -122,7 +121,7 @@ public class XGenerateLibTestSteps {
 		
 		// Set the feature support file location using the scenario location.
 		// The support file location is the same as the feature file location, but without the .feature extension and the directory 'features' is replaced with 'feature-support-files'.
-		String derivedFeatureSupportFileLocation = featureFileLocation.replaceFirst("features", "feature-support-files").replace(".feature", "");
+		String derivedFeatureSupportFileLocation = featureFileLocation.replaceFirst("features", "feature-support-files").replace(".feature", "/");
 		logger.info(String.format("The feature-support-file location will be set to '%s'.", derivedFeatureSupportFileLocation));
 		_featureSupportFilesLocation = URI.create(derivedFeatureSupportFileLocation);
 		
@@ -149,11 +148,8 @@ public class XGenerateLibTestSteps {
 
 	@Given("^I have the following model:$")
 	public void iHaveTheFollowingModel(String modelContent) throws Throwable {
-		boolean namespaceAware = false;
-		if (_xGenConfig != null)
-			namespaceAware = _xGenConfig.getModelConfig().isNamespaceAware();
 		try {
-			this._model = Model.fromString(modelContent, this._featureSupportFilesLocation, namespaceAware);
+			this._model = Model.fromString(modelContent, this._featureSupportFilesLocation.resolve("inline-model.xml"), (_xGenConfig != null) ? _xGenConfig.getModelConfig() : null);
 		} catch (ModelException mex) {
 			this.generatorException = mex;
 		}
@@ -204,7 +200,7 @@ public class XGenerateLibTestSteps {
 				_generationResults = this._generator.generateFromFiles(this._modelFileUri, _templateFileUri, this._configFileUri, this._outputFolderUri, "");
 			}
 			else {
-				throw new GeneratorException ("Model ,template and config should all be specified as either content or file(URI) in the feature.");
+				throw new GeneratorException ("Model, template and config should all be specified as either content or file(URI) in the feature.");
 			}
 			
 			if (_generationResults.getStatus().equals(GenerationStatus.ERROR)) {
@@ -279,7 +275,7 @@ public class XGenerateLibTestSteps {
 	}
 	
 	private URI resolveSupportFile(String relativeFileLocation) {
-		return Path.of(this._featureSupportFilesLocation).resolve(relativeFileLocation).toUri();
+		return this._featureSupportFilesLocation.resolve(relativeFileLocation);
 	}
 	
 	private String uriEncode(String uriPart) {

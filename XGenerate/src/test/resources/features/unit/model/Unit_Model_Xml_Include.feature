@@ -6,7 +6,7 @@ Feature: Unit_Model_Xml_Include
     Given the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>            
-      <XGenConfig xmlns:xi="http://www.w3.org/2001/XInclude">
+      <XGenConfig>
         <Model namespaceAware="<NamespaceAware>" />
         <TextTemplate rootSectionName="Template">
           <FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
@@ -43,22 +43,24 @@ Feature: Unit_Model_Xml_Include
     Then I expect 1 generation result
     And an output named "Unit_Config_Reuse_Partials.txt" with content:
       """
-      A
-      B
+      <expected-result>
 
       """
 
     Examples: 
-      | Scenario                            | NamespaceAware | Namespace                                  |
-      | Namespace aware with namespace      | true           | xmlns:xi="http://www.w3.org/2001/XInclude" |
-      | Namespace unaware with namespace    | false          | xmlns:xi="http://www.w3.org/2001/XInclude" |
-      | Namespace unaware without namespace | false          |                                            |
+      | Scenario                            | NamespaceAware | Namespace                                  | expected-result |
+      # When namespace aware is enabled and the namespace is in the model file, includes are resolved.
+      | Namespace aware with namespace      | true           | xmlns:xi="http://www.w3.org/2001/XInclude" | A\nB            |
+      # When the namespace is not in the model file, model includes are not resolved.
+      | Namespace unaware with namespace    | false          | xmlns:xi="http://www.w3.org/2001/XInclude" | A               |
+      # When parsing namespace unaware and the namespace is not in the the model file, includes are not resolved.
+      | Namespace unaware without namespace | false          |                                            | A               |
 
   Scenario Outline: Xml include in model file <Scenario>
     Given the following config:
       """
       <?xml version="1.0" encoding="UTF-8"?>            
-      <XGenConfig xmlns:xi="http://www.w3.org/2001/XInclude">
+      <XGenConfig>
         <Model namespaceAware="<NamespaceAware>" />
         <TextTemplate rootSectionName="Template">
           <FileFormat singleLineCommentPrefix="--" annotationPrefix="@XGen" annotationArgsPrefix="(" annotationArgsSuffix=")" />
@@ -87,11 +89,9 @@ Feature: Unit_Model_Xml_Include
       """
     Then I expect the following error message:
       """
-			Error while reading model: Error while parsing file as XML document: Name space qualification Exception: Element not qualified
-			
-			Line Number: 5 Offset: 4.
+      <ErrorMessage>
       """
 
     Examples: 
-      | Scenario                          | NamespaceAware | Namespace |
-      | Namespace aware without namespace | true           |           |
+      | Scenario                          | NamespaceAware | Namespace | ErrorMessage                                                                               |
+      | Namespace aware without namespace | true           |           | Error while reading model XML file: The prefix "xi" for element "xi:include" is not bound. |

@@ -117,10 +117,7 @@ public class Generator {
 		// Create the model object from the model file.
 		Model model;
 		try {
-			boolean namespaceAware = false;
-			if (xGenConfig.getModelConfig() != null)
-				namespaceAware = xGenConfig.getModelConfig().isNamespaceAware();
-			model = Model.fromFile(modelFileUri, namespaceAware);
+			model = Model.fromFile(modelFileUri, xGenConfig.getModelConfig());
 		} catch (ModelException me) {
 			throw new GeneratorException(me);
 		}
