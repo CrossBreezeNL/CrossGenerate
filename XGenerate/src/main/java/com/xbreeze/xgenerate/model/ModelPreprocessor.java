@@ -24,16 +24,11 @@
  *******************************************************************************/
 package com.xbreeze.xgenerate.model;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -42,14 +37,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import com.xbreeze.xgenerate.config.model.ModelAttributeInjection;
 import com.xbreeze.xgenerate.config.model.ModelAttributeInjectionValueMapping;
 import com.xbreeze.xgenerate.config.model.ModelConfig;
 import com.xbreeze.xgenerate.config.model.ModelNodeRemoval;
 import com.xbreeze.xgenerate.utils.SaxonXMLUtils;
-import com.xbreeze.xgenerate.utils.XmlException;
 
 import net.sf.saxon.xpath.XPathExpressionImpl;
 
@@ -65,70 +58,40 @@ public class ModelPreprocessor {
 	/**
 	 * Pre-process the model.
 	 * 
-	 * @param model
-	 * @param modelConfig
+	 * @param model The model.
+	 * @param modelConfig The model configuration.
 	 * @throws ModelPreprocessorException
 	 */
 	public static void preprocessModel(Model model, ModelConfig modelConfig) throws ModelPreprocessorException {
 		logger.info("Starting model preprocessing");
 
-		// Load the preprocessed model into memory
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder;
-		
-		try {
-			builder = factory.newDocumentBuilder();
-		} catch (ParserConfigurationException exc) {			
-			throw new ModelPreprocessorException(
-					String.format("Error while reading model XML file: %s", exc.getMessage()));
-		}
-		Document doc;
+		Document doc = model.getModelDocument();
 		SaxonXMLUtils xmlHelper = new SaxonXMLUtils();
 		xmlHelper.setNamespaces(modelConfig.getNamespaces());
-		
-		try {
-			doc = builder.parse(new ByteArrayInputStream(model.getModelFileContent().getBytes()));
-		} catch(SAXException | IOException exc) {
-			throw new ModelPreprocessorException("Error while reading model XML file", exc.getCause());
-		}
-		
 		
 		// ModelAttributeInjections
 		// First do attribute injection, in case attributes are used as source that are
 		// removed in the next step
 		if (modelConfig != null && modelConfig.getModelAttributeInjections() != null
 				&& modelConfig.getModelAttributeInjections().size() > 0) {
-			doc = performModelAttributeInjections(doc, xmlHelper,
+			performModelAttributeInjections(doc, xmlHelper,
 					modelConfig.getModelAttributeInjections());
 		}
-
 		
 		// ModelNodeRemovals
 		if (modelConfig != null && modelConfig.getModelNodeRemovals() != null
 				&& modelConfig.getModelNodeRemovals().size() > 0) {
-			doc = performModelNodeRemovals(doc, xmlHelper, modelConfig.getModelNodeRemovals());
+			performModelNodeRemovals(doc, xmlHelper, modelConfig.getModelNodeRemovals());
 		}
-		
-		//Transform the preprocessed document to string and store it in the model object.
-		String preprocessedModel;
-		try {
-			preprocessedModel = SaxonXMLUtils.XmlDocumentToString(doc);
-		} catch (XmlException e) {
-			throw new ModelPreprocessorException("Error transforming preprocessed model to string", e.getCause());
-		}
-		
-		
-		// Store the pre-processed model as string in the Model object.
-		model.setPreprocessedModel(preprocessedModel);
 
 		logger.info("End model preprocessing");
 	}
 
-	private static Document performModelNodeRemovals(Document modelDoc, SaxonXMLUtils xmlHelper,
+	private static void performModelNodeRemovals(Document modelDoc, SaxonXMLUtils xmlHelper,
 			ArrayList<ModelNodeRemoval> modelModelNodeRemovals)
 			throws ModelPreprocessorException {
-
 		logger.fine("Performing model node removals.");
+		
 		// Loop through the model node removals and process them.
 		for (ModelNodeRemoval mnr : modelModelNodeRemovals) {
 			try {
@@ -146,11 +109,9 @@ public class ModelPreprocessor {
 				throw new ModelPreprocessorException(String.format("Error processing XPath expression for node removal %s", mnr.getModelXPath()), e.getCause());
 			}
 		}
-		// Return the modified XML document.
-		return modelDoc;
 	}
 
-	private static Document performModelAttributeInjections(Document modelDoc, SaxonXMLUtils xmlHelper,
+	private static void performModelAttributeInjections(Document modelDoc, SaxonXMLUtils xmlHelper,
 			ArrayList<ModelAttributeInjection> modelAttributeInjections)
 			throws ModelPreprocessorException {
 		logger.fine("Performing model attribute injections.");
@@ -214,7 +175,5 @@ public class ModelPreprocessor {
 				throw new ModelPreprocessorException(String.format("Error while processing model attribute injection for model XPath ´%s´", mai.getModelXPath()), e.getCause());
 			}
 		}
-		// Return the modified XML document.
-		return modelDoc;
 	}
 }

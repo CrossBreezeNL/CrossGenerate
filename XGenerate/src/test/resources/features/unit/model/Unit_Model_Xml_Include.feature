@@ -13,13 +13,13 @@ Feature: Unit_Model_Xml_Include
           <Output type="single_output" />
         </TextTemplate>              
         <Binding>        
-      <SectionModelBinding section="Template" modelXPath ="/system" placeholderName="system">
-      <SectionModelBinding section="Tables" modelXPath="./entities/entity" placeholderName="table">
-      	<Placeholders>
-      		<Placeholder name="system" modelXPath="../.." />
-      	</Placeholders>
-      </SectionModelBinding>
-      </SectionModelBinding>
+          <SectionModelBinding section="Template" modelXPath ="/system" placeholderName="system">
+            <SectionModelBinding section="Tables" modelXPath="./entities/entity" placeholderName="table">
+      	      <Placeholders>
+      		      <Placeholder name="system" modelXPath="../.." />
+      	      </Placeholders>
+            </SectionModelBinding>
+          </SectionModelBinding>
         </Binding>          
       </XGenConfig>
       """
@@ -29,7 +29,7 @@ Feature: Unit_Model_Xml_Include
       <system name="sys" <Namespace>>
        <entities>
          <entity name="A"/>
-         <xi:include href="included-model-file.xml" />      
+         <xi:include href="included-model-file.xml" <xi-include-ns> />      
        </entities>      
       </system>
       """
@@ -48,13 +48,15 @@ Feature: Unit_Model_Xml_Include
       """
 
     Examples: 
-      | Scenario                            | NamespaceAware | Namespace                                  | expected-result |
-      # When namespace aware is enabled and the namespace is in the model file, includes are resolved.
-      | Namespace aware with namespace      | true           | xmlns:xi="http://www.w3.org/2001/XInclude" | A\nB            |
-      # When the namespace is not in the model file, model includes are not resolved.
-      | Namespace unaware with namespace    | false          | xmlns:xi="http://www.w3.org/2001/XInclude" | A               |
-      # When parsing namespace unaware and the namespace is not in the the model file, includes are not resolved.
-      | Namespace unaware without namespace | false          |                                            | A               |
+      | Scenario                            | NamespaceAware | Namespace                                  | xi-include-ns                              | expected-result    |
+      # When namespace aware and the XInclude namespace is on the root node, includes are resolved.
+      | Namespace aware with namespace      | true           | xmlns:xi="http://www.w3.org/2001/XInclude" |                                            | A\nB               |
+      # When not namespace aware, but the XInclude namespace is on the root node, model includes are resolved.
+      | Namespace unaware with namespace    | false          | xmlns:xi="http://www.w3.org/2001/XInclude" |                                            | A\nB               |
+      # When namespace aware, and the XInclude namespace is in xi:include node, model includes are resolved.
+      | Namespace aware inline namespace | true              |                                            | xmlns:xi="http://www.w3.org/2001/XInclude" | A\nB               |
+      # When namespace unaware, and the XInclude namespace is in xi:include node, model includes are resolved.
+      | Namespace unaware inline namespace | false           |                                            | xmlns:xi="http://www.w3.org/2001/XInclude" | A\nB               |
 
   Scenario Outline: Xml include in model file <Scenario>
     Given the following config:
@@ -67,13 +69,13 @@ Feature: Unit_Model_Xml_Include
           <Output type="single_output" />
         </TextTemplate>              
         <Binding>        
-      <SectionModelBinding section="Template" modelXPath ="/system" placeholderName="system">
-      <SectionModelBinding section="Tables" modelXPath="./entities/entity" placeholderName="table">
-      	<Placeholders>
-      		<Placeholder name="system" modelXPath="../.." />
-      	</Placeholders>
-      </SectionModelBinding>
-      </SectionModelBinding>
+          <SectionModelBinding section="Template" modelXPath ="/system" placeholderName="system">
+            <SectionModelBinding section="Tables" modelXPath="./entities/entity" placeholderName="table">
+      	      <Placeholders>
+      		      <Placeholder name="system" modelXPath="../.." />
+      	      </Placeholders>
+            </SectionModelBinding>
+          </SectionModelBinding>
         </Binding>          
       </XGenConfig>
       """
@@ -93,5 +95,8 @@ Feature: Unit_Model_Xml_Include
       """
 
     Examples: 
-      | Scenario                          | NamespaceAware | Namespace | ErrorMessage                                                                               |
-      | Namespace aware without namespace | true           |           | Error while reading model XML file: The prefix "xi" for element "xi:include" is not bound. |
+      | Scenario                            | NamespaceAware | Namespace | ErrorMessage                                                                               |
+      # When parsing namespace aware and the namespace is not in the the model file, it results in an error.
+      | Namespace aware without namespace   | true           |           | Error while reading model: The prefix "xi" for element "xi:include" is not bound.          |
+      # When parsing namespace unaware and the namespace is not in the the model file, it results in an error.
+      | Namespace unaware without namespace | true           |           | Error while reading model: The prefix "xi" for element "xi:include" is not bound.          |

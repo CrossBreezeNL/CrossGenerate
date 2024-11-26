@@ -54,7 +54,9 @@ import com.xbreeze.xgenerate.template.TemplatePreprocessor;
 import com.xbreeze.xgenerate.template.TemplatePreprocessorException;
 import com.xbreeze.xgenerate.template.XsltTemplate;
 import com.xbreeze.xgenerate.template.annotation.UnknownAnnotationException;
+import com.xbreeze.xgenerate.utils.SaxonXMLUtils;
 import com.xbreeze.xgenerate.utils.XMLUtils;
+import com.xbreeze.xgenerate.utils.XmlException;
 
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XsltTransformer;
@@ -200,9 +202,10 @@ public class Generator {
 					String preprocessedModelLocation = Paths.get(outputFolderUri).resolve(relativeTemplateFolder).resolve(String.format("preprocessed_%s", model.getModelFileName())).toString();
 					logger.info(String.format("Writing preprocessed model to '%s'", preprocessedModelLocation));
 					// Write the pre-processed model.
-					writeToFile(preprocessedModelLocation, model.getPreprocessedModel());
+					String preprocessedModelXmlString = SaxonXMLUtils.XmlDocumentToString(model.getModelDocument());
+					writeToFile(preprocessedModelLocation, preprocessedModelXmlString);
 				}
-			} catch (ModelPreprocessorException e) {
+			} catch (ModelPreprocessorException | XmlException e) {
 				throw new GeneratorException(e);
 			}
 		}
@@ -246,7 +249,7 @@ public class Generator {
 				{
 					logger.info("Begin template transformation");
 					
-					XsltTransformer xsltTransformer = XMLUtils.getXsltTransformer(xsltTemplateString, model.getPreprocessedModel(), outputFolderUri);
+					XsltTransformer xsltTransformer = XMLUtils.getXsltTransformer(xsltTemplateString, model.getModelDocument(), outputFolderUri);
 					
 					// If running in test mode, cast the XslTransformer to net.sf.saxon.jaxp.TransformerImpl and set our custom
 					// output resolver to get the output in GenerationResults instead of files					 

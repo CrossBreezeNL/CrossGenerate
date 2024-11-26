@@ -40,9 +40,11 @@ import java.util.logging.Logger;
 
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.text.StringEscapeUtils;
+import org.w3c.dom.Document;
 
 import com.xbreeze.xgenerate.config.ConfigException;
 import com.xbreeze.xgenerate.generator.GeneratorException;
@@ -241,7 +243,7 @@ public class XMLUtils {
 		}		
 	}
 	
-	public static XsltTransformer getXsltTransformer(String xsltTemplateContent, String modelFileContent, URI outputFolderUri) throws GeneratorException {
+	public static XsltTransformer getXsltTransformer(String xsltTemplateContent, Document modelDocument, URI outputFolderUri) throws GeneratorException {
 		// Create a string reader on the pre-processed template.
 		StringReader xslStringReader = new StringReader(xsltTemplateContent);
 		StreamSource xslSource = new StreamSource(xslStringReader);
@@ -284,10 +286,10 @@ public class XMLUtils {
 		// Create a XdmNode based on the model file content.
 		XdmNode modelDocumentNode;
 		try {
-			StreamSource modelFileStreamSource = new StreamSource(new StringReader(modelFileContent));
-			modelDocumentNode = processor.newDocumentBuilder().build(modelFileStreamSource);
+			DOMSource modelDOMSource = new DOMSource(modelDocument);
+			modelDocumentNode = processor.newDocumentBuilder().build(modelDOMSource);
 		} catch (SaxonApiException e) {
-			throw new GeneratorException(String.format("Error while parsing model file content: %s", e.getMessage()));
+			throw new GeneratorException(String.format("Error while parsing model: %s", e.getMessage()));
 		}
 		// Set the initial context node the the model XdmNode.
 		xsltTransformer.setInitialContextNode(modelDocumentNode);

@@ -24,24 +24,27 @@
  *******************************************************************************/
 package com.xbreeze.xgenerate.model;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.sax.SAXSource;
 
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.xbreeze.xgenerate.config.model.ModelConfig;
-import com.xbreeze.xgenerate.generator.GeneratorException;
 import com.xbreeze.xgenerate.utils.FileUtils;
-import com.xbreeze.xgenerate.utils.SaxonXMLUtils;
-import com.xbreeze.xgenerate.utils.XmlException;
 
 public class Model {
 	// The logger for this class.
@@ -55,37 +58,31 @@ public class Model {
 	/**
 	 * The model file content.
 	 */
-	private String _modelFileContent;
-	
-	/**
-	 * The preprocessed model.
-	 */
-	private String _preprocessedModel;
+	private Document _modelDocument;
 	
 	/**
 	 * Constructor.
 	 * @param modelFileUri The model file location.
 	 */
-	private Model(URI modelFileUri, String modelFileContent) {
+	private Model(URI modelFileUri, Document modelDocument) {
 		this._modelFileUri = modelFileUri;
-		this._modelFileContent = modelFileContent;
-		// Store the initial model content in the preprocessed model, in case there is no pre-processing.
-		setPreprocessedModel(this._modelFileContent);
+		this._modelDocument = modelDocument;
 	}
 	
 	/**
-	 * Get the model file content.
-	 * @return The model file content.
+	 * Get the model document.
+	 * @return The model document.
 	 */
-	public String getModelFileContent() {
-		return this._modelFileContent;
+	public Document getModelDocument() {
+		return this._modelDocument;
 	}
 	
 	/**
 	 * Get the Model object using a model file location.
 	 * @param modelFileUri The model file location.
+	 * @param modelConfig The model configuration.
 	 * @return The Model object.
-	 * @throws GeneratorException 
+	 * @throws ModelException 
 	 */
 	public static Model fromFile(URI modelFileUri, ModelConfig modelConfig) throws ModelException {
 		logger.fine(String.format("Creating Model object from '%s'", modelFileUri));
@@ -103,43 +100,51 @@ public class Model {
 	
 	/**
 	 * Static function to construct a Model object from a string.
-	 * @param modelFileUri
-	 * @param modelFileContents
-	 * @return
+	 * @param modelFileContents The model file contents.
+	 * @param modelFileUri The model file location.
+	 * @param modelConfig The model configuration.
+	 * @return The Model object.
 	 * @throws ModelException
 	 */
 	public static Model fromString(String modelFileContents, URI modelFileUri, ModelConfig modelConfig) throws ModelException {
-		String resolvedModelFileContents;
 		try {
-			// Parse the XML document using Saxon.
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			// Parse the XML document.
+			SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+			// Use model configuration to set namespace awareness.
 			if (modelConfig != null)
-				factory.setNamespaceAware(modelConfig.isNamespaceAware());
-			factory.setXIncludeAware(true);
-			DocumentBuilder builder;
-			
-			try {
-				builder = factory.newDocumentBuilder();
-			} catch (ParserConfigurationException exc) {			
-				throw new ModelException(
-						String.format("Error while reading model XML file: %s", exc.getMessage()));
-			}
-			Document doc;
-			
-			try {
-				// Set the system-id to the location of the model file, so it can resolve includes, if needed.
-				doc = builder.parse(new ByteArrayInputStream(modelFileContents.getBytes()), modelFileUri.toString());
-			} catch(SAXException | IOException exc) {
-				throw new ModelException(String.format("Error while reading model XML file: %s", exc.getMessage()), exc.getCause());
-			}
-			
-			resolvedModelFileContents = SaxonXMLUtils.XmlDocumentToString(doc);
-		} catch (XmlException xec) {
-			throw new ModelException(String.format("Error while reading model: %s", xec.getMessage()), xec);
-		}
-		
-		// Return the new Model object.
-		return new Model(modelFileUri, resolvedModelFileContents);
+				saxParserFactory.setNamespaceAware(modelConfig.isNamespaceAware());
+			// Resolve XIncludes.
+			saxParserFactory.setXIncludeAware(true);
+			// Create the SAX parser using the factory.
+            SAXParser saxParser = saxParserFactory.newSAXParser();
+            
+            // Wrap the XMLReader with a NamespaceContext that ensures the xi prefix is mapped
+            // NOTE: I tried creating my own XMLFilterImpl and injecting the needed XInclude namespace on the root element, but this didn't work.
+            //XMLReaderWithNamespaceContext xmlReader = new XMLReaderWithNamespaceContext(saxParser.getXMLReader(), "xi", "http://www.w3.org/2001/XInclude");
+
+            // Use SAXSource to process the XML content
+            InputSource inputSource = new InputSource(new StringReader(modelFileContents));
+            SAXSource saxSource = new SAXSource(saxParser.getXMLReader(), inputSource);
+            // Set the system-id to the location of the model file, so it can resolve includes, if needed.
+            saxSource.setSystemId(modelFileUri.toString());
+            
+            // Transform SAX events into a DOM Document
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMResult domResult = new DOMResult();
+            transformer.transform(saxSource, domResult);
+            
+            // Retrieve the Document
+            Document modelDocument = (Document) domResult.getNode();
+            
+            // Return the new Model object.
+            return new Model(modelFileUri, modelDocument);
+		} catch (ParserConfigurationException | SAXException | TransformerException e) {
+			if (e.getCause() != null)
+				throw new ModelException(String.format("Error while reading model: %s", e.getCause().getMessage()), e.getCause());
+			else
+				throw new ModelException(String.format("Error while reading model: %s", e.getMessage()), e);
+		}		
 	}
 
 	/**
@@ -147,19 +152,5 @@ public class Model {
 	 */
 	public String getModelFileName() {
 		return Paths.get(this._modelFileUri).getFileName().toString();
-	}
-
-	/**
-	 * @return the preprocessedModel
-	 */
-	public String getPreprocessedModel() {
-		return _preprocessedModel;
-	}
-
-	/**
-	 * @param preprocessedModel the preprocessedModel to set
-	 */
-	public void setPreprocessedModel(String preprocessedModel) {
-		this._preprocessedModel = preprocessedModel;
 	}
 }
