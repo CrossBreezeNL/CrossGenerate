@@ -243,11 +243,7 @@ public class XGenerateStarter extends GenerationObserverSource {
 	 */
 	private void startGenerator(XGenAppConfig appConfig, ArrayList<ModelTemplateConfigCombination> modelTemplateConfigCombinations, boolean debugMode) {
 		try 
-		{
-			// Configure Java XML to use Saxon as the DOM and XPath implementation.
-			System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "net.sf.saxon.om.DocumentBuilderFactoryImpl");
-			System.setProperty("javax.xml.xpath.XPathFactory", "net.sf.saxon.xpath.XPathFactoryImpl");
-			
+		{	
 			// Notify the generation observers the generation is starting.
 			this.notifyGenerationStarting(modelTemplateConfigCombinations.size(), LocalDateTime.now());
 			Generator generator = new Generator();
